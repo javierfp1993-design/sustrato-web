@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T14:19:25.099Z">
+<meta name="sustrato-version" content="2026-10-05T14:29:46.340Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2104,6 +2104,25 @@ html[data-theme="light"] .wc-hero .wc-sc{color:color-mix(in srgb,var(--vc,#1c1c1
 html[data-theme="light"] .wc-w .wc-ic{color:#8e2fc4!important}
 html[data-theme="light"] .wc-p .wc-ic{color:#d70f3c!important}
 html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
+.pa-row{display:flex;flex-direction:column;gap:8px;margin-top:12px}.pa-row .btn{width:100%;margin:0!important}
+.mfreq{display:flex;flex-direction:column;gap:6px;margin:10px 0 4px}
+.mfreq>span{font-size:12.5px;color:var(--muted)}
+.mfq{appearance:none;border:0;text-align:left;font:inherit;color:var(--fg);background:var(--card2,rgba(127,127,127,.12));border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.mfq b{font-weight:600;font-size:14px}.mfq small{color:var(--muted);font-size:12px;white-space:nowrap}
+.mfq:active{transform:scale(.98)}
+/* v127 armonía: color solo con significado, en la línea o en un punto */
+.fl-ask .fl-ic{background:var(--card2,rgba(127,127,127,.12))!important;color:var(--fg)!important}
+.fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.wc-ic,.wc-w .wc-ic,.wc-p .wc-ic,.wc-ics,html[data-theme] .wc-w .wc-ic,html[data-theme] .wc-p .wc-ic,html[data-theme] .wc-ics{background:none!important;color:var(--muted)!important;width:16px!important}
+.rh-heart.big{background:var(--card2,rgba(127,127,127,.12))!important}
+.rh-bar span,.rh-bar span:first-child{background:var(--card2,rgba(127,127,127,.18))!important}
+.rh-bl,html[data-theme="light"] .rh-bl{color:var(--muted)!important;font-weight:500!important}
+.rh-best{stroke:var(--faint)!important;stroke-opacity:1!important}
+.rh-scale{padding-bottom:0!important}.rh-bar{margin-bottom:26px!important}
+.fdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+.fstate{background:none!important;padding:0!important}
+.mnums span:not(.mk){color:var(--fg)}
+.mnums span:not(.mk){color:var(--muted)!important}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2175,7 +2194,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="126";
+const APP_VER="127";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2932,7 +2951,7 @@ function rhrCard(){const M=S.rhr||{},tk=today(),keys=Object.keys(M).sort(),rg=+(
   return`<section class="glass pad fade rh-card"><div class="row"><span class="pkk">Pulso en reposo</span><div class="seg sm" role="group" aria-label="Periodo">${[["30","30 d"],["90","3 m"],["365","1 a"]].map(([k,l])=>`<button data-rhrr="${k}" aria-pressed="${String(rg)===k}">${l}</button>`).join("")}</div></div>
     <div class="rh-hero">${heart(cur,true)}<div class="rh-num"><b>${Math.round(cur)}</b><span>ppm</span><small>media de los últimos 7 días</small></div>
       ${first&&Math.abs(dlt)>=.5?`<div class="rh-dl ${good?"good":bad?"bad":""}"><b>${dlt<0?"↓":"↑"} ${Math.abs(dlt).toFixed(0)}</b><span>ppm en ${rg===365?"un año":rg+" días"}</span></div>`:""}</div>
-    <div class="rh-chart"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolución del pulso en reposo"><defs><linearGradient id="rhg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff375f" stop-opacity=".32"/><stop offset="1" stop-color="#ff375f" stop-opacity="0"/></linearGradient></defs>
+    <div class="rh-chart"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolución del pulso en reposo"><defs><linearGradient id="rhg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff375f" stop-opacity=".12"/><stop offset="1" stop-color="#ff375f" stop-opacity="0"/></linearGradient></defs>
       <line x1="0" x2="${W}" y1="${Y(best).toFixed(1)}" y2="${Y(best).toFixed(1)}" class="rh-best"/>
       <path d="${area}" fill="url(#rhg)"/>${dots}<path d="${line}" fill="none" stroke="#ff375f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
       ${bi>=0?`<circle cx="${X(bi).toFixed(1)}" cy="${Y(best).toFixed(1)}" r="4.5" fill="#ff375f" stroke="var(--card-bg,#fff)" stroke-width="2" vector-effect="non-scaling-stroke"/>`:""}${hits}</svg>
@@ -3113,7 +3132,7 @@ function fitCard(){
     ${rp?`<line x1="${X(ri).toFixed(1)}" x2="${X(ri).toFixed(1)}" y1="${PT-8}" y2="${PT+H1+G+H2}" class="frace"/><text class="ax frace-t" x="${(X(ri)-3).toFixed(1)}" y="${PT-11}" text-anchor="end">${esc(race.n)}</text>`:""}
     ${months.join("")}${hits}</svg>`;
   return`<section class="glass pad fade pfit"><span class="pkk">Forma y fatiga</span>
-    <div class="fkpi"><div><span>Forma</span><b style="color:var(--t-fat,#3b82f6)">${r0(now.ctl)}</b></div><div><span>Fatiga</span><b style="color:var(--t-ff7a52,#ff7a52)">${r0(now.atl)}</b></div><div><span>Frescura</span><b>${now.tsb>0?"+":""}${r0(now.tsb)}</b></div><div class="fst"><span class="fstate" style="--sc:${tcol(now.tsb)}">${st[0]}</span></div></div>
+    <div class="fkpi"><div><span><i class="fdot" style="background:#3b82f6"></i>Forma</span><b>${r0(now.ctl)}</b></div><div><span><i class="fdot" style="background:#ff7a52"></i>Fatiga</span><b>${r0(now.atl)}</b></div><div><span>Frescura</span><b>${now.tsb>0?"+":now.tsb<0?"−":""}${Math.abs(r0(now.tsb))}</b></div><div class="fst"><span class="fstate" style="--sc:${tcol(now.tsb)}">${st[0]}</span></div></div>
     <p class="fdesc">${st[1]}</p>
     ${svg}
     <div class="legend"><span><i style="background:#3b82f6"></i>Forma · 6 semanas</span><span><i style="background:#ff7a52"></i>Fatiga · 7 días</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ffd21e"></i>Cargado</span></div>
@@ -4029,9 +4048,21 @@ function logControls(k,m){
       ${e.n?`<div class="lgres">${esc(e.n)} · P ${fmtInt(e.P)} · H ${fmtInt(e.C)} · G ${fmtInt(e.F)} · ${fmtInt(4*e.P+4*e.C+9*e.F)} kcal${e.photo?" (estimado por foto)":""}</div>`:""}`;
   }
   if(st==="done"){const r=e.r||1;ed=`<div class="rat" role="group" aria-label="Cantidad">${[[.5,"½"],[.75,"¾"],[1,"1"],[1.25,"1¼"],[1.5,"1½"]].map(([v,l])=>`<button class="chip sm" data-lgr="${m.id}" data-r="${v}" aria-pressed="${r===v}" aria-label="${l} ración">${l}</button>`).join("")}<span class="note" style="margin:0">${fmtInt(4*e.P+4*e.C+9*e.F)} kcal</span></div>`}
-  const menu=S.mealMenu===m.id?`<div class="mlog">${b("chg","Comí otra cosa")}${b("skip","Me la salté")}${st?`<button class="chip sm" data-log="${m.id}" data-st="${st}">Quitar registro</button>`:""}</div>`:"";
+  const fq=S.mealMenu===m.id?freqDishes(m.id,k):[];
+  const menu=S.mealMenu===m.id?`${fq.length?`<div class="mfreq"><span>Lo que sueles comer</span>${fq.map(o=>`<button class="mfq" data-lgq="${m.id}|${o.id}|${o.s}"><b>${esc(dishById(o.id).n)}</b><small>${fmtInt(dishById(o.id).P*o.s)} g prot. · ${fmtInt((4*dishById(o.id).P+4*dishById(o.id).C+9*dishById(o.id).F)*o.s)} kcal</small></button>`).join("")}</div>`:""}<div class="mlog">${b("chg","Comí otra cosa")}${b("skip","Me la salté")}${st?`<button class="chip sm" data-log="${m.id}" data-st="${st}">Quitar registro</button>`:""}</div>`:"";
   return menu+ed;
 }
+/* Repetición: lo que sueles comer y copiar semanas */
+function freqDishes(mid,k){const out={};for(let i=1;i<=60;i++){const d=shiftKey(k,-i),e=(S.log[d]||{})[mid];let id=null,sc=1;
+    if(e&&e.st==="chg"&&e.d){id=e.d;sc=e.s||1}else if(e&&e.st==="done"){const a=(S.menu[d]||{})[mid];if(a){id=a.d;sc=(a.s||1)*(e.r||1)}}
+    if(id&&dishById(id)){const o=out[id]=out[id]||{id,n:0,s:sc,last:d};o.n++}}
+  const cur=(S.menu[k]||{})[mid];return Object.values(out).filter(o=>!cur||o.id!==cur.d).sort((a,b)=>b.n-a.n||(a.last<b.last?1:-1)).slice(0,4)}
+function weekCopyPlan(kind,wk){const tk=today(),src=kind==="train"?(S.plan||{}):(S.menu||{}),days=[];
+  for(let i=0;i<7;i++){const t=shiftKey(wk,i),f=shiftKey(wk,i-7),a=src[f],b=src[t];
+    const has=x=>kind==="train"?(x||[]).filter(y=>!y.skip).length>0:x&&Object.keys(x).length>0;
+    if(t>=tk&&has(a)&&!has(b))days.push([f,t])}
+  return days}
+function weekCopyBtn(kind,wk){const n=weekCopyPlan(kind,wk).length;return n?`<button class="btn" data-wkcopy="${kind}">Repetir semana anterior${n<7?` · ${n} día${n>1?"s":""}`:""}</button>`:""}
 function restoreLog(k,prev){if(prev)S.log[k]=prev;else delete S.log[k];saveLog();render()}
 function quickLog(t,k){
   if(k>today())return"";const l=S.log[k]||{},pend=MEALS.filter(([id])=>!l[id]).length,y=S.log[shiftKey(k,-1)]||{},hasY=Object.keys(y).some(x=>!x.startsWith("fuel_"));
@@ -4422,7 +4453,7 @@ function mealsCard(t){
     return`<div class="meal${st?" st-"+st:""}"><div class="mh">${chk}<span class="mh-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span><span class="tags">${tags}</span>${canL?`<button class="mmore" data-mmenu="${m.id}" aria-expanded="${S.mealMenu===m.id}" aria-label="Más opciones">⋯</button>`:""}</div>
       <div class="mbar"><i style="width:${w(4*m.P)}%;background:var(--prot)"></i><i style="width:${w(4*m.C)}%;background:var(--carb)"></i><i style="width:${w(9*m.F)}%;background:var(--fat)"></i></div>
       ${(()=>{const a=(S.menu[S.day]||{})[m.id],ds=a&&dishById(a.d);return ds?`<div class="mdish">${esc(ds.n)} <span>${fmtS(a.s)}</span></div>`:""})()}
-      <div class="mnums"><span style="color:var(--t-ffa184,#ffa184)">P ${fmtInt(m.P)} g</span><span style="color:var(--t-ffe270,#ffe270)">H ${fmtInt(m.C)} g</span><span style="color:var(--t-8ab4ff,#8ab4ff)">G ${fmtInt(m.F)} g</span><span class="mk">${fmtInt(m.kcal)} kcal</span></div>${S.day<=today()?logControls(S.day,m):""}</div>`}).join("");
+      <div class="mnums"><span>P ${fmtInt(m.P)} g</span><span>H ${fmtInt(m.C)} g</span><span>G ${fmtInt(m.F)} g</span><span class="mk">${fmtInt(m.kcal)} kcal</span></div>${S.day<=today()?logControls(S.day,m):""}</div>`}).join("");
   const blocks=mp.blocks.length?mp.blocks.map(b=>`${esc(b.label)} ${fromMin(b.st)}–${fromMin(b.en)}`).join(" · "):"Sin entreno";
   return`<section class="glass pad fade hue-gly"><div class="row"><h2>Reparto por comidas</h2><span class="note" style="margin:0">${blocks}</span></div>
     ${logSummary(t,S.day)}
@@ -4598,7 +4629,7 @@ function vPlanTrain(wk){
       <div class="tbody">${realH}${edit?`<div class="plist">${edit}</div>`:""}${empty&&k<tk?`<span class="trest">Descanso</span>`:""}${k>=tk?`<button class="tadd" data-pladd="${k}" aria-label="Añadir entreno el ${DOW[d.getDay()]} ${d.getDate()}"><span aria-hidden="true">＋</span> Añadir entreno</button>`:""}</div></div>`}).join("");
   return`<section class="glass pad fade hue-gly"><div class="row"><div class="pnav"><button class="chip" data-plweek="-1" aria-label="Semana anterior">‹</button><h3 aria-level="2" role="heading">${esc(periodLabel("week",wk))}</h3><button class="chip" data-plweek="1" aria-label="Semana siguiente">›</button></div>
     </div>
-    <button class="btn primary pa-open" data-paopen="">＋ Planificar entreno</button>
+    <div class="pa-row"><button class="btn primary pa-open" data-paopen="">＋ Planificar entreno</button>${weekCopyBtn("train",wk)}</div>
     <div class="kv" style="margin-top:12px"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div></section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
@@ -4783,7 +4814,7 @@ function vPlan(){
   <section class="glass pad fade"><h2>Base · ${ds.filter(x=>!x.custom).length}</h2>${baseL}</section>`;
   return pseg+`
   <section class="glass pad fade"><div class="row"><div class="pnav"><button class="chip" data-plweek="-1" aria-label="Semana anterior">‹</button><h3 aria-level="2" role="heading">${esc(periodLabel("week",wk))}</h3><button class="chip" data-plweek="1" aria-label="Semana siguiente">›</button></div>
-    <div class="chips"><button class="chip" data-act="shop">Lista de la compra</button>${S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""}<button class="btn primary" data-act="autoweek">Asignar menú de la semana</button></div></div>
+    <div class="chips">${weekCopyBtn("menu",wk).replace('class="btn"','class="chip"')}<button class="chip" data-act="shop">Lista de la compra</button>${S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""}<button class="btn primary" data-act="autoweek">Asignar menú de la semana</button></div></div>
     <p class="note">La asignación automática elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Los platos que elijas tú se respetan.</p></section>
   <div class="pweek">${cards}</div>
   ${prof?"":'<p class="note">Completa el perfil para ver los objetivos de cada día.</p>'}`;
@@ -4988,6 +5019,13 @@ document.addEventListener("click",e=>{
   if(t.dataset.fuel){const key=t.dataset.fuel,cur=(S.log[S.day]||{})[key];setLog(S.day,key,cur?null:{st:"done",P:0,C:+t.dataset.c||0,F:0,n:"Avituallamiento"});if(!cur)buzz(10);render();return}
   if(t.dataset.lgr){const mid=t.dataset.lgr,tt=dayTargets(S.day),m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);if(m)setLog(S.day,mid,logEntryFor(S.day,m,"done",{r:+t.dataset.r}));render();return}
   if(t.dataset.act==="logall"){const tt=dayTargets(S.day);if(!tt)return;const prev=JSON.parse(JSON.stringify(S.log[S.day]||null));let n=0;mealPlan(tt,S.day).meals.forEach(m=>{if(!(S.log[S.day]||{})[m.id]){setLog(S.day,m.id,logEntryFor(S.day,m,"done"));n++}});render();undoToast(n+" comida"+(n>1?"s":"")+" registrada"+(n>1?"s":""),()=>{restoreLog(S.day,prev)});return}
+  if(t.dataset.lgq){const[mid,id,sc0]=t.dataset.lgq.split("|"),d=dishById(id),sc=+sc0||1,k=S.day,prev=JSON.parse(JSON.stringify((S.log[k]||{})[mid]||null));if(!d)return;
+    S.mealMenu=null;setLog(k,mid,{st:"chg",d:d.id,s:sc,n:d.n,P:d.P*sc,C:d.C*sc,F:d.F*sc});buzz(10);render();undoToast("Apuntado: "+d.n,()=>{setLog(k,mid,prev);render()});return}
+  if(t.dataset.wkcopy){const kind=t.dataset.wkcopy,wk=S.planWeek||mondayOf(today()),pairs=weekCopyPlan(kind,wk);if(!pairs.length)return;
+    const key=kind==="train"?"plan":"menu";S[key]=Object.assign({},S[key]);const prev=pairs.map(([f,t2])=>[t2,S[key][t2]]);
+    pairs.forEach(([f,t2])=>{let v=JSON.parse(JSON.stringify(S[key][f]));if(kind==="train"){v=v.filter(x=>!x.skip).map(x=>{delete x.done;return x})}S[key][t2]=v});
+    const save=()=>{if(kind==="train")savePlan();else saveMenu()};save();render();
+    undoToast(`${pairs.length} día${pairs.length>1?"s":""} copiado${pairs.length>1?"s":""} de la semana anterior`,()=>{prev.forEach(([t2,v])=>{if(v===undefined)delete S[key][t2];else S[key][t2]=v});save();render()});return}
   if(t.dataset.act==="logyday"){const y=shiftKey(S.day,-1),src=S.log[y]||{},k=S.day,prev=JSON.parse(JSON.stringify(S.log[k]||null));const out=Object.assign({},S.log[k]);Object.keys(src).forEach(id=>{if(!id.startsWith("fuel_"))out[id]=JSON.parse(JSON.stringify(src[id]))});S.log[k]=out;saveLog();render();undoToast("Copiado lo de ayer",()=>{restoreLog(k,prev)});return}
   if(t.dataset.mmenu){S.mealMenu=S.mealMenu===t.dataset.mmenu?null:t.dataset.mmenu;render();return}
   if(t.dataset.log){S.mealMenu=null;const mid=t.dataset.log,st=t.dataset.st,cur=(S.log[S.day]||{})[mid];const tt=dayTargets(S.day);const m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);
