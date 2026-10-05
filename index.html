@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:17:57.131Z">
+<meta name="sustrato-version" content="2026-10-05T13:20:42.269Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2057,6 +2057,7 @@ html[data-theme="light"] .rw-seg button[aria-checked="true"]{background:#fff;box
 .rw-scratch{appearance:none;border:0;background:none;color:var(--fg);font:600 15px var(--font);min-height:48px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 
 /* tarjeta de la mañana: neutra; el color solo lo pone el veredicto (--vc) */
+.wc-ro{cursor:default}
 .wcard{--wc-tx:var(--fg);--wc-mu:var(--muted);--wc-tile:var(--card2);--wc-in:var(--fill)}
 .wcard h3,.wc-h h3,.wc-hd h3,.wc-v h3,.wc-rdh h4,.wc-sc,.wc-big,.wc-st,.wc-chip b,.wc-foot,.wc-clash{color:var(--wc-tx)!important}
 .wc-h span,.wc-hd span,.wc-l,.wc-e,.wc-sec,.wc-f small,.wc-big i,.wc-in i,.wc-chip small,.wc-hero .wc-fx,.wc-fx,.wc-v p,.wc-rd p{color:var(--wc-mu)!important}
@@ -2155,7 +2156,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="121";
+const APP_VER="122";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3820,7 +3821,7 @@ function weightBar(){
   if(logged&&!S.wtEdit){const r=readiness();
     const pend=pendingPlanned(tk).filter(x=>x.sport!=="str"&&(x.int==="i"||(x.steps&&stInt(x.steps)!=="s")));const clash=pend.length&&r.sc<58;
     const fx=r.f.filter(x=>x.k!=="rhr"&&x.v!=="Sin dato").map(x=>x.l+" "+x.v.toLowerCase());
-    const tile=(cls,ic,l,v,u,sub)=>`<button class="wc-f wc-st ${cls}" data-act="wtedit" aria-label="${l}: ${v?v+" "+u:"sin dato"}. Toca para editar"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:`<em>＋ Apuntar</em>`}</span><small>${sub}</small></button>`;
+    const tile=(cls,ic,l,v,u,sub)=>window.__native&&cls==="wc-p"?`<div class="wc-f wc-st ${cls}" aria-label="${l}: ${v?v+" "+u:"sin dato"}"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:"—"}</span><small>${sub}</small></div>`:`<button class="wc-f wc-st ${cls}" data-act="wtedit" aria-label="${l}: ${v?v+" "+u:"sin dato"}. Toca para editar"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:`<em>＋ Apuntar</em>`}</span><small>${sub}</small></button>`;
     const icW='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 10a3.5 3.5 0 0 1 6 0M12 10l1.2-1.6"/></svg>',icP='<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>';
     const base=rhrAvg(shiftKey(tk,-1),7),dd=rv&&base?rv-base:null;
     return`<section class="glass pad fade wcard wc-done">
@@ -3837,7 +3838,7 @@ function weightBar(){
     <div class="wc-h"><span>${hi}${nm?", "+esc(nm):""}</span><h3>¿Cómo amaneces hoy?</h3></div>
     <div class="wc-g">
       <label class="wc-f wc-w" for="wt"><span class="wc-l"><span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 10a3.5 3.5 0 0 1 6 0M12 10l1.2-1.6"/></svg></span>Peso</span><span class="wc-in"><input id="wt" inputmode="decimal" placeholder="${last?String(last.kg).replace(".",","):"—"}" value="${td?String(td.kg).replace(".",","):""}" aria-label="Peso de hoy en kg"><i>kg</i></span><small>${last&&!td?(last.d===shiftKey(tk,-1)?"Ayer: ":"Último: ")+String(last.kg).replace(".",",")+" kg":"En ayunas, tras ir al baño"}</small></label>
-      <label class="wc-f wc-p" for="rhrin"><span class="wc-l"><span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></span>Pulso</span><span class="wc-in"><input id="rhrin" inputmode="numeric" placeholder="${ra?Math.round(ra):"—"}" value="${rv||""}" aria-label="Pulso en reposo de hoy en pulsaciones por minuto"><i>ppm</i></span><small>${ra?"Reposo · media "+Math.round(ra):"En reposo, al despertar"}</small></label>
+      ${window.__native?`<div class="wc-f wc-p wc-ro"><span class="wc-l"><span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></span>Pulso</span><span class="wc-big">${rv?`${rv}<i>ppm</i>`:"—"}</span><small>${rv?"De tu noche"+(ra?" · media "+Math.round(ra):""):"Llegará con tu sueño"}</small></div>`:`<label class="wc-f wc-p" for="rhrin"><span class="wc-l"><span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></span>Pulso</span><span class="wc-in"><input id="rhrin" inputmode="numeric" placeholder="${ra?Math.round(ra):"—"}" value="${rv||""}" aria-label="Pulso en reposo de hoy en pulsaciones por minuto"><i>ppm</i></span><small>${ra?"Reposo · media "+Math.round(ra):"En reposo, al despertar"}</small></label>`}
     </div>
     <div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="radiogroup" aria-label="Cómo has dormido">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button type="button" role="radio" data-slpick="${k}" aria-checked="${(S.slDraft||sl)===k}">${l}</button>`).join("")}</div></div>
     <div class="wc-a"><button class="btn wc-save" data-act="savewt">Guardar</button>${logged?'<button class="wc-skip" data-act="wtcancel">Cancelar</button>':'<button class="wc-skip" data-act="wtskip">Hoy no</button>'}</div>
