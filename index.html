@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:06:13.905Z">
+<meta name="sustrato-version" content="2026-10-05T13:13:57.826Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1982,6 +1982,7 @@ html[data-theme="light"] .fl-kv{background:#fff}
 .fl-kv span{display:block;font-size:11.5px;color:var(--muted)}.fl-kv b{font-size:15px;font-variant-numeric:tabular-nums}.fl-kv small{display:block;font-size:11.5px;color:var(--muted)}
 
 /* editor de rutinas */
+.app-ver{margin:28px 0 8px;text-align:center;font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
 .re-sheet{display:flex;flex-direction:column;gap:16px}
 .re-sheet>*,.rw-sheet>*{flex-shrink:0}
 .re-name{appearance:none;border:0!important;background:none!important;padding:0!important;min-height:0!important;color:var(--fg);font:700 26px/1.15 var(--font)!important;letter-spacing:-.02em;width:100%;height:auto!important}
@@ -2125,6 +2126,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
+const APP_VER="120";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4549,7 +4551,8 @@ function vHoy(){
   </div>${S.day<=today()?'<div class="hcar-dots" aria-hidden="true"><i class="on"></i><i></i></div>':""}</div>
   ${trainCard(t)}
   <div class="subtabs glass" role="tablist" aria-label="Detalle del día">${SUBS.map(([k,l])=>`<button role="tab" data-sub="${k}" aria-selected="${sub===k}">${l}</button>`).join("")}</div>
-  ${panel}`;
+  ${panel}
+  <p class="app-ver">Sustrato · versión ${APP_VER}</p>`;
 }
 function barChart(bk){
   if(!bk.length)return"";
