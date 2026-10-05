@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:21:27.905Z">
+<meta name="sustrato-version" content="2026-10-05T13:23:43.505Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2156,7 +2156,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="123";
+const APP_VER="124";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4867,7 +4867,10 @@ function render(){
   renderTabbar();
   $("#banner").innerHTML=stravaBanner();
   const v=S.tab==="hoy"?vHoy():S.tab==="plan"?vPlan():S.tab==="acts"?vActs():S.tab==="prog"?vProg():(S.lastTab=S.tab,0)||S.tab==="fuerza"?vFuerza():vPerfil();
+  {const keep=[...document.querySelectorAll("#view .hcar-track")].map(e=>e.scrollLeft);
   $("#view").innerHTML=v;
+  /* conserva la tarjeta visible del carrusel al redibujar (p. ej. pasos tras Cambiar objetivo) */
+  if(keep.some(x=>x>0))document.querySelectorAll("#view .hcar-track").forEach((e,i)=>{if(keep[i]){e.style.scrollBehavior="auto";e.scrollLeft=keep[i];e.style.scrollBehavior=""}})}
   $("#view").style.display="flex";$("#view").style.flexDirection="column";$("#view").style.gap="18px";
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
