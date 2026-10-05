@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:20:42.269Z">
+<meta name="sustrato-version" content="2026-10-05T13:21:27.905Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2156,7 +2156,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="122";
+const APP_VER="123";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2842,8 +2842,10 @@ function stepsCard(k){
   return`<section class="glass pad fade stp"><h2>Pasos · ${esc(dateLabel(k))}</h2><div class="stp-in" style="margin-top:10px"><div class="stp-rw">${ring}<div class="stp-c"><b>${fmtInt(v)}</b><small>de ${fmtInt(g)}</small></div></div>
     <div class="stp-r">
       <div class="stp-kv"><div><b>${km.toFixed(1).replace(".",",")} km</b><span>recorridos</span></div><div><b>${fmtInt(kcal)} kcal</b><span>${st.est?"pasos fuera de entrenos":"por caminar"}</span></div></div>
-      <p class="stp-src">${st.low?`Tus actividades suman ${fmtInt(st.est)} pasos, más de los ${fmtInt(st.manual)} apuntados: uso la cifra mayor.`:st.manual!=null?`Apuntados por ti${st.est?" · "+fmtInt(st.est)+" en entrenos":""}`:st.est?`Estimados de tus actividades de Strava. Apunta el total de tu móvil para afinar.`:"Apunta los pasos que marca tu móvil o tu reloj."}</p>
-      ${ed?`<div class="stp-ed"><input id="stp_in" inputmode="numeric" placeholder="Pasos" value="${st.manual!=null?st.manual:""}" aria-label="Pasos del día"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>
+      <p class="stp-src">${window.__native?(st.manual!=null?"De tu reloj, se actualiza solo":"Tu reloj aún no ha enviado pasos de este día"):st.low?`Tus actividades suman ${fmtInt(st.est)} pasos, más de los ${fmtInt(st.manual)} apuntados: uso la cifra mayor.`:st.manual!=null?`Apuntados por ti${st.est?" · "+fmtInt(st.est)+" en entrenos":""}`:st.est?`Estimados de tus actividades de Strava. Apunta el total de tu móvil para afinar.`:"Apunta los pasos que marca tu móvil o tu reloj."}</p>
+      ${ed&&window.__native?`<div class="stp-ed"><span class="note" style="margin:0">Objetivo diario</span><input id="stp_goal" inputmode="numeric" value="${g}" aria-label="Objetivo diario de pasos" style="width:96px"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>`
+      :!ed&&window.__native?`<button class="chip sm" data-act="stpedit" data-k="${k}">Cambiar objetivo</button>`
+      :ed?`<div class="stp-ed"><input id="stp_in" inputmode="numeric" placeholder="Pasos" value="${st.manual!=null?st.manual:""}" aria-label="Pasos del día"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>
         <div class="stp-ed"><span class="note" style="margin:0">Objetivo diario</span><input id="stp_goal" inputmode="numeric" value="${g}" aria-label="Objetivo diario de pasos" style="width:96px"></div>`
       :`<button class="chip sm" data-act="stpedit" data-k="${k}">${st.manual!=null?"Corregir pasos":"＋ Apuntar pasos"}</button>`}
     </div></div></section>`;
@@ -4981,9 +4983,9 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="stpedit"){S.stepEdit=t.dataset.k;render();setTimeout(()=>{const i=$("#stp_in");if(i)i.focus()},30);return}
   if(t.dataset.act==="stpcancel"){S.stepEdit=null;render();return}
   if(t.dataset.act==="stpsave"){const k=t.dataset.k,v=($("#stp_in")||{}).value,gl=num(($("#stp_goal")||{}).value);S.steps=Object.assign({},S.steps);
-    if(String(v).trim()===""){delete S.steps[k]}else{const n=Math.round(num(String(v).replace(/\./g,"")));if(!(n>=0&&n<100000)){toast("Escribe los pasos como número");return}S.steps[k]=n}
+    if(v==null){}else if(String(v).trim()===""){delete S.steps[k]}else{const n=Math.round(num(String(v).replace(/\./g,"")));if(!(n>=0&&n<100000)){toast("Escribe los pasos como número");return}S.steps[k]=n}
     if(gl&&gl>=1000&&gl<=50000&&gl!==stepGoal()){S.profile=Object.assign({},S.profile,{stepGoal:Math.round(gl)});saveProfile(true)}
-    S.stepEdit=null;saveSteps();render();toast("Pasos guardados");return}
+    S.stepEdit=null;if(v!=null)saveSteps();render();toast(v==null?"Objetivo guardado":"Pasos guardados");return}
   if(t.dataset.volm){S.volM=t.dataset.volm;render();return}
   if(t.dataset.wtrange){S.wtRange=t.dataset.wtrange;render();return}
   if(t.dataset.act==="wtall"){S.wtAll=!S.wtAll;render();return}
