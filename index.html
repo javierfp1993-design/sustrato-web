@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:13:57.826Z">
+<meta name="sustrato-version" content="2026-10-05T13:17:57.131Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2055,6 +2055,35 @@ html[data-theme="light"] .rw-seg button[aria-checked="true"]{background:#fff;box
 .rw-more button{appearance:none;border:0;background:none;padding:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .rw-act{display:flex;gap:10px}.rw-act .btn{flex:1}
 .rw-scratch{appearance:none;border:0;background:none;color:var(--fg);font:600 15px var(--font);min-height:48px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+
+/* tarjeta de la mañana: neutra; el color solo lo pone el veredicto (--vc) */
+.wcard{--wc-tx:var(--fg);--wc-mu:var(--muted);--wc-tile:var(--card2);--wc-in:var(--fill)}
+.wcard h3,.wc-h h3,.wc-hd h3,.wc-v h3,.wc-rdh h4,.wc-sc,.wc-big,.wc-st,.wc-chip b,.wc-foot,.wc-clash{color:var(--wc-tx)!important}
+.wc-h span,.wc-hd span,.wc-l,.wc-e,.wc-sec,.wc-f small,.wc-big i,.wc-in i,.wc-chip small,.wc-hero .wc-fx,.wc-fx,.wc-v p,.wc-rd p{color:var(--wc-mu)!important}
+.wc-adv{color:var(--wc-tx)!important;opacity:.86}
+.wc-f,.wc-slrow,.wc-chip,.wc-rd:not(.wc-hero),.wc-clash{background:var(--wc-tile)!important}
+.wc-in input{background:var(--wc-in)!important;color:var(--wc-tx)!important}
+.wc-in input::placeholder{color:var(--faint)!important}
+.wc-in input:focus,.wc-p .wc-in input:focus{background:var(--fill)!important;box-shadow:0 0 0 2px var(--fg) inset!important}
+.wc-p .wc-in input{background:var(--wc-in)!important}
+.wc-big em{color:var(--wc-tx)!important;border-color:var(--sep)!important}
+.wc-w .wc-ic{background:color-mix(in srgb,#bf5af2 20%,transparent)!important;color:#bf5af2!important}
+.wc-p .wc-ic{background:color-mix(in srgb,#ff375f 18%,transparent)!important;color:#ff375f!important}
+.wc-ics{background:color-mix(in srgb,#5b6cff 20%,transparent)!important;color:#7d8bff!important}
+.wc-save{background:var(--fg)!important;color:var(--bg)!important}
+.wc-skip{color:var(--wc-tx)!important}.wc-skip:hover{background:var(--fill)!important}
+.wc-hd .wc-edit{background:var(--card2)!important;color:var(--wc-tx)!important}
+.wc-btn{background:var(--fg)!important;color:var(--bg)!important}
+.wc-sl,.wc-slrow .wc-sl{background:var(--fill)!important}
+.wc-sl button{color:var(--wc-tx)!important}
+.wc-sl button[aria-checked="true"],.wc-sl button[aria-pressed="true"]{background:var(--fg)!important;color:var(--bg)!important}
+.wc-hero .wc-sc{color:var(--vc,var(--fg))!important}
+.wc-meter{background:var(--fill)!important}
+.wc-hero .wc-meter i{background:var(--vc,var(--fg))!important}
+html[data-theme="light"] .wc-hero .wc-sc{color:color-mix(in srgb,var(--vc,#1c1c1e) 70%,#000)!important}
+html[data-theme="light"] .wc-w .wc-ic{color:#8e2fc4!important}
+html[data-theme="light"] .wc-p .wc-ic{color:#d70f3c!important}
+html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2126,7 +2155,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="120";
+const APP_VER="121";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3794,9 +3823,9 @@ function weightBar(){
     const tile=(cls,ic,l,v,u,sub)=>`<button class="wc-f wc-st ${cls}" data-act="wtedit" aria-label="${l}: ${v?v+" "+u:"sin dato"}. Toca para editar"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:`<em>＋ Apuntar</em>`}</span><small>${sub}</small></button>`;
     const icW='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 10a3.5 3.5 0 0 1 6 0M12 10l1.2-1.6"/></svg>',icP='<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>';
     const base=rhrAvg(shiftKey(tk,-1),7),dd=rv&&base?rv-base:null;
-    return`<section class="glass pad fade card-violet wcard wc-done">
+    return`<section class="glass pad fade wcard wc-done">
       <div class="wc-hd"><div><span>${hi} · Cómo llegas hoy</span></div><button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
-      <div class="wc-rd wc-hero"><div class="wc-rdh"><b class="wc-sc">${r.sc}</b><div><h4><i class="wc-dot" style="background:${r.vd[2]}"></i>${r.vd[0]}</h4><p class="wc-adv">${r.vd[1]}</p></div></div>
+      <div class="wc-rd wc-hero" style="--vc:${r.vd[2]}"><div class="wc-rdh"><b class="wc-sc">${r.sc}</b><div><h4><i class="wc-dot" style="background:${r.vd[2]}"></i>${r.vd[0]}</h4><p class="wc-adv">${r.vd[1]}</p></div></div>
         <div class="wc-meter" role="img" aria-label="Disposición ${r.sc} de 100"><i style="width:${r.sc}%"></i></div>
         ${fx.length?`<span class="wc-fx">${esc(fx.join(" · "))}</span>`:""}</div>
       ${clash?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
@@ -3804,7 +3833,7 @@ function weightBar(){
       <div class="wc-g">${tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy")}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy")}</div>
       ${sl?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
     </section>`}
-  return`<section class="glass pad fade card-violet wcard">
+  return`<section class="glass pad fade wcard">
     <div class="wc-h"><span>${hi}${nm?", "+esc(nm):""}</span><h3>¿Cómo amaneces hoy?</h3></div>
     <div class="wc-g">
       <label class="wc-f wc-w" for="wt"><span class="wc-l"><span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 10a3.5 3.5 0 0 1 6 0M12 10l1.2-1.6"/></svg></span>Peso</span><span class="wc-in"><input id="wt" inputmode="decimal" placeholder="${last?String(last.kg).replace(".",","):"—"}" value="${td?String(td.kg).replace(".",","):""}" aria-label="Peso de hoy en kg"><i>kg</i></span><small>${last&&!td?(last.d===shiftKey(tk,-1)?"Ayer: ":"Último: ")+String(last.kg).replace(".",",")+" kg":"En ayunas, tras ir al baño"}</small></label>
