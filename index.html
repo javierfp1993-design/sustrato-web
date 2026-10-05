@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T13:23:43.505Z">
+<meta name="sustrato-version" content="2026-10-05T14:09:31.068Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2156,7 +2156,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="124";
+const APP_VER="125";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2466,11 +2466,23 @@ const INGR=[
 ["verduras","Verduras variadas",1.5,5,.3,2,15,250,15,.5,25,0],["espinacas","Espinacas",2.9,1.4,.4,2.2,80,560,80,2.7,99,0],
 ["lechuga","Lechuga / ensalada verde",1.3,2.5,.2,1.5,10,200,12,.8,35,0],["setas","Setas",3,3,.3,1.5,5,320,10,.5,3,.2],
 ["cebolla","Cebolla",1.1,8,.1,1.7,4,150,10,.2,23,0],["stomate","Salsa de tomate",1.5,7,1.5,1.5,400,300,15,.6,15,0],
-["sal","Sal",0,0,0,0,39000,0,0,0,24,0]
+["sal","Sal",0,0,0,0,39000,0,0,0,24,0],
+["kefir","Kéfir natural",3.4,4.5,3.3,0,40,160,12,.1,120,.05],["yprot","Yogur +Proteínas",10,4,.5,0,45,150,12,.1,120,0],
+["qbprot","Queso fresco batido +Proteínas",12,4,.2,0,45,150,11,.1,110,0],["bprot","Batido +Proteínas cacao",6,5,.6,.5,50,180,15,.3,120,0],
+["wrap","Tortillas de trigo",8,50,7,2.5,600,130,25,1.5,60,0],["hummus","Hummus",7,12,17,5,400,230,40,2,50,0],
+["datiles","Dátiles",2,66,.4,7,2,656,54,1,39,0]
 ].map(r=>({id:r[0],n:r[1],P:r[2],C:r[3],F:r[4],fib:r[5],na:r[6],k:r[7],mg:r[8],fe:r[9],ca:r[10],vd:r[11]}));
 const INGR_BY={};INGR.forEach(x=>INGR_BY[x.id]=x);
 const NUTK=["P","C","F","fib","na","k","mg","fe","ca","vd"];
 const DISHES_BASE=[
+  {id:"m1",n:"Yogur +Proteínas con avena y frutos rojos",merc:true,meals:["breakfast","snack"],ing:[["yprot",240],["avena",40],["rojos",80]]},
+  {id:"m2",n:"Kéfir con plátano y nueces",merc:true,meals:["breakfast","snack"],ing:[["kefir",250],["platano",120],["nueces",15]]},
+  {id:"m3",n:"Wrap de pollo con hummus y ensalada",merc:true,meals:["lunch","dinner"],ing:[["wrap",120],["pollo",150],["hummus",40],["lechuga",60],["tomate",80]]},
+  {id:"m4",n:"Queso batido +Proteínas con miel y fruta",merc:true,meals:["breakfast","snack"],ing:[["qbprot",200],["miel",15],["rojos",100]]},
+  {id:"m5",n:"Batido +Proteínas y plátano",merc:true,meals:["snack"],ing:[["bprot",330],["platano",120]]},
+  {id:"m6",n:"Garbanzos con espinacas y huevo",merc:true,meals:["lunch","dinner"],ing:[["garbanzos",200],["espinacas",100],["huevo",120],["aceite",10]]},
+  {id:"m7",n:"Arroz con atún, aguacate y tomate",merc:true,meals:["lunch"],ing:[["arroz",80],["atun",110],["aguacate",60],["tomate",100],["aceite",5]]},
+  {id:"m8",n:"Dátiles y yogur +Proteínas antes de entrenar",merc:true,meals:["snack"],ing:[["yprot",120],["datiles",40]]},
   {id:"d1",n:"Tostadas con tomate, AOVE y jamón",meals:["breakfast"],ing:[["pan",80],["tomate",50],["aceite",10],["jamon",30]]},
   {id:"d2",n:"Avena con leche, plátano y nueces",meals:["breakfast","snack"],ing:[["avena",60],["leche",250],["platano",100],["nueces",15]]},
   {id:"d3",n:"Skyr con fruta y granola",meals:["breakfast","snack"],ing:[["skyr",200],["rojos",100],["granola",40]]},
@@ -2505,7 +2517,7 @@ function dishById(id){return allDishes().find(d=>d.id===id)}
 const SCALES=[.5,.75,1,1.25,1.5,1.75,2,2.5];
 function fitErr(d,s,m){const e=(a,b,w)=>w*Math.pow((a-b)/Math.max(b,8),2);return e(d.P*s,m.P,1.2)+e(d.C*s,m.C,1)+e(d.F*s,m.F,.8)}
 function bestScale(d,m){let best=1,be=1e9;SCALES.forEach(s=>{const x=fitErr(d,s,m);if(x<be){be=x;best=s}});return{s:best,err:be}}
-function pickDish(m,avoid){let best=null;let pool=allDishes().filter(d=>d.meals.includes(m.id)&&dishAllowed(d));if(!pool.length)pool=allDishes().filter(d=>d.meals.includes(m.id));pool.forEach(d=>{const b=bestScale(d,m);const err=b.err+(avoid.includes(d.id)?.35:0);if(!best||err<best.err)best={d:d.id,s:b.s,err}});return best}
+function pickDish(m,avoid){let best=null;let pool=allDishes().filter(d=>d.meals.includes(m.id)&&dishAllowed(d));if(!pool.length)pool=allDishes().filter(d=>d.meals.includes(m.id));const merc=(S.profile||{}).store==="merc";pool.forEach(d=>{const b=bestScale(d,m);const err=b.err+(avoid.includes(d.id)?.35:0)-(merc&&d.merc?.06:0);if(!best||err<best.err)best={d:d.id,s:b.s,err}});return best}
 function autoAssignDay(k,force){
   const t=dayTargets(k);if(!t)return false;const mp=mealPlan(t,k);
   S.menu[k]=Object.assign({},S.menu[k]);const p1=S.menu[shiftKey(k,-1)]||{},p2=S.menu[shiftKey(k,-2)]||{},used=[];
@@ -2690,7 +2702,8 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
   else{cta="Empezar a usar Sustrato";const g=p.goal||"recomp";
     body=`<h2 class="ob-h">Tu objetivo</h2><p class="ob-p">Lo puedes cambiar cuando quieras en el perfil.</p>
       <div class="ob-goals" role="radiogroup">${Object.entries(GOALS).map(([k,v])=>`<button type="button" role="radio" class="ob-goal" data-obset="goal:${k}" aria-checked="${g===k}"><span class="ob-rad" aria-hidden="true"></span><span><b>${v.label}</b><small>${OB_GOAL_D[k]||""}</small></span></button>`).join("")}</div>
-      <div class="f ob-f" style="margin-top:18px"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>`}
+      <div class="f ob-f" style="margin-top:18px"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>
+      <div class="f ob-f" style="margin-top:18px"><span>Dónde haces la compra</span>${obSeg("store",[["any","Cualquier súper"],["merc","Mercadona"]])}</div>`}
   const prog=`<div class="ob-prog" aria-label="Paso ${st+1} de ${N}">${Array.from({length:N},(_,i)=>`<i class="${i<=st?"on":""}"></i>`).join("")}</div>`;
   el.innerHTML=`<div class="ob-wrap" role="dialog" aria-modal="true" aria-label="Bienvenida a Sustrato"><div class="ob-top">${st?`<button class="hbtn" data-ob="back" aria-label="Atrás"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>`:"<span></span>"}${prog}<button class="ob-skip" data-ob="skip">${st?"Más tarde":"Saltar"}</button></div>
     <div class="ob-body ob-s${st}">${body}</div>
@@ -3680,12 +3693,12 @@ window.addEventListener("scroll",()=>{const h=document.querySelector("header.top
 
 /* ---------- Preferencias, compra y exportación ---------- */
 const TAGS={meat:["pollo","pavo","ternera","cerdo","jamon"],fish:["atun","merluza","salmon","sardinas"],shell:["gambas","mejillones"],
-  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola"],nuts:["nueces","almendras","cacahuete"]};
+  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey","kefir","yprot","qbprot","bprot"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola","wrap"],nuts:["nueces","almendras","cacahuete"]};
 const SHOP_CAT=[["Carne y pescado",TAGS.meat.concat(TAGS.fish,TAGS.shell,["tofu"])],["Lácteos y huevos",TAGS.dairy.filter(x=>x!=="whey").concat(TAGS.egg)],
-  ["Pan, cereales y pasta",["arroz","pasta","pastaint","pan","panint","avena","quinoa","granola","tortitas"]],["Legumbres",["lentejas","garbanzos"]],
-  ["Fruta",["platano","manzana","rojos","naranja","aguacate"]],["Verdura",["patata","boniato","tomate","verduras","espinacas","lechuga","setas","cebolla"]],
+  ["Pan, cereales y pasta",["arroz","pasta","pastaint","pan","panint","wrap","avena","quinoa","granola","tortitas"]],["Legumbres",["lentejas","garbanzos","hummus"]],
+  ["Fruta",["platano","manzana","rojos","naranja","aguacate","datiles"]],["Verdura",["patata","boniato","tomate","verduras","espinacas","lechuga","setas","cebolla"]],
   ["Despensa",["aceite","nueces","almendras","cacahuete","choco","miel","stomate","sal","whey"]]];
-const UNIT={huevo:[60,"ud."],platano:[120,"ud."],manzana:[150,"ud."],naranja:[180,"ud."],aguacate:[150,"ud."]};
+const UNIT={huevo:[60,"ud."],platano:[120,"ud."],manzana:[150,"ud."],naranja:[180,"ud."],aguacate:[150,"ud."],bprot:[330,"botellas"],yprot:[120,"yogures"],wrap:[60,"tortillas"]};
 function dishAllowed(d){
   const p=S.profile||{};if((p.dislike||[]).includes(d.id))return false;
   const ids=(d.ing||[]).map(r=>r[0]),has=t=>ids.some(i=>TAGS[t].includes(i));
@@ -3703,6 +3716,12 @@ function weekShopping(wk){
     Object.values(mm).forEach(a=>{const d=dishById(a.d);if(!d||!d.ing)return;n++;const f=a.s/(d.serv||1);d.ing.forEach(([id,g])=>{tot[id]=(tot[id]||0)+g*f})})}
   return{tot,n};
 }
+const MERC_N={pollo:"Pechuga de pollo fileteada",pavo:"Pechuga de pavo en lonchas",ternera:"Filete de ternera",cerdo:"Lomo de cerdo en cinta",huevo:"Huevos L",claras:"Claras de huevo pasteurizadas",atun:"Atún claro al natural (latas)",sardinas:"Sardinas en aceite (latas)",gambas:"Gambas peladas congeladas",
+  leche:"Leche semidesnatada",yogur:"Yogur natural",skyr:"Skyr natural",burgos:"Queso fresco de Burgos 0 %",kefir:"Kéfir natural",yprot:"Yogur +Proteínas natural",qbprot:"Queso fresco batido +Proteínas",bprot:"Batido +Proteínas sabor cacao",
+  arroz:"Arroz largo",pasta:"Pasta seca",pastaint:"Pasta integral",pan:"Pan de barra",panint:"Pan integral de molde",wrap:"Tortillas de trigo",avena:"Copos de avena",tortitas:"Tortitas de arroz",
+  lentejas:"Lentejas cocidas (bote)",garbanzos:"Garbanzos cocidos (bote)",hummus:"Hummus",rojos:"Frutos rojos congelados",datiles:"Dátiles",verduras:"Verduras para wok (congeladas)",espinacas:"Espinacas frescas",lechuga:"Mezcla de ensalada",setas:"Champiñones laminados",
+  aceite:"Aceite de oliva virgen extra",cacahuete:"Crema de cacahuete 100 %",choco:"Chocolate negro 85 %",almendras:"Almendras naturales"};
+const shopName=id=>(S.profile||{}).store==="merc"&&MERC_N[id]?MERC_N[id]:INGR_BY[id].n;
 function shopQty(id,g){
   if(UNIT[id]){const u=Math.max(1,Math.round(g/UNIT[id][0]));return u+" "+UNIT[id][1]+" ("+fmtInt(g)+" g)"}
   if(id==="leche")return(g/1000).toFixed(1).replace(".",",")+" L";
@@ -3710,13 +3729,13 @@ function shopQty(id,g){
   return(g>=1000?(g/1000).toFixed(2).replace(".",",")+" kg":Math.ceil(g/10)*10+" g");
 }
 function shopText(wk){const{tot}=weekShopping(wk);let out="Lista de la compra · "+periodLabel("week",wk)+"\n";
-  SHOP_CAT.forEach(([c,ids])=>{const xs=ids.filter(i=>tot[i]);if(!xs.length)return;out+="\n"+c.toUpperCase()+"\n";xs.forEach(i=>out+="- "+INGR_BY[i].n+": "+shopQty(i,tot[i])+"\n")});return out}
+  SHOP_CAT.forEach(([c,ids])=>{const xs=ids.filter(i=>tot[i]);if(!xs.length)return;out+="\n"+c.toUpperCase()+"\n";xs.forEach(i=>out+="- "+shopName(i)+": "+shopQty(i,tot[i])+"\n")});return out}
 function shopHtml(){
   const wk=S.planWeek||mondayOf(today()),{tot,n}=weekShopping(wk);
   const body=n?SHOP_CAT.map(([c,ids])=>{const xs=ids.filter(i=>tot[i]);if(!xs.length)return"";
-    return`<h2 style="margin-top:14px">${c}</h2>${xs.map(i=>`<label class="shop"><input type="checkbox" id="sh_${i}" ${(S.shopDone||{})[i]?"checked":""}><span>${esc(INGR_BY[i].n)}</span><b>${shopQty(i,tot[i])}</b></label>`).join("")}`}).join(""):'<p class="empty">No hay platos asignados esta semana. Asigna el menú en Plan y vuelve aquí.</p>';
+    return`<h2 style="margin-top:14px">${c}</h2>${xs.map(i=>`<label class="shop"><input type="checkbox" id="sh_${i}" ${(S.shopDone||{})[i]?"checked":""}><span>${esc(shopName(i))}</span><b>${shopQty(i,tot[i])}</b></label>`).join("")}`}).join(""):'<p class="empty">No hay platos asignados esta semana. Asigna el menú en Plan y vuelve aquí.</p>';
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="Lista de la compra">
-    <div class="row"><div><h3>Lista de la compra</h3><span class="note">${esc(periodLabel("week",wk))} · ${n} platos</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><div><h3>Lista de la compra</h3><span class="note">${esc(periodLabel("week",wk))} · ${n} platos${(S.profile||{}).store==="merc"?" · productos de Mercadona":""}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${body}
     ${n?`<div class="row" style="margin-top:16px"><span class="note" style="margin:0">Cantidades en crudo para todo el menú de la semana.</span><span class="chips"><button class="chip" data-act="shopcopy">Copiar</button>${S.dl?'<button class="chip" data-act="shopsave">Descargar</button>':""}</span></div>`:""}
   </div></div>`;
@@ -4837,6 +4856,7 @@ function vPerfil(){
       <label class="f" for="p_level">Nivel de entrenamiento<select id="p_level">${Object.entries(LEVELS).map(([k,v])=>`<option value="${k}" ${(p.level||"mid")===k?"selected":""}>${v.l}</option>`).join("")}</select></label>
     </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.</p></fieldset></details>
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
+      <label class="f" for="p_store">Dónde haces la compra<select id="p_store">${[["","En cualquier súper"],["merc","Mercadona"]].map(([k,l])=>`<option value="${k}" ${(p.store||"")===k?"selected":""}>${l}</option>`).join("")}</select></label>
       <label class="f" for="p_diet">Tipo de dieta<select id="p_diet">${[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]].map(([k,l])=>`<option value="${k}" ${(p.diet||"omni")===k?"selected":""}>${l}</option>`).join("")}</select></label>
       <div class="f"><span>Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<label class="chip"><input type="checkbox" id="p_${k}" ${p[k]?"checked":""} style="width:auto;min-height:0"> ${l}</label>`).join("")}</div></div>
     </div><p class="note">La asignación automática solo usa platos compatibles. En Plan › Mis platos puedes marcar los que no te gustan.</p></fieldset></details>
@@ -5041,7 +5061,7 @@ document.addEventListener("toggle",e=>{const ps=e.target.dataset&&e.target.datas
 document.addEventListener("submit",e=>{if(e.target.id!=="pform")return;e.preventDefault();
   const g=id=>{const el=$("#p_"+id);return el?el.value.trim():""};
   const p=Object.assign({},S.profile);
-  ["name","sex","goal","level","diet","meal_breakfast","meal_lunch","meal_snack","meal_dinner"].forEach(k=>p[k]=g(k)||null);
+  ["name","sex","goal","level","diet","store","meal_breakfast","meal_lunch","meal_snack","meal_dinner"].forEach(k=>p[k]=g(k)||null);
   ["noLactose","noGluten","noNuts","noShell"].forEach(k=>{const el=$("#p_"+k);p[k]=!!(el&&el.checked)});
   ["age","height","weight","neck","waist","hip","hrmax","hrrest","lthr","neat"].forEach(k=>p[k]=num(g(k)));
   S.profile=p;saveProfile();render();ensureDaySubs();
