@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T14:30:03.234Z">
+<meta name="sustrato-version" content="2026-10-06T14:48:14.374Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2337,6 +2337,18 @@ html[data-theme="light"] .cs-l.ok{background:#28a745}html[data-theme="light"] .c
 html[data-theme="light"] .rs-b{color:#d70015}
 .rs-conf{margin-top:14px;background:color-mix(in srgb,#ff453a 10%,transparent)}
 .rs-do{background:#ff453a!important;color:#fff!important;border-color:transparent!important}html[data-theme="light"] .rs-do{background:#d70015!important}
+
+/* v159 · compartir logros */
+.strip-r{display:flex;align-items:center;gap:6px}
+.sh-btn{appearance:none;border:0;background:none;color:var(--fg);width:40px;height:40px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.sh-btn:active{background:var(--fill)}
+#shsheet{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;gap:14px;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.sh-top{display:flex;justify-content:space-between;align-items:center}.sh-top b{font-size:20px}
+.sh-x{appearance:none;border:0;background:var(--fill);color:var(--fg);width:36px;height:36px;border-radius:50%;font-size:15px;cursor:pointer}
+.sh-seg{align-self:stretch}.sh-seg button{flex:1}
+.sh-prev{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;text-align:center}
+.sh-prev img{max-width:100%;max-height:100%;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.sh-go{min-height:52px}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2408,7 +2420,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="158";
+const APP_VER="159";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5120,9 +5132,9 @@ function vHoy(){
   const tk=today();
   const per=`<div class="seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-period="${k}" aria-pressed="${S.period===k}">${l}</button>`).join("")}</div>`;
   if(S.period!=="day"){S.anchor=S.anchor||S.day;
-    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button></div></div></section>`+vPeriod()}
+    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></div></div></section>`+vPeriod()}
   const dsel=new Date(S.day+"T12:00:00");
-  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]} ${dsel.getFullYear()}</b>${per.replace('class="seg"','class="seg sm"')}</div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
+  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]} ${dsel.getFullYear()}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
     return`<button class="day ${k>tk?"fut":""}" data-day="${k}" aria-pressed="${k===S.day}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${has?"on":pl?"pl":miss?"miss":""}"></span></button>`}).join("")}</div>`;
   const p=S.profile||{};const t=dayTargets(S.day);
   const goalChips=`<div class="chips" role="group" aria-label="Objetivo">${Object.entries(GOALS).map(([k,g])=>`<button class="chip" data-goal="${k}" aria-pressed="${(p.goal||"recomp")===k}">${g.label}</button>`).join("")}</div>`;
@@ -5220,6 +5232,84 @@ function constCard(p,T,tk){
   const mrow=(c,nm,m)=>{const e=avg(d=>d.e[m]),t=avg(d=>d.t[m]),pc=t?Math.round(e/t*100):0;return`<div class="cs-m"><span class="cs-mn"><i style="background:${c}"></i>${nm}</span><span class="cs-mv"><b>${fmtInt(e)}</b> / ${fmtInt(t)} g</span><span class="cs-mp">${pc} %</span></div>`};
   const macros=done.length?`<div class="cs-ms"><span class="cs-mh">Media de los días apuntados</span>${mrow("var(--carb)","Hidratos","C")}${mrow("var(--prot)","Proteína","P")}${mrow("var(--fat)","Grasas","F")}</div>`:"";
   return`<section class="glass pad fade"><div class="row"><h2>Constancia</h2><span class="pill">${esc((GOALS[g]||GOALS.recomp).label)}</span></div>${head}<div style="margin-top:10px">${svg}</div>${lg}${macros}</section>`}
+/* ---------- Compartir logros: imagen vertical (1080×1920) del día, semana, mes o año ----------
+   Solo datos propios de Sustrato (nada de Strava): lo comido frente al objetivo, constancia y rachas. */
+function shStreak(){let k=today();if(!dayEaten(k))k=shiftKey(k,-1);let n=0;while(dayEaten(k)&&n<999){n++;k=shiftKey(k,-1)}return n}
+function shTol(){const g=(S.profile||{}).goal||"recomp";return g==="loss"||g==="recomp"?0.10:0.12}
+function shData(p){const tk=today(),tol=shTol(),st=r=>r>1+tol?"over":r<1-tol?"under":"ok";
+  if(p==="day"){const k=S.day,t=dayTargets(k);if(!t)return null;const e=dayEaten(k);if(!e)return null;
+    const mp=mealPlan(t,k),lg=(S.log||{})[k]||{},done=mp.meals.filter(m=>{const s=(lg[m.id]||{}).st;return s==="done"||s==="chg"}).length;
+    const r=e.kcal/t.kcal,rd=(S.rhr||{})[k]||(S.hrv||{})[k]||(S.sleep||{})[k]?readiness(k).sc:null;
+    return{p,k,t,e,r,ok:st(r)==="ok",final:k<tk,meals:mp.meals.map(m=>({min:m.min,on:["done","chg"].includes((lg[m.id]||{}).st)})),blocks:mp.blocks,
+      stats:[[rd!=null?String(rd):"—","Cómo llegaste"],[`${done}/${mp.meals.length}`,"Comidas"],[String(shStreak()),"Días seguidos"]]}}
+  const a=S.anchor||S.day,[s0,s1]=periodRange(p,a),days=[];for(let k=s0;k<=s1;k=shiftKey(k,1))days.push(k);
+  const D=days.map(k=>{const t=dayTargets(k),e=k<tk&&t?dayEaten(k):null;return{k,t,e,r:e?e.kcal/t.kcal:null,fut:k>=tk}});
+  const done=D.filter(d=>d.e);if(!done.length)return null;
+  const nOk=done.filter(d=>st(d.r)==="ok").length,avg=f=>done.reduce((x,d)=>x+f(d),0)/done.length;
+  const prot=Math.round(avg(d=>d.e.P)/avg(d=>d.t.P)*100),shares=[avg(d=>9*d.e.F),avg(d=>4*d.e.P),avg(d=>4*d.e.C)],fill=Math.min(1,avg(d=>d.r));
+  if(p==="year"){const M=[];for(let m=0;m<12;m++){const xs=done.filter(d=>+d.k.slice(5,7)===m+1);M.push(xs.length?Math.round(xs.filter(d=>st(d.r)==="ok").length/xs.length*100):null)}
+    const ms=M.map((v,i)=>[v,i]).filter(x=>x[0]!=null),first=ms[0],last=ms[ms.length-1],best=ms.slice().sort((x,y)=>y[0]-x[0])[0];
+    return{p,label:a.slice(0,4),pct:Math.round(nOk/done.length*100),since:MON[first[1]],M,shares,fill,
+      stats:[ms.length>=2?[(last[0]-first[0]>=0?"+":"−")+Math.abs(last[0]-first[0]),"Puntos vs "+MON[first[1]]]:[best[0]+" %","Mejor mes"],[String(done.length),"Días apuntados"],[String(shStreak()),"Días seguidos"]]}}
+  return{p,label:periodLabel(p,a),nOk,n:done.length,bars:D.map(d=>({lb:p==="week"?DOW[new Date(d.k+"T12:00:00").getDay()]:String(+d.k.slice(8)),r:d.r,fut:d.fut,s:d.r==null?null:st(d.r)})),tol,shares,fill,
+    stats:[[prot+" %","Proteína media"],[String(done.length),"Días apuntados"],[String(shStreak()),"Días seguidos"]]}}
+async function shRender(p){const d=shData(p);if(!d)return null;
+  const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,H=1920,P=96;
+  const K=dark?{bg:"#0c0c0d",fg:"#f4f5f7",mu:"#98989f",ln:"rgba(255,255,255,.1)",card:"#1c1c1e",ok:"#30d158",ov:"#ff9f0a",un:"#48484a",band:"rgba(255,255,255,.06)",c:"#f2c94c",p:"#ff6a3d",f:"#4b8df8",de:"#2a2a2c"}
+    :{bg:"#f4f3ef",fg:"#1c1c1e",mu:"#6c6c70",ln:"rgba(0,0,0,.09)",card:"#ffffff",ok:"#28a745",ov:"#d97a00",un:"#c4c4c8",band:"rgba(0,0,0,.05)",c:"#e8b100",p:"#f0501f",f:"#2f6fe0",de:"#e4e3df"};
+  try{await document.fonts.ready}catch(e){}
+  const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
+  const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
+  const rr=(X,Y,w,h,r,c)=>{x.fillStyle=c;x.beginPath();x.roundRect(X,Y,w,h,Math.min(r,w/2,h/2));x.fill()};
+  x.fillStyle=K.bg;x.fillRect(0,0,W,H);
+  /* marca: la gota del logo */
+  const drop=(X,Y,w,fill,sh)=>{const k=w/100;x.save();x.translate(X,Y);x.scale(k,k);const pth=new Path2D(DROP_D);x.clip(pth);x.fillStyle=K.de;x.fillRect(0,0,100,124);
+    const tot=sh.reduce((a,b)=>a+b,0)||1,yb=DROP_BOT,yt=DROP_TOP;let acc=0;const tops=sh.map(v=>acc+=v/tot*fill),cs=[K.f,K.p,K.c];
+    for(let i=2;i>=0;i--){const y=yb-(yb-yt)*tops[i];x.fillStyle=cs[i];x.fillRect(0,y,100,130)}x.restore()};
+  rr(P,96,76,76,18,dark?"#2c2c2e":"#1c1c1e");drop(P+14,104,48,0.62,[1,0,1.4]);T("Sustrato",P+98,150,F(700,44),K.fg);
+  const per=d.p==="day"?(()=>{const dt=new Date(d.k+"T12:00:00"),s=dt.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)})():d.label;
+  T(per,P,250,F(500,40),K.mu);
+  /* cifra grande + gota pequeña */
+  const big=d.p==="day"?[String(Math.round(d.r*100)),"%"]:d.p==="year"?[String(d.pct),"%"]:[String(d.nOk),"/"+d.n];
+  let fs=300;x.font=F(700,fs);const fit=()=>{x.font=F(700,fs);const a=x.measureText(big[0]).width;x.font=F(700,big[1]==="%"?fs/2:fs);return a+x.measureText(big[1]).width};while(fit()>W-2*P-210&&fs>150)fs-=10;
+  x.font=F(700,fs);const w0=x.measureText(big[0]).width;T(big[0],P-6,560,F(700,fs),K.fg);T(big[1],P-6+w0+(big[1]==="%"?6:0),560,F(700,big[1]==="%"?fs/2:fs),big[1]==="%"?K.fg:K.mu);
+  const sh=d.p==="day"?[9*d.e.F,4*d.e.P,4*d.e.C]:d.shares;drop(W-P-170,350,170,d.p==="day"?Math.min(1,d.r):d.fill,sh);
+  T(d.p==="day"?`de tu objetivo${d.final?"":" de hoy"} · ${fmtInt(d.e.kcal)} kcal`:d.p==="year"?`de tus días en objetivo desde ${d.since}`:"días en tu objetivo",P,650,F(500,46),K.mu);
+  let y=760;
+  if(d.p==="day"){[["Hidratos",K.c,d.e.C/d.t.C],["Proteína",K.p,d.e.P/d.t.P],["Grasas",K.f,d.e.F/d.t.F]].forEach(([n,c,v],i)=>{const yy=y+i*72;T(n,P,yy+14,F(500,38),K.fg);rr(360,yy-8,440,22,11,K.ln);rr(360,yy-8,Math.max(22,440*Math.min(1,v)),22,11,c);T(Math.round(v*100)+" %",W-P,yy+14,F(600,38),K.fg,"right")});
+    y=1050;T("Tu día",P,y,F(600,32),K.mu);const ms=d.meals.map(m=>m.min),bs=d.blocks;let lo=Math.min(...ms,...bs.map(b=>b.st))-30,hi=Math.max(...ms,...bs.map(b=>b.en))+30;const X=v=>P+10+(v-lo)/(hi-lo)*(W-2*P-20),ly=y+80;
+    x.strokeStyle=K.ln;x.lineWidth=4;x.lineCap="round";x.beginPath();x.moveTo(P,ly);x.lineTo(W-P,ly);x.stroke();
+    bs.forEach(b=>{x.strokeStyle=K.c;x.lineWidth=14;x.beginPath();x.moveTo(X(b.st),ly);x.lineTo(Math.max(X(b.en),X(b.st)+10),ly);x.stroke();T("Entreno",(X(b.st)+X(b.en))/2,ly-30,F(600,28),K.fg,"center")});
+    d.meals.forEach(m=>{x.fillStyle=m.on?K.ok:K.un;x.beginPath();x.arc(X(m.min),ly,15,0,7);x.fill();T(fromMin(m.min),X(m.min),ly+56,F(500,28),K.mu,"center")});
+    if(d.ok&&(d.final||d.r>=1-shTol())){x.font=F(600,36);const s="✓ Día en tu objetivo",w=x.measureText(s).width+68;rr(P,1250,w,76,38,K.card);T(s,P+34,1300,F(600,36),K.fg)}}
+  else if(d.p==="year"){const L="EFMAMJJASOND",gw=(W-2*P-66)/4;d.M.forEach((v,i)=>{const cx=P+(i%4)*(gw+22),cy=y+Math.floor(i/4)*202;
+      let c=K.card;if(v!=null){const a=Math.max(.25,Math.min(1,(v-30)/60));c=`color-mix(in srgb, ${K.ok} ${Math.round(a*100)}%, ${K.card})`}
+      x.fillStyle=K.card;rr(cx,cy,gw,180,28,K.card);if(v!=null){x.globalAlpha=Math.max(.3,Math.min(1,(v-30)/60));rr(cx,cy,gw,180,28,K.ok);x.globalAlpha=1}
+      const on=v!=null&&v>=60;T(L[i],cx+26,cy+50,F(600,34),on?"#fff":K.fg);if(v!=null)T(v+"%",cx+26,cy+152,F(700,52),on?"#fff":K.fg)})}
+  else{const Hc=440,n=d.bars.length,slot=(W-2*P)/n,bw=n>20?Math.max(10,slot*.62):Math.min(96,slot*.66),Y=r=>y+Hc-Math.min(r,1.4)/1.4*Hc;
+    x.fillStyle=K.band;x.fillRect(P,Y(1+d.tol),W-2*P,Y(1-d.tol)-Y(1+d.tol));x.strokeStyle=K.mu;x.globalAlpha=.4;x.setLineDash([8,10]);x.lineWidth=3;x.beginPath();x.moveTo(P,Y(1));x.lineTo(W-P,Y(1));x.stroke();x.setLineDash([]);x.globalAlpha=1;
+    const ev=n>20?7:1;d.bars.forEach((b,i)=>{const cx=P+slot*i+slot/2;if(b.r!=null){const yy=Y(b.r);rr(cx-bw/2,yy,bw,y+Hc-yy,n>20?6:22,b.s==="ok"?K.ok:b.s==="over"?K.ov:K.un)}else if(!b.fut){x.fillStyle=K.un;x.beginPath();x.arc(cx,y+Hc-6,6,0,7);x.fill()}
+      if(n<=20||i%ev===0)T(b.lb,cx,y+Hc+50,F(500,30),K.mu,"center")})}
+  /* logros */
+  x.fillStyle=K.ln;x.fillRect(P,1540,W-2*P,2);d.stats.forEach(([b,l],i)=>{const cx=P+i*(W-2*P)/3,cw=(W-2*P)/3-24;let f1=76,f2=32;x.font=F(700,f1);while(x.measureText(b).width>cw&&f1>40){f1-=4;x.font=F(700,f1)}x.font=F(500,f2);while(x.measureText(l).width>cw&&f2>22){f2-=1;x.font=F(500,f2)}T(b,cx,1650,F(700,f1),K.fg);T(l,cx,1700,F(500,f2),K.mu)});
+  T("Sustrato · come según entrenas",P,1830,F(500,32),K.mu);
+  return cv.toDataURL("image/png")}
+async function shOpen(p){S.share={p:p||(S.period==="day"?"day":S.period),busy:true,url:null};shSheet();const u=await shRender(S.share.p).catch(()=>null);if(!S.share)return;S.share.busy=false;S.share.url=u;shSheet()}
+function shSheet(){let el=$("#shsheet");const s=S.share;if(!s){if(el)el.remove();document.body.classList.remove("noscroll");return}
+  if(!el){el=document.createElement("div");el.id="shsheet";el.setAttribute("role","dialog");el.setAttribute("aria-label","Compartir logros");document.body.appendChild(el)}document.body.classList.add("noscroll");
+  el.innerHTML=`<div class="sh-top"><b>Compartir</b><button class="sh-x" data-sh="close" aria-label="Cerrar">✕</button></div>
+   <div class="seg sh-seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-sh="p:${k}" aria-pressed="${s.p===k}">${l}</button>`).join("")}</div>
+   <div class="sh-prev">${s.busy?'<span class="note">Preparando la imagen…</span>':s.url?`<img src="${s.url}" alt="Imagen para compartir">`:`<p class="note">Aún no hay comidas apuntadas ${s.p==="day"?"este día":s.p==="week"?"esta semana":s.p==="month"?"este mes":"este año"}. Apunta lo que comes y aquí tendrás tus logros.</p>`}</div>
+   <button class="btn primary sh-go" data-sh="go" ${s.url?"":"disabled"}>Compartir imagen</button>`}
+async function shGo(){const u=S.share&&S.share.url;if(!u)return;const name="sustrato-"+S.share.p+".png";
+  try{if(window.__native&&window.__native.shareImage){await window.__native.shareImage(u,name);return}
+    const b=await (await fetch(u)).blob(),f=new File([b],name,{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}
+    const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();toast("Imagen descargada")}
+  catch(e){if(!(e&&e.name==="AbortError"))toast("No se ha podido compartir")}}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-sh],[data-act='share']");if(!t)return;
+  if(t.dataset.act==="share"){shOpen();return}const v=t.dataset.sh;
+  if(v==="close"){S.share=null;shSheet()}else if(v==="go")shGo();else if(v.startsWith("p:")){shOpen(v.slice(2))}});
 function vPeriod(){
   const p=S.period,[st,en]=periodRange(p,S.anchor),tk=today();
   const days=[];for(let k=st;k<=en;k=shiftKey(k,1))days.push(k);
