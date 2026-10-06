@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:44:59.182Z">
+<meta name="sustrato-version" content="2026-10-06T11:49:43.305Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2214,6 +2214,23 @@ html[data-theme] .wc-color .wc-ic,html[data-theme] .wc-color .wc-w .wc-ic,html[d
 @supports (grid-template-rows:subgrid){.wc-done .wc-f{grid-row:span 4}}
 .wc-spk-e{height:26px}
 .dt-band{fill:var(--fill);opacity:.55}.dt-bt{stroke:var(--fg);stroke-width:2.5;stroke-linecap:round}
+/* gota */
+.qd{display:flex;gap:14px;align-items:center;margin-top:6px}
+.drop{flex:0 0 120px;width:120px;height:140px}
+.dr-bg{fill:var(--fill);opacity:.45}.dr-f{opacity:.22}.dr-l{fill:none;stroke:var(--card);stroke-width:2.2}
+
+.qd-s{flex:1;min-width:0}.qd .qk{margin:0 0 10px}.qd .qk b{font-size:34px}.qd .qk span{display:block;margin-top:2px;font-size:12.5px}
+.qm-l{display:flex;flex-direction:column;gap:7px}
+.qm{appearance:none;border:0;background:none;padding:0;color:inherit;font:inherit;text-align:left;cursor:pointer;display:grid;grid-template-columns:9px minmax(0,1fr) auto;gap:8px;align-items:center}
+.qm i{width:9px;height:9px;border-radius:3px}.qm span{font-size:14px;line-height:1.15}.qm small{display:block;font-size:11.5px;color:var(--muted)}
+.qv{font-variant-numeric:tabular-nums;white-space:nowrap}.qv b{font-weight:650}.qv small{display:inline!important;font-size:12px;color:var(--muted)}
+.dstrip{display:block;width:100%;height:auto;margin:14px 0 4px;overflow:visible}
+.ds-ax{stroke:var(--fill);stroke-width:2;stroke-linecap:round}
+.ds-tr{stroke:var(--fg);stroke-width:5;stroke-linecap:round}.ds-tl{font:600 10.5px var(--font);fill:var(--muted)}
+.ds-d{fill:var(--card);stroke:var(--fg);stroke-width:1.8}.ds-d.on{fill:var(--fg)}.ds-d.sk{opacity:.3}
+.ds-t{font:600 10.5px var(--font);fill:var(--muted);font-variant-numeric:tabular-nums}
+.ds-now{stroke:#ff453a;stroke-width:2;stroke-linecap:round}
+.hcar-track{align-items:flex-start}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2285,7 +2302,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="137";
+const APP_VER="138";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3590,6 +3607,29 @@ function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks|
       <text x="${cx.toFixed(1)}" y="${base+16}" text-anchor="middle" class="dt-t">${fromMin(m.min)}</text><text x="${cx.toFixed(1)}" y="${base+30+nameDy}" text-anchor="middle" class="dt-n">${esc(m.n)}</text></g>`}).join("");
   let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z){const nx=X(nm);now=`<circle cx="${nx.toFixed(1)}" cy="${base}" r="4" class="dt-nowd"/>`}}
   return`<svg class="dtl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tus comidas del día y el entreno">${band}<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="dt-base"/>${now}${bars}</svg>`}
+/* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
+   cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
+function eatenToday(){const l=(S.log||{})[S.day]||{};return Object.entries(l).filter(([k])=>!k.startsWith("fuel_")).reduce((a,[,x])=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0})}
+function dropChart(t,e){const D="M50 6 Q63 24 73.6 43.5 A28 28 0 1 1 26.4 43.5 Q37 24 50 6Z",TOP=6,BOT=86.7,HH=BOT-TOP;
+  const L=[[9*t.F,9*e.F,"var(--fat)"],[4*t.P,4*e.P,"var(--prot)"],[4*t.C,4*e.C,"var(--carb)"]],tot=L.reduce((a,x)=>a+x[0],0)||1;
+  const wv=(y,a)=>`M-5 ${y.toFixed(2)} C15 ${(y-a).toFixed(2)} 30 ${(y+a).toFixed(2)} 50 ${y.toFixed(2)} S85 ${(y-a).toFixed(2)} 105 ${y.toFixed(2)}`;
+  /* Las capas se reparten por ÁREA (la gota es más ancha abajo), para que cada macro ocupe lo que le toca */
+  const wd=y=>y<43.5?(y-TOP)/(43.5-TOP)*47.2:2*Math.sqrt(Math.max(0,784-(y-58.6)*(y-58.6))),cum=[0];for(let i=1;i<=200;i++){const ya=BOT-(i-1)/200*HH,yb=BOT-i/200*HH;cum.push(cum[i-1]+(wd(ya)+wd(yb))/2*HH/200)}
+  const AR=cum[200],yAt=fa=>{const tgt=fa*AR;let i=1;while(i<200&&cum[i]<tgt)i++;const f0=(tgt-cum[i-1])/((cum[i]-cum[i-1])||1);return BOT-(i-1+f0)/200*HH};
+  let y=BOT,acc=0,faint="",solid="",lines="";
+  L.forEach(([tv,ev,c],i)=>{const fr=tv?Math.min(1,ev/tv):0,y0=yAt(acc+tv/tot),ys=yAt(acc+tv/tot*fr);acc+=tv/tot;
+    faint+=`<path d="${wv(y0,2.2)} L105 ${y.toFixed(2)} L-5 ${y.toFixed(2)}Z" fill="${c}" class="dr-f"/>`;
+    if(fr>0.01)solid+=`<path d="${wv(ys,fr>=.99?2.2:2.8)} L105 ${y.toFixed(2)} L-5 ${y.toFixed(2)}Z" fill="${c}" class="dr-s"/>`;
+    if(i<L.length-1)lines+=`<path d="${wv(y0,2.2)}" class="dr-l"/>`;y=y0});
+  return`<svg class="drop" viewBox="14 4 72 84" role="img" aria-label="Lo que llevas comido de cada macro"><defs><clipPath id="drc"><path d="${D}"/></clipPath></defs><g clip-path="url(#drc)"><rect width="100" height="106" class="dr-bg"/>${faint}${solid}${lines}</g></svg>`}
+/* Franja del día: la hora de cada comida y el entreno */
+function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";const lg=(S.log||{})[S.day]||{};
+  const W=340,H=44,y=16;let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));a-=30;z+=30;
+  const X=v=>10+(v-a)/(z-a)*(W-20);
+  const tr=bl.map(b=>{const x0=X(b.st),x1=Math.max(X(b.en),x0+8);return`<line x1="${x0.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${y}" y2="${y}" class="ds-tr"/><text x="${((x0+x1)/2).toFixed(1)}" y="${y-9}" text-anchor="middle" class="ds-tl">${esc(b.label)}</text>`}).join("");
+  const dots=ms.map(m=>{const x=X(m.min),st=(lg[m.id]||{}).st;return`<circle cx="${x.toFixed(1)}" cy="${y}" r="5" class="ds-d${st==="done"||st==="chg"?" on":st==="skip"?" sk":""}"/><text x="${x.toFixed(1)}" y="${y+22}" text-anchor="middle" class="ds-t">${fromMin(m.min)}</text>`}).join("");
+  let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z)now=`<line x1="${X(nm).toFixed(1)}" x2="${X(nm).toFixed(1)}" y1="${y-7}" y2="${y+7}" class="ds-now"/>`}
+  return`<svg class="dstrip" viewBox="0 0 ${W} ${H}" role="img" aria-label="Horario de comidas y entreno"><line x1="10" x2="${W-10}" y1="${y}" y2="${y}" class="ds-ax"/>${tr}${now}${dots}</svg>`}
 function donut(t){
   const parts=[{v:4*t.P,c:"var(--prot)",m:"P"},{v:4*t.C,c:"var(--carb)",m:"C"},{v:9*t.F,c:"var(--fat)",m:"F"}];
   const tot=parts.reduce((s,p)=>s+p.v,0),R=62,C=2*Math.PI*R,gap=6;let off=0;
@@ -4869,14 +4909,12 @@ function vHoy(){
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
-      <div class="qk"><b>${fmtInt(t.kcal)}</b><span>kcal hoy</span></div>
-      ${dayTimeline(t)}
-      <div class="macro" style="margin-top:6px">
-        <div class="mlist">
-          ${macroRow("P","var(--prot)","Proteína",t.P,4*t.P,(t.P/kg).toFixed(1).replace(".",",")+" g/kg")}
-          ${macroRow("C","var(--carb)","Hidratos",t.C,4*t.C,(t.C/kg).toFixed(1).replace(".",",")+" g/kg")}
-          ${macroRow("F","var(--fat)","Grasas",t.F,9*t.F,(t.F/kg).toFixed(1).replace(".",",")+" g/kg")}
-        </div></div>
+      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,q=(g,tg)=>ek>0?`<b>${fmtInt(g)}</b><small> / ${fmtInt(tg)} g</small>`:`<b>${fmtInt(tg)} g</b>`;
+        return`<div class="qd">${dropChart(t,e)}<div class="qd-s"><div class="qk"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal comidas":"kcal para hoy"}</span></div>
+          <div class="qm-l"><button class="qm" data-macro="C" aria-label="Hidratos: ver alimentos"><i style="background:var(--carb)"></i><span>Hidratos<small>${(t.C/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.C,t.C)}</span></button>
+          <button class="qm" data-macro="P" aria-label="Proteína: ver alimentos"><i style="background:var(--prot)"></i><span>Proteína<small>${(t.P/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.P,t.P)}</span></button>
+          <button class="qm" data-macro="F" aria-label="Grasas: ver alimentos"><i style="background:var(--fat)"></i><span>Grasas<small>${(t.F/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.F,t.F)}</span></button></div></div></div>
+        ${dayStrip(t)}`})()}
     </div>
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
