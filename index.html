@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T13:12:19.555Z">
+<meta name="sustrato-version" content="2026-10-06T13:21:39.005Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2358,7 +2358,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="150";
+const APP_VER="151";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3768,8 +3768,10 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
     const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
     /* Todas las capas se mueven con el mismo pulso (misma velocidad), con un ligero desfase y menos amplitud cuanto más hondas: corrientes distintas que van al unísono */
     /* Compás: una sola onda senoidal perfecta, de periodo fijo, que recorre la gota; las capas la repiten con un desfase constante */
-    const n=sh.length,depth=top?1:(i+1)/n,T=4.8,LAM=66,br=0.88+0.12*Math.sin(2*Math.PI*tt/(2*T)),A=(rm?0:1)*br*(top?amp:amp*(0.55+0.3*depth)),ph=(n-1-i)*0.7;
-    for(let x=0;x<=100;x+=2){const w=A*Math.sin(2*Math.PI*(x/LAM-tt/T)-ph);d+=` L${x} ${(yt+w).toFixed(2)}`}
+    /* Vaivén: el líquido se mece de lado a lado como en un vaso (onda estacionaria), con compás fijo.
+       Todas las capas se mueven igual, así cada macro mantiene siempre su grosor. */
+    const T=4.8,A=(rm?0:1)*amp*0.85,ph=2*Math.PI*tt/T;
+    for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.18*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph));d+=` L${x} ${(yt+w).toFixed(2)}`}
     p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
