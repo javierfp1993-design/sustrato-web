@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T12:06:48.426Z">
+<meta name="sustrato-version" content="2026-10-06T12:08:51.772Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2315,7 +2315,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="142";
+const APP_VER="143";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3643,13 +3643,14 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
   const tg=+el.dataset.fill,sh=el.dataset.sh.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(rm)DROP.cur=tg;else{DROP.v=(DROP.v+(tg-DROP.cur)*0.010)*0.88;DROP.cur+=DROP.v}
   const moving=Math.abs(tg-DROP.cur)>.0008||Math.abs(DROP.v)>.0004,r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
-  const lv=DROP.cur,amp=rm?0:Math.min(4.6,lv*70),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
+  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
   /* Cada capa va desde su superficie hasta el fondo; se pintan de arriba abajo, así las fronteras son las propias ondas */
   el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0;if(hi-lo<1e-4){p.setAttribute("d","");return}
     const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
     /* Todas las capas se mueven con el mismo pulso (misma velocidad), con un ligero desfase y menos amplitud cuanto más hondas: corrientes distintas que van al unísono */
-    const n=sh.length,depth=top?1:(i+1)/n,A=(rm?0:1)*(top?amp:amp*(0.5+0.35*depth)),ph=(n-1-i)*0.55;
-    for(let x=0;x<=100;x+=4){const w=A*(0.5*Math.sin(x*0.045+tt*0.55+ph)+0.32*Math.sin(x*0.09-tt*0.8+ph*1.2)+0.18*Math.sin(x*0.16+tt*1.05+ph*0.7));d+=` L${x} ${(yt+w).toFixed(2)}`}
+    /* Compás: una sola onda senoidal perfecta, de periodo fijo, que recorre la gota; las capas la repiten con un desfase constante */
+    const n=sh.length,depth=top?1:(i+1)/n,T=4.8,LAM=66,br=0.88+0.12*Math.sin(2*Math.PI*tt/(2*T)),A=(rm?0:1)*br*(top?amp:amp*(0.55+0.3*depth)),ph=(n-1-i)*0.7;
+    for(let x=0;x<=100;x+=2){const w=A*Math.sin(2*Math.PI*(x/LAM-tt/T)-ph);d+=` L${x} ${(yt+w).toFixed(2)}`}
     p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}}
