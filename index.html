@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T12:08:51.772Z">
+<meta name="sustrato-version" content="2026-10-06T12:18:05.720Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2244,6 +2244,12 @@ html[data-theme="dark"] .dr-f{opacity:.12}html[data-theme="dark"] .dr-hl{opacity
 .qc b{font:650 19px var(--round,var(--font));font-variant-numeric:tabular-nums;white-space:nowrap}.qc b small{font-size:12px;font-weight:500;color:var(--muted)}
 .qc-bar{display:block;height:4px;border-radius:2px;background:var(--fill);overflow:hidden;margin:3px 0 2px}.qc-bar i{display:block;height:100%;border-radius:2px}
 .qc-k{font-size:11px;color:var(--muted)}
+/* calidad de macros */
+.qc-q{font-size:11px;color:var(--fg);opacity:.75;margin-top:1px}
+.qs{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--card2)}
+.qs span{font-size:12px;color:var(--muted);font-weight:600}.qs p{margin:3px 0 0;font-size:14px;line-height:1.4}
+.qs-n{appearance:none;border:0;background:none;padding:6px 0 0;color:var(--muted);font:500 13px var(--font);cursor:pointer}
+.qp{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 10px}.qp div{display:flex;flex-direction:column}.qp span{font-size:11.5px;color:var(--muted)}.qp b{font-size:15px;font-variant-numeric:tabular-nums}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2315,7 +2321,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="143";
+const APP_VER="144";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2633,6 +2639,58 @@ const INGR=[
 ].map(r=>({id:r[0],n:r[1],P:r[2],C:r[3],F:r[4],fib:r[5],na:r[6],k:r[7],mg:r[8],fe:r[9],ca:r[10],vd:r[11]}));
 const INGR_BY={};INGR.forEach(x=>INGR_BY[x.id]=x);
 const NUTK=["P","C","F","fib","na","k","mg","fe","ca","vd"];
+/* ---------- Calidad de los macros (añadido; no cambia ningún cálculo existente) ----------
+   Por 100 g, aprox. BEDCA/USDA: azúcares, saturadas, mono, poli, omega-3 (g) y calidad proteica:
+   c = completa · lys = le falta lisina (cereales) · met = le falta metionina (legumbres) · nut = frutos secos (incompleta) · "" = apenas proteína */
+const QUAL={pollo:[0,.4,.5,.3,.03,"c"],pavo:[1.5,.6,.7,.4,.02,"c"],ternera:[0,2.4,2.6,.3,.05,"c"],cerdo:[0,1.8,2.2,.6,.03,"c"],jamon:[0,4,5.5,1.4,.1,"c"],
+ huevo:[.4,3.1,3.7,1.4,.07,"c"],claras:[.7,0,0,0,0,"c"],atun:[0,.3,.2,.4,.27,"c"],merluza:[0,.3,.4,.5,.4,"c"],salmon:[0,3,4,3.9,2.3,"c"],gambas:[0,.3,.2,.4,.3,"c"],
+ mejillones:[0,.9,1,1.2,.8,"c"],sardinas:[0,1.5,3.9,5.1,1.5,"c"],tofu:[.6,1,1.5,3.9,.4,"c"],leche:[4.8,1,.4,.06,.01,"c"],yogur:[4.5,1.9,.8,.1,.02,"c"],
+ skyr:[4,.1,.05,0,0,"c"],batido0:[4,.1,.05,0,0,"c"],burgos:[3,6.2,2.9,.3,.05,"c"],curado:[0,21,9,1,.2,"c"],whey:[6,3.5,1.5,.3,0,"c"],
+ arroz:[.1,.2,.2,.2,0,"lys"],pasta:[2.7,.3,.2,.6,.02,"lys"],pastaint:[2.5,.4,.3,1,.04,"lys"],pan:[5,.7,.6,1.3,.05,"lys"],panint:[4,.7,.7,1.5,.06,"lys"],
+ avena:[1,1.2,2.2,2.5,.1,"lys"],quinoa:[3,.7,1.6,3.3,.26,"c"],patata:[.8,0,0,0,0,""],boniato:[4.2,0,0,0,0,""],granola:[20,3,6,5,.3,"lys"],tortitas:[.8,.6,1.1,1.1,0,"lys"],
+ lentejas:[1.8,.05,.07,.17,.04,"met"],garbanzos:[4.8,.3,.6,1.2,.04,"met"],platano:[12.2,.1,0,.1,.03,""],manzana:[10.4,0,0,0,0,""],rojos:[7,0,0,.1,.05,""],naranja:[9,0,0,0,0,""],
+ aguacate:[.7,2.1,9.8,1.8,.1,""],aceite:[0,14,73,10.5,.8,""],nueces:[2.6,6.1,8.9,47,9,"nut"],almendras:[4.4,3.8,31,12.3,0,"nut"],cacahuete:[9,10,25,12,0,"nut"],
+ choco:[14,28,14,1.4,0,""],miel:[82,0,0,0,0,""],tomate:[2.6,0,0,0,0,""],verduras:[3,0,0,.1,.05,""],espinacas:[.4,.06,.01,.17,.14,""],lechuga:[1.2,0,0,.1,.05,""],
+ setas:[2,0,0,.1,0,""],cebolla:[4.2,0,0,0,0,""],stomate:[5,.2,1,.2,0,""],sal:[0,0,0,0,0,""],kefir:[4.5,2.1,.9,.1,.02,"c"],yprot:[4,.3,.1,0,0,"c"],
+ qbprot:[4,.1,0,0,0,"c"],bprot:[5,.4,.1,0,0,"c"],wrap:[3,2.5,3,1,.05,"lys"],hummus:[.3,2.3,7,6.5,.1,"met"],datiles:[63,0,0,0,0,""]};
+const QSWAP={pan:"pan integral",pasta:"pasta integral",granola:"copos de avena",miel:"fruta entera",tortitas:"pan integral",wrap:"pan integral",datiles:"fruta fresca",bprot:"un yogur +proteínas",choco:"un puñado de frutos secos",platano:"copos de avena",curado:"queso fresco",jamon:"pavo",burgos:"queso fresco batido"};
+/* Alimentos del día: el menú, sustituido por lo apuntado cuando es un plato conocido */
+function dayFoods(k){const mm=(S.menu||{})[k]||{},lg=(S.log||{})[k]||{},out=[];let unk=0;
+  MEALS.forEach(([mid])=>{const e=lg[mid];if(e&&e.st==="skip")return;let d=null,sc=1;
+    if(e&&e.st==="chg"){if(e.d){d=dishById(e.d);sc=e.s||1}else{unk+=4*(e.P||0)+4*(e.C||0)+9*(e.F||0);return}}
+    else{const a=mm[mid];if(a){d=dishById(a.d);sc=(a.s||1)*(e&&e.st==="done"?(e.r||1):1)}}
+    if(!d||!d.ing)return;const sv=Math.max(1,+d.serv||1);d.ing.forEach(([id,g])=>{if(INGR_BY[id])out.push({mid,id,g:(+g||0)/sv*sc})})});
+  return{foods:out,unk}}
+function macroQuality(t,k){const{foods,unk}=dayFoods(k);if(!foods.length)return null;
+  const mp=mealPlan(t,k),win=new Set(mp.meals.filter(m=>m.pre||m.post).map(m=>m.id));
+  const q={C:0,sug:0,sugOut:0,COut:0,fib:0,P:0,Pc:0,F:0,sat:0,mono:0,poly:0,w3:0,kcal:0,unk,bySug:{},bySat:{},meals:{}};
+  foods.forEach(({mid,id,g})=>{const n=INGR_BY[id],x=QUAL[id]||[0,0,0,0,0,""],r=g/100,C=n.C*r,P=n.P*r,F=n.F*r,sg=Math.min(C,x[0]*r);
+    q.C+=C;q.sug+=sg;q.fib+=n.fib*r;q.P+=P;q.F+=F;q.sat+=x[1]*r;q.mono+=x[2]*r;q.poly+=x[3]*r;q.w3+=x[4]*r;q.kcal+=4*P+4*C+9*F;
+    if(!win.has(mid)){q.sugOut+=sg;q.COut+=C;q.bySug[id]=(q.bySug[id]||0)+sg}q.bySat[id]=(q.bySat[id]||0)+x[1]*r;
+    const M=q.meals[mid]=q.meals[mid]||{P:0,Pc:0,lys:0,met:0,nut:0};M.P+=P;if(x[5]==="c")M.Pc+=P;else if(x[5])M[x[5]]+=P});
+  /* legumbre + cereal en la misma comida se completan */
+  Object.values(q.meals).forEach(M=>{const inc=M.lys+M.met+M.nut;M.comp=M.Pc+(M.lys>0&&M.met>0?inc:0);q.Pc+=M.comp});
+  return q}
+function weekOmega3(t){let s=0,n=0;for(let i=0;i<7;i++){const k=shiftKey(S.day,-i),{foods}=dayFoods(k);if(!foods.length)continue;n++;foods.forEach(({id,g})=>{s+=((QUAL[id]||[])[4]||0)*g/100})}return n>=3?s/n:null}
+/* Sugerencias amables: como mucho dos, por orden de importancia */
+function macroTips(t,q){if(!q)return[];const tips=[],name=id=>INGR_BY[id].n.toLowerCase().replace(/ \(.*\)$/,"");
+  const glyc=(t.ex||0)>=500||(t.acts||[]).some(a=>a.mov>=4500)||(t.plan||[]).some(p=>!p.skip&&(p.dur>=75||p.int==="i"));
+  if(q.COut>30&&q.sugOut/q.COut>0.33&&!glyc){const top=Object.entries(q.bySug).sort((a,b)=>b[1]-a[1]).find(([id])=>QSWAP[id]);
+    tips.push(`Fuera del entreno, buena parte de tus hidratos son azúcares y hoy no es un día de mucha carga.${top?` Si te apetece, cambia ${name(top[0])} por ${QSWAP[top[0]]}.`:" Prioriza cereales integrales, legumbres o tubérculos."}`)}
+  const inc=Object.entries(q.meals).find(([,M])=>M.P>=8&&M.comp/M.P<0.5);
+  if(inc){const M=inc[1],need=M.met>M.lys?"un cereal (arroz, pan, pasta)":M.lys>0?"una legumbre":"un lácteo o un huevo";
+    tips.push(`En ${(MEAL_N[inc[0]]||"una comida").toLowerCase()} la proteína es solo vegetal e incompleta. Sumar ${need}, o un lácteo o huevo, la completa.`)}
+  if(q.kcal>800&&q.fib/(q.kcal/1000)<14)tips.push(`La fibra se queda algo corta hoy (${fmtInt(q.fib)} g). Unas legumbres, verdura o pan integral lo equilibran.`);
+  if(q.kcal>800&&9*q.sat/q.kcal>0.10){const top=Object.entries(q.bySat).sort((a,b)=>b[1]-a[1]).find(([id])=>QSWAP[id]);
+    tips.push(`Las grasas saturadas pasan del 10 % de lo que comes (${r0(9*q.sat/q.kcal*100)} %).${top?` Cambiar ${name(top[0])} por ${QSWAP[top[0]]} lo baja.`:" Más aceite de oliva y frutos secos lo equilibran."}`)}
+  const w=weekOmega3(t);if(w!=null&&w<1.1)tips.push(`Esta semana vas corto de omega‑3 (${w.toFixed(1).replace(".",",")} g al día de media). Pescado azul un par de veces o un puñado de nueces lo cubre.`);
+  return tips.slice(0,2)}
+function qualPop(m){const t=S.lastT,q=t&&macroQuality(t,S.day);if(!q)return"";const g=v=>fmtInt(v)+" g",pc=(a,b)=>b?r0(a/b*100)+" %":"—";
+  const note=q.unk>50?'<p class="sub">Parte de lo apuntado no se puede desglosar.</p>':"";
+  if(m==="C")return`<div class="qp"><div><span>Complejos</span><b>${g(q.C-q.sug)}</b></div><div><span>Simples</span><b>${g(q.sug)}</b></div><div><span>Fibra</span><b>${g(q.fib)}</b></div></div>${note}`;
+  if(m==="P")return`<div class="qp"><div><span>Completa</span><b>${pc(q.Pc,q.P)}</b></div><div><span>Proteína</span><b>${g(q.P)}</b></div></div><p class="sub">Completa: de origen animal, soja o quinoa, o legumbre con cereal en la misma comida.</p>${note}`;
+  return`<div class="qp"><div><span>Saturadas</span><b>${g(q.sat)}</b></div><div><span>Mono</span><b>${g(q.mono)}</b></div><div><span>Poli</span><b>${g(q.poly)}</b></div><div><span>Omega‑3</span><b>${q.w3.toFixed(1).replace(".",",")} g</b></div></div>${note}`}
+
 const DISHES_BASE=[
   {id:"m1",n:"Yogur +Proteínas con avena y frutos rojos",merc:true,meals:["breakfast","snack"],ing:[["yprot",240],["avena",40],["rojos",80]]},
   {id:"m2",n:"Kéfir con plátano y nueces",merc:true,meals:["breakfast","snack"],ing:[["kefir",250],["platano",120],["nueces",15]]},
@@ -3917,7 +3975,7 @@ function popHtml(m){
     if(f.inc)return`<li><span>${f.n}<small>Ya aportan grasa al cubrir la proteína</small></span><b>~${fmtInt(g)} g</b></li>`;
     return`<li><span>${f.n}<small>${fmtInt(g)} g de ${F.name.toLowerCase()}</small></span><b>${qty(f,g)}</b></li>`}).join("");
   const alt=F.alt.map(f=>"<b>"+qty(f,target)+"</b> de "+f.n).join(", ");
-  return`<h4 style="color:${F.col}">${F.name} · ${fmtInt(target)} g</h4><p class="sub">Un ejemplo de reparto para hoy</p><ul>${items}</ul>
+  return`<h4 style="color:${F.col}">${F.name} · ${fmtInt(target)} g</h4>${qualPop(m)}<p class="sub">Un ejemplo de reparto para hoy</p><ul>${items}</ul>
   <div class="alt">Solo para dimensionar, equivale a ${alt}.</div>`;
 }
 let popFor=null,popByTap=false;
@@ -4942,9 +5000,10 @@ function vHoy(){
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
-      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,col=(m,c,n,g,tg,gk)=>`<button class="qc" data-macro="${m}" aria-label="${n}: ver alimentos"><span class="qc-n"><i style="background:${c}"></i>${n}</span><b>${fmtInt(ek>0?g:tg)}<small>${ek>0?" / "+fmtInt(tg):""} g</small></b><span class="qc-bar"><i style="width:${ek>0?Math.min(100,g/tg*100).toFixed(0):0}%;background:${c}"></i></span><small class="qc-k">${gk} g/kg</small></button>`;
+      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,mq=macroQuality(t,S.day),qq=mq?{C:mq.C?r0((mq.C-mq.sug)/mq.C*100)+" % complejos":"",P:mq.P?r0(mq.Pc/mq.P*100)+" % completa":"",F:"ω‑3 "+mq.w3.toFixed(1).replace(".",",")+" g"}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1)),col=(m,c,n,g,tg,gk)=>`<button class="qc" data-macro="${m}" aria-label="${n}: ver alimentos"><span class="qc-n"><i style="background:${c}"></i>${n}</span><b>${fmtInt(ek>0?g:tg)}<small>${ek>0?" / "+fmtInt(tg):""} g</small></b><span class="qc-bar"><i style="width:${ek>0?Math.min(100,g/tg*100).toFixed(0):0}%;background:${c}"></i></span><small class="qc-k">${gk} g/kg</small>${qq&&qq[m]?`<small class="qc-q">${qq[m]}</small>`:""}</button>`;
         return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal":"kcal para hoy"}</span></div></div>
         <div class="qc3">${col("C","var(--carb)","Hidratos",e.C,t.C,(t.C/kg).toFixed(1).replace(".",","))}${col("P","var(--prot)","Proteína",e.P,t.P,(t.P/kg).toFixed(1).replace(".",","))}${col("F","var(--fat)","Grasas",e.F,t.F,(t.F/kg).toFixed(1).replace(".",","))}</div>
+        ${tips.length?`<div class="qs"><span>Sugerencia</span><p>${esc(tips[ti])}</p>${tips.length>1?`<button class="qs-n" data-qtip="1">${ti?"Ver la anterior":"Ver otra"}</button>`:""}</div>`:""}
         ${dayStrip(t)}`})()}
     </div>
     <div class="hero-r">
@@ -5310,6 +5369,7 @@ document.addEventListener("click",e=>{
     return}
   if(t.dataset.phr){if(S.ph){S.ph.r=+t.dataset.phr;render()}return}
   if(t.dataset.lgfix){(S.lgFix=S.lgFix||{})[t.dataset.lgfix]=true;render();return}
+  if(t.dataset.qtip){S.qTip=(S.qTip||0)?0:1;render();return}
   if(t.dataset.mmenu){S.mealMenu=S.mealMenu===t.dataset.mmenu?null:t.dataset.mmenu;render();return}
   if(t.dataset.log){S.mealMenu=null;const mid=t.dataset.log,st=t.dataset.st,cur=(S.log[S.day]||{})[mid];const tt=dayTargets(S.day);const m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);
     if(cur&&cur.st===st){const k=S.day,c=JSON.parse(JSON.stringify(cur));setLog(k,mid,null);undoToast("Registro quitado",()=>{setLog(k,mid,c);render()})}else if(m){setLog(S.day,mid,logEntryFor(S.day,m,st));if(st==="done"){S.pop=mid;buzz(10)}}render();return}
