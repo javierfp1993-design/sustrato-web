@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T14:48:14.374Z">
+<meta name="sustrato-version" content="2026-10-06T21:10:00.699Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2420,7 +2420,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="159";
+const APP_VER="160";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3172,8 +3172,15 @@ async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)retu
   try{const snap=await c.get();for(const d of snap.docs){const id=d.id,v=d.data()||{};
       const rec=RESET_REC.includes(id)||id.startsWith("str_")||id.startsWith("fast_")||v.kind==="str"||v.kind==="fast";
       if(m==="all"||rec){try{await c.doc(id).delete()}catch(e){}}}
-    if(m==="all"){try{localStorage.removeItem("sustrato-onb")}catch(e){}}
-    location.reload()}
+    /* Marca la fecha del reinicio: lo que el reloj guardó antes (pesajes) ya no se vuelve a importar */
+    try{await c.doc("reset").set({kind:"reset",at:today()})}catch(e){}
+    /* Sin recargar la página (en el móvil una recarga deja la pantalla en blanco): se vacía el estado y se vuelve a leer */
+    ["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","hcSleepH"].forEach(k=>{delete S[k]});
+    Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},resetAt:today(),day:today(),period:"day",anchor:null,tab:"hoy"});
+    if(m==="all"){["pantry","routines","steps","stepsH"].forEach(k=>{delete S[k]});Object.assign(S,{profile:null,profileSaved:false,dishes:[],eff:{},subs:{}});try{localStorage.removeItem("sustrato-onb")}catch(e){}}
+    await loadStore();await hcMerge();
+    S.resetBusy=false;S.reset=null;window.scrollTo(0,0);render();
+    if(m==="all")obStart();else toast("Registros borrados")}
   catch(e){S.resetBusy=false;S.reset=null;toast("No se ha podido borrar");render()}}
 async function backupSave(){const c=userCol();if(!c||!S.dl)return;
   try{const snap=await c.get(),docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});const at=new Date().toISOString();
@@ -3211,10 +3218,11 @@ function actSteps(k){return S.acts.filter(a=>a.day===k).reduce((n,a)=>{const min
 function stepsOf(k){const m=S.steps&&S.steps[k];const est=Math.round(actSteps(k));return{manual:m!=null?m:null,est,total:m!=null?Math.max(m,est):est,low:m!=null&&m<est}}
 function stepGoal(){return num((S.profile||{}).stepGoal)||8000}
 async function saveSteps(){const c=userCol();if(!c)return;try{await c.doc("steps").set({kind:"steps",map:S.steps||{}})}catch(e){toast("No se han podido guardar los pasos")}}
-/* Relectura ligera desde el móvil: mezcla lo nuevo de Health Connect y repinta sin recargar */
-window.__hcRefresh=async()=>{try{const h=await window.__native.health();if(!h)return;
-  S.rhr=Object.assign({},S.rhr||{},h.rhr||{});S.steps=Object.assign({},S.steps||{},h.steps||{});S.stepsH=h.stepsH||S.stepsH||{};
-  S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d))(S.weights=S.weights||[]).push(x)});render()}catch(e){}};
+async function hcMerge(){if(!window.__native||!window.__native.health)return;try{const h=await window.__native.health();if(!h)return;
+  S.rhr=Object.assign({},S.rhr||{},h.rhr||{});S.steps=Object.assign({},S.steps||{},h.steps||{});S.stepsH=h.stepsH||S.stepsH||{};S.hcSleepH=h.sleepH||S.hcSleepH||{};
+  S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d)),from=S.resetAt||"";(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!from||x.d>from))(S.weights=S.weights||[]).push(x)})}catch(e){}}
+/* Relectura ligera desde el móvil (al volver a la app): mezcla lo nuevo de Health Connect y repinta */
+window.__hcRefresh=async()=>{await hcMerge();render()};
 function stepsCard(k){
   const st=stepsOf(k),g=stepGoal(),v=st.total,pc=Math.min(1,v/g),R=46,C=2*Math.PI*R,km=v*0.00075,kg=num((S.profile||{}).weight)||70,kcal=Math.max(0,v-st.est)*0.0005*kg;
   const ring=`<svg class="stp-ring" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="${R}" class="stp-tr"/>${pc>0?`<circle cx="55" cy="55" r="${R}" class="stp-v" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pc)).toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}${v>=g?`<circle cx="55" cy="55" r="${R}" class="stp-glow" stroke-dasharray="${C.toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}</svg>`;
@@ -3783,6 +3791,7 @@ async function loadStore(){
       else if(v.kind==="fast"&&v.on)S.fasted[d.id.slice(5)]=true;
       else if(d.id==="plan"&&v.days)S.plan=JSON.parse(JSON.stringify(v.days));
       else if(d.id==="weights"&&v.list)S.weights=JSON.parse(JSON.stringify(v.list));
+      else if(d.id==="reset"&&v.at)S.resetAt=v.at;
       else if(d.id==="eff"&&v.map)S.eff=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="log"&&v.days)S.log=JSON.parse(JSON.stringify(v.days));
       else if(d.id==="menu"&&v.days)S.menu=JSON.parse(JSON.stringify(v.days));
@@ -5874,7 +5883,7 @@ setTimeout(hideSplash,4000);
   if(window.__native){try{const h=await window.__native.health();if(h){
     S.rhr=Object.assign({},S.rhr||{},h.rhr||{});
     S.steps=Object.assign({},S.steps||{},h.steps||{});
-    S.weights=S.weights||[];const wd=new Set(S.weights.map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d))S.weights.push(x)});
+    S.weights=S.weights||[];const wd=new Set(S.weights.map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!S.resetAt||x.d>S.resetAt))S.weights.push(x)});
     S.hcSleepH=h.sleepH||{};
     S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});
     S.stepsH=h.stepsH||{};
