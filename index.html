@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:27:12.364Z">
+<meta name="sustrato-version" content="2026-10-06T11:42:47.542Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2172,6 +2172,48 @@ html[data-theme="dark"] .rmap img{filter:grayscale(1) invert(1) contrast(.85) br
 .fstate{background:none!important;padding:0!important}
 .mnums span:not(.mk){color:var(--fg)}
 .mnums span:not(.mk){color:var(--muted)!important}
+/* Cómo llegas hoy: la tarjeta toma el color del veredicto */
+.wcard.wc-color{--wc-tx:#fff;--wc-mu:rgba(255,255,255,.74);--wc-tile:rgba(255,255,255,.13);--wc-in:rgba(255,255,255,.16);background:var(--hc)!important;border-color:transparent!important;color:#fff}
+.wc-color .wc-hero .wc-sc,html[data-theme="light"] .wc-color .wc-hero .wc-sc{color:#fff!important}
+.wc-color .wc-dot{background:#fff!important}
+html[data-theme] .wc-color .wc-ic,html[data-theme] .wc-color .wc-w .wc-ic,html[data-theme] .wc-color .wc-p .wc-ic,html[data-theme] .wc-color .wc-ics,.wc-color .wc-ic{color:rgba(255,255,255,.8)!important}
+.wc-color .wc-hd .wc-edit,.wc-color .wc-skip{background:rgba(255,255,255,.16)!important;color:#fff!important}
+.wc-color .wc-btn{background:#fff!important;color:var(--hc)!important}
+.wc-color .wc-sl,.wc-color .wc-slrow .wc-sl{background:rgba(0,0,0,.16)!important}
+.wc-color .wc-sl button{color:#fff!important}
+.wc-color .wc-sl button[aria-checked="true"],.wc-color .wc-sl button[aria-pressed="true"]{background:#fff!important;color:var(--hc)!important}
+.wc-color .wc-hvin input{background:rgba(255,255,255,.16);color:#fff}.wc-color .wc-hvin input::placeholder{color:rgba(255,255,255,.5)}
+.wc-color .wc-meter{background:rgba(255,255,255,.2)!important}.wc-color .wc-hero .wc-meter i{background:#fff!important}
+.wc-trend{margin-top:10px}.wc-trend svg{display:block;width:100%;height:40px;overflow:visible}
+.wc-tl{stroke:rgba(255,255,255,.28);stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
+.wc-tp{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.wc-td{fill:#fff;stroke:var(--hc);stroke-width:2;vector-effect:non-scaling-stroke}
+.wc-tx{display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,.66);margin-top:4px}
+.wc-spk{display:block;width:100%;height:26px;margin:4px 0 2px;overflow:visible}
+.wc-spk path{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.85}
+.wc-spk circle{fill:currentColor}
+.wc-color .wc-spk{color:#fff}
+.wc-dt{display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:6px;vertical-align:1px;background:var(--faint)}
+.wc-dt.ok{background:#30d158}.wc-dt.mid{background:#ffb340}.wc-dt.hi{background:#ff6961}
+.wc-color .wc-dt{box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+/* Qué comer: línea de tiempo */
+.qk{display:flex;align-items:baseline;gap:6px;margin:6px 0 4px}.qk b{font:700 40px/1 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.qk span{color:var(--muted);font-size:14px}
+.dtl{display:block;width:100%;height:auto;margin:8px 0 6px;overflow:visible}
+.dt-base{stroke:var(--sep,rgba(127,127,127,.3));stroke-width:1}
+.dt-band{fill:var(--fill)}
+.dt-bl{font:600 10.5px var(--font);fill:var(--muted)}
+.dt-kc{font:600 11px var(--font);fill:var(--fg);font-variant-numeric:tabular-nums}
+.dt-t{font:600 11px var(--font);fill:var(--fg);font-variant-numeric:tabular-nums}
+.dt-n{font:500 10.5px var(--font);fill:var(--muted)}
+.dt-skip{opacity:.28}
+.dt-ok{fill:var(--fg)}.dt-okc{fill:none;stroke:var(--bg,#fff);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dt-now{stroke:#ff453a;stroke-width:1.5;stroke-dasharray:3 3}.dt-nowd{fill:#ff453a}
+@media (prefers-reduced-motion:no-preference){.dt-m>g{animation:dtIn .7s cubic-bezier(.2,.8,.3,1) both;transform-box:fill-box;transform-origin:bottom}.dt-m:nth-of-type(2)>g{animation-delay:.06s}.dt-m:nth-of-type(3)>g{animation-delay:.12s}.dt-m:nth-of-type(4)>g{animation-delay:.18s}}
+@keyframes dtIn{from{transform:scaleY(.2);opacity:0}to{transform:none;opacity:1}}
+.wc-done .wc-g{grid-template-rows:repeat(4,auto)}
+@supports (grid-template-rows:subgrid){.wc-done .wc-f{grid-row:span 4}}
+.wc-spk-e{height:26px}
+.dt-band{fill:var(--fill);opacity:.55}.dt-bt{stroke:var(--fg);stroke-width:2.5;stroke-linecap:round}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2243,7 +2285,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="135";
+const APP_VER="136";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3023,7 +3065,7 @@ function rhrCard(){const M=S.rhr||{},tk=today(),keys=Object.keys(M).sort(),rg=+(
     ${input}</section>`}
 
 /* ---------- Cómo llegas hoy ---------- */
-function readiness(){const tk=today(),M=S.rhr||{},f=[];let sc=70,n=0;
+function readiness(tk,FSc){tk=tk||today();const M=S.rhr||{},f=[];let sc=70,n=0;
   const tv=M[tk],base=rhrAvg(shiftKey(tk,-1),7);
   if(tv&&base){const d=tv-base;n++;const v=d<=-3?10:d<=3?4:d<=6?-15:-30;sc+=v;f.push({k:"rhr",l:"Pulso",v:(d>0?"+":"")+d.toFixed(0)+" ppm",s:v>0?"ok":v>-20?"mid":"hi",tip:"Pulso en reposo de hoy frente a tu media de la última semana"})}
   else f.push({k:"rhr",l:"Pulso",v:"Sin dato",s:"",tip:"Apunta tu pulso al despertar"});
@@ -3031,11 +3073,15 @@ function readiness(){const tk=today(),M=S.rhr||{},f=[];let sc=70,n=0;
   {const H=S.hrv||{},hv=H[tk],prev=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)prev.push(x)}
     if(hv&&prev.length>=3){const b=prev.reduce((p,q)=>p+q,0)/prev.length,r=hv/b;n++;const v=r>=1.05?12:r>=.95?4:r>=.85?-10:-22;sc+=v;
       f.push({k:"hrv",l:"VFC",v:r>=1.05?"Alta":r>=.95?"Normal":r>=.85?"Baja":"Muy baja",s:v>0?"ok":v>-15?"mid":"hi",tip:`Variabilidad cardiaca de esta noche: ${Math.round(hv)} ms frente a ${Math.round(b)} ms de media de tu última semana`})}}
-  if(S.acts.length){const FS=fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
+  if(S.acts.length){const FS=FSc||fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
   sc=Math.max(5,Math.min(98,sc));
-  const vd=sc>=78?["Día para apretar","Buen momento para un entreno clave o de calidad.","#30d158"]:sc>=58?["Mantén el plan","Estás en condiciones de hacer lo previsto.","#5ac8fa"]:sc>=38?["Mejor suave","Rebaja la intensidad: rodaje cómodo o técnica.","#ff9f0a"]:["Toca recuperar","Descanso o actividad muy suave. Prioriza dormir y comer bien.","#ff453a"];
+  const vd=sc>=78?["Día para apretar","Buen momento para un entreno clave o de calidad.","#30d158","#17663d"]:sc>=58?["Mantén el plan","Estás en condiciones de hacer lo previsto.","#5ac8fa","#1d4f8f"]:sc>=38?["Mejor suave","Rebaja la intensidad: rodaje cómodo o técnica.","#ff9f0a","#9a5410"]:["Toca recuperar","Descanso o actividad muy suave. Prioriza dormir y comer bien.","#ff453a","#9b2a22"];
   return{sc,n,f,vd,sl}}
+/* Disposición de los últimos días (solo días con algún dato de la mañana) */
+function readinessTrend(days){const FS=S.acts.length?fitnessSeries():null,out=[];
+  for(let i=days-1;i>=0;i--){const k=shiftKey(today(),-i),has=(S.rhr||{})[k]||(S.hrv||{})[k]||(S.sleep||{})[k];out.push({k,sc:has?readiness(k,FS).sc:null})}return out}
+function sparkPath(vals,W,H,pad,lo,hi){const pts=vals.map((v,i)=>v==null?null:[i/(vals.length-1)*W,H-pad-(v-lo)/((hi-lo)||1)*(H-2*pad)]);let d="",pen=false;pts.forEach(p=>{if(!p)return;d+=(pen?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)+" ";pen=true});const last=[...pts].reverse().find(Boolean);return{d,last}}
 function readyCard(){if(S.day!==today())return"";const r=readiness();if(!r.n&&!(S.rhr&&Object.keys(S.rhr).length))return"";
   const R=46,C=Math.PI*R,pc=r.sc/100,ang=Math.PI*(1-pc),cx=60+R*Math.cos(ang),cy=58-R*Math.sin(ang);
   const pend=pendingPlanned(today()).filter(x=>x.sport!=="str"&&(x.int==="i"||(x.steps&&stInt(x.steps)!=="s")));
@@ -3517,6 +3563,23 @@ async function prefillFromStrava(){
 }
 
 /* ---------- Gráficas ---------- */
+/* Qué comer: el día como línea de tiempo. Cada comida es una columna (alto = kcal, capas = macros) en su hora, con el entreno marcado. */
+function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";
+  const W=340,H=176,top=30,base=128,bw=28,lg=(S.log||{})[S.day]||{};
+  let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));
+  a=Math.floor((a-50)/60)*60;z=Math.ceil((z+50)/60)*60;
+  const X=v=>bw/2+4+(v-a)/(z-a)*(W-bw-8),mx=Math.max(...ms.map(m=>m.kcal)),hh=base-top-16;
+  const band=bl.map(b=>{const x0=X(b.st),x1=Math.max(X(b.en),x0+6);return`<rect x="${x0.toFixed(1)}" y="${top-8}" width="${(x1-x0).toFixed(1)}" height="${base-top+8}" rx="5" class="dt-band"/><line x1="${x0.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${top-8}" y2="${top-8}" class="dt-bt"/><text x="${((x0+x1)/2).toFixed(1)}" y="${top-14}" text-anchor="middle" class="dt-bl">${esc(b.label)} · ${fromMin(b.st)}</text>`}).join("");
+  let lastNameX=-99;
+  const bars=ms.map((m,i)=>{const cx=X(m.min),x=cx-bw/2,h=Math.max(22,m.kcal/mx*hh),y=base-h,e=lg[m.id],st=e&&e.st;
+    const parts=[[4*m.P,"var(--prot)"],[4*m.C,"var(--carb)"],[9*m.F,"var(--fat)"]],tot=parts.reduce((s,p)=>s+p[0],0)||1;let yy=base,seg="";
+    parts.forEach(([v,c])=>{const sh=v/tot*h;yy-=sh;seg+=`<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${bw}" height="${Math.max(0,sh-1.5).toFixed(1)}" fill="${c}"/>`});
+    const nameDy=cx-lastNameX<54?13:0;if(!nameDy)lastNameX=cx;
+    return`<g class="dt-m${st==="skip"?" dt-skip":""}"><clipPath id="dtc${i}"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${h.toFixed(1)}" rx="7"/></clipPath><g clip-path="url(#dtc${i})">${seg}</g>
+      ${st==="done"||st==="chg"?`<circle cx="${cx.toFixed(1)}" cy="${(y-12).toFixed(1)}" r="7" class="dt-ok"/><path d="M${(cx-3).toFixed(1)} ${(y-12).toFixed(1)} l2 2 l4 -4.5" class="dt-okc"/>`:`<text x="${cx.toFixed(1)}" y="${(y-7).toFixed(1)}" text-anchor="middle" class="dt-kc">${fmtInt(m.kcal)}</text>`}
+      <text x="${cx.toFixed(1)}" y="${base+16}" text-anchor="middle" class="dt-t">${fromMin(m.min)}</text><text x="${cx.toFixed(1)}" y="${base+30+nameDy}" text-anchor="middle" class="dt-n">${esc(m.n)}</text></g>`}).join("");
+  let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z){const nx=X(nm);now=`<circle cx="${nx.toFixed(1)}" cy="${base}" r="4" class="dt-nowd"/>`}}
+  return`<svg class="dtl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tus comidas del día y el entreno">${band}<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="dt-base"/>${now}${bars}</svg>`}
 function donut(t){
   const parts=[{v:4*t.P,c:"var(--prot)",m:"P"},{v:4*t.C,c:"var(--carb)",m:"C"},{v:9*t.F,c:"var(--fat)",m:"F"}];
   const tot=parts.reduce((s,p)=>s+p.v,0),R=62,C=2*Math.PI*R,gap=6;let off=0;
@@ -3898,7 +3961,8 @@ async function saveHrv(){const c=userCol();if(!c)return;try{await c.doc("hrv").s
 function hrvRow(){const tk=today(),H=S.hrv||{},hv=H[tk],man=(S.hrvMan||{})[tk]!=null,prev=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)prev.push(x)}
   const b=prev.length>=3?prev.reduce((p,q)=>p+q,0)/prev.length:null,pc=hv&&b?Math.round((hv/b-1)*100):null;
   const ic='<span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2-6 2 3h5"/></svg></span>';
-  if(hv&&!S.hrvEdit)return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvv"><b>${Math.round(hv)}</b> ms<small>${pc!=null?` · ${pc>0?"+":pc<0?"−":"±"}${Math.abs(pc)} % vs tu media`:` · ${prev.length}/3 noches para tu media`}</small></span>${man?'<button class="wc-skip" data-act="hrvedit">Cambiar</button>':""}</div>`;
+  const hd=pc==null?"":pc>=-5?"ok":pc>=-15?"mid":"hi";
+  if(hv&&!S.hrvEdit)return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC${hd?`<i class="wc-dt ${hd}"></i>`:""}</span><span class="wc-hvv"><b>${Math.round(hv)}</b> ms<small>${pc!=null?` · ${pc>0?"+":pc<0?"−":"±"}${Math.abs(pc)} % vs tu media`:` · ${prev.length}/3 noches para tu media`}</small></span>${man?'<button class="wc-skip" data-act="hrvedit">Cambiar</button>':""}</div>`;
   return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvin"><input id="hrvin" inputmode="numeric" placeholder="${b?Math.round(b):"—"}" value="${hv||""}" aria-label="VFC de esta noche en milisegundos"><i>ms</i></span><button class="wc-btn" data-act="savehrv">Guardar</button><small class="wc-hvn">${(()=>{const ks=Object.keys(H).filter(k=>k<tk&&!(S.hrvMan||{})[k]).sort(),lk=ks[ks.length-1];return lk?`Tu reloj aún no ha mandado la de esta noche. Última: ${Math.round(H[lk])} ms, ${lk===shiftKey(tk,-1)?"ayer":esc(dateLabel(lk))}.`:"La VFC nocturna que te da tu reloj. Es lo que más pesa en cómo llegas."})()}</small></div>`}
 async function saveRhr(){const c=userCol();if(!c)return;try{await c.doc("rhr").set({kind:"rhr",map:S.rhr||{}})}catch(e){toast("No se ha podido guardar el pulso")}}
 function setRhr(k,v){S.rhr=S.rhr||{};if(v)S.rhr[k]=v;else delete S.rhr[k];saveRhr();const a=rhrAvg(today(),7);if(a){S.profile=Object.assign({},S.profile,{hrrest:Math.round(a)});saveProfile(true)}}
@@ -3955,17 +4019,21 @@ function weightBar(){
   if(logged&&!S.wtEdit){const r=readiness();
     const pend=pendingPlanned(tk).filter(x=>x.sport!=="str"&&(x.int==="i"||(x.steps&&stInt(x.steps)!=="s")));const clash=pend.length&&r.sc<58;
     const fx=r.f.filter(x=>x.k!=="rhr"&&x.v!=="Sin dato").map(x=>x.l+" "+x.v.toLowerCase());
-    const tile=(cls,ic,l,v,u,sub)=>window.__native&&cls==="wc-p"?`<div class="wc-f wc-st ${cls}" aria-label="${l}: ${v?v+" "+u:"sin dato"}"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:"—"}</span><small>${sub}</small></div>`:`<button class="wc-f wc-st ${cls}" data-act="wtedit" aria-label="${l}: ${v?v+" "+u:"sin dato"}. Toca para editar"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:`<em>＋ Apuntar</em>`}</span><small>${sub}</small></button>`;
+    const tile=(cls,ic,l,v,u,sub,sp,dot)=>window.__native&&cls==="wc-p"?`<div class="wc-f wc-st ${cls}" aria-label="${l}: ${v?v+" "+u:"sin dato"}"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}${dot?`<i class="wc-dt ${dot}"></i>`:""}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:"—"}</span>${sp||""}<small>${sub}</small></div>`:`<button class="wc-f wc-st ${cls}" data-act="wtedit" aria-label="${l}: ${v?v+" "+u:"sin dato"}. Toca para editar"><span class="wc-l"><span class="wc-ic" aria-hidden="true">${ic}</span>${l}${dot?`<i class="wc-dt ${dot}"></i>`:""}</span><span class="wc-big">${v?`${v}<i>${u}</i>`:`<em>＋ Apuntar</em>`}</span>${sp||""}<small>${sub}</small></button>`;
+    const spk=(vals)=>{const v=vals.filter(x=>x!=null);if(v.length<3)return'<span class="wc-spk wc-spk-e" aria-hidden="true"></span>';const lo=Math.min(...v),hi=Math.max(...v),p=sparkPath(vals,100,26,3,lo,hi);return`<svg class="wc-spk" viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true"><path d="${p.d}"/>${p.last?`<circle cx="${p.last[0].toFixed(1)}" cy="${p.last[1].toFixed(1)}" r="2.6"/>`:""}</svg>`};
+    const d14=[];for(let i=13;i>=0;i--)d14.push(shiftKey(tk,-i));
+    const wMap={};W.forEach(x=>wMap[x.d]=x.kg);const spW=spk(d14.map(k=>wMap[k]??null)),spP=spk(d14.map(k=>(S.rhr||{})[k]??null));
+    const trend=readinessTrend(7),tv=trend.map(x=>x.sc),tp=tv.filter(x=>x!=null).length>=2?sparkPath(tv,300,40,5,20,100):null;
     const icW='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 10a3.5 3.5 0 0 1 6 0M12 10l1.2-1.6"/></svg>',icP='<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>';
-    const base=rhrAvg(shiftKey(tk,-1),7),dd=rv&&base?rv-base:null;
-    return`<section class="glass pad fade wcard wc-done">
+    const base=rhrAvg(shiftKey(tk,-1),7),dd=rv&&base?rv-base:null,pDot=dd==null?"":dd<=3?"ok":dd<=6?"mid":"hi";
+    return`<section class="glass pad fade wcard wc-done wc-color" style="--hc:${r.vd[3]}">
       <div class="wc-hd"><div><span>${hi} · Cómo llegas hoy</span></div><button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
       <div class="wc-rd wc-hero" style="--vc:${r.vd[2]}"><div class="wc-rdh"><b class="wc-sc">${r.sc}</b><div><h4><i class="wc-dot" style="background:${r.vd[2]}"></i>${r.vd[0]}</h4><p class="wc-adv">${r.vd[1]}</p></div></div>
-        <div class="wc-meter" role="img" aria-label="Disposición ${r.sc} de 100"><i style="width:${r.sc}%"></i></div>
+        ${tp?`<div class="wc-trend"><svg viewBox="0 0 300 40" preserveAspectRatio="none" role="img" aria-label="Disposición de los últimos 7 días"><line x1="0" x2="300" y1="${(40-5-(58-20)/80*30).toFixed(1)}" y2="${(40-5-(58-20)/80*30).toFixed(1)}" class="wc-tl"/><path d="${tp.d}" class="wc-tp"/>${tp.last?`<circle cx="${tp.last[0].toFixed(1)}" cy="${tp.last[1].toFixed(1)}" r="4" class="wc-td"/>`:""}</svg><div class="wc-tx"><span>${esc(DOW[new Date(trend[0].k+"T12:00:00").getDay()])}</span><span>Últimos 7 días</span><span>hoy</span></div></div>`:`<div class="wc-meter" role="img" aria-label="Disposición ${r.sc} de 100"><i style="width:${r.sc}%"></i></div>`}
         ${fx.length?`<span class="wc-fx">${esc(fx.join(" · "))}</span>`:""}</div>
       ${clash?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
       <span class="wc-sec">Así amaneces</span>
-      <div class="wc-g">${tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy")}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy")}</div>
+      <div class="wc-g">${tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy",spW)}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy",spP,pDot)}</div>
       ${hrvRow()}
       ${sl?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
     </section>`}
@@ -4791,7 +4859,9 @@ function vHoy(){
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
-      <div class="macro" style="margin-top:10px">${donut(t)}
+      <div class="qk"><b>${fmtInt(t.kcal)}</b><span>kcal hoy</span></div>
+      ${dayTimeline(t)}
+      <div class="macro" style="margin-top:6px">
         <div class="mlist">
           ${macroRow("P","var(--prot)","Proteína",t.P,4*t.P,(t.P/kg).toFixed(1).replace(".",",")+" g/kg")}
           ${macroRow("C","var(--carb)","Hidratos",t.C,4*t.C,(t.C/kg).toFixed(1).replace(".",",")+" g/kg")}
