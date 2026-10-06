@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T09:25:52.956Z">
+<meta name="sustrato-version" content="2026-10-06T09:29:55.040Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2201,7 +2201,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="130";
+const APP_VER="131";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3848,7 +3848,7 @@ function hrvRow(){const tk=today(),H=S.hrv||{},hv=H[tk],man=(S.hrvMan||{})[tk]!=
   const b=prev.length>=3?prev.reduce((p,q)=>p+q,0)/prev.length:null,pc=hv&&b?Math.round((hv/b-1)*100):null;
   const ic='<span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2-6 2 3h5"/></svg></span>';
   if(hv&&!S.hrvEdit)return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvv"><b>${Math.round(hv)}</b> ms<small>${pc!=null?` · ${pc>0?"+":pc<0?"−":"±"}${Math.abs(pc)} % vs tu media`:` · ${prev.length}/3 noches para tu media`}</small></span>${man?'<button class="wc-skip" data-act="hrvedit">Cambiar</button>':""}</div>`;
-  return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvin"><input id="hrvin" inputmode="numeric" placeholder="${b?Math.round(b):"—"}" value="${hv||""}" aria-label="VFC de esta noche en milisegundos"><i>ms</i></span><button class="wc-btn" data-act="savehrv">Guardar</button><small class="wc-hvn">La VFC nocturna que te da tu reloj. Es lo que más pesa en cómo llegas.</small></div>`}
+  return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvin"><input id="hrvin" inputmode="numeric" placeholder="${b?Math.round(b):"—"}" value="${hv||""}" aria-label="VFC de esta noche en milisegundos"><i>ms</i></span><button class="wc-btn" data-act="savehrv">Guardar</button><small class="wc-hvn">${(()=>{const ks=Object.keys(H).filter(k=>k<tk&&!(S.hrvMan||{})[k]).sort(),lk=ks[ks.length-1];return lk?`Tu reloj aún no ha mandado la de esta noche. Última: ${Math.round(H[lk])} ms, ${lk===shiftKey(tk,-1)?"ayer":esc(dateLabel(lk))}.`:"La VFC nocturna que te da tu reloj. Es lo que más pesa en cómo llegas."})()}</small></div>`}
 async function saveRhr(){const c=userCol();if(!c)return;try{await c.doc("rhr").set({kind:"rhr",map:S.rhr||{}})}catch(e){toast("No se ha podido guardar el pulso")}}
 function setRhr(k,v){S.rhr=S.rhr||{};if(v)S.rhr[k]=v;else delete S.rhr[k];saveRhr();const a=rhrAvg(today(),7);if(a){S.profile=Object.assign({},S.profile,{hrrest:Math.round(a)});saveProfile(true)}}
 function rhrAvg(end,n){const M=S.rhr||{};let t=0,c=0;for(let i=0;i<n;i++){const v=M[shiftKey(end,-i)];if(v){t+=v;c++}}return c?t/c:null}
