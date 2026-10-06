@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T13:04:33.807Z">
+<meta name="sustrato-version" content="2026-10-06T13:12:19.555Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2271,6 +2271,22 @@ html[data-theme="dark"] .dr-f{opacity:.12}html[data-theme="dark"] .dr-hl{opacity
 .sth-bars i{flex:1;border-radius:3px;min-height:3px}.sth-bars .sth-b{background:#30d158}.sth-bars .sth-f{background:var(--fill)}
 .sth-x{display:flex;gap:4px;margin-top:4px}.sth-x span{flex:1;font-size:10.5px;color:var(--muted);text-align:center;white-space:nowrap;overflow:visible}
 .hcar-eq .stp .stp-in{margin-top:auto;padding-top:14px}
+/* detalle de actividad */
+.dt-hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 12px}
+.dt-hero span,.dt-sec span{display:block;font-size:12.5px;color:var(--muted)}
+.dt-hero b{font:700 34px/1.05 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.dt-hero b small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
+.dt-sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;padding:12px 0 16px;margin-bottom:18px;border-bottom:.5px solid var(--sep,rgba(127,127,127,.25))}
+.dt-sec b{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}.dt-sec b small{font-size:12px;color:var(--muted);font-weight:500}
+.rsec{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px}.rsec h4{margin:0;font-size:17px;font-weight:650}.rsec span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.rsec .rm-strava{margin:0}
+.relev{margin-top:18px}
+.re-plot{position:relative;touch-action:none;cursor:crosshair}.re-plot svg{display:block;width:100%;height:110px}
+:root{--sl-flat:rgba(142,142,147,.3)}
+.re-line{fill:none;stroke:var(--fg);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.re-cur{stroke:var(--fg);stroke-width:1;vector-effect:non-scaling-stroke}.re-dot{fill:var(--fg);stroke:var(--card);stroke-width:2;vector-effect:non-scaling-stroke}
+.re-tip{position:absolute;top:2px;padding:4px 8px;border-radius:8px;background:var(--fg);color:var(--card);font:600 12px var(--font);white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
+.re-leg{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px}.re-leg span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}.re-leg i{width:9px;height:9px;border-radius:3px}
+.rm-pos{fill:#fff;stroke:#1c1c1e;stroke-width:3;vector-effect:non-scaling-stroke}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2342,7 +2358,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="149";
+const APP_VER="150";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5226,14 +5242,38 @@ function routeMap(a){if(!a.poly)return"";let pts;try{pts=polyDecode(a.poly)}catc
     tiles.push(`<img src="https://tile.openstreetmap.org/${z}/${((tx%m)+m)%m}/${ty}.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'" style="left:${((tx*256-x0)/W*100).toFixed(3)}%;top:${((ty*256-y0)/H*100).toFixed(3)}%;width:${(256/W*100).toFixed(3)}%;height:${(256/H*100).toFixed(3)}%">`)}
   const step=Math.max(1,Math.floor(pts.length/400)),d=pts.filter((p,i)=>i%step===0||i===pts.length-1).map((p,i)=>{const q=px(p[0],p[1],z);return(i?"L":"M")+(q[0]-x0).toFixed(1)+" "+(q[1]-y0).toFixed(1)}).join(" ");
   const s0=px(pts[0][0],pts[0][1],z),s1=px(pts[pts.length-1][0],pts[pts.length-1][1],z);
-  return`<div class="rmap" role="img" aria-label="Mapa del recorrido">${tiles.join("")}<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}" class="rm-halo"/><path d="${d}" class="rm-line"/><circle cx="${(s0[0]-x0).toFixed(1)}" cy="${(s0[1]-y0).toFixed(1)}" r="5" class="rm-start"/><circle cx="${(s1[0]-x0).toFixed(1)}" cy="${(s1[1]-y0).toFixed(1)}" r="5" class="rm-end"/></svg><span class="rm-attr">© OpenStreetMap</span></div>`}
+  return`<div class="rmap" role="img" aria-label="Mapa del recorrido" data-z="${z}" data-x0="${x0.toFixed(2)}" data-y0="${y0.toFixed(2)}">${tiles.join("")}<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}" class="rm-halo"/><path d="${d}" class="rm-line"/><circle cx="${(s0[0]-x0).toFixed(1)}" cy="${(s0[1]-y0).toFixed(1)}" r="5" class="rm-start"/><circle cx="${(s1[0]-x0).toFixed(1)}" cy="${(s1[1]-y0).toFixed(1)}" r="5" class="rm-end"/><circle id="rmpos" r="6.5" class="rm-pos" cx="-20" cy="-20"/></svg><span class="rm-attr">© OpenStreetMap</span></div>`}
+/* Perfil: color por pendiente y recorrible con el dedo (el punto se mueve también en el mapa) */
+const SLOPE=[[-0.03,"#5ac8fa","Bajada"],[0.03,"var(--sl-flat)","Llano"],[0.06,"#ffd21e","Suave"],[0.10,"#ff9f0a","Fuerte"],[9,"#ff453a","Muy fuerte"]];
+const slopeCol=g=>(SLOPE.find(x=>g<x[0])||SLOPE[4])[1];
+const RE={};
 function elevProfile(a){const e=(S.alt||{})[a.id];if(!e||!e.altitude||!e.distance||e.altitude.length<5)return"";
-  const al=e.altitude,di=e.distance,n=al.length,W=360,H=96,P=4,mn=Math.min(...al),mx=Math.max(...al),rg=Math.max(20,mx-mn),D=di[n-1]||1;
-  const X=v=>v/D*W,Y=v=>H-P-(v-mn)/rg*(H-2*P-8);const step=Math.max(1,Math.floor(n/300));let ln="";for(let i=0;i<n;i+=step)ln+=(ln?"L":"M")+X(di[i]).toFixed(1)+" "+Y(al[i]).toFixed(1);ln+="L"+X(di[n-1]).toFixed(1)+" "+Y(al[n-1]).toFixed(1);
-  return`<div class="relev"><div class="row"><span class="note" style="margin:0">Perfil</span><span class="note" style="margin:0">${fmtInt(mn)}–${fmtInt(mx)} m</span></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Perfil de altitud"><path d="${ln} L${W} ${H} L0 ${H}Z" class="re-area"/><path d="${ln}" class="re-line"/></svg><div class="row"><span class="note" style="margin:0">0 km</span><span class="note" style="margin:0">${(D/1000).toFixed(1).replace(".",",")} km</span></div></div>`}
+  const raw=e.altitude,di=e.distance,n=raw.length,al=raw.map((v,i)=>{let s=0,c=0;for(let k=Math.max(0,i-3);k<=Math.min(n-1,i+3);k++){s+=raw[k];c++}return s/c});
+  const gr=al.map((v,i)=>{let j0=i,j1=i;while(j0>0&&di[i]-di[j0]<60)j0--;while(j1<n-1&&di[j1]-di[i]<60)j1++;const dd=di[j1]-di[j0];return dd>5?(al[j1]-al[j0])/dd:0});
+  RE[a.id]={di,al,gr,ll:e.latlng||null};
+  const W=360,H=110,P=6,mn=Math.min(...al),mx=Math.max(...al),rg=Math.max(20,mx-mn),D=di[n-1]||1,X=v=>v/D*W,Y=v=>H-P-(v-mn)/rg*(H-2*P-6);
+  let gain=0;for(let i=1;i<n;i++)if(al[i]>al[i-1])gain+=al[i]-al[i-1];if(a.elev)gain=a.elev;
+  const step=Math.max(1,Math.floor(n/320)),idx=[];for(let i=0;i<n;i+=step)idx.push(i);if(idx[idx.length-1]!==n-1)idx.push(n-1);
+  let slices="",run=null;const flush=()=>{if(run){slices+=`<path d="M${run.pts.map(p=>p.join(" ")).join(" L")} L${run.pts[run.pts.length-1][0]} ${H} L${run.pts[0][0]} ${H}Z" fill="${run.c}"/>`;run=null}};
+  for(let k=1;k<idx.length;k++){const i0=idx[k-1],i1=idx[k],c=slopeCol(gr[i1]),p0=[X(di[i0]).toFixed(1),Y(al[i0]).toFixed(1)],p1=[X(di[i1]).toFixed(1),Y(al[i1]).toFixed(1)];
+    if(run&&run.c===c)run.pts.push(p1);else{const last=run?run.pts[run.pts.length-1]:p0;flush();run={c,pts:[last,p1]}}}flush();
+  const ln=idx.map((i,k)=>(k?"L":"M")+X(di[i]).toFixed(1)+" "+Y(al[i]).toFixed(1)).join(" ");
+  return`<div class="relev"><div class="rsec"><h4>Perfil</h4><span>+${fmtInt(gain)} m · ${fmtInt(mn)}–${fmtInt(mx)} m</span></div>
+    <div class="re-plot" data-reid="${esc(a.id)}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Perfil de altitud coloreado por pendiente">${slices}<path d="${ln}" class="re-line"/><line id="reline" x1="-10" x2="-10" y1="0" y2="${H}" class="re-cur"/><circle id="redot" cx="-10" cy="-10" r="4" class="re-dot"/></svg><div class="re-tip" id="retip" hidden></div></div>
+    <div class="row"><span class="note" style="margin:0">0 km</span><span class="note" style="margin:0">${(D/1000).toFixed(1).replace(".",",")} km</span></div>
+    <div class="re-leg">${SLOPE.map(x=>`<span><i style="background:${x[1]}"></i>${x[2]}</span>`).join("")}</div></div>`}
+function reScrub(el,clientX){const id=el.dataset.reid,R=RE[id];if(!R)return;const r=el.getBoundingClientRect(),f=Math.max(0,Math.min(1,(clientX-r.left)/r.width)),D=R.di[R.di.length-1]||1,d=f*D;
+  let lo=0,hi=R.di.length-1;while(hi-lo>1){const m=(lo+hi)>>1;if(R.di[m]<d)lo=m;else hi=m}const i=hi,al=R.al,mn=Math.min(...al),mx=Math.max(...al),rg=Math.max(20,mx-mn),y=110-6-(al[i]-mn)/rg*(110-12-6),x=f*360;
+  const L=el.querySelector("#reline"),P=el.querySelector("#redot"),T=el.querySelector("#retip");L.setAttribute("x1",x);L.setAttribute("x2",x);P.setAttribute("cx",x);P.setAttribute("cy",y);
+  T.hidden=false;T.textContent=`${(R.di[i]/1000).toFixed(1).replace(".",",")} km · ${fmtInt(al[i])} m · ${R.gr[i]>0?"+":""}${(R.gr[i]*100).toFixed(0)} %`;T.style.left=Math.max(0,Math.min(r.width-T.offsetWidth,f*r.width-T.offsetWidth/2))+"px";
+  const M=document.querySelector(".rmap"),pos=document.getElementById("rmpos");if(M&&pos&&R.ll&&R.ll[i]){const z=+M.dataset.z,n2=256*Math.pow(2,z),la=R.ll[i][0],sn=Math.sin(la*Math.PI/180);
+    pos.setAttribute("cx",((R.ll[i][1]+180)/360*n2-(+M.dataset.x0)).toFixed(1));pos.setAttribute("cy",((0.5-Math.log((1+sn)/(1-sn))/(4*Math.PI))*n2-(+M.dataset.y0)).toFixed(1))}}
+document.addEventListener("pointerdown",e=>{const el=e.target.closest&&e.target.closest(".re-plot");if(!el)return;el.setPointerCapture&&el.setPointerCapture(e.pointerId);el.dataset.drag="1";reScrub(el,e.clientX)});
+document.addEventListener("pointermove",e=>{const el=e.target.closest&&e.target.closest(".re-plot");if(el&&(el.dataset.drag||e.pointerType==="mouse"))reScrub(el,e.clientX)});
+document.addEventListener("pointerup",e=>{document.querySelectorAll(".re-plot[data-drag]").forEach(el=>delete el.dataset.drag)});
 function routeBlock(a){if(a.sport==="str")return"";const m=routeMap(a),p=elevProfile(a);if(!m&&!p)return"";
   const sid=a.sid?String(a.sid).replace(/^s/,""):null;
-  return`<div class="rblock">${m}${p}${sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>`}
+  return`<div class="rblock">${m?`<div class="rsec"><h4>Recorrido</h4>${sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>${m}`:""}${p}${!m&&sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>`}
 function vDetail(){
   const a=S.acts.find(x=>x.id===S.detail);if(!a)return"";
   const s=S.subs[a.id],pf=S.perf[a.id];
@@ -5251,7 +5291,9 @@ function vDetail(){
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
     <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <div class="stats" style="margin:16px 0">${st.map(([k,v])=>`<div><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+    ${(()=>{const pk=["run","trail","walk","hike"].includes(a.sport)?["Distancia","Ritmo"]:["mtb","bike","ride","gravel"].includes(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
+      const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
+      return`<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-sec">${sec.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
@@ -5264,8 +5306,8 @@ async function openDetail(id,focusFuel){
   if(focusFuel)setTimeout(()=>{const b=$("#flbox");if(b)b.scrollIntoView({behavior:"smooth",block:"start"})},120);const a=S.acts.find(x=>x.id===id);if(!a)return;
   ensureSub(a).then(renderModal);
   S.alt=S.alt||{};if(!S.alt[id]&&a.sport!=="str"&&(a.sid||a.poly)){const sid=a.sid||a.id;
-    (window.__native&&window.__native.stravaGet&&String(sid).startsWith("s")?window.__native.stravaGet(`/activities/${String(sid).slice(1)}/streams?keys=distance,altitude&key_by_type=true`).then(r=>r&&r.altitude?{altitude:r.altitude.data,distance:r.distance&&r.distance.data}:null)
-      :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
+    (window.__native&&window.__native.stravaGet&&String(sid).startsWith("s")?window.__native.stravaGet(`/activities/${String(sid).slice(1)}/streams?keys=distance,altitude,latlng&key_by_type=true`).then(r=>r&&r.altitude?{altitude:r.altitude.data,distance:r.distance&&r.distance.data,latlng:r.latlng&&r.latlng.data}:null)
+      :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude","latlng"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
   if(!S.perf[id])call("get_activity_performance",{activity_id:id},{cache:{staleTime:300000,gcTime:86400000}}).then(p=>{S.perf[id]=p;renderModal()}).catch(()=>{});
 }
 function vFuerza(){setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),sc=sel&&sel.parentElement;if(sc){const l=sel.offsetLeft-sc.offsetLeft,r=l+sel.offsetWidth;if(l<sc.scrollLeft+18||r>sc.scrollLeft+sc.clientWidth-24)sc.scrollLeft=Math.max(0,l-18)}},0);
