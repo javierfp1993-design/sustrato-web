@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:54:54.119Z">
+<meta name="sustrato-version" content="2026-10-06T12:03:37.593Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2233,8 +2233,8 @@ html[data-theme] .wc-color .wc-ic,html[data-theme] .wc-color .wc-w .wc-ic,html[d
 .hcar-track{align-items:flex-start}
 /* gota grande */
 .qd2{display:flex;flex-direction:column;align-items:center;margin-top:4px}
-.qd2 .drop{display:block;width:min(220px,62vw);height:auto;aspect-ratio:100/121;flex:none}
-.dr-bg{fill:var(--fill);opacity:.35}.dr-f{opacity:.16}.dr-l{fill:none;stroke:var(--card);stroke-width:1.1;opacity:.9}
+.qd2 .drop{display:block;width:min(190px,54vw);height:auto;aspect-ratio:100/124;flex:none}
+.dr-bg{fill:var(--fill);opacity:.7}.dr-f{opacity:.16}.dr-l{fill:none;stroke:var(--card);stroke-width:1.1;opacity:.9}
 .dr-hl{pointer-events:none;opacity:.32;fill:#fff!important}
 html[data-theme="dark"] .dr-f{opacity:.12}html[data-theme="dark"] .dr-hl{opacity:.18}
 .qk2{text-align:center;margin-top:10px}.qk2 b{display:block;font:700 40px/1 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.qk2 span{font-size:13.5px;color:var(--muted)}
@@ -2315,7 +2315,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="139";
+const APP_VER="140";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3623,35 +3623,33 @@ function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks|
 /* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
    cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
 function eatenToday(){const l=(S.log||{})[S.day]||{};return Object.entries(l).filter(([k])=>!k.startsWith("fuel_")).reduce((a,[,x])=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0})}
-const DROP_D="M50 3 C58 17 91 49 91 77 C91 101 72 118 50 118 C28 118 9 101 9 77 C9 49 42 17 50 3Z";
+/* La gota del logo (mismo trazo, ápice apenas suavizado), plana y sin borde */
+const DROP_D="M46.8 9 Q50 3.6 53.2 9 Q69.2 29.4 84.56 58.2 A40.8 40.8 0 1 1 15.44 58.2 Q30.8 29.4 46.8 9Z",DROP_TOP=4,DROP_BOT=120.6;
 let DROP_W=null;
-/* Anchura de la gota a cada altura (se mide una vez sobre el propio trazado) */
 function dropWidths(){if(DROP_W)return DROP_W;const p=document.createElementNS("http://www.w3.org/2000/svg","path");p.setAttribute("d",DROP_D);const sv=document.createElementNS("http://www.w3.org/2000/svg","svg");sv.style.cssText="position:absolute;width:0;height:0";sv.appendChild(p);document.body.appendChild(sv);
-  const L=p.getTotalLength(),lo={},hi={};for(let i=0;i<=800;i++){const q=p.getPointAtLength(i/800*L),k=Math.round(q.y*2);lo[k]=Math.min(lo[k]??99,q.x);hi[k]=Math.max(hi[k]??0,q.x)}sv.remove();
-  const W=[];for(let k=0;k<=240;k++)W[k]=hi[k]!=null?hi[k]-lo[k]:0;for(let k=1;k<240;k++)if(!W[k])W[k]=(W[k-1]+(W[k+1]||W[k-1]))/2;DROP_W=W;return W}
-/* Alturas de cada frontera repartiendo por área: fr = fracción de área desde abajo */
-function dropYs(fracs){const W=dropWidths(),TOP=3,BOT=118,N=230,cum=[0];for(let i=1;i<=N;i++){const y=BOT-i/N*(BOT-TOP);cum.push(cum[i-1]+(W[Math.round(y*2)]||0))}
-  const A=cum[N];return fracs.map(fa=>{const t=fa*A;let i=1;while(i<N&&cum[i]<t)i++;const f0=(t-cum[i-1])/((cum[i]-cum[i-1])||1);return BOT-(i-1+f0)/N*(BOT-TOP)})}
-function dropChart(t,e){
-  const L=[[9*t.F,9*e.F,"var(--fat)"],[4*t.P,4*e.P,"var(--prot)"],[4*t.C,4*e.C,"var(--carb)"]],tot=L.reduce((a,x)=>a+x[0],0)||1;
-  let acc=0;const bounds=[0],levels=[];L.forEach(([tv,ev])=>{const sh=tv/tot,fr=tv?Math.min(1,ev/tv):0;levels.push(acc+sh*fr);acc+=sh;bounds.push(acc)});
-  const yb=dropYs(bounds),yl=dropYs(levels);
-  const faint=L.map((x,i)=>`<path d="M0 ${yb[i+1].toFixed(2)} H100 V${yb[i].toFixed(2)} H0Z" fill="${x[2]}" class="dr-f"/>`).join("");
-  const solid=L.map((x,i)=>`<path class="dr-s" data-i="${i}" fill="${x[2]}" d=""/>`).join("");
-  const seps=yb.slice(1,-1).map(y=>`<path d="M0 ${y.toFixed(2)} H100" class="dr-l"/>`).join("");
-  return`<svg class="drop" id="dropsvg" viewBox="0 0 100 121" role="img" aria-label="Lo que llevas comido de cada macro" data-yb="${yb.map(v=>v.toFixed(2)).join(",")}" data-yl="${yl.map(v=>v.toFixed(2)).join(",")}">
-    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath><linearGradient id="drg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-    <g clip-path="url(#drc)"><rect width="100" height="121" class="dr-bg"/>${faint}${solid}${seps}<path d="M15 77 C15 63 21 51 29 41 C25 53 21.5 65 21.5 78 C21.5 88 24 96 29 103 C20 97 15 88 15 77Z" fill="#fff" class="dr-hl"/></g></svg>`}
-/* Animación: ondas en la superficie de cada capa y llenado con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
-const DROP={cur:null,v:null,run:false};
+  const L=p.getTotalLength(),lo={},hi={};for(let i=0;i<=1000;i++){const q=p.getPointAtLength(i/1000*L),k=Math.round(q.y*2);lo[k]=Math.min(lo[k]??99,q.x);hi[k]=Math.max(hi[k]??0,q.x)}sv.remove();
+  const W=[];for(let k=0;k<=250;k++)W[k]=hi[k]!=null?hi[k]-lo[k]:0;for(let k=1;k<250;k++)if(!W[k]&&k>DROP_TOP*2&&k<DROP_BOT*2)W[k]=(W[k-1]+(W[k+1]||W[k-1]))/2;DROP_W=W;return W}
+/* Altura a la que llega una fracción del volumen de la gota (desde abajo) */
+function dropY(fa){const W=dropWidths(),N=240;if(!dropY.c){const c=[0];for(let i=1;i<=N;i++){const y=DROP_BOT-i/N*(DROP_BOT-DROP_TOP);c.push(c[i-1]+(W[Math.round(y*2)]||0))}dropY.c=c}
+  const c=dropY.c,t=Math.max(0,Math.min(1,fa))*c[N];let i=1;while(i<N&&c[i]<t)i++;const f0=(t-c[i-1])/((c[i]-c[i-1])||1);return DROP_BOT-(i-1+f0)/N*(DROP_BOT-DROP_TOP)}
+/* Un solo líquido: la gota se llena con lo comido (kcal comidas / kcal del día) y el líquido tiene los colores de lo comido */
+function dropChart(t,e){const ek=[9*e.F,4*e.P,4*e.C],et=ek.reduce((a,b)=>a+b,0),fill=Math.min(1,et/(t.kcal||1)),sh=et?ek.map(v=>v/et):[0,0,0];
+  return`<svg class="drop" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
+    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath></defs>
+    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/></g></svg>`}
+/* Animación: la superficie ondula y el nivel sube con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
+const DROP={cur:0,v:0,run:false};
 function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg");if(!el)return;
-  const yb=el.dataset.yb.split(",").map(Number),yl=el.dataset.yl.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(!DROP.cur||DROP.cur.length!==yl.length){DROP.cur=yb.slice(0,yl.length);DROP.v=yl.map(()=>0)}
-  let moving=false;yl.forEach((tg,i)=>{if(rm){DROP.cur[i]=tg;return}const k=0.012,d=0.86;DROP.v[i]=(DROP.v[i]+(tg-DROP.cur[i])*k)*d;DROP.cur[i]+=DROP.v[i];if(Math.abs(tg-DROP.cur[i])>.02||Math.abs(DROP.v[i])>.01)moving=true});
-  const r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
-  el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,y=DROP.cur[i],bot=yb[i]+.6;if(y>=bot-0.15){p.setAttribute("d","");return}
-    const amp=rm?0:Math.min(1.5,(bot-y)*.5),ph=i*1.7;let d=`M0 ${bot}`;for(let x=0;x<=100;x+=4){const w=amp*(0.6*Math.sin(x*0.09+tt*1.6+ph)+0.4*Math.sin(x*0.17-tt*2.3+ph*1.3));d+=` L${x} ${Math.min(bot,y+w).toFixed(2)}`}p.setAttribute("d",d+` L100 ${bot}Z`)});
-  if((vis&&!rm)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
+  const tg=+el.dataset.fill,sh=el.dataset.sh.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(rm)DROP.cur=tg;else{DROP.v=(DROP.v+(tg-DROP.cur)*0.010)*0.88;DROP.cur+=DROP.v}
+  const moving=Math.abs(tg-DROP.cur)>.0008||Math.abs(DROP.v)>.0004,r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
+  const lv=DROP.cur,amp=rm?0:Math.min(1.6,lv*30),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
+  /* Cada capa va desde su superficie hasta el fondo; se pintan de arriba abajo, así las fronteras son las propias ondas */
+  el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0;if(hi-lo<1e-4){p.setAttribute("d","");return}
+    const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
+    for(let x=0;x<=100;x+=4){const w=top?amp*(0.6*Math.sin(x*0.08+tt*1.5)+0.4*Math.sin(x*0.15-tt*2.1)):0.9*Math.sin(x*0.06+i*1.4);d+=` L${x} ${(yt+w).toFixed(2)}`}
+    p.setAttribute("d",d+` L100 ${yb}Z`)});
+  if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}}
 document.addEventListener("scroll",()=>dropKick(),{passive:true});
 /* Franja del día: la hora de cada comida y el entreno */
