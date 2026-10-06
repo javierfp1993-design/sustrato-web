@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-05T14:29:46.340Z">
+<meta name="sustrato-version" content="2026-10-06T07:28:39.301Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2194,7 +2194,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="127";
+const APP_VER="128";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2920,11 +2920,15 @@ function raceTarget(){const tk=today();const ks=Object.keys(S.plan||{}).filter(k
 function fitnessSeries(){
   const tk=today(),start=shiftKey(tk,-160),race=raceTarget(),end=race&&daysBetween(tk,race.d)<=120?race.d:shiftKey(tk,21),kg=num((S.profile||{}).weight)||70;
   const L={};S.acts.forEach(a=>{if(a.sport==="oth"||a.day<start)return;L[a.day]=(L[a.day]||0)+actLoad(a)});
-  let ctl=0,atl=0;const out=[];
-  for(let k=start;k<=end;k=shiftKey(k,1)){let l=L[k]||0,fut=k>tk;
+  /* Arranque en frío: sin historial previo, suponer que antes del primer dato entrenabas como de media en lo que hay.
+     Si no, la forma (42 días) empieza en 0 y la frescura sale muy negativa aunque estés descansado. */
+  const dks=Object.keys(L).sort(),first=dks[0]||tk,hist=Math.max(1,daysBetween(first,tk));
+  let ctl=0,atl=0;if(dks.length){let sum=0;dks.forEach(k=>{if(k<tk)sum+=L[k]});const avg=sum/Math.max(hist,14);ctl=avg;atl=avg}
+  const out=[];
+  for(let k=first<start?start:first;k<=end;k=shiftKey(k,1)){let l=L[k]||0,fut=k>tk;
     if(k>=tk){const pend=k===tk?pendingPlanned(k):plannedFor(k).filter(x=>!x.skip);l+=pend.reduce((s,x)=>s+(x.sport==="str"?.6:1)*estSession(x,kg).kcal/10,0)}
     const tsb=ctl-atl;ctl+=(l-ctl)/42;atl+=(l-atl)/7;out.push({k,l,ctl,atl,tsb,fut})}
-  return{pts:out.filter(x=>x.k>=shiftKey(tk,-90)),race,end};
+  return{pts:out.filter(x=>x.k>=shiftKey(tk,-90)),race,end,hist};
 }
 function tsbState(v){return v>15?["Muy fresco","Llevas días de poca carga: buen momento para competir, aunque la forma empieza a bajar."]:v>5?["Fresco","Recuperado. Ideal para una carrera o un entreno clave."]:v>-10?["Equilibrado","Carga y recuperación compensadas."]:v>-30?["Cargado","Estás construyendo forma. Normal en semanas de bloque; vigila el descanso."]:["Muy cargado","Mucha carga reciente. Prioriza dormir y algún día suave."]}
 
@@ -2966,7 +2970,7 @@ function readiness(){const tk=today(),M=S.rhr||{},f=[];let sc=70,n=0;
   const tv=M[tk],base=rhrAvg(shiftKey(tk,-1),7);
   if(tv&&base){const d=tv-base;n++;const v=d<=-3?10:d<=3?4:d<=6?-15:-30;sc+=v;f.push({k:"rhr",l:"Pulso",v:(d>0?"+":"")+d.toFixed(0)+" ppm",s:v>0?"ok":v>-20?"mid":"hi",tip:"Pulso en reposo de hoy frente a tu media de la última semana"})}
   else f.push({k:"rhr",l:"Pulso",v:"Sin dato",s:"",tip:"Apunta tu pulso al despertar"});
-  if(S.acts.length){const P=fitnessSeries().pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,v=t>5?10:t>-10?0:t>-25?-10:-20;sc+=v;f.push({k:"tsb",l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
+  if(S.acts.length){const FS=fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
   sc=Math.max(5,Math.min(98,sc));
   const vd=sc>=78?["Día para apretar","Buen momento para un entreno clave o de calidad.","#30d158"]:sc>=58?["Mantén el plan","Estás en condiciones de hacer lo previsto.","#5ac8fa"]:sc>=38?["Mejor suave","Rebaja la intensidad: rodaje cómodo o técnica.","#ff9f0a"]:["Toca recuperar","Descanso o actividad muy suave. Prioriza dormir y comer bien.","#ff453a"];
@@ -3107,7 +3111,7 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
     <div class="ws-lg"><span><i style="background:#30d158"></i>Bien</span><span><i style="background:#ff9f0a"></i>Regular</span><span><i style="background:#ff453a"></i>Molestias</span><span><i style="background:var(--fg);opacity:.5;border-radius:1px;height:2px;width:10px"></i>Objetivo</span></div>
     <p class="note" style="margin:8px 0 0">${tol!=null&&tol<60?"Entrena el estómago: sube unos 10 g/h cada semana en tus sesiones largas hasta 60–90 g/h.":"El intestino se entrena: practica en las tiradas largas lo que tomarás en carrera."}</p></section>`}
 function fitCard(){
-  if(!S.acts.length)return"";const{pts,race}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
+  if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
   const st=tsbState(now.tsb),w=400,h=230,PL=4,PR=4,PT=22,H1=128,G=14,H2=46,PB=20,iw=w-PL-PR,n=pts.length;
   const mx=Math.max(...pts.map(x=>Math.max(x.ctl,x.atl)),10)*1.1,X=i=>PL+i/(n-1)*iw,Y=v=>PT+H1-v/mx*H1;
   const tm=Math.max(20,...pts.map(x=>Math.abs(x.tsb))),Y2c=PT+H1+G+H2/2,Y2=v=>Y2c-v/tm*(H2/2);
@@ -3134,9 +3138,10 @@ function fitCard(){
   return`<section class="glass pad fade pfit"><span class="pkk">Forma y fatiga</span>
     <div class="fkpi"><div><span><i class="fdot" style="background:#3b82f6"></i>Forma</span><b>${r0(now.ctl)}</b></div><div><span><i class="fdot" style="background:#ff7a52"></i>Fatiga</span><b>${r0(now.atl)}</b></div><div><span>Frescura</span><b>${now.tsb>0?"+":now.tsb<0?"−":""}${Math.abs(r0(now.tsb))}</b></div><div class="fst"><span class="fstate" style="--sc:${tcol(now.tsb)}">${st[0]}</span></div></div>
     <p class="fdesc">${st[1]}</p>
+    ${hist<42?`<p class="note" style="margin-top:4px">Calibrando: hay ${hist} ${hist===1?"día":"días"} de historial. Hasta tener 6 semanas, la forma es aproximada y pesa menos en "Cómo llegas hoy".</p>`:""}
     ${svg}
     <div class="legend"><span><i style="background:#3b82f6"></i>Forma · 6 semanas</span><span><i style="background:#ff7a52"></i>Fatiga · 7 días</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ffd21e"></i>Cargado</span></div>
-    ${rp?`<div class="frace-box"><b>${esc(race.n)} · ${esc(dateLabel(race.d))}</b><span>Con lo que tienes planificado llegarías con forma ${r0(rp.ctl)} y frescura ${rp.tsb>0?"+":""}${r0(rp.tsb)}: ${tsbState(rp.tsb)[0].toLowerCase()}.${rp.tsb<-10?" Conviene reducir carga la última semana.":rp.tsb>20?" Quizá te sobre descanso: mete algo de ritmo los días previos.":""}</span></div>`:""}
+    ${rp&&hist>=21?`<div class="frace-box"><b>${esc(race.n)} · ${esc(dateLabel(race.d))}</b><span>Con lo que tienes planificado llegarías con forma ${r0(rp.ctl)} y frescura ${rp.tsb>0?"+":""}${r0(rp.tsb)}: ${tsbState(rp.tsb)[0].toLowerCase()}.${rp.tsb<-10?" Conviene reducir carga la última semana.":rp.tsb>20?" Quizá te sobre descanso: mete algo de ritmo los días previos.":""}</span></div>`:""}
     <p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan.</p></section>`;
 }
 function riegel(t,d1,d2){return t*Math.pow(d2/d1,1.06)}
