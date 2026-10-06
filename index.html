@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:08:49.524Z">
+<meta name="sustrato-version" content="2026-10-06T11:27:12.364Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2145,6 +2145,20 @@ html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
 .mwhy{display:flex;align-items:flex-start;gap:4px;margin:0 0 8px 36px;font-size:13.5px;color:var(--muted);line-height:1.3}
 .mwhy i{flex:0 0 7px;width:7px;height:7px;border-radius:50%;margin-top:6px}.mwhy span{margin-left:4px}
 .sv-ok{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.sv-ok::before{content:"";width:7px;height:7px;border-radius:50%;background:#30d158}
+/* ruta */
+.rblock{margin:0 0 18px}
+.rmap{position:relative;width:100%;aspect-ratio:360/230;border-radius:14px;overflow:hidden;background:var(--fill)}
+.rmap img{position:absolute;max-width:none;filter:grayscale(1) contrast(.92) brightness(1.04)}
+html[data-theme="dark"] .rmap img{filter:grayscale(1) invert(1) contrast(.85) brightness(.9)}
+@media (prefers-color-scheme:dark){html:not([data-theme="light"]) .rmap img{filter:grayscale(1) invert(1) contrast(.85) brightness(.9)}}
+.rmap svg{position:absolute;inset:0;width:100%;height:100%}
+.rm-halo{fill:none;stroke:var(--bg,#fff);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:.85;vector-effect:non-scaling-stroke}
+.rm-line{fill:none;stroke:#ff5b2e;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.rm-start{fill:#30d158;stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}.rm-end{fill:#1c1c1e;stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}
+.rm-attr{position:absolute;right:6px;bottom:4px;font-size:10px;color:#333;background:rgba(255,255,255,.7);padding:1px 5px;border-radius:4px}
+.relev{margin-top:12px}.relev svg{display:block;width:100%;height:96px;margin:4px 0}
+.re-area{fill:var(--fill)}.re-line{fill:none;stroke:var(--fg);stroke-width:1.8;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.rm-strava{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:#fc5200;text-decoration:none}
 /* v127 armonía: color solo con significado, en la línea o en un punto */
 .fl-ask .fl-ic{background:var(--card2,rgba(127,127,127,.12))!important;color:var(--fg)!important}
 .fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
@@ -2229,7 +2243,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="134";
+const APP_VER="135";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3432,7 +3446,8 @@ async function loadActs(force){
     }
     S.acts=all.map(a=>{const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
       start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
-      speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||null}}).sort((x,y)=>x.start<y.start?1:-1);
+      speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||null,
+      poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}).sort((x,y)=>x.start<y.start?1:-1);
     S.actsState="ok";$("#status").textContent="Reloj conectado";
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();
@@ -4939,6 +4954,25 @@ function vActs(){
     ${list.length?`<div class="kv akv" style="margin:0 0 18px"><div><span>Actividades</span><b>${list.length}</b></div><div><span>Distancia</span><b>${fmtInt(sum.d/1000)}<small> km</small></b></div><div><span>Tiempo</span><b>${fmtInt(sum.t/3600)}<small> h</small></b></div></div>`:""}
     ${body}</section>`;
 }
+/* ---------- Ruta: mapa GPS y perfil de altitud ---------- */
+function polyDecode(str){const pts=[];let i=0,lat=0,lng=0;while(i<str.length){let b,sh=0,r=0;do{b=str.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);lat+=r&1?~(r>>1):r>>1;sh=0;r=0;do{b=str.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);lng+=r&1?~(r>>1):r>>1;pts.push([lat/1e5,lng/1e5])}return pts}
+function routeMap(a){if(!a.poly)return"";let pts;try{pts=polyDecode(a.poly)}catch(e){return""}if(pts.length<2)return"";
+  const W=360,H=230,px=(la,ln,z)=>{const n=256*Math.pow(2,z),s=Math.sin(la*Math.PI/180);return[(ln+180)/360*n,(0.5-Math.log((1+s)/(1-s))/(4*Math.PI))*n]};
+  const la=pts.map(p=>p[0]),ln=pts.map(p=>p[1]),b=[Math.min(...la),Math.max(...la),Math.min(...ln),Math.max(...ln)];
+  let z=16;for(;z>3;z--){const p0=px(b[1],b[2],z),p1=px(b[0],b[3],z);if(p1[0]-p0[0]<=W*.82&&p1[1]-p0[1]<=H*.78)break}
+  const c0=px(b[1],b[2],z),c1=px(b[0],b[3],z),cx=(c0[0]+c1[0])/2,cy=(c0[1]+c1[1])/2,x0=cx-W/2,y0=cy-H/2;
+  const tiles=[];for(let tx=Math.floor(x0/256);tx<=Math.floor((x0+W)/256);tx++)for(let ty=Math.floor(y0/256);ty<=Math.floor((y0+H)/256);ty++){const m=Math.pow(2,z);if(ty<0||ty>=m)continue;
+    tiles.push(`<img src="https://tile.openstreetmap.org/${z}/${((tx%m)+m)%m}/${ty}.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'" style="left:${((tx*256-x0)/W*100).toFixed(3)}%;top:${((ty*256-y0)/H*100).toFixed(3)}%;width:${(256/W*100).toFixed(3)}%;height:${(256/H*100).toFixed(3)}%">`)}
+  const step=Math.max(1,Math.floor(pts.length/400)),d=pts.filter((p,i)=>i%step===0||i===pts.length-1).map((p,i)=>{const q=px(p[0],p[1],z);return(i?"L":"M")+(q[0]-x0).toFixed(1)+" "+(q[1]-y0).toFixed(1)}).join(" ");
+  const s0=px(pts[0][0],pts[0][1],z),s1=px(pts[pts.length-1][0],pts[pts.length-1][1],z);
+  return`<div class="rmap" role="img" aria-label="Mapa del recorrido">${tiles.join("")}<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}" class="rm-halo"/><path d="${d}" class="rm-line"/><circle cx="${(s0[0]-x0).toFixed(1)}" cy="${(s0[1]-y0).toFixed(1)}" r="5" class="rm-start"/><circle cx="${(s1[0]-x0).toFixed(1)}" cy="${(s1[1]-y0).toFixed(1)}" r="5" class="rm-end"/></svg><span class="rm-attr">© OpenStreetMap</span></div>`}
+function elevProfile(a){const e=(S.alt||{})[a.id];if(!e||!e.altitude||!e.distance||e.altitude.length<5)return"";
+  const al=e.altitude,di=e.distance,n=al.length,W=360,H=96,P=4,mn=Math.min(...al),mx=Math.max(...al),rg=Math.max(20,mx-mn),D=di[n-1]||1;
+  const X=v=>v/D*W,Y=v=>H-P-(v-mn)/rg*(H-2*P-8);const step=Math.max(1,Math.floor(n/300));let ln="";for(let i=0;i<n;i+=step)ln+=(ln?"L":"M")+X(di[i]).toFixed(1)+" "+Y(al[i]).toFixed(1);ln+="L"+X(di[n-1]).toFixed(1)+" "+Y(al[n-1]).toFixed(1);
+  return`<div class="relev"><div class="row"><span class="note" style="margin:0">Perfil</span><span class="note" style="margin:0">${fmtInt(mn)}–${fmtInt(mx)} m</span></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Perfil de altitud"><path d="${ln} L${W} ${H} L0 ${H}Z" class="re-area"/><path d="${ln}" class="re-line"/></svg><div class="row"><span class="note" style="margin:0">0 km</span><span class="note" style="margin:0">${(D/1000).toFixed(1).replace(".",",")} km</span></div></div>`}
+function routeBlock(a){if(a.sport==="str")return"";const m=routeMap(a),p=elevProfile(a);if(!m&&!p)return"";
+  const sid=a.sid?String(a.sid).replace(/^s/,""):null;
+  return`<div class="rblock">${m}${p}${sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>`}
 function vDetail(){
   const a=S.acts.find(x=>x.id===S.detail);if(!a)return"";
   const s=S.subs[a.id],pf=S.perf[a.id];
@@ -4957,6 +4991,7 @@ function vDetail(){
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
     <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="stats" style="margin:16px 0">${st.map(([k,v])=>`<div><span>${k}</span><b>${v}</b></div>`).join("")}</div>
+    ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
     ${fuelBlock(a)}
@@ -4967,6 +5002,9 @@ async function openDetail(id,focusFuel){
   S.flDraft=null;S.flNew=null;if(!focusFuel)S.flEditId=null;S.detail=id;renderModal();
   if(focusFuel)setTimeout(()=>{const b=$("#flbox");if(b)b.scrollIntoView({behavior:"smooth",block:"start"})},120);const a=S.acts.find(x=>x.id===id);if(!a)return;
   ensureSub(a).then(renderModal);
+  S.alt=S.alt||{};if(!S.alt[id]&&a.sport!=="str"&&(a.sid||a.poly)){const sid=a.sid||a.id;
+    (window.__native&&window.__native.stravaGet&&String(sid).startsWith("s")?window.__native.stravaGet(`/activities/${String(sid).slice(1)}/streams?keys=distance,altitude&key_by_type=true`).then(r=>r&&r.altitude?{altitude:r.altitude.data,distance:r.distance&&r.distance.data}:null)
+      :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
   if(!S.perf[id])call("get_activity_performance",{activity_id:id},{cache:{staleTime:300000,gcTime:86400000}}).then(p=>{S.perf[id]=p;renderModal()}).catch(()=>{});
 }
 function vFuerza(){setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),sc=sel&&sel.parentElement;if(sc){const l=sel.offsetLeft-sc.offsetLeft,r=l+sel.offsetWidth;if(l<sc.scrollLeft+18||r>sc.scrollLeft+sc.clientWidth-24)sc.scrollLeft=Math.max(0,l-18)}},0);
