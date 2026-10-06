@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T08:54:16.277Z">
+<meta name="sustrato-version" content="2026-10-06T09:25:52.956Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2110,6 +2110,13 @@ html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
 .mfq{appearance:none;border:0;text-align:left;font:inherit;color:var(--fg);background:var(--card2,rgba(127,127,127,.12));border-radius:12px;padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .mfq b{font-weight:600;font-size:14px}.mfq small{color:var(--muted);font-size:12px;white-space:nowrap}
 .mfq:active{transform:scale(.98)}
+.wc-hv{flex-wrap:wrap}
+.wc-hvv{flex:1;text-align:right;font-variant-numeric:tabular-nums;color:var(--wc-mu)}
+.wc-hvv b{font:650 20px var(--round,var(--font));color:var(--wc-tx)}.wc-hvv small{font-size:12.5px}
+.wc-hvin{position:relative;flex:1;min-width:90px;max-width:140px;margin-left:auto}
+.wc-hvin input{width:100%;min-height:40px;padding:0 34px 0 12px;border:0;border-radius:10px;background:var(--wc-in,var(--fill));color:var(--wc-tx,var(--fg));font:600 17px var(--font);font-variant-numeric:tabular-nums}
+.wc-hvin i{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--wc-mu,var(--muted))}
+.wc-hvn{flex-basis:100%;font-size:12.5px;color:var(--wc-mu,var(--muted))}
 /* v127 armonía: color solo con significado, en la línea o en un punto */
 .fl-ask .fl-ic{background:var(--card2,rgba(127,127,127,.12))!important;color:var(--fg)!important}
 .fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
@@ -2194,7 +2201,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="129";
+const APP_VER="130";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3436,6 +3443,7 @@ async function loadStore(){
       else if(d.id==="weather"&&v.days)S.wx=JSON.parse(JSON.stringify(v));
       else if(d.id==="steps"&&v.map)S.steps=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="rhr"&&v.map)S.rhr=JSON.parse(JSON.stringify(v.map));
+      else if(d.id==="hrv"&&v.map){S.hrvMan=JSON.parse(JSON.stringify(v.map));S.hrv=Object.assign({},S.hrvMan,S.hrv||{})}
       else if(d.id==="pantry"&&v.list)S.pantry=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="fuellog"&&v.list)S.fuel=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="sweat"&&v.list)S.sweat=JSON.parse(JSON.stringify(v.list));
@@ -3834,6 +3842,13 @@ async function saveFuel(){const c=userCol();if(!c)return;try{await c.doc("fuello
 async function saveSweat(){const c=userCol();if(!c)return;try{await c.doc("sweat").set({kind:"sweat",list:S.sweat||[]})}catch(e){toast("No se ha podido guardar")}}
 function sweatRate(sp){const L=(S.sweat||[]).filter(x=>x.sport===sp||(x.sport==="trail"&&sp==="run")||(x.sport==="run"&&sp==="trail")).slice(-5);if(!L.length)return SWEAT[sp]||.6;return L.reduce((a,x)=>a+x.rate,0)/L.length}
 async function saveSleep(){const c=userCol();if(!c)return;try{await c.doc("sleep").set({kind:"sleep",map:S.sleep||{}})}catch(e){toast("No se ha podido guardar")}}
+async function saveHrv(){const c=userCol();if(!c)return;try{await c.doc("hrv").set({kind:"hrv",map:S.hrvMan||{}})}catch(e){toast("No se ha podido guardar la VFC")}}
+/* VFC de la noche: llega sola si tu reloj la comparte con Health Connect; si no, se apunta en un toque. */
+function hrvRow(){const tk=today(),H=S.hrv||{},hv=H[tk],man=(S.hrvMan||{})[tk]!=null,prev=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)prev.push(x)}
+  const b=prev.length>=3?prev.reduce((p,q)=>p+q,0)/prev.length:null,pc=hv&&b?Math.round((hv/b-1)*100):null;
+  const ic='<span class="wc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2-6 2 3h5"/></svg></span>';
+  if(hv&&!S.hrvEdit)return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvv"><b>${Math.round(hv)}</b> ms<small>${pc!=null?` · ${pc>0?"+":pc<0?"−":"±"}${Math.abs(pc)} % vs tu media`:` · ${prev.length}/3 noches para tu media`}</small></span>${man?'<button class="wc-skip" data-act="hrvedit">Cambiar</button>':""}</div>`;
+  return`<div class="wc-slrow wc-hv"><span class="wc-l">${ic}VFC</span><span class="wc-hvin"><input id="hrvin" inputmode="numeric" placeholder="${b?Math.round(b):"—"}" value="${hv||""}" aria-label="VFC de esta noche en milisegundos"><i>ms</i></span><button class="wc-btn" data-act="savehrv">Guardar</button><small class="wc-hvn">La VFC nocturna que te da tu reloj. Es lo que más pesa en cómo llegas.</small></div>`}
 async function saveRhr(){const c=userCol();if(!c)return;try{await c.doc("rhr").set({kind:"rhr",map:S.rhr||{}})}catch(e){toast("No se ha podido guardar el pulso")}}
 function setRhr(k,v){S.rhr=S.rhr||{};if(v)S.rhr[k]=v;else delete S.rhr[k];saveRhr();const a=rhrAvg(today(),7);if(a){S.profile=Object.assign({},S.profile,{hrrest:Math.round(a)});saveProfile(true)}}
 function rhrAvg(end,n){const M=S.rhr||{};let t=0,c=0;for(let i=0;i<n;i++){const v=M[shiftKey(end,-i)];if(v){t+=v;c++}}return c?t/c:null}
@@ -3900,6 +3915,7 @@ function weightBar(){
       ${clash?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
       <span class="wc-sec">Así amaneces</span>
       <div class="wc-g">${tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy")}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy")}</div>
+      ${hrvRow()}
       ${sl?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
     </section>`}
   return`<section class="glass pad fade wcard">
@@ -5046,6 +5062,9 @@ document.addEventListener("click",e=>{
     if(v){S.weights=(S.weights||[]).filter(x=>x.d!==k).concat([{d:k,kg:v}]);S.profile=Object.assign({},S.profile,{weight:v});saveWeights();saveProfile(true)}
     S.wtEdit=false;buzz(12);render();toast("Registro de hoy guardado");return}
   if(t.dataset.slpick){S.slDraft=S.slDraft===t.dataset.slpick?null:t.dataset.slpick;document.querySelectorAll("[data-slpick]").forEach(b=>b.setAttribute("aria-checked",b.dataset.slpick===S.slDraft));return}
+  if(t.dataset.act==="hrvedit"){S.hrvEdit=true;render();setTimeout(()=>{const i=$("#hrvin");if(i)i.focus()},30);return}
+  if(t.dataset.act==="savehrv"){const v=num(($("#hrvin")||{}).value),k=today();if(!v||v<5||v>250){toast("Revisa la VFC (5–250 ms)");return}
+    S.hrvMan=Object.assign({},S.hrvMan,{[k]:Math.round(v)});S.hrv=Object.assign({},S.hrv,{[k]:Math.round(v)});S.hrvEdit=false;saveHrv();render();toast("VFC guardada");return}
   if(t.dataset.act==="wtedit"){S.wtEdit=true;S.slDraft=(S.sleep||{})[today()]||null;S.tab="hoy";render();window.scrollTo(0,0);const el=$("#wt");if(el)el.focus();return}
   if(t.dataset.act==="wtskip"){S.wtSkip=true;render();return}
   if(t.dataset.act==="wtcancel"){S.wtEdit=false;render();return}
@@ -5155,6 +5174,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.plskip!=null){planAction("skip",+t.dataset.plskip,t.dataset.k);return}
 });
 document.addEventListener("toggle",e=>{if(e.target.classList&&e.target.classList.contains("why"))S.whyOpen=e.target.open},true);
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="hrvin"){const b=document.querySelector('[data-act="savehrv"]');if(b)b.click()}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.target.id==="stp_in"||e.target.id==="stp_goal")){const b=document.querySelector('[data-act="stpsave"]');if(b)b.click()}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="re_new"){const b=document.querySelector('[data-act="readdcustom"]');if(b)b.click()}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="wtref"){const b=document.querySelector('[data-act="wtrefsave"]');if(b)b.click()}});
@@ -5232,7 +5252,7 @@ setTimeout(hideSplash,4000);
     S.steps=Object.assign({},S.steps||{},h.steps||{});
     S.weights=S.weights||[];const wd=new Set(S.weights.map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d))S.weights.push(x)});
     S.hcSleepH=h.sleepH||{};
-    S.hrv=h.hrv||{};
+    S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});
     if(h.rhrBase&&S.profile){S.profile=Object.assign({},S.profile,{hrrest:h.rhrBase})}
   }}catch(e){}}
   render();
