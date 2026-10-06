@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:49:43.305Z">
+<meta name="sustrato-version" content="2026-10-06T11:54:54.119Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2231,6 +2231,19 @@ html[data-theme] .wc-color .wc-ic,html[data-theme] .wc-color .wc-w .wc-ic,html[d
 .ds-t{font:600 10.5px var(--font);fill:var(--muted);font-variant-numeric:tabular-nums}
 .ds-now{stroke:#ff453a;stroke-width:2;stroke-linecap:round}
 .hcar-track{align-items:flex-start}
+/* gota grande */
+.qd2{display:flex;flex-direction:column;align-items:center;margin-top:4px}
+.qd2 .drop{display:block;width:min(220px,62vw);height:auto;aspect-ratio:100/121;flex:none}
+.dr-bg{fill:var(--fill);opacity:.35}.dr-f{opacity:.16}.dr-l{fill:none;stroke:var(--card);stroke-width:1.1;opacity:.9}
+.dr-hl{pointer-events:none;opacity:.32;fill:#fff!important}
+html[data-theme="dark"] .dr-f{opacity:.12}html[data-theme="dark"] .dr-hl{opacity:.18}
+.qk2{text-align:center;margin-top:10px}.qk2 b{display:block;font:700 40px/1 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.qk2 span{font-size:13.5px;color:var(--muted)}
+.qc3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.qc{appearance:none;border:0;background:var(--card2);border-radius:14px;padding:10px 10px 9px;color:inherit;font:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:0}
+.qc-n{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}.qc-n i{width:8px;height:8px;border-radius:2px;flex:none}
+.qc b{font:650 19px var(--round,var(--font));font-variant-numeric:tabular-nums;white-space:nowrap}.qc b small{font-size:12px;font-weight:500;color:var(--muted)}
+.qc-bar{display:block;height:4px;border-radius:2px;background:var(--fill);overflow:hidden;margin:3px 0 2px}.qc-bar i{display:block;height:100%;border-radius:2px}
+.qc-k{font-size:11px;color:var(--muted)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2302,7 +2315,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="138";
+const APP_VER="139";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3610,18 +3623,37 @@ function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks|
 /* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
    cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
 function eatenToday(){const l=(S.log||{})[S.day]||{};return Object.entries(l).filter(([k])=>!k.startsWith("fuel_")).reduce((a,[,x])=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0})}
-function dropChart(t,e){const D="M50 6 Q63 24 73.6 43.5 A28 28 0 1 1 26.4 43.5 Q37 24 50 6Z",TOP=6,BOT=86.7,HH=BOT-TOP;
+const DROP_D="M50 3 C58 17 91 49 91 77 C91 101 72 118 50 118 C28 118 9 101 9 77 C9 49 42 17 50 3Z";
+let DROP_W=null;
+/* Anchura de la gota a cada altura (se mide una vez sobre el propio trazado) */
+function dropWidths(){if(DROP_W)return DROP_W;const p=document.createElementNS("http://www.w3.org/2000/svg","path");p.setAttribute("d",DROP_D);const sv=document.createElementNS("http://www.w3.org/2000/svg","svg");sv.style.cssText="position:absolute;width:0;height:0";sv.appendChild(p);document.body.appendChild(sv);
+  const L=p.getTotalLength(),lo={},hi={};for(let i=0;i<=800;i++){const q=p.getPointAtLength(i/800*L),k=Math.round(q.y*2);lo[k]=Math.min(lo[k]??99,q.x);hi[k]=Math.max(hi[k]??0,q.x)}sv.remove();
+  const W=[];for(let k=0;k<=240;k++)W[k]=hi[k]!=null?hi[k]-lo[k]:0;for(let k=1;k<240;k++)if(!W[k])W[k]=(W[k-1]+(W[k+1]||W[k-1]))/2;DROP_W=W;return W}
+/* Alturas de cada frontera repartiendo por área: fr = fracción de área desde abajo */
+function dropYs(fracs){const W=dropWidths(),TOP=3,BOT=118,N=230,cum=[0];for(let i=1;i<=N;i++){const y=BOT-i/N*(BOT-TOP);cum.push(cum[i-1]+(W[Math.round(y*2)]||0))}
+  const A=cum[N];return fracs.map(fa=>{const t=fa*A;let i=1;while(i<N&&cum[i]<t)i++;const f0=(t-cum[i-1])/((cum[i]-cum[i-1])||1);return BOT-(i-1+f0)/N*(BOT-TOP)})}
+function dropChart(t,e){
   const L=[[9*t.F,9*e.F,"var(--fat)"],[4*t.P,4*e.P,"var(--prot)"],[4*t.C,4*e.C,"var(--carb)"]],tot=L.reduce((a,x)=>a+x[0],0)||1;
-  const wv=(y,a)=>`M-5 ${y.toFixed(2)} C15 ${(y-a).toFixed(2)} 30 ${(y+a).toFixed(2)} 50 ${y.toFixed(2)} S85 ${(y-a).toFixed(2)} 105 ${y.toFixed(2)}`;
-  /* Las capas se reparten por ÁREA (la gota es más ancha abajo), para que cada macro ocupe lo que le toca */
-  const wd=y=>y<43.5?(y-TOP)/(43.5-TOP)*47.2:2*Math.sqrt(Math.max(0,784-(y-58.6)*(y-58.6))),cum=[0];for(let i=1;i<=200;i++){const ya=BOT-(i-1)/200*HH,yb=BOT-i/200*HH;cum.push(cum[i-1]+(wd(ya)+wd(yb))/2*HH/200)}
-  const AR=cum[200],yAt=fa=>{const tgt=fa*AR;let i=1;while(i<200&&cum[i]<tgt)i++;const f0=(tgt-cum[i-1])/((cum[i]-cum[i-1])||1);return BOT-(i-1+f0)/200*HH};
-  let y=BOT,acc=0,faint="",solid="",lines="";
-  L.forEach(([tv,ev,c],i)=>{const fr=tv?Math.min(1,ev/tv):0,y0=yAt(acc+tv/tot),ys=yAt(acc+tv/tot*fr);acc+=tv/tot;
-    faint+=`<path d="${wv(y0,2.2)} L105 ${y.toFixed(2)} L-5 ${y.toFixed(2)}Z" fill="${c}" class="dr-f"/>`;
-    if(fr>0.01)solid+=`<path d="${wv(ys,fr>=.99?2.2:2.8)} L105 ${y.toFixed(2)} L-5 ${y.toFixed(2)}Z" fill="${c}" class="dr-s"/>`;
-    if(i<L.length-1)lines+=`<path d="${wv(y0,2.2)}" class="dr-l"/>`;y=y0});
-  return`<svg class="drop" viewBox="14 4 72 84" role="img" aria-label="Lo que llevas comido de cada macro"><defs><clipPath id="drc"><path d="${D}"/></clipPath></defs><g clip-path="url(#drc)"><rect width="100" height="106" class="dr-bg"/>${faint}${solid}${lines}</g></svg>`}
+  let acc=0;const bounds=[0],levels=[];L.forEach(([tv,ev])=>{const sh=tv/tot,fr=tv?Math.min(1,ev/tv):0;levels.push(acc+sh*fr);acc+=sh;bounds.push(acc)});
+  const yb=dropYs(bounds),yl=dropYs(levels);
+  const faint=L.map((x,i)=>`<path d="M0 ${yb[i+1].toFixed(2)} H100 V${yb[i].toFixed(2)} H0Z" fill="${x[2]}" class="dr-f"/>`).join("");
+  const solid=L.map((x,i)=>`<path class="dr-s" data-i="${i}" fill="${x[2]}" d=""/>`).join("");
+  const seps=yb.slice(1,-1).map(y=>`<path d="M0 ${y.toFixed(2)} H100" class="dr-l"/>`).join("");
+  return`<svg class="drop" id="dropsvg" viewBox="0 0 100 121" role="img" aria-label="Lo que llevas comido de cada macro" data-yb="${yb.map(v=>v.toFixed(2)).join(",")}" data-yl="${yl.map(v=>v.toFixed(2)).join(",")}">
+    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath><linearGradient id="drg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+    <g clip-path="url(#drc)"><rect width="100" height="121" class="dr-bg"/>${faint}${solid}${seps}<path d="M15 77 C15 63 21 51 29 41 C25 53 21.5 65 21.5 78 C21.5 88 24 96 29 103 C20 97 15 88 15 77Z" fill="#fff" class="dr-hl"/></g></svg>`}
+/* Animación: ondas en la superficie de cada capa y llenado con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
+const DROP={cur:null,v:null,run:false};
+function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg");if(!el)return;
+  const yb=el.dataset.yb.split(",").map(Number),yl=el.dataset.yl.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!DROP.cur||DROP.cur.length!==yl.length){DROP.cur=yb.slice(0,yl.length);DROP.v=yl.map(()=>0)}
+  let moving=false;yl.forEach((tg,i)=>{if(rm){DROP.cur[i]=tg;return}const k=0.012,d=0.86;DROP.v[i]=(DROP.v[i]+(tg-DROP.cur[i])*k)*d;DROP.cur[i]+=DROP.v[i];if(Math.abs(tg-DROP.cur[i])>.02||Math.abs(DROP.v[i])>.01)moving=true});
+  const r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
+  el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,y=DROP.cur[i],bot=yb[i]+.6;if(y>=bot-0.15){p.setAttribute("d","");return}
+    const amp=rm?0:Math.min(1.5,(bot-y)*.5),ph=i*1.7;let d=`M0 ${bot}`;for(let x=0;x<=100;x+=4){const w=amp*(0.6*Math.sin(x*0.09+tt*1.6+ph)+0.4*Math.sin(x*0.17-tt*2.3+ph*1.3));d+=` L${x} ${Math.min(bot,y+w).toFixed(2)}`}p.setAttribute("d",d+` L100 ${bot}Z`)});
+  if((vis&&!rm)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
+function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}}
+document.addEventListener("scroll",()=>dropKick(),{passive:true});
 /* Franja del día: la hora de cada comida y el entreno */
 function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";const lg=(S.log||{})[S.day]||{};
   const W=340,H=44,y=16;let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));a-=30;z+=30;
@@ -4909,11 +4941,9 @@ function vHoy(){
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
-      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,q=(g,tg)=>ek>0?`<b>${fmtInt(g)}</b><small> / ${fmtInt(tg)} g</small>`:`<b>${fmtInt(tg)} g</b>`;
-        return`<div class="qd">${dropChart(t,e)}<div class="qd-s"><div class="qk"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal comidas":"kcal para hoy"}</span></div>
-          <div class="qm-l"><button class="qm" data-macro="C" aria-label="Hidratos: ver alimentos"><i style="background:var(--carb)"></i><span>Hidratos<small>${(t.C/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.C,t.C)}</span></button>
-          <button class="qm" data-macro="P" aria-label="Proteína: ver alimentos"><i style="background:var(--prot)"></i><span>Proteína<small>${(t.P/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.P,t.P)}</span></button>
-          <button class="qm" data-macro="F" aria-label="Grasas: ver alimentos"><i style="background:var(--fat)"></i><span>Grasas<small>${(t.F/kg).toFixed(1).replace(".",",")} g/kg</small></span><span class="qv">${q(e.F,t.F)}</span></button></div></div></div>
+      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,col=(m,c,n,g,tg,gk)=>`<button class="qc" data-macro="${m}" aria-label="${n}: ver alimentos"><span class="qc-n"><i style="background:${c}"></i>${n}</span><b>${fmtInt(ek>0?g:tg)}<small>${ek>0?" / "+fmtInt(tg):""} g</small></b><span class="qc-bar"><i style="width:${ek>0?Math.min(100,g/tg*100).toFixed(0):0}%;background:${c}"></i></span><small class="qc-k">${gk} g/kg</small></button>`;
+        return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal":"kcal para hoy"}</span></div></div>
+        <div class="qc3">${col("C","var(--carb)","Hidratos",e.C,t.C,(t.C/kg).toFixed(1).replace(".",","))}${col("P","var(--prot)","Proteína",e.P,t.P,(t.P/kg).toFixed(1).replace(".",","))}${col("F","var(--fat)","Grasas",e.F,t.F,(t.F/kg).toFixed(1).replace(".",","))}</div>
         ${dayStrip(t)}`})()}
     </div>
     <div class="hero-r">
@@ -5229,7 +5259,7 @@ function vPerfil(){
     </section>
   </div></div>`;
 }
-function render(){
+function render(){setTimeout(dropKick,0);
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
   {const a=computeAdapt();S.adaptF=a.ok?a.f:null}
