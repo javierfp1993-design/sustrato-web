@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T13:26:53.102Z">
+<meta name="sustrato-version" content="2026-10-06T13:36:38.035Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2358,7 +2358,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="152";
+const APP_VER="153";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2710,7 +2710,22 @@ function macroQuality(t,k){const{foods,unk}=dayFoods(k);if(!foods.length)return 
   return q}
 function weekOmega3(t){let s=0,n=0;for(let i=0;i<7;i++){const k=shiftKey(S.day,-i),{foods}=dayFoods(k);if(!foods.length)continue;n++;foods.forEach(({id,g})=>{s+=((QUAL[id]||[])[4]||0)*g/100})}return n>=3?s/n:null}
 /* Sugerencias amables: como mucho dos, por orden de importancia */
-function macroTips(t,q){if(!q)return[];const tips=[],name=id=>INGR_BY[id].n.toLowerCase().replace(/ \(.*\)$/,"");
+/* Cantidad antes que calidad: avisa si te pasas de un macro con margen (según tu objetivo) o si, ya por la tarde, vas muy corto.
+   Cuenta solo lo entrenado de verdad hoy, no lo programado. La proteína de más no se avisa: es inofensiva. */
+function macroAmount(t){const e=eatenToday(),g=(S.profile||{}).goal||"recomp",strict=g==="loss",loose=g==="maint"||g==="hyper";
+  const done=S.acts.filter(a=>a.day===S.day),heavy=done.reduce((s,a)=>s+(a.kcal||0),0)>=500||done.some(a=>a.mov>=4500),trained=done.some(a=>a.sport!=="walk");
+  const pct=strict?0.10:loose?0.20:0.15,minG={C:strict?30:40,F:strict?9:12},over={},under={};
+  ["C","F"].forEach(m=>{const x=e[m]-t[m];if(!(m==="C"&&heavy)&&x>Math.max(minG[m],t[m]*pct))over[m]=Math.round(x)});
+  const late=S.day===today()&&new Date().getHours()>=18;
+  if(late&&4*e.P+4*e.C+9*e.F>0){if(e.P<t.P*0.7)under.P=Math.round(t.P-e.P);if(heavy&&e.C<t.C*0.6)under.C=Math.round(t.C-e.C)}
+  return{over,under,heavy,trained}}
+function amountTips(t){const A=macroAmount(t),tips=[];
+  if(A.over.F)tips.push(`Hoy vas ${A.over.F} g por encima en grasas. En lo que queda del día, tira de opciones magras: pescado blanco, pollo, legumbre o verdura.`);
+  if(A.over.C)tips.push(`${A.trained?"El entreno de hoy ha sido suave y vas":"Hoy no has entrenado y vas"} ${A.over.C} g por encima en hidratos. En lo que queda del día, mejor verdura y proteína.`);
+  if(A.under.P)tips.push(`Te faltan unos ${A.under.P} g de proteína. La cena es buen momento: pescado, huevo, carne o un lácteo.`);
+  if(A.under.C)tips.push(`Después del entreno de hoy aún te faltan unos ${A.under.C} g de hidratos para reponer. Arroz, pasta, patata o pan en la cena.`);
+  return tips}
+function macroTips(t,q){const tips=amountTips(t);if(!q)return tips.slice(0,2);const name=id=>INGR_BY[id].n.toLowerCase().replace(/ \(.*\)$/,"");
   const glyc=(t.ex||0)>=500||(t.acts||[]).some(a=>a.mov>=4500)||(t.plan||[]).some(p=>!p.skip&&(p.dur>=75||p.int==="i"));
   if(q.COut>30&&q.sugOut/q.COut>0.33&&!glyc){const top=Object.entries(q.bySug).sort((a,b)=>b[1]-a[1]).find(([id])=>QSWAP[id]);
     tips.push(`Fuera del entreno, buena parte de tus hidratos son azúcares y hoy no es un día de mucha carga.${top?` Si te apetece, cambia ${name(top[0])} por ${QSWAP[top[0]]}.`:" Prioriza cereales integrales, legumbres o tubérculos."}`)}
@@ -2722,11 +2737,12 @@ function macroTips(t,q){if(!q)return[];const tips=[],name=id=>INGR_BY[id].n.toLo
     tips.push(`Las grasas saturadas pasan del 10 % de lo que comes (${r0(9*q.sat/q.kcal*100)} %).${top?` Cambiar ${name(top[0])} por ${QSWAP[top[0]]} lo baja.`:" Más aceite de oliva y frutos secos lo equilibran."}`)}
   const w=weekOmega3(t);if(w!=null&&w<1.1)tips.push(`Esta semana vas corto de omega‑3 (${w.toFixed(1).replace(".",",")} g al día de media). Pescado azul un par de veces o un puñado de nueces lo cubre.`);
   return tips.slice(0,2)}
-function macroVerdicts(t,q){if(!q)return null;
+function macroVerdicts(t,q){const A=macroAmount(t),amt=m=>A.over[m]?["mid",`${A.over[m]} g de más`]:A.under[m]?["mid",`Faltan ${A.under[m]} g`]:null;
+  if(!q){const r={C:amt("C"),P:amt("P"),F:amt("F")};return r.C||r.P||r.F?r:null}
   const glyc=(t.ex||0)>=500||(t.acts||[]).some(a=>a.mov>=4500)||(t.plan||[]).some(p=>!p.skip&&(p.dur>=75||p.int==="i"));
   const cBad=q.COut>30&&q.sugOut/q.COut>0.33&&!glyc,pBad=Object.values(q.meals).some(M=>M.P>=8&&M.comp/M.P<0.5),
     sBad=q.kcal>800&&9*q.sat/q.kcal>0.10,w=weekOmega3(t),wBad=w!=null&&w<1.1;
-  return{C:cBad?["mid","Muchos azúcares"]:["ok","Energía duradera"],P:pBad?["mid","Falta combinar"]:["ok","Completa"],F:sBad?["mid","Muchas saturadas"]:wBad?["mid","Falta omega‑3"]:["ok","Saludables"]}}
+  return{C:amt("C")||(cBad?["mid","Muchos azúcares"]:["ok","Energía duradera"]),P:amt("P")||(pBad?["mid","Falta combinar"]:["ok","Completa"]),F:amt("F")||(sBad?["mid","Muchas saturadas"]:wBad?["mid","Falta omega‑3"]:["ok","Saludables"])}}
 const QEXPL={C:"Los hidratos lentos (avena, arroz, pan integral, legumbres) te dan energía poco a poco. Los rápidos (fruta, miel, azúcar) actúan enseguida: perfectos antes y después de entrenar, mejor con moderación el resto del día.",
  P:"La proteína completa tiene todo lo que tu músculo necesita: carne, pescado, huevo, lácteos, soja o quinoa. La vegetal suele ir incompleta, pero legumbre y cereal en la misma comida se completan (lentejas con arroz, hummus con pan).",
  F:"Las grasas del aceite de oliva, el aguacate, los frutos secos y el pescado azul cuidan tu corazón; el omega‑3 (pescado azul, nueces) además ayuda a recuperar. Las saturadas (embutido, queso curado, mantequilla), mejor con moderación."};
