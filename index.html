@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T09:29:55.040Z">
+<meta name="sustrato-version" content="2026-10-06T10:41:43.753Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2117,6 +2117,8 @@ html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
 .wc-hvin input{width:100%;min-height:40px;padding:0 34px 0 12px;border:0;border-radius:10px;background:var(--wc-in,var(--fill));color:var(--wc-tx,var(--fg));font:600 17px var(--font);font-variant-numeric:tabular-nums}
 .wc-hvin i{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--wc-mu,var(--muted))}
 .wc-hvn{flex-basis:100%;font-size:12.5px;color:var(--wc-mu,var(--muted))}
+.mtags{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 4px 36px}.mtags .pill{flex:0 0 auto;width:auto!important}
+.meal .mh .tags{flex:0 1 auto;min-width:0}
 /* v127 armonía: color solo con significado, en la línea o en un punto */
 .fl-ask .fl-ic{background:var(--card2,rgba(127,127,127,.12))!important;color:var(--fg)!important}
 .fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
@@ -2201,7 +2203,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="131";
+const APP_VER="132";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4074,7 +4076,7 @@ function logControls(k,m){
   }
   if(st==="done"){const r=e.r||1;ed=`<div class="rat" role="group" aria-label="Cantidad">${[[.5,"½"],[.75,"¾"],[1,"1"],[1.25,"1¼"],[1.5,"1½"]].map(([v,l])=>`<button class="chip sm" data-lgr="${m.id}" data-r="${v}" aria-pressed="${r===v}" aria-label="${l} ración">${l}</button>`).join("")}<span class="note" style="margin:0">${fmtInt(4*e.P+4*e.C+9*e.F)} kcal</span></div>`}
   const fq=S.mealMenu===m.id?freqDishes(m.id,k):[];
-  const menu=S.mealMenu===m.id?`${fq.length?`<div class="mfreq"><span>Lo que sueles comer</span>${fq.map(o=>`<button class="mfq" data-lgq="${m.id}|${o.id}|${o.s}"><b>${esc(dishById(o.id).n)}</b><small>${fmtInt(dishById(o.id).P*o.s)} g prot. · ${fmtInt((4*dishById(o.id).P+4*dishById(o.id).C+9*dishById(o.id).F)*o.s)} kcal</small></button>`).join("")}</div>`:""}<div class="mlog">${b("chg","Comí otra cosa")}${b("skip","Me la salté")}${st?`<button class="chip sm" data-log="${m.id}" data-st="${st}">Quitar registro</button>`:""}</div>`:"";
+  const menu=S.mealMenu===m.id?`${fq.length?`<div class="mfreq"><span>Lo que sueles comer</span>${fq.map(o=>`<button class="mfq" data-lgq="${m.id}|${o.id}|${o.s}"><b>${esc(dishById(o.id).n)}</b><small>${fmtInt(dishById(o.id).P*o.s)} g prot. · ${fmtInt((4*dishById(o.id).P+4*dishById(o.id).C+9*dishById(o.id).F)*o.s)} kcal</small></button>`).join("")}</div>`:""}<div class="mlog">${S.sampleImg?`<label class="chip sm photo">${S.logBusy&&S.logBusy[m.id]?"Analizando…":"Hacer foto"}<input type="file" id="lgf_${m.id}" accept="image/*" hidden></label>`:""}${b("chg","Comí otra cosa")}${b("skip","Me la salté")}${st?`<button class="chip sm" data-log="${m.id}" data-st="${st}">Quitar registro</button>`:""}</div>`:"";
   return menu+ed;
 }
 /* Repetición: lo que sueles comer y copiar semanas */
@@ -4475,7 +4477,8 @@ function mealsCard(t){
     const w=v=>(v/mx*100).toFixed(1);
     const lg=(S.log[S.day]||{})[m.id],st=lg&&lg.st,canL=S.day<=today();
     const chk=canL?`<button class="mchk ${st||""}${S.pop===m.id?" chkpop":""}" data-log="${m.id}" data-st="done" aria-pressed="${st==="done"}" aria-label="${st==="done"?"Desmarcar":"Marcar como comida según lo planeado"}">${st==="done"?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':st==="skip"?'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"/></svg>':st==="chg"?'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>':""}</button>`:"";
-    return`<div class="meal${st?" st-"+st:""}"><div class="mh">${chk}<span class="mh-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span><span class="tags">${tags}</span>${canL?`<button class="mmore" data-mmenu="${m.id}" aria-expanded="${S.mealMenu===m.id}" aria-label="Más opciones">⋯</button>`:""}</div>
+    const nT=(tags.match(/class="pill/g)||[]).length,tagRow=nT>1?`<div class="tags mtags">${tags}</div>`:"";
+    return`<div class="meal${st?" st-"+st:""}"><div class="mh">${chk}<span class="mh-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${nT===1?`<span class="tags">${tags}</span>`:""}${canL?`<button class="mmore" data-mmenu="${m.id}" aria-expanded="${S.mealMenu===m.id}" aria-label="Más opciones">⋯</button>`:""}</div>${tagRow}
       <div class="mbar"><i style="width:${w(4*m.P)}%;background:var(--prot)"></i><i style="width:${w(4*m.C)}%;background:var(--carb)"></i><i style="width:${w(9*m.F)}%;background:var(--fat)"></i></div>
       ${(()=>{const a=(S.menu[S.day]||{})[m.id],ds=a&&dishById(a.d);return ds?`<div class="mdish">${esc(ds.n)} <span>${fmtS(a.s)}</span></div>`:""})()}
       <div class="mnums"><span>P ${fmtInt(m.P)} g</span><span>H ${fmtInt(m.C)} g</span><span>G ${fmtInt(m.F)} g</span><span class="mk">${fmtInt(m.kcal)} kcal</span></div>${S.day<=today()?logControls(S.day,m):""}</div>`}).join("");
