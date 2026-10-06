@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T07:28:39.301Z">
+<meta name="sustrato-version" content="2026-10-06T08:54:16.277Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2194,7 +2194,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="128";
+const APP_VER="129";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2970,6 +2970,10 @@ function readiness(){const tk=today(),M=S.rhr||{},f=[];let sc=70,n=0;
   const tv=M[tk],base=rhrAvg(shiftKey(tk,-1),7);
   if(tv&&base){const d=tv-base;n++;const v=d<=-3?10:d<=3?4:d<=6?-15:-30;sc+=v;f.push({k:"rhr",l:"Pulso",v:(d>0?"+":"")+d.toFixed(0)+" ppm",s:v>0?"ok":v>-20?"mid":"hi",tip:"Pulso en reposo de hoy frente a tu media de la última semana"})}
   else f.push({k:"rhr",l:"Pulso",v:"Sin dato",s:"",tip:"Apunta tu pulso al despertar"});
+  /* VFC (rMSSD de la noche) frente a tu media de los 7 días anteriores: el indicador de recuperación más sensible */
+  {const H=S.hrv||{},hv=H[tk],prev=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)prev.push(x)}
+    if(hv&&prev.length>=3){const b=prev.reduce((p,q)=>p+q,0)/prev.length,r=hv/b;n++;const v=r>=1.05?12:r>=.95?4:r>=.85?-10:-22;sc+=v;
+      f.push({k:"hrv",l:"VFC",v:r>=1.05?"Alta":r>=.95?"Normal":r>=.85?"Baja":"Muy baja",s:v>0?"ok":v>-15?"mid":"hi",tip:`Variabilidad cardiaca de esta noche: ${Math.round(hv)} ms frente a ${Math.round(b)} ms de media de tu última semana`})}}
   if(S.acts.length){const FS=fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
   sc=Math.max(5,Math.min(98,sc));
@@ -5228,6 +5232,7 @@ setTimeout(hideSplash,4000);
     S.steps=Object.assign({},S.steps||{},h.steps||{});
     S.weights=S.weights||[];const wd=new Set(S.weights.map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d))S.weights.push(x)});
     S.hcSleepH=h.sleepH||{};
+    S.hrv=h.hrv||{};
     if(h.rhrBase&&S.profile){S.profile=Object.assign({},S.profile,{hrrest:h.rhrBase})}
   }}catch(e){}}
   render();
