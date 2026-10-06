@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T11:42:47.542Z">
+<meta name="sustrato-version" content="2026-10-06T11:44:59.182Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2285,7 +2285,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="136";
+const APP_VER="137";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3082,6 +3082,16 @@ function readiness(tk,FSc){tk=tk||today();const M=S.rhr||{},f=[];let sc=70,n=0;
 function readinessTrend(days){const FS=S.acts.length?fitnessSeries():null,out=[];
   for(let i=days-1;i>=0;i--){const k=shiftKey(today(),-i),has=(S.rhr||{})[k]||(S.hrv||{})[k]||(S.sleep||{})[k];out.push({k,sc:has?readiness(k,FS).sc:null})}return out}
 function sparkPath(vals,W,H,pad,lo,hi){const pts=vals.map((v,i)=>v==null?null:[i/(vals.length-1)*W,H-pad-(v-lo)/((hi-lo)||1)*(H-2*pad)]);let d="",pen=false;pts.forEach(p=>{if(!p)return;d+=(pen?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)+" ";pen=true});const last=[...pts].reverse().find(Boolean);return{d,last}}
+/* Peso frente al objetivo: se juzga la tendencia de 14 días (regresión), nunca el cambio de un día a otro,
+   que es sobre todo agua y glucógeno. Sin datos suficientes no hay veredicto. */
+function weightVerdict(){const W=(S.weights||[]).filter(x=>x.d>=shiftKey(today(),-13)&&x.kg).sort((a,b)=>a.d<b.d?-1:1);
+  if(W.length<4||daysBetween(W[0].d,W[W.length-1].d)<7)return null;
+  const xs=W.map(x=>daysBetween(W[0].d,x.d)),ys=W.map(x=>x.kg),n=xs.length,mx=xs.reduce((a,b)=>a+b)/n,my=ys.reduce((a,b)=>a+b)/n;
+  let num=0,den=0;xs.forEach((x,i)=>{num+=(x-mx)*(ys[i]-my);den+=(x-mx)*(x-mx)});const wk=den?num/den*7/my*100:0; /* % de peso por semana */
+  const g=(S.profile||{}).goal||"maint",r=Math.round(wk*10)/10,t=(r>0?"+":r<0?"−":"±")+Math.abs(r).toFixed(1).replace(".",",")+" %/sem";
+  if(g==="loss")return wk<=-1.2?["mid",t+" · rápido"]:wk<=-0.2?["ok",t+" · bien"]:wk<0.2?["mid",t+" · estable"]:["mid",t+" · sube"];
+  if(g==="hyper")return wk>=0.6?["mid",t+" · rápido"]:wk>=0.1?["ok",t+" · bien"]:["mid",t+(wk>-0.1?" · estable":" · baja")];
+  return Math.abs(wk)<=0.3?["ok",t+" · estable"]:["mid",t+(wk>0?" · sube":" · baja")]}
 function readyCard(){if(S.day!==today())return"";const r=readiness();if(!r.n&&!(S.rhr&&Object.keys(S.rhr).length))return"";
   const R=46,C=Math.PI*R,pc=r.sc/100,ang=Math.PI*(1-pc),cx=60+R*Math.cos(ang),cy=58-R*Math.sin(ang);
   const pend=pendingPlanned(today()).filter(x=>x.sport!=="str"&&(x.int==="i"||(x.steps&&stInt(x.steps)!=="s")));
@@ -4033,7 +4043,7 @@ function weightBar(){
         ${fx.length?`<span class="wc-fx">${esc(fx.join(" · "))}</span>`:""}</div>
       ${clash?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
       <span class="wc-sec">Así amaneces</span>
-      <div class="wc-g">${tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy",spW)}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy",spP,pDot)}</div>
+      <div class="wc-g">${(()=>{const wv=weightVerdict();return tile("wc-w",icW,"Peso",td?String(td.kg).replace(".",","):"","kg",wv?wv[1]:last&&td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"Primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"Igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" kg vs "+ref})():td?"Primer registro":"Sin registrar hoy",spW,wv?wv[0]:"")})()}${tile("wc-p",icP,"Pulso",rv||"","ppm",dd!=null?(dd>0?"+":dd<0?"−":"±")+Math.abs(dd).toFixed(0)+" vs tu media":rv?"En reposo":"Sin registrar hoy",spP,pDot)}</div>
       ${hrvRow()}
       ${sl?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
     </section>`}
