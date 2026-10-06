@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T12:18:05.720Z">
+<meta name="sustrato-version" content="2026-10-06T12:25:11.112Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2321,7 +2321,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="144";
+const APP_VER="145";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5004,7 +5004,7 @@ function vHoy(){
         return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal":"kcal para hoy"}</span></div></div>
         <div class="qc3">${col("C","var(--carb)","Hidratos",e.C,t.C,(t.C/kg).toFixed(1).replace(".",","))}${col("P","var(--prot)","Proteína",e.P,t.P,(t.P/kg).toFixed(1).replace(".",","))}${col("F","var(--fat)","Grasas",e.F,t.F,(t.F/kg).toFixed(1).replace(".",","))}</div>
         ${tips.length?`<div class="qs"><span>Sugerencia</span><p>${esc(tips[ti])}</p>${tips.length>1?`<button class="qs-n" data-qtip="1">${ti?"Ver la anterior":"Ver otra"}</button>`:""}</div>`:""}
-        ${dayStrip(t)}`})()}
+`})()}
     </div>
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
