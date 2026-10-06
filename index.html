@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T13:59:43.850Z">
+<meta name="sustrato-version" content="2026-10-06T14:11:04.427Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2311,6 +2311,13 @@ html[data-theme="light"] .wf-bar i.p{background:#248a3d}html[data-theme="light"]
 /* v155 · gota: color algo más suave, como líquido translúcido (las columnas mantienen el color pleno) */
 .dr-s[data-i="2"]{fill:color-mix(in srgb,var(--carb) 90%,var(--card))}.dr-s[data-i="1"]{fill:color-mix(in srgb,var(--prot) 90%,var(--card))}.dr-s[data-i="0"]{fill:color-mix(in srgb,var(--fat) 90%,var(--card))}
 html[data-theme="light"] .dr-s[data-i="2"]{fill:color-mix(in srgb,var(--carb) 80%,var(--card))}html[data-theme="light"] .dr-s[data-i="1"]{fill:color-mix(in srgb,var(--prot) 80%,var(--card))}html[data-theme="light"] .dr-s[data-i="0"]{fill:color-mix(in srgb,var(--fat) 80%,var(--card))}
+
+/* v156 · donut de semana/mes/año armonizado con la gota */
+.donut .dn-bg{stroke:var(--fill2,rgba(127,127,127,.1))}
+.donut .dn-C{stroke:color-mix(in srgb,var(--carb) 90%,var(--card))}.donut .dn-P{stroke:color-mix(in srgb,var(--prot) 90%,var(--card))}.donut .dn-F{stroke:color-mix(in srgb,var(--fat) 90%,var(--card))}
+html[data-theme="light"] .donut .dn-C{stroke:color-mix(in srgb,var(--carb) 80%,var(--card))}html[data-theme="light"] .donut .dn-P{stroke:color-mix(in srgb,var(--prot) 80%,var(--card))}html[data-theme="light"] .donut .dn-F{stroke:color-mix(in srgb,var(--fat) 80%,var(--card))}
+.donut .dn-k{font:700 30px var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.donut circle[data-macro]:hover{stroke-width:13}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2382,7 +2389,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="155";
+const APP_VER="156";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3809,8 +3816,8 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
     /* Vaivén + corriente: mecida lenta de lado a lado (compás 4,8 s) y, encima, una onda corta que recorre la superficie
        al doble de compás. Las fronteras más hondas la siguen con menos amplitud y un leve retraso, como el líquido bajo
        la superficie: el grosor de cada macro apenas cambia. */
-    const T=4.8,f=acc>0?hi/acc:1,ka=0.55+0.45*f,kr=f*f,lag=(1-f)*0.6,A=(rm?0:1)*amp*0.8*ka,ph=2*Math.PI*tt/T-lag,R=(rm?0:1)*amp*0.22*kr;
-    for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.15*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph))+R*Math.sin(2*Math.PI*(x/50-2*tt/T)-lag);d+=` L${x} ${(yt+w).toFixed(2)}`}
+    const st=DROP.sp?tt-DROP.sp.t:9,sp=rm||st>4?0:DROP.sp.dir*Math.min(9,Math.max(3,amp*2.2))*Math.exp(-st/0.85),T=4.8,f=acc>0?hi/acc:1,ka=0.55+0.45*f,kr=f*f,lag=(1-f)*0.6,A=(rm?0:1)*amp*0.8*ka,ph=2*Math.PI*tt/T-lag,R=(rm?0:1)*amp*0.22*kr;
+    for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.15*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph))+R*Math.sin(2*Math.PI*(x/50-2*tt/T)-lag)+sp*ka*Math.cos(Math.PI*x/100)*Math.sin(2*Math.PI*st/1.1-lag);d+=` L${x} ${(yt+w).toFixed(2)}`}
     p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
@@ -3822,6 +3829,8 @@ function stbFrame(ts){STB.run=false;const el=document.getElementById("stpband");
   const r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,moving=Math.abs(tg-STB.cur)>.0008||Math.abs(STB.v)>.0004;
   if((vis&&!rm&&STB.cur>0.002&&STB.cur<0.999)||moving){STB.run=true;requestAnimationFrame(stbFrame)}}
 document.addEventListener("scroll",()=>dropKick(),{passive:true});
+/* Guiño: al tocar la gota, el líquido se agita un momento hacia el lado contrario y vuelve a su vaivén */
+document.addEventListener("pointerdown",e=>{const el=e.target.closest&&e.target.closest("#dropsvg");if(!el)return;const r=el.getBoundingClientRect();DROP.sp={t:performance.now()/1000,dir:(e.clientX-r.left)<r.width/2?1:-1};dropKick()},{passive:true});
 /* Franja del día: la hora de cada comida y el entreno */
 function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";const lg=(S.log||{})[S.day]||{};
   const W=340,H=44,y=16;let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));a-=30;z+=30;
@@ -3831,10 +3840,11 @@ function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[]
   let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z)now=`<line x1="${X(nm).toFixed(1)}" x2="${X(nm).toFixed(1)}" y1="${y-7}" y2="${y+7}" class="ds-now"/>`}
   return`<svg class="dstrip" viewBox="0 0 ${W} ${H}" role="img" aria-label="Horario de comidas y entreno"><line x1="10" x2="${W-10}" y1="${y}" y2="${y}" class="ds-ax"/>${tr}${now}${dots}</svg>`}
 function donut(t){
-  const parts=[{v:4*t.P,c:"var(--prot)",m:"P"},{v:4*t.C,c:"var(--carb)",m:"C"},{v:9*t.F,c:"var(--fat)",m:"F"}];
-  const tot=parts.reduce((s,p)=>s+p.v,0),R=62,C=2*Math.PI*R,gap=6;let off=0;
-  const segs=parts.map(p=>{const len=Math.max(0,p.v/tot*C-gap);const s=`<circle data-macro="${p.m}" cx="80" cy="80" r="${R}" fill="none" stroke="${p.c}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${(C-len).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}" transform="rotate(-90 80 80)"/>`;off+=p.v/tot*C;return s}).join("");
-  return `<svg class="donut" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Reparto de macros"><circle cx="80" cy="80" r="${R}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="16"/>${segs}<text x="80" y="78" text-anchor="middle" fill="var(--fg)" style="font:600 26px var(--font)">${fmtInt(t.kcal)}</text><text x="80" y="98" text-anchor="middle" fill="var(--muted)" style="font:12px var(--font)">kcal</text></svg>`;
+  /* Armonizado con la gota: mismo orden (hidratos, proteína, grasas), mismos tonos suavizados, anillo fino */
+  const parts=[{v:4*t.C,m:"C"},{v:4*t.P,m:"P"},{v:9*t.F,m:"F"}];
+  const tot=parts.reduce((s,p)=>s+p.v,0),R=64,C=2*Math.PI*R,gap=9;let off=0;
+  const segs=parts.map(p=>{const len=Math.max(0,p.v/tot*C-gap);const s=`<circle data-macro="${p.m}" class="dn-${p.m}" cx="80" cy="80" r="${R}" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${(C-len).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}" transform="rotate(-90 80 80)"/>`;off+=p.v/tot*C;return s}).join("");
+  return `<svg class="donut" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Reparto de macros"><circle cx="80" cy="80" r="${R}" fill="none" class="dn-bg" stroke-width="10"/>${segs}<text x="80" y="82" text-anchor="middle" fill="var(--fg)" class="dn-k">${fmtInt(t.kcal)}</text><text x="80" y="101" text-anchor="middle" fill="var(--muted)" style="font:12.5px var(--font)">kcal al día</text></svg>`;
 }
 function areaChart(series){
   if(!series||!series.length)return"";
@@ -5178,8 +5188,8 @@ function vPeriod(){
   <div class="grid2">
     <section class="glass pad fade"><div class="row"><h2>Nutrición media · ${nD} día${nD>1?"s":""}</h2><span class="pill">${esc((GOALS[(S.profile||{}).goal]||GOALS.recomp).label)}</span></div>
       <div class="macro" style="margin-top:10px">${donut(A)}<div class="mlist">
-        ${macroRow("var(--prot)","Proteína",A.P,(A.P/kg).toFixed(1).replace(".",",")+" g/kg")}
         ${macroRow("var(--carb)","Hidratos",A.C,(A.C/kg).toFixed(1).replace(".",",")+" g/kg")}
+        ${macroRow("var(--prot)","Proteína",A.P,(A.P/kg).toFixed(1).replace(".",",")+" g/kg")}
         ${macroRow("var(--fat)","Grasas",A.F,(A.F/kg).toFixed(1).replace(".",",")+" g/kg")}</div></div>
       <p class="note">Objetivo medio de ${fmtInt(A.kcal)} kcal al día${past.length?" en los días ya pasados":""}.</p></section>
     <section class="glass pad fade"><h2>Gasto ${p==="year"?"medio por mes":"por día"}</h2><div style="margin-top:8px">${barChart(bk)}</div></section>
