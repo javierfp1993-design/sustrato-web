@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T10:47:34.722Z">
+<meta name="sustrato-version" content="2026-10-06T11:08:49.524Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2144,6 +2144,7 @@ html[data-theme="light"] .wc-ics{color:#3b4bd8!important}
 .lgph .ph-x{padding:4px 0}
 .mwhy{display:flex;align-items:flex-start;gap:4px;margin:0 0 8px 36px;font-size:13.5px;color:var(--muted);line-height:1.3}
 .mwhy i{flex:0 0 7px;width:7px;height:7px;border-radius:50%;margin-top:6px}.mwhy span{margin-left:4px}
+.sv-ok{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.sv-ok::before{content:"";width:7px;height:7px;border-radius:50%;background:#30d158}
 /* v127 armonía: color solo con significado, en la línea o en un punto */
 .fl-ask .fl-ic{background:var(--card2,rgba(127,127,127,.12))!important;color:var(--fg)!important}
 .fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
@@ -2228,7 +2229,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="133";
+const APP_VER="134";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2875,6 +2876,14 @@ const XBR={what:["Para qué sirve",'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12
   dose:["Cuánto y cuándo",'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'],
   warn:["Ten en cuenta",'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/>']};
 function xbRow(k,t){const v=XBR[k];return`<div class="xbr xbr-${k}"><span class="xbr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${v[1]}</svg></span><div><span class="xbr-l">${v[0]}</span><p>${esc(t)}</p></div></div>`}
+
+/* ---------- Strava (solo en el móvil) ---------- */
+function stravaCard(){const st=S.stravaSt;if(!window.__native||!window.__native.strava||!st||!st.available)return"";
+  return`<section class="glass pad fade sv-card"><div class="row"><h2>Strava</h2>${st.connected?'<span class="sv-ok">Conectado</span>':""}</div>
+    <p class="note" style="margin:4px 0 14px">${st.connected?`${st.name?esc(st.name)+". ":""}Completa el desnivel y la distancia de tus salidas, y los entrenos que no lleguen por Health Connect.`:"Conecta Strava para tener el desnivel y la distancia de tus salidas, aunque tu reloj no los mande a Health Connect."} Sus datos solo los ves tú y no se usan con la IA.</p>
+    ${st.connected?'<button class="btn" data-act="svoff">Desconectar</button>':`<button class="btn primary" data-act="svon"${S.svBusy?" disabled":""}>${S.svBusy?"Abriendo Strava…":"Conectar con Strava"}</button>`}</section>`}
+async function stravaRefresh(){if(!window.__native||!window.__native.strava)return;try{S.stravaSt=await window.__native.strava()}catch(e){S.stravaSt=null}if(S.tab==="perfil")render()}
+window.__stravaDone=ok=>{S.svBusy=false;toast(ok?"Strava conectado":"No se ha podido conectar con Strava");stravaRefresh()};
 
 /* ---------- Copia de seguridad ---------- */
 function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup")}catch(e){}
@@ -5050,6 +5059,7 @@ function vPerfil(){
     <div class="row"><span class="note" style="margin:0">${S.db&&S.uid?"Tu perfil es privado: cada persona que abra la app ve solo el suyo.":"Esta vista no puede guardar el perfil."}</span><button class="btn primary pf-save${S.pfJust?" done":""}" type="submit" ${S.pfDirty?"":"disabled"}>${S.pfJust?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Guardado':"Guardar cambios"}</button></div>
   </form></section>
   <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+    ${stravaCard()}
     ${dataCard()}
     <section class="glass pad fade hue-body"><h2>Composición y basal</h2>
       ${b?`<div class="kv"><div><span>Gasto basal</span><b>${fmtInt(b.bmr)} kcal</b></div><div><span>Grasa corporal</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><p class="note">Método: ${esc(b.method)}.${b.bf!=null?" Grasa estimada con el método de la Marina de EE. UU. a partir de tus medidas.":" Añade cuello y cintura para estimar tu grasa corporal y afinar el cálculo."}</p>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
@@ -5123,6 +5133,8 @@ document.addEventListener("click",e=>{
     if(v){S.weights=(S.weights||[]).filter(x=>x.d!==k).concat([{d:k,kg:v}]);S.profile=Object.assign({},S.profile,{weight:v});saveWeights();saveProfile(true)}
     S.wtEdit=false;buzz(12);render();toast("Registro de hoy guardado");return}
   if(t.dataset.slpick){S.slDraft=S.slDraft===t.dataset.slpick?null:t.dataset.slpick;document.querySelectorAll("[data-slpick]").forEach(b=>b.setAttribute("aria-checked",b.dataset.slpick===S.slDraft));return}
+  if(t.dataset.act==="svon"){S.svBusy=true;render();window.__native.stravaConnect().catch(()=>toast("No se ha podido abrir Strava")).finally(()=>{setTimeout(()=>{S.svBusy=false;render()},4000)});return}
+  if(t.dataset.act==="svoff"){window.__native.stravaDisconnect().then(()=>{toast("Strava desconectado");stravaRefresh()});return}
   if(t.dataset.act==="hrvedit"){S.hrvEdit=true;render();setTimeout(()=>{const i=$("#hrvin");if(i)i.focus()},30);return}
   if(t.dataset.act==="savehrv"){const v=num(($("#hrvin")||{}).value),k=today();if(!v||v<5||v>250){toast("Revisa la VFC (5–250 ms)");return}
     S.hrvMan=Object.assign({},S.hrvMan,{[k]:Math.round(v)});S.hrv=Object.assign({},S.hrv,{[k]:Math.round(v)});S.hrvEdit=false;saveHrv();render();toast("VFC guardada");return}
@@ -5305,7 +5317,7 @@ setTimeout(hideSplash,4000);
   const cl=window.claude;
   if(!cl||!cl.use){S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin conexión";render();return}
   const [user,db,mcp,sample,dl]=await Promise.all([cl.use("user"),cl.use("db"),cl.use("mcp"),cl.use("sample"),cl.use("downloads")]);
-  S.db=db;S.mcp=mcp;S.sample=sample;S.dl=dl;
+  S.db=db;S.mcp=mcp;S.sample=sample;S.dl=dl;stravaRefresh();
   if(sample&&sample.limits){try{const lim=await sample.limits();S.sampleImg=!!(lim&&lim.images)}catch(e){}}
   if(user){try{S.uid=await user.id()}catch(e){}}
   await loadStore();
