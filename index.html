@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T21:11:48.526Z">
+<meta name="sustrato-version" content="2026-10-06T21:26:43.171Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2349,6 +2349,14 @@ html[data-theme="light"] .rs-b{color:#d70015}
 .sh-prev{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;text-align:center}
 .sh-prev img{max-width:100%;max-height:100%;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
 .sh-go{min-height:52px}
+
+/* v161 · copia en la nube */
+.cl-box{margin-top:14px;padding-top:12px;border-top:.5px solid var(--sep)}
+.cl-t{margin:0;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px}
+.cl-ok{font-size:12px;font-weight:600;color:#248a3d}.cl-ok.err{color:#b25000}html[data-theme="dark"] .cl-ok{color:#30d158}html[data-theme="dark"] .cl-ok.err{color:#ff9f0a}
+.cl-code{margin-top:8px;padding:14px;border-radius:14px;background:var(--fill2,var(--card2));font:600 20px/1.45 var(--mono,ui-monospace,monospace);letter-spacing:.04em;text-align:center;word-break:break-all;user-select:all}
+.cl-in{width:100%;font:500 16px var(--mono,ui-monospace,monospace);letter-spacing:.04em;text-transform:uppercase}
+.cl-l{appearance:none;border:0;background:none;color:var(--muted);font:500 14px var(--font);padding:10px 0 0;min-height:40px;cursor:pointer}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2420,7 +2428,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="160";
+const APP_VER="161";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3158,9 +3166,10 @@ window.__stravaDone=ok=>{S.svBusy=false;toast(ok?"Strava conectado":"No se ha po
 function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup")}catch(e){}
   const can=S.db&&S.uid,rs=S.restore;
   return`<section class="glass pad fade bk-card"><h2>Tus datos</h2><p class="note" style="margin:2px 0 14px">Peso, pulso, sueño, comidas, entrenos, rutinas, platos y perfil. ${last?"Última copia: "+esc(dateLabel(last.slice(0,10)))+".":"Aún no has hecho ninguna copia."}</p>
-    ${rs?`<div class="bk-conf"><p><b>¿Restaurar la copia del ${esc(dateLabel((rs.at||"").slice(0,10)))}?</b> Sustituye tus datos actuales por los ${rs.n} bloques del archivo. No se puede deshacer.</p><div class="bk-a"><button class="btn sm primary" data-act="bkdo">Restaurar</button><button class="chip sm" data-act="bkno">Cancelar</button></div></div>`:
+    ${rs?`<div class="bk-conf"><p><b>¿Restaurar la copia ${rs.cloud?"de la nube ":""}del ${esc(dateLabel((rs.at||"").slice(0,10)))}?</b> Sustituye tus datos actuales por los ${rs.n} bloques del archivo. No se puede deshacer.</p><div class="bk-a"><button class="btn sm primary" data-act="bkdo">Restaurar</button><button class="chip sm" data-act="bkno">Cancelar</button></div></div>`:
     `<div class="bk-a"><button class="btn primary" data-act="bksave" ${can&&S.dl?"":"disabled"}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Descargar copia</button>
       <label class="btn bk-up${can?"":" off"}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></svg> Restaurar<input type="file" id="bkfile" accept="application/json,.json" ${can?"":"disabled"}></label></div>`}
+    ${can?cloudBlock():""}
     ${can?resetBlock():""}
   </section>`}
 /* Reiniciar: «Borrar registros» deja perfil, platos, despensa y rutinas; «Empezar de cero» lo borra todo y vuelve a la bienvenida */
@@ -3177,11 +3186,72 @@ async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)retu
     /* Sin recargar la página (en el móvil una recarga deja la pantalla en blanco): se vacía el estado y se vuelve a leer */
     ["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","hcSleepH"].forEach(k=>{delete S[k]});
     Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},resetAt:today(),day:today(),period:"day",anchor:null,tab:"hoy"});
-    if(m==="all"){["pantry","routines","steps","stepsH"].forEach(k=>{delete S[k]});Object.assign(S,{profile:null,profileSaved:false,dishes:[],eff:{},subs:{}});try{localStorage.removeItem("sustrato-onb")}catch(e){}}
+    if(m==="all"){["pantry","routines","steps","stepsH"].forEach(k=>{delete S[k]});Object.assign(S,{profile:null,profileSaved:false,dishes:[],eff:{},subs:{},cloud:null,cloudShow:false});try{localStorage.removeItem("sustrato-onb")}catch(e){}}
     await loadStore();await hcMerge();
     S.resetBusy=false;S.reset=null;window.scrollTo(0,0);render();
     if(m==="all")obStart();else toast("Registros borrados")}
   catch(e){S.resetBusy=false;S.reset=null;toast("No se ha podido borrar");render()}}
+/* ---------- Copia en la nube, cifrada en el móvil ----------
+   Un código de 24 caracteres genera dos cosas: el identificador de la copia en el servidor y la clave de cifrado.
+   El servidor solo recibe datos ya cifrados: sin el código nadie (tampoco nosotros) puede leerlos. */
+const CLOUD_CFG="https://javierfp1993-design.github.io/sustrato-web/config.json",B32="0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const CLOUD_SKIP=id=>id==="cloud"||id==="eff"||id==="weather"||id.startsWith("sub_");
+function cloudNewCode(){const b=crypto.getRandomValues(new Uint8Array(15));let bits="";b.forEach(x=>bits+=x.toString(2).padStart(8,"0"));let s="";for(let i=0;i<120;i+=5)s+=B32[parseInt(bits.slice(i,i+5),2)];return s.match(/.{4}/g).join("-")}
+function cloudNorm(c){const s=String(c||"").toUpperCase().replace(/[^0-9A-Z]/g,"").replace(/O/g,"0").replace(/[IL]/g,"1");return s.length===24&&[...s].every(ch=>B32.includes(ch))?s.match(/.{4}/g).join("-"):null}
+const b64=u=>{let s="";const a=new Uint8Array(u);for(let i=0;i<a.length;i+=32768)s+=String.fromCharCode.apply(null,a.subarray(i,i+32768));return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function sha(s){return new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)))}
+async function cloudKeys(code){const id=[...await sha("sustrato-id:"+code)].map(x=>x.toString(16).padStart(2,"0")).join(""),key=await crypto.subtle.importKey("raw",await sha("sustrato-key:"+code),"AES-GCM",false,["encrypt","decrypt"]);return{id,key}}
+async function gz(u8,mode){const cs=mode==="c"?new CompressionStream("gzip"):new DecompressionStream("gzip");return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer())}
+let CLOUD_C=null;async function cloudCfg(){if(CLOUD_C)return CLOUD_C;const r=await fetch(CLOUD_CFG+"?t="+Date.now(),{cache:"no-store"});const j=await r.json();if(!j||!j.api)throw{code:"no_server"};CLOUD_C=j;return j}
+async function cloudReq(id,method,body,prev){const c=await cloudCfg();const r=await fetch(c.api.replace(/\/$/,"")+"/backup/"+id+(prev?"?v=prev":""),{method,headers:{"Content-Type":"application/json","X-Sustrato-Key":c.key||""},body});
+  if(r.status===404)return null;const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server"};return j}
+async function cloudSnapshot(){const c=userCol();if(!c)return null;const snap=await c.get(),docs={};snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id))docs[d.id]=d.data()});return docs}
+async function cloudUpload(code){const docs=await cloudSnapshot();if(!docs)throw{code:"no_db"};const{id,key}=await cloudKeys(code),iv=crypto.getRandomValues(new Uint8Array(12));
+  const plain=await gz(new TextEncoder().encode(JSON.stringify({app:"sustrato",v:1,at:new Date().toISOString(),docs})),"c");
+  const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,plain);return cloudReq(id,"PUT",JSON.stringify({v:1,iv:b64(iv),data:b64(ct)}))}
+async function cloudDownload(code,prev){const{id,key}=await cloudKeys(code),r=await cloudReq(id,"GET",undefined,prev);if(!r)return null;
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(r.iv)},key,unb64(r.data));const j=JSON.parse(new TextDecoder().decode(await gz(new Uint8Array(pt),"d")));if(j.app!=="sustrato"||!j.docs)throw{code:"bad"};return j}
+async function cloudSaveCfg(){const c=userCol();if(c&&S.cloud)try{await c.doc("cloud").set(Object.assign({kind:"cloud"},S.cloud))}catch(e){}}
+async function cloudBackup(manual){const cl=S.cloud;if(!cl||S.cloudBusy)return;S.cloudBusy=true;S.cloudTry=Date.now();if(manual)render();
+  try{const r=await cloudUpload(cl.code);S.cloud=Object.assign({},cl,{last:(r&&r.at)||new Date().toISOString(),err:null});S.cloudDirty=false;await cloudSaveCfg();if(manual)toast("Copia guardada en la nube")}
+  catch(e){S.cloud=Object.assign({},S.cloud,{err:e&&e.code||"net"});if(manual)toast("No se ha podido subir la copia. Revisa la conexión.")}
+  S.cloudBusy=false;if(S.tab==="perfil")render()}
+/* Copia automática: tras cambios (a los pocos minutos), al salir de la app y, como mínimo, una vez al día */
+function cloudTick(force){const cl=S.cloud;if(!cl||S.cloudBusy)return;const age=cl.last?Date.now()-Date.parse(cl.last):Infinity,since=Date.now()-(S.cloudTry||0);
+  if((S.cloudDirty&&since>3*60e3)||age>20*3600e3||(force&&S.cloudDirty))cloudBackup(false)}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")cloudTick(true)});
+setInterval(()=>cloudTick(false),5*60e3);
+const codeHtml=c=>{const g=String(c).split("-");return esc(g.slice(0,3).join("-"))+"<br>"+esc(g.slice(3).join("-"))};
+function cloudBlock(){const cl=S.cloud,nw=S.cloudNew,rc=S.cloudRec;
+  const when=iso=>{if(!iso)return"aún ninguna";const d=new Date(iso),k=iso.slice(0,10);return(k===today()?"hoy":k===shiftKey(today(),-1)?"ayer":dateLabel(k))+" a las "+pad(d.getHours())+":"+pad(d.getMinutes())};
+  let body;
+  if(nw)body=`<p class="cl-t"><b>Tu código de recuperación</b></p><div class="cl-code" aria-label="Código ${nw}">${codeHtml(nw)}</div>
+    <p class="note" style="margin:8px 0 12px">Guárdalo en un lugar seguro, por ejemplo en tu gestor de contraseñas o en una foto. Es la única forma de recuperar tu copia en otro móvil: está cifrada y ni siquiera nosotros podemos abrirla sin él.</p>
+    <div class="bk-a"><button class="btn sm" data-act="clcopy">Copiar código</button><button class="btn sm primary" data-act="clon" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Activando…":"Ya lo he guardado"}</button></div><button class="cl-l" data-act="clno">Cancelar</button>`;
+  else if(rc)body=`<p class="cl-t"><b>Recuperar desde la nube</b></p><label class="f" for="clin"><span class="vh">Código de recuperación</span><input id="clin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" class="cl-in"></label>
+    <div class="bk-a" style="margin-top:10px"><button class="btn sm primary" data-act="clget" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Buscando…":"Buscar mi copia"}</button><button class="chip sm" data-act="clrecno">Cancelar</button></div>`;
+  else if(cl)body=`<p class="cl-t"><b>Copia en la nube activada</b><span class="cl-ok${cl.err?" err":""}">${cl.err?"No se pudo subir la última":"Al día"}</span></p><p class="note" style="margin:2px 0 10px">Se hace sola y va cifrada. Última copia: ${when(cl.last)}.</p>
+    <div class="bk-a"><button class="btn sm" data-act="clnow" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Subiendo…":"Hacer copia ahora"}</button><button class="btn sm" data-act="clshow">${S.cloudShow?"Ocultar código":"Ver código"}</button></div>
+    ${S.cloudShow?`<div class="cl-code" style="margin-top:10px" aria-label="Código ${esc(cl.code)}">${codeHtml(cl.code)}</div>`:""}<button class="cl-l" data-act="cloff">Desactivar</button>`;
+  else body=`<p class="cl-t"><b>Copia en la nube</b></p><p class="note" style="margin:2px 0 10px">Guarda tus datos cada día, cifrados con un código que solo tienes tú. Si cambias de móvil o algo falla, los recuperas.</p>
+    <div class="bk-a"><button class="btn sm primary" data-act="clnew">Activar</button><button class="btn sm" data-act="clrec">Recuperar copia</button></div>`;
+  return`<div class="cl-box">${body}</div>`}
+async function cloudAction(a){
+  if(a==="clnew"){S.cloudNew=cloudNewCode();render();return}
+  if(a==="clno"){S.cloudNew=null;render();return}
+  if(a==="clcopy"){try{await navigator.clipboard.writeText(S.cloudNew||(S.cloud&&S.cloud.code)||"");toast("Código copiado")}catch(e){toast("No se ha podido copiar")}return}
+  if(a==="clon"){S.cloud={code:S.cloudNew,since:new Date().toISOString(),last:null};S.cloudNew=null;await cloudSaveCfg();render();await cloudBackup(true);return}
+  if(a==="clnow"){cloudBackup(true);return}
+  if(a==="clshow"){S.cloudShow=!S.cloudShow;render();return}
+  if(a==="cloff"){const c=userCol();S.cloud=null;S.cloudShow=false;if(c)try{await c.doc("cloud").delete()}catch(e){}toast("Copia en la nube desactivada. La última copia sigue guardada.");render();return}
+  if(a==="clrec"){S.cloudRec=true;render();setTimeout(()=>{const i=$("#clin");if(i)i.focus()},30);return}
+  if(a==="clrecno"){S.cloudRec=false;render();return}
+  if(a==="clget"){const code=cloudNorm(($("#clin")||{}).value);if(!code){toast("Revisa el código: son 24 letras y números");return}
+    S.cloudBusy=true;render();
+    try{const j=await cloudDownload(code,false);S.cloudBusy=false;if(!j){toast("No hay ninguna copia con ese código");render();return}
+      S.cloudRec=false;S.restore={at:j.at,docs:j.docs,n:Object.keys(j.docs).length,cloud:code};render()}
+    catch(e){S.cloudBusy=false;toast(e&&e.name==="OperationError"?"El código no es correcto":"No se ha podido recuperar. Revisa la conexión.");render()}}}
 async function backupSave(){const c=userCol();if(!c||!S.dl)return;
   try{const snap=await c.get(),docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});const at=new Date().toISOString();
     await saveFile("sustrato-copia-"+at.slice(0,10)+".json",JSON.stringify({app:"sustrato",v:1,at,docs},null,1));
@@ -3190,7 +3260,7 @@ async function backupRead(f){if(!f)return;try{const j=JSON.parse(await f.text())
     S.restore={at:j.at,docs:j.docs,n:Object.keys(j.docs).length};render()}catch(e){toast("Ese archivo no es una copia de Sustrato")}}
 async function backupDo(){const c=userCol(),rs=S.restore;if(!c||!rs)return;let ok=0;
   for(const [id,v] of Object.entries(rs.docs)){if(!/^[\w.-]{1,200}$/.test(id)||!v||typeof v!=="object")continue;try{await c.doc(id).set(v);ok++}catch(e){}}
-  S.restore=null;toast(ok?"Copia restaurada · "+ok+" bloques":"No se ha podido restaurar");await loadStore();render()}
+  const cc=rs.cloud;S.restore=null;toast(ok?"Copia restaurada · "+ok+" bloques":"No se ha podido restaurar");await loadStore();if(cc&&ok){S.cloud={code:cc,since:new Date().toISOString(),last:rs.at};await cloudSaveCfg()}render()}
 document.addEventListener("input",e=>{if(/^flp_/.test(e.target.id||""))flReadNew()});
 document.addEventListener("change",e=>{if(e.target.id==="bkfile"){backupRead(e.target.files&&e.target.files[0]);e.target.value=""}});
 function skRows(n,cls){let o="";for(let i=0;i<n;i++)o+=`<div class="skr ${cls||""}"><i class="sk sk-ic"></i><span><i class="sk" style="width:${[58,44,66,50,40,62][i%6]}%"></i><i class="sk sk-s" style="width:${[34,28,40,30,24,36][i%6]}%"></i></span><i class="sk sk-v"></i></div>`;return o}
@@ -3779,7 +3849,9 @@ async function toggleFasted(id){
   const c=userCol();if(c){try{if(S.fasted[id])await c.doc("fast_"+id).set({kind:"fast",on:true});else await c.doc("fast_"+id).delete()}catch(e){}}
   const a=S.acts.find(x=>x.id===id);if(a){await ensureSub(a);renderModal();if(S.tab==="hoy")render()}
 }
-function userCol(){return S.db&&S.uid?S.db.collection("data/users/"+S.uid):null}
+function userCol(){if(!(S.db&&S.uid))return null;const c=S.db.collection("data/users/"+S.uid);
+  /* Cualquier cambio en los datos marca que hay que hacer copia en la nube */
+  return{get:()=>c.get(),doc:id=>{const d=c.doc(id),mark=()=>{if(!CLOUD_SKIP(id))S.cloudDirty=true};return{get:()=>d.get(),set:v=>{mark();return d.set(v)},delete:()=>{mark();return d.delete()}}}}}
 async function persistSub(id,sub){const c=userCol();if(!c)return;try{await c.doc("sub_"+id).set(Object.assign({kind:"sub"},sub))}catch(e){}}
 async function loadStore(){
   const c=userCol();if(!c)return;
@@ -3792,6 +3864,7 @@ async function loadStore(){
       else if(d.id==="plan"&&v.days)S.plan=JSON.parse(JSON.stringify(v.days));
       else if(d.id==="weights"&&v.list)S.weights=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="reset"&&v.at)S.resetAt=v.at;
+      else if(d.id==="cloud"&&v.code)S.cloud={code:v.code,since:v.since,last:v.last,err:v.err||null};
       else if(d.id==="eff"&&v.map)S.eff=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="log"&&v.days)S.log=JSON.parse(JSON.stringify(v.days));
       else if(d.id==="menu"&&v.days)S.menu=JSON.parse(JSON.stringify(v.days));
@@ -5769,6 +5842,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bksave"){backupSave();return}
   if(t.dataset.act==="bkdo"){backupDo();return}
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
+  if(/^cl[a-z]+$/.test(t.dataset.act||"")){cloudAction(t.dataset.act);return}
   if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
   if(t.dataset.act==="rsno"){S.reset=null;render();return}
   if(t.dataset.act==="rsdo"){resetDo();return}
@@ -5890,6 +5964,7 @@ setTimeout(hideSplash,4000);
     if(h.rhrBase&&S.profile){S.profile=Object.assign({},S.profile,{hrrest:h.rhrBase})}
   }}catch(e){}}
   render();
+  setTimeout(()=>cloudTick(false),8000);
   {let seen=null;try{seen=localStorage.getItem("sustrato-onb")}catch(e){}const p=S.profile||{};if(!seen&&!(S.profileSaved&&p.age&&p.weight&&p.height))obStart()}
   if(!mcp){S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin Strava";render();return}
   if(!S.profileSaved)prefillFromStrava();
