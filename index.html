@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T14:11:04.427Z">
+<meta name="sustrato-version" content="2026-10-06T14:20:57.881Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2318,6 +2318,18 @@ html[data-theme="light"] .dr-s[data-i="2"]{fill:color-mix(in srgb,var(--carb) 80
 html[data-theme="light"] .donut .dn-C{stroke:color-mix(in srgb,var(--carb) 80%,var(--card))}html[data-theme="light"] .donut .dn-P{stroke:color-mix(in srgb,var(--prot) 80%,var(--card))}html[data-theme="light"] .donut .dn-F{stroke:color-mix(in srgb,var(--fat) 80%,var(--card))}
 .donut .dn-k{font:700 30px var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .donut circle[data-macro]:hover{stroke-width:13}
+
+/* v157 · Constancia (semana/mes/año) */
+.cs-sum{display:flex;align-items:baseline;gap:8px;margin-top:8px}.cs-sum b{font:700 34px/1 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.cs-sum span{font-size:15px;color:var(--fg)}
+.cs-det{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.cs .cs-band{fill:var(--fill2,rgba(127,127,127,.1))}.cs .cs-tg{stroke:var(--muted);stroke-opacity:.5;stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+.cs .cs-ok{fill:#30d158}.cs .cs-over{fill:#ff9f0a}.cs .cs-under{fill:var(--muted);fill-opacity:.55}.cs .cs-now{fill:var(--muted);fill-opacity:.28}.cs .cs-none{fill:var(--muted);fill-opacity:.45}.cs .cs-hl{fill:var(--fg)}
+html[data-theme="light"] .cs .cs-ok{fill:#28a745}html[data-theme="light"] .cs .cs-over{fill:#d97a00}
+.cs-l{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}.cs-l.ok{background:#30d158}.cs-l.over{background:#ff9f0a}.cs-l.under{background:var(--muted);opacity:.55}.cs-l.now{background:var(--muted);opacity:.28}
+html[data-theme="light"] .cs-l.ok{background:#28a745}html[data-theme="light"] .cs-l.over{background:#d97a00}
+.cs-ms{margin-top:14px;border-top:.5px solid var(--sep);padding-top:10px}.cs-mh{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px}
+.cs-m{display:flex;align-items:center;gap:10px;padding:8px 0}.cs-mn{flex:1;font-size:15px;display:flex;align-items:center;gap:8px}.cs-mn i{width:9px;height:9px;border-radius:3px}
+.cs-mv{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}.cs-mv b{font:600 16px var(--round,var(--font));color:var(--fg)}.cs-mp{width:46px;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2389,7 +2401,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="156";
+const APP_VER="157";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5162,6 +5174,32 @@ function barChart(bk){
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gasto diario">${grid}${bars}</svg>
 <div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i style="background:rgba(255,255,255,.3)"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i class="hatch-y"></i>Previsto</span>':""}</div>`;
 }
+/* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
+function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});return n?{P,C,F,kcal:4*P+4*C+9*F}:null}
+function constCard(p,T,tk){
+  const g=(S.profile||{}).goal||"recomp",tol=g==="loss"?0.10:g==="recomp"?0.10:0.12;
+  const st=r=>r==null?"none":r>1+tol?"over":r<1-tol?"under":"ok";
+  const D=T.filter(x=>x.t).map(x=>{const e=x.k<=tk?dayEaten(x.k):null;return{k:x.k,t:x.t,e,r:e?e.kcal/x.t.kcal:null,fut:x.k>tk,now:x.k===tk}});
+  const done=D.filter(d=>d.e&&!d.now),nOk=done.filter(d=>st(d.r)==="ok").length,nOv=done.filter(d=>st(d.r)==="over").length,nUn=done.filter(d=>st(d.r)==="under").length;
+  const passed=D.filter(d=>!d.fut&&!d.now).length,nNo=passed-done.length;
+  let bars;
+  if(p==="year"){bars=[];for(let m=0;m<12;m++){const xs=done.filter(d=>+d.k.slice(5,7)===m+1);bars.push({label:MON[m].slice(0,1).toUpperCase(),r:xs.length?xs.reduce((a,d)=>a+d.r,0)/xs.length:null,fut:xs.length===0&&(tk.slice(0,4)+"-"+String(m+1).padStart(2,"0"))>tk.slice(0,7),now:+tk.slice(5,7)===m+1&&false,hl:+tk.slice(5,7)===m+1})}}
+  else bars=D.map(d=>{const dt=new Date(d.k+"T12:00:00");return{label:p==="week"?DOW[dt.getDay()]:String(dt.getDate()),r:d.r,fut:d.fut,now:d.now,hl:d.now}});
+  const W=340,H=122,PB=20,PT=6,ih=H-PB-PT,n=bars.length,slot=W/n,bw=Math.max(3,slot*(n>20?.6:.46)),MX=1.4,Y=r=>PT+ih-Math.min(r,MX)/MX*ih;
+  const every=n>20?Math.ceil(n/8):1,hI=bars.findIndex(b=>b.hl);
+  const band=`<rect x="0" y="${Y(1+tol).toFixed(1)}" width="${W}" height="${(Y(1-tol)-Y(1+tol)).toFixed(1)}" class="cs-band"/><line x1="0" x2="${W}" y1="${Y(1).toFixed(1)}" y2="${Y(1).toFixed(1)}" class="cs-tg"/>`;
+  const bs=bars.map((b,i)=>{const x=slot*i+(slot-bw)/2,cx=(x+bw/2).toFixed(1);let el;
+    if(b.r==null)el=b.fut?"":`<circle cx="${cx}" cy="${(PT+ih-3).toFixed(1)}" r="2.5" class="cs-none"/>`;
+    else{const y=Y(b.r);el=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,PT+ih-y).toFixed(1)}" rx="${Math.min(5,bw/2).toFixed(1)}" class="cs-${b.now?"now":st(b.r)}"/>`}
+    return el+(b.hl||(i%every===0&&(hI<0||Math.abs(i-hI)>=Math.ceil(every/2)))?`<text class="ax${b.hl?" cs-hl":""}" x="${cx}" y="${H-5}" text-anchor="middle">${b.label}</text>`:"")}).join("");
+  const svg=`<svg class="chart cs" viewBox="0 0 ${W} ${H}" role="img" aria-label="Lo que has comido cada ${p==="year"?"mes":"día"} frente a tu objetivo">${band}${bs}</svg>`;
+  const lg=`<div class="legend"><span><i class="cs-l ok"></i>En objetivo (±${Math.round(tol*100)} %)</span><span><i class="cs-l over"></i>Por encima</span><span><i class="cs-l under"></i>Por debajo</span>${D.some(d=>d.now&&d.e)&&p!=="year"?'<span><i class="cs-l now"></i>Hoy, en curso</span>':""}</div>`;
+  const head=done.length?`<div class="cs-sum"><b>${nOk}</b><span>de ${done.length} día${done.length>1?"s":""} en tu objetivo</span></div><p class="cs-det">${[nOv?`${nOv} por encima`:"",nUn?`${nUn} por debajo`:"",nNo?`${nNo} sin apuntar`:""].filter(Boolean).join(" · ")||"Todos dentro, muy bien."}</p>`
+    :`<p class="cs-det" style="margin-top:6px">Aún no has apuntado comidas en ${p==="week"?"esta semana":p==="month"?"este mes":"este año"}. Cuando lo hagas, aquí verás tu constancia día a día.</p>`;
+  const avg=f=>done.reduce((a,d)=>a+f(d),0)/(done.length||1);
+  const mrow=(c,nm,m)=>{const e=avg(d=>d.e[m]),t=avg(d=>d.t[m]),pc=t?Math.round(e/t*100):0;return`<div class="cs-m"><span class="cs-mn"><i style="background:${c}"></i>${nm}</span><span class="cs-mv"><b>${fmtInt(e)}</b> / ${fmtInt(t)} g</span><span class="cs-mp">${pc} %</span></div>`};
+  const macros=done.length?`<div class="cs-ms"><span class="cs-mh">Media de los días apuntados</span>${mrow("var(--carb)","Hidratos","C")}${mrow("var(--prot)","Proteína","P")}${mrow("var(--fat)","Grasas","F")}</div>`:"";
+  return`<section class="glass pad fade"><div class="row"><h2>Constancia</h2><span class="pill">${esc((GOALS[g]||GOALS.recomp).label)}</span></div>${head}<div style="margin-top:10px">${svg}</div>${lg}${macros}</section>`}
 function vPeriod(){
   const p=S.period,[st,en]=periodRange(p,S.anchor),tk=today();
   const days=[];for(let k=st;k<=en;k=shiftKey(k,1))days.push(k);
@@ -5186,12 +5224,7 @@ function vPeriod(){
   const totB=cho*4+fat*9;
   return`
   <div class="grid2">
-    <section class="glass pad fade"><div class="row"><h2>Nutrición media · ${nD} día${nD>1?"s":""}</h2><span class="pill">${esc((GOALS[(S.profile||{}).goal]||GOALS.recomp).label)}</span></div>
-      <div class="macro" style="margin-top:10px">${donut(A)}<div class="mlist">
-        ${macroRow("var(--carb)","Hidratos",A.C,(A.C/kg).toFixed(1).replace(".",",")+" g/kg")}
-        ${macroRow("var(--prot)","Proteína",A.P,(A.P/kg).toFixed(1).replace(".",",")+" g/kg")}
-        ${macroRow("var(--fat)","Grasas",A.F,(A.F/kg).toFixed(1).replace(".",",")+" g/kg")}</div></div>
-      <p class="note">Objetivo medio de ${fmtInt(A.kcal)} kcal al día${past.length?" en los días ya pasados":""}.</p></section>
+    ${constCard(p,T,tk)}
     <section class="glass pad fade"><h2>Gasto ${p==="year"?"medio por mes":"por día"}</h2><div style="margin-top:8px">${barChart(bk)}</div></section>
   </div>
   <div class="grid2">
