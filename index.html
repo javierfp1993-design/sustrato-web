@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T12:36:54.649Z">
+<meta name="sustrato-version" content="2026-10-06T12:48:29.132Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2253,6 +2253,14 @@ html[data-theme="dark"] .dr-f{opacity:.12}html[data-theme="dark"] .dr-hl{opacity
 .qhint{appearance:none;border:0;width:100%;margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--card2);color:var(--fg);font:500 14px/1.35 var(--font);text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}.qhint span{color:var(--muted);font-size:18px}
 .qc-q{display:flex;align-items:center;gap:5px;opacity:1!important;font-weight:600}.qv-d{flex:none;width:7px;height:7px;border-radius:50%}.qv-d.ok{background:#30d158}.qv-d.mid{background:#ff9f0a}
 .qx{margin:4px 0 10px;font-size:13.5px;line-height:1.45;color:var(--fg)}
+/* pasos: franja líquida */
+.stp-hd{display:flex;align-items:baseline;gap:6px;margin-top:8px}.stp-hd b{font:700 40px/1 var(--round,var(--font));letter-spacing:-.03em;font-variant-numeric:tabular-nums}.stp-hd span{color:var(--muted);font-size:14px}
+.stp-left{margin:4px 0 12px;font-size:13.5px;color:var(--muted)}
+.stb{appearance:none;border:0;background:none;padding:0;width:100%;display:block;cursor:pointer}.stb svg{display:block;width:100%;height:44px}
+.stb-bg{fill:var(--fill)}.stb-l{fill:#30d158}
+.stb-hint{margin:6px 0 0;font-size:12px;color:var(--muted)}.stb-hint:empty{display:none}
+.sth{margin-top:12px}.sth svg{display:block;width:100%;height:auto}.sth-b{fill:#30d158}.sth-f{fill:var(--fill)}.sth text{font-size:10.5px;fill:var(--muted)}
+.stp .stp-in{margin-top:14px}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2324,7 +2332,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="146";
+const APP_VER="147";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3089,9 +3097,16 @@ async function saveSteps(){const c=userCol();if(!c)return;try{await c.doc("steps
 function stepsCard(k){
   const st=stepsOf(k),g=stepGoal(),v=st.total,pc=Math.min(1,v/g),R=46,C=2*Math.PI*R,km=v*0.00075,kg=num((S.profile||{}).weight)||70,kcal=Math.max(0,v-st.est)*0.0005*kg;
   const ring=`<svg class="stp-ring" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="${R}" class="stp-tr"/>${pc>0?`<circle cx="55" cy="55" r="${R}" class="stp-v" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pc)).toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}${v>=g?`<circle cx="55" cy="55" r="${R}" class="stp-glow" stroke-dasharray="${C.toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}</svg>`;
-  const ed=S.stepEdit===k;
-  return`<section class="glass pad fade stp"><h2>Pasos · ${esc(dateLabel(k))}</h2><div class="stp-in" style="margin-top:10px"><div class="stp-rw">${ring}<div class="stp-c"><b>${fmtInt(v)}</b><small>de ${fmtInt(g)}</small></div></div>
-    <div class="stp-r">
+  const ed=S.stepEdit===k,left=Math.max(0,g-v),H=(S.stepsH||{})[k],showH=S.stpH&&H;
+  /* Franja líquida hasta el objetivo (mismo compás que la gota); al tocarla, los pasos por horas */
+  const band=`<button class="stb" data-stph="${H?1:""}" ${H?`aria-expanded="${!!S.stpH}" aria-label="Ver tus pasos por horas"`:'tabindex="-1"'}><svg viewBox="0 0 340 44" preserveAspectRatio="none" id="stpband" data-f="${pc.toFixed(4)}" aria-hidden="true"><defs><clipPath id="stbc"><rect width="340" height="44" rx="22"/></clipPath></defs><g clip-path="url(#stbc)"><rect width="340" height="44" class="stb-bg"/><path class="stb-l" d=""/></g></svg></button>`;
+  const hrs=showH?(()=>{const mx=Math.max(1,...H),now=k===today()?new Date().getHours():24,best=H.reduce((b,x,i)=>x>H[b]?i:b,0);
+    return`<div class="sth"><svg viewBox="0 0 340 92" aria-label="Pasos por horas">${H.slice(6).map((x,j)=>{const i=j+6,w=340/18,bh=x?Math.max(3,x/mx*70):3,fut=i>now;return`<rect x="${(j*w+2).toFixed(1)}" y="${(76-bh).toFixed(1)}" width="${(w-4).toFixed(1)}" height="${bh.toFixed(1)}" rx="3" class="${fut?"sth-f":"sth-b"}"/>`}).join("")}${[6,9,12,15,18,21].map(h=>`<text x="${((h-6)*340/18+340/36).toFixed(1)}" y="90" text-anchor="middle">${h}h</text>`).join("")}</svg><p class="note" style="margin:4px 0 0">Tu mejor rato: de ${best} a ${best+1} h · ${fmtInt(H[best])} pasos</p></div>`})():"";
+  return`<section class="glass pad fade stp"><h2>Pasos · ${esc(dateLabel(k))}</h2>
+    <div class="stp-hd"><b>${fmtInt(v)}</b><span>de ${fmtInt(g)}</span></div>
+    <p class="stp-left">${v>=g?"Objetivo cumplido"+(v>g?" · "+fmtInt(v-g)+" de más":""):`Te faltan ${fmtInt(left)} · unos ${Math.max(1,Math.round(left/100))} min caminando`}</p>
+    ${band}${H?`<p class="stb-hint">${showH?"":"Toca la franja para ver tu día por horas"}</p>`:""}${hrs}
+    <div class="stp-in"><div class="stp-r">
       <div class="stp-kv"><div><b>${km.toFixed(1).replace(".",",")} km</b><span>recorridos</span></div><div><b>${fmtInt(kcal)} kcal</b><span>${st.est?"pasos fuera de entrenos":"por caminar"}</span></div></div>
       <p class="stp-src">${window.__native?(st.manual!=null?"De tu reloj, se actualiza solo":"Tu reloj aún no ha enviado pasos de este día"):st.low?`Tus actividades suman ${fmtInt(st.est)} pasos, más de los ${fmtInt(st.manual)} apuntados: uso la cifra mayor.`:st.manual!=null?`Apuntados por ti${st.est?" · "+fmtInt(st.est)+" en entrenos":""}`:st.est?`Estimados de tus actividades de Strava. Apunta el total de tu móvil para afinar.`:"Apunta los pasos que marca tu móvil o tu reloj."}</p>
       ${ed&&window.__native?`<div class="stp-ed"><span class="note" style="margin:0">Objetivo diario</span><input id="stp_goal" inputmode="numeric" value="${g}" aria-label="Objetivo diario de pasos" style="width:96px"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>`
@@ -3724,7 +3739,14 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
     for(let x=0;x<=100;x+=2){const w=A*Math.sin(2*Math.PI*(x/LAM-tt/T)-ph);d+=` L${x} ${(yt+w).toFixed(2)}`}
     p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
-function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}}
+function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
+const STB={cur:0,v:0,run:false};
+function stbFrame(ts){STB.run=false;const el=document.getElementById("stpband");if(!el)return;const tg=+el.dataset.f,rm=matchMedia("(prefers-reduced-motion: reduce)").matches,tt=(ts||0)/1000;
+  if(rm)STB.cur=tg;else{STB.v=(STB.v+(tg-STB.cur)*0.010)*0.88;STB.cur+=STB.v}
+  const x=STB.cur*340,A=rm||STB.cur>=0.999?0:Math.min(4,x/10);let d=`M-2 -2 L${x.toFixed(1)} -2`;for(let y=0;y<=46;y+=2)d+=` L${(x+A*Math.sin(2*Math.PI*(y/44-tt/4.8))).toFixed(2)} ${y}`;
+  const p=el.querySelector(".stb-l");if(p)p.setAttribute("d",STB.cur>0.002?d+" L-2 46Z":"");
+  const r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,moving=Math.abs(tg-STB.cur)>.0008||Math.abs(STB.v)>.0004;
+  if((vis&&!rm&&STB.cur>0.002&&STB.cur<0.999)||moving){STB.run=true;requestAnimationFrame(stbFrame)}}
 document.addEventListener("scroll",()=>dropKick(),{passive:true});
 /* Franja del día: la hora de cada comida y el entreno */
 function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";const lg=(S.log||{})[S.day]||{};
@@ -5383,6 +5405,7 @@ document.addEventListener("click",e=>{
     return}
   if(t.dataset.phr){if(S.ph){S.ph.r=+t.dataset.phr;render()}return}
   if(t.dataset.lgfix){(S.lgFix=S.lgFix||{})[t.dataset.lgfix]=true;render();return}
+  if(t.dataset.stph!=null){if(t.dataset.stph){S.stpH=!S.stpH;render()}return}
   if(t.dataset.gomenu){S.tab="plan";S.planView="week";S.planWeek=mondayOf(S.day);render();window.scrollTo(0,0);return}
   if(t.dataset.qtip){S.qTip=(S.qTip||0)?0:1;render();return}
   if(t.dataset.mmenu){S.mealMenu=S.mealMenu===t.dataset.mmenu?null:t.dataset.mmenu;render();return}
@@ -5589,6 +5612,7 @@ setTimeout(hideSplash,4000);
     S.weights=S.weights||[];const wd=new Set(S.weights.map(x=>x.d));(h.weights||[]).forEach(x=>{if(!wd.has(x.d))S.weights.push(x)});
     S.hcSleepH=h.sleepH||{};
     S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});
+    S.stepsH=h.stepsH||{};
     if(h.rhrBase&&S.profile){S.profile=Object.assign({},S.profile,{hrrest:h.rhrBase})}
   }}catch(e){}}
   render();
