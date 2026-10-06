@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T21:26:43.171Z">
+<meta name="sustrato-version" content="2026-10-06T21:33:51.091Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2357,6 +2357,19 @@ html[data-theme="light"] .rs-b{color:#d70015}
 .cl-code{margin-top:8px;padding:14px;border-radius:14px;background:var(--fill2,var(--card2));font:600 20px/1.45 var(--mono,ui-monospace,monospace);letter-spacing:.04em;text-align:center;word-break:break-all;user-select:all}
 .cl-in{width:100%;font:500 16px var(--mono,ui-monospace,monospace);letter-spacing:.04em;text-transform:uppercase}
 .cl-l{appearance:none;border:0;background:none;color:var(--muted);font:500 14px var(--font);padding:10px 0 0;min-height:40px;cursor:pointer}
+
+/* v162 · barra inferior algo más grande */
+.tb-ic{width:52px!important;height:32px!important;border-radius:16px!important}
+.tb-ic svg{width:25px!important;height:25px!important}
+.tb-l{font-size:11.5px!important}
+.tabbar button{gap:4px!important;padding:7px 2px 5px!important}
+body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
+/* v162 · ¿Cómo fue? */
+.rpe{display:flex;align-items:center;gap:8px;padding:2px 0 10px 40px;flex-wrap:wrap}
+.rpe>span{font-size:13px;color:var(--muted);margin-right:2px}
+.rpe .chips{display:flex;gap:6px;flex-wrap:wrap}
+.rpe button{appearance:none;border:0;background:var(--fill2,var(--card2));color:var(--fg);font:500 13px var(--font);padding:7px 11px;border-radius:999px;min-height:34px;cursor:pointer}
+.rpe button[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:600}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2428,7 +2441,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="161";
+const APP_VER="162";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2548,29 +2561,6 @@ function pline(x,k){if(x.st==="done")return"";return`<div class="pline">${pst(x.
 const PST={done:["ok","Hecho"],chg:["chg","Cambiado"],skip:["skip","Saltado"],miss:["miss","No hecho"],pend:["pend","Previsto"]};
 function pst(st){const v=PST[st];return`<span class="pst ${v[0]}">${v[1]}</span>`}
 function nextKey(k){const d=new Date(k+"T12:00:00");d.setDate(d.getDate()+1);return keyOf(d)}
-/* Plan San Silvestre: [mar, jue, sáb] carrera, dom MTB, mié/vie bici+fuerza */
-function sanSilvestrePlan(){
-  const R=(dur,i)=>({sport:"run",dur,int:i,time:"18:00"}),Rs=(dur,i)=>({sport:"run",dur,int:i,time:"10:00"});
-  const W=[
-    ["2026-10-05",[R(45,"s"),R(45,"s"),Rs(52,"s")],180,"m",0],["2026-10-12",[R(50,"m"),R(45,"s"),Rs(60,"s")],180,"m",0],
-    ["2026-10-19",[R(38,"s"),R(38,"s"),Rs(52,"s")],120,"s",1],["2026-10-26",[R(50,"i"),R(45,"s"),Rs(68,"s")],180,"s",0],
-    ["2026-11-02",[R(55,"m"),R(45,"s"),Rs(75,"s")],180,"s",0],["2026-11-09",[R(55,"i"),R(45,"s"),Rs(75,"s")],180,"s",0],
-    ["2026-11-16",[R(38,"s"),R(30,"s"),Rs(45,"i")],150,"s",2],["2026-11-23",[R(55,"i"),R(52,"s"),Rs(82,"s")],180,"s",0],
-    ["2026-11-30",[R(55,"m"),R(45,"s"),Rs(90,"s")],180,"s",0],["2026-12-07",[R(55,"i"),R(52,"s"),Rs(75,"m")],180,"s",0],
-    ["2026-12-14",[R(60,"i"),R(45,"s"),Rs(82,"s")],180,"s",0],["2026-12-21",[R(50,"i"),R(45,"s"),Rs(60,"s")],120,"s",1]];
-  const out={};const add=(k,s)=>{(out[k]=out[k]||[]).push(s)};
-  const off=(k,n)=>{const d=new Date(k+"T12:00:00");d.setDate(d.getDate()+n);return keyOf(d)};
-  W.forEach(([mon,runs,mtb,mi,des])=>{
-    add(off(mon,1),runs[0]);add(off(mon,3),runs[1]);add(off(mon,5),runs[2]);
-    add(off(mon,2),{sport:"mtb",dur:des?45:60,int:"s",time:"18:00"});add(off(mon,2),{sport:"str",dur:des?35:45,int:"m",time:"19:05"});
-    if(des===2)add(off(mon,4),{sport:"mtb",dur:30,int:"s",time:"18:00"});
-    else{add(off(mon,4),{sport:"mtb",dur:des?45:60,int:"s",time:"18:00"});add(off(mon,4),{sport:"str",dur:des?35:45,int:"m",time:"19:05"})}
-    add(off(mon,6),{sport:"mtb",dur:mtb,int:mi,time:"09:00"});
-  });
-  add("2026-12-28",R(30,"m"));add("2026-12-30",R(20,"s"));add("2026-12-31",{sport:"run",dur:30,int:"i",time:"18:00",race:true});
-  return out;
-}
-
 function dayTargets(k,raw){
   const p=S.profile||{};const b=basal(p);const w=num(p.weight);
   if(!b||!w)return null;
@@ -2677,7 +2667,7 @@ function supplements(t){
   if(intense||longest>=1.5)out.push({ic:icon("cup","#ffd21e"),n:"Cafeína",ev:"Alta",why:"Mejora el rendimiento en esfuerzos intensos y en sesiones largas.",dose:fmtInt(3*w)+"–"+fmtInt(5*w)+" mg (3–5 mg/kg) entre 45 y 60 min antes. Un café solo tiene unos 80–100 mg.",note:late?"Entrenas por la tarde: baja a 1–2 mg/kg o sáltatela si te quita el sueño.":"Evítala en las 6–8 h antes de dormir."});
   if(longest>=1.25)out.push({ic:icon("gel","#ffd21e"),n:"Hidratos durante el ejercicio (gel, bebida, plátano)",ev:"Alta",why:"Tu sesión más larga dura "+fmtDur(longest*3600)+": sin aporte, el glucógeno se agota.",dose:"30–60 g de hidratos por hora a partir de los 60–75 min.",note:"Practícalo en entrenos antes de usarlo en carrera."});
   if(longest>=1.5)out.push({ic:icon("bottle","#5ac8fa"),n:"Electrolitos (sodio)",ev:"Alta",why:"Sesión larga: el sodio que pierdes sudando afecta al rendimiento.",dose:"300–600 mg de sodio por hora en la bebida.",note:"Más si hace calor o sudas mucho (manchas de sal en la ropa)."});
-  if(intense&&ses.some(s=>s.sport==="run"||s.sport==="trail"))out.push({ic:icon("beet","#3b82f6"),n:"Nitratos (zumo de remolacha)",ev:"Moderada-alta",why:"Mejora la economía en esfuerzos de 5 a 30 min, como un test o la San Silvestre.",dose:"6–8 mmol de nitrato (≈70 ml de concentrado o 500 ml de zumo) 2–3 h antes.",note:"No uses enjuague bucal antiséptico ese día: anula el efecto."});
+  if(intense&&ses.some(s=>s.sport==="run"||s.sport==="trail"))out.push({ic:icon("beet","#3b82f6"),n:"Nitratos (zumo de remolacha)",ev:"Moderada-alta",why:"Mejora la economía en esfuerzos de 5 a 30 min, como un test o una carrera corta.",dose:"6–8 mmol de nitrato (≈70 ml de concentrado o 500 ml de zumo) 2–3 h antes.",note:"No uses enjuague bucal antiséptico ese día: anula el efecto."});
   out.push({ic:icon("shaker","#ff5b2e"),n:"Proteína en polvo (whey)",ev:"Alta como alimento",why:"Útil si no llegas a tus "+fmtInt(t.P)+" g de proteína con comida.",dose:"20–40 g después de entrenar o en la merienda.",note:"Es comida práctica, no un extra mágico: si llegas con la dieta, no hace falta."});
   if(winter)out.push({ic:icon("sun","#30d158"),n:"Vitamina D",ev:"Alta si hay déficit",why:"De octubre a marzo se sintetiza poca vitamina D con el sol.",dose:"1.000–2.000 UI al día, idealmente tras un análisis.",note:"Pide en tu analítica la 25-OH vitamina D; si está bien, no hace falta."});
   out.push({ic:icon("fish","#30d158"),n:"Omega-3 (EPA + DHA)",ev:"Moderada",why:"Salud cardiovascular y recuperación si comes poco pescado azul.",dose:"1–2 g de EPA+DHA al día, con comida.",note:"Si comes pescado azul 2–3 veces por semana, ya lo cubres."});
@@ -2894,7 +2884,6 @@ function planAction(act,idx,k){
   if(act==="add"){(S.plan[k]=S.plan[k]||[]).push({sport:"run",dur:45,int:"s",time:"18:00"});(S.openDays=S.openDays||{})[k]=true}
   else if(act==="skip"){const x=(S.plan[k]||[])[idx];if(x){x.skip=!x.skip;if(!x.skip)delete x.skip;toast(x.skip?"Entreno marcado como saltado · calorías ajustadas":"Entreno recuperado")}}
   else if(act==="del"){const prev=JSON.parse(JSON.stringify(S.plan[k]||[]));(S.plan[k]||[]).splice(idx,1);undoToast("Entreno quitado",()=>{S.plan[k]=prev;savePlan();render()});if(S.plan[k]&&!S.plan[k].length)delete S.plan[k];(S.openDays=S.openDays||{})[k]=true}
-  else if(act==="import"){const sp=sanSilvestrePlan(),tk=today();Object.keys(sp).forEach(d=>{if(d>=tk&&!S.plan[d])S.plan[d]=sp[d]});toast("Plan importado desde hoy hasta el 31 de diciembre")}
   savePlan();render();
 }
 
@@ -3173,7 +3162,7 @@ function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup
     ${can?resetBlock():""}
   </section>`}
 /* Reiniciar: «Borrar registros» deja perfil, platos, despensa y rutinas; «Empezar de cero» lo borra todo y vuelve a la bienvenida */
-const RESET_REC=["log","weights","rhr","hrv","sleep","plan","menu","fuellog","sweat","measures"];
+const RESET_REC=["log","weights","rhr","hrv","sleep","plan","menu","fuellog","sweat","measures","rpe"];
 function resetBlock(){const m=S.reset;
   if(m)return`<div class="bk-conf rs-conf"><p><b>${m==="all"?"¿Empezar de cero?":"¿Borrar tus registros?"}</b> ${m==="all"?"Se borra todo: perfil, registros, entrenos planificados, menús, platos, despensa y rutinas. Volverás a la bienvenida.":"Se borran comidas, pesos, pulso, VFC y sueño apuntados, entrenos planificados, menús y sesiones de fuerza. Se mantienen tu perfil, tus platos, la despensa y tus rutinas."} Lo que llega de tu reloj y de Strava se vuelve a cargar solo. No se puede deshacer: si quieres, descarga antes una copia.</p><div class="bk-a"><button class="btn sm rs-do" data-act="rsdo" ${S.resetBusy?"disabled":""}>${S.resetBusy?"Borrando…":m==="all"?"Borrarlo todo":"Borrar registros"}</button><button class="chip sm" data-act="rsno">Cancelar</button></div></div>`;
   return`<div class="rs-a"><button class="rs-b" data-act="rsrec">Borrar registros</button><button class="rs-b" data-act="rsall">Empezar de cero</button></div>`}
@@ -3184,7 +3173,7 @@ async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)retu
     /* Marca la fecha del reinicio: lo que el reloj guardó antes (pesajes) ya no se vuelve a importar */
     try{await c.doc("reset").set({kind:"reset",at:today()})}catch(e){}
     /* Sin recargar la página (en el móvil una recarga deja la pantalla en blanco): se vacía el estado y se vuelve a leer */
-    ["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","hcSleepH"].forEach(k=>{delete S[k]});
+    ["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","hcSleepH","rpe"].forEach(k=>{delete S[k]});
     Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},resetAt:today(),day:today(),period:"day",anchor:null,tab:"hoy"});
     if(m==="all"){["pantry","routines","steps","stepsH"].forEach(k=>{delete S[k]});Object.assign(S,{profile:null,profileSaved:false,dishes:[],eff:{},subs:{},cloud:null,cloudShow:false});try{localStorage.removeItem("sustrato-onb")}catch(e){}}
     await loadStore();await hcMerge();
@@ -3265,12 +3254,18 @@ document.addEventListener("input",e=>{if(/^flp_/.test(e.target.id||""))flReadNew
 document.addEventListener("change",e=>{if(e.target.id==="bkfile"){backupRead(e.target.files&&e.target.files[0]);e.target.value=""}});
 function skRows(n,cls){let o="";for(let i=0;i<n;i++)o+=`<div class="skr ${cls||""}"><i class="sk sk-ic"></i><span><i class="sk" style="width:${[58,44,66,50,40,62][i%6]}%"></i><i class="sk sk-s" style="width:${[34,28,40,30,24,36][i%6]}%"></i></span><i class="sk sk-v"></i></div>`;return o}
 function skCard(h){return`<section class="glass pad fade" aria-hidden="true"><i class="sk sk-t"></i>${h||`<i class="sk sk-blk"></i>`}</section>`}
+const RPE_L=["Fácil","Normal","Duro","Muy duro"];
+async function saveRpe(){const c=userCol();if(!c)return;try{await c.doc("rpe").set({kind:"rpe",map:S.rpe||{}})}catch(e){toast("No se ha podido guardar")}}
 function trainCard(t){
   if(S.actsState==="loading"&&!S.acts.length)return`<section class="glass pad fade tcard" aria-busy="true" aria-label="Cargando entrenos"><i class="sk sk-t"></i>${skRows(1)}</section>`;
   const k=S.day,tk=today(),pm=planMatch(k),fut=k>=tk;
   const rows=[];
   t.acts.forEach(a=>{const m=pm.pl.find(x=>x.a&&x.a.id===a.id);
     rows.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${spIcon(a.sport)}<span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov)}</b><small class="ok">✓ Hecho</small></span><span class="tc-go" aria-hidden="true">›</span></button>`)});
+  /* ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar "cómo llegas" a cada persona */
+  if(k>=shiftKey(tk,-3)&&k<=tk)t.acts.forEach((a,i)=>{const v=((S.rpe||{})[a.id]||{}).v;
+    const html=`<div class="rpe" role="group" aria-label="¿Cómo fue ${esc(SPORT_L[a.sport]||"el entreno")}?"><span>${v?"Fue":"¿Cómo fue?"}</span><span class="chips">${RPE_L.map((l,j)=>`<button type="button" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${k}" aria-pressed="${v===j+1}">${l}</button>`).join("")}</span></div>`;
+    const ix=rows.findIndex(r=>r.includes(`data-open="${a.id}"`));if(ix>=0)rows.splice(ix+1,0,html)});
   pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str";
     const meta=`<b>${s.dur} min</b><small>${s.time?esc(s.time):""}</small>`;
     const act=x.st==="pend"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="No voy a hacer este entreno" title="Saltar">✕</button>`:x.st==="skip"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="Recuperar" title="Recuperar">↺</button>`:x.st==="miss"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="Marcar saltado" title="Marcar saltado">✕</button>`:"";
@@ -3333,7 +3328,7 @@ function stepsChart(){
 }
 /* ---------- Progreso avanzado ---------- */
 function actLoad(a){const k=a.kcal||(a.mov/60*8);return(a.sport==="str"?.6:1)*k/10}
-function raceTarget(){const tk=today();const ks=Object.keys(S.plan||{}).filter(k=>k>=tk).sort();for(const k of ks){const r=(S.plan[k]||[]).find(x=>x.race&&!x.skip);if(r)return{d:k,n:"Carrera"}}return tk<="2026-12-31"?{d:"2026-12-31",n:"San Silvestre"}:null}
+function raceTarget(){const tk=today();const ks=Object.keys(S.plan||{}).filter(k=>k>=tk).sort();for(const k of ks){const r=(S.plan[k]||[]).find(x=>x.race&&!x.skip);if(r)return{d:k,n:"Carrera"}}return null}
 function fitnessSeries(){
   const tk=today(),start=shiftKey(tk,-160),race=raceTarget(),end=race&&daysBetween(tk,race.d)<=120?race.d:shiftKey(tk,21),kg=num((S.profile||{}).weight)||70;
   const L={};S.acts.forEach(a=>{if(a.sport==="oth"||a.day<start)return;L[a.day]=(L[a.day]||0)+actLoad(a)});
@@ -3864,6 +3859,7 @@ async function loadStore(){
       else if(d.id==="plan"&&v.days)S.plan=JSON.parse(JSON.stringify(v.days));
       else if(d.id==="weights"&&v.list)S.weights=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="reset"&&v.at)S.resetAt=v.at;
+      else if(d.id==="rpe"&&v.map)S.rpe=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="cloud"&&v.code)S.cloud={code:v.code,since:v.since,last:v.last,err:v.err||null};
       else if(d.id==="eff"&&v.map)S.eff=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="log"&&v.days)S.log=JSON.parse(JSON.stringify(v.days));
@@ -5843,6 +5839,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bkdo"){backupDo();return}
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
   if(/^cl[a-z]+$/.test(t.dataset.act||"")){cloudAction(t.dataset.act);return}
+  if(t.dataset.rpe){const id=t.dataset.rpe,v=+t.dataset.v;S.rpe=S.rpe||{};if((S.rpe[id]||{}).v===v)delete S.rpe[id];else S.rpe[id]={v,d:t.dataset.k};saveRpe();render();return}
   if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
   if(t.dataset.act==="rsno"){S.reset=null;render();return}
   if(t.dataset.act==="rsdo"){resetDo();return}
@@ -5875,7 +5872,6 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="planedit"){S.planEdit=!S.planEdit;render();return}
   if(t.dataset.pladd){paOpen(t.dataset.pladd);return}
   if(t.dataset.gotoplan){const k=t.dataset.gotoplan;S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);render();setTimeout(()=>{const el=document.querySelector('[data-trow="'+k+'"]');if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},50);return}
-  if(t.dataset.act==="plimport"){planAction("import");return}
   if(t.dataset.pldel!=null){planAction("del",+t.dataset.pldel,t.dataset.k);return}
   if(t.dataset.plskip!=null){planAction("skip",+t.dataset.plskip,t.dataset.k);return}
 });
