@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-06T14:20:57.881Z">
+<meta name="sustrato-version" content="2026-10-06T14:30:03.234Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2330,6 +2330,13 @@ html[data-theme="light"] .cs-l.ok{background:#28a745}html[data-theme="light"] .c
 .cs-ms{margin-top:14px;border-top:.5px solid var(--sep);padding-top:10px}.cs-mh{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px}
 .cs-m{display:flex;align-items:center;gap:10px;padding:8px 0}.cs-mn{flex:1;font-size:15px;display:flex;align-items:center;gap:8px}.cs-mn i{width:9px;height:9px;border-radius:3px}
 .cs-mv{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}.cs-mv b{font:600 16px var(--round,var(--font));color:var(--fg)}.cs-mp{width:46px;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* v158 · reiniciar datos */
+.rs-a{display:flex;justify-content:space-between;gap:8px;margin-top:14px;padding-top:10px;border-top:.5px solid var(--sep)}
+.rs-b{appearance:none;border:0;background:none;color:#ff453a;font:500 15px var(--font);padding:10px 0;min-height:44px;cursor:pointer}
+html[data-theme="light"] .rs-b{color:#d70015}
+.rs-conf{margin-top:14px;background:color-mix(in srgb,#ff453a 10%,transparent)}
+.rs-do{background:#ff453a!important;color:#fff!important;border-color:transparent!important}html[data-theme="light"] .rs-do{background:#d70015!important}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/><rect class="dcover" x="-2" y="0" width="68" height="66"/></g></svg><span class="wm2">Sustrato</span></div></div>
@@ -2401,7 +2408,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="157";
+const APP_VER="158";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3142,7 +3149,20 @@ function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup
     ${rs?`<div class="bk-conf"><p><b>¿Restaurar la copia del ${esc(dateLabel((rs.at||"").slice(0,10)))}?</b> Sustituye tus datos actuales por los ${rs.n} bloques del archivo. No se puede deshacer.</p><div class="bk-a"><button class="btn sm primary" data-act="bkdo">Restaurar</button><button class="chip sm" data-act="bkno">Cancelar</button></div></div>`:
     `<div class="bk-a"><button class="btn primary" data-act="bksave" ${can&&S.dl?"":"disabled"}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Descargar copia</button>
       <label class="btn bk-up${can?"":" off"}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></svg> Restaurar<input type="file" id="bkfile" accept="application/json,.json" ${can?"":"disabled"}></label></div>`}
+    ${can?resetBlock():""}
   </section>`}
+/* Reiniciar: «Borrar registros» deja perfil, platos, despensa y rutinas; «Empezar de cero» lo borra todo y vuelve a la bienvenida */
+const RESET_REC=["log","weights","rhr","hrv","sleep","plan","menu","fuellog","sweat","measures"];
+function resetBlock(){const m=S.reset;
+  if(m)return`<div class="bk-conf rs-conf"><p><b>${m==="all"?"¿Empezar de cero?":"¿Borrar tus registros?"}</b> ${m==="all"?"Se borra todo: perfil, registros, entrenos planificados, menús, platos, despensa y rutinas. Volverás a la bienvenida.":"Se borran comidas, pesos, pulso, VFC y sueño apuntados, entrenos planificados, menús y sesiones de fuerza. Se mantienen tu perfil, tus platos, la despensa y tus rutinas."} Lo que llega de tu reloj y de Strava se vuelve a cargar solo. No se puede deshacer: si quieres, descarga antes una copia.</p><div class="bk-a"><button class="btn sm rs-do" data-act="rsdo" ${S.resetBusy?"disabled":""}>${S.resetBusy?"Borrando…":m==="all"?"Borrarlo todo":"Borrar registros"}</button><button class="chip sm" data-act="rsno">Cancelar</button></div></div>`;
+  return`<div class="rs-a"><button class="rs-b" data-act="rsrec">Borrar registros</button><button class="rs-b" data-act="rsall">Empezar de cero</button></div>`}
+async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)return;S.resetBusy=true;render();
+  try{const snap=await c.get();for(const d of snap.docs){const id=d.id,v=d.data()||{};
+      const rec=RESET_REC.includes(id)||id.startsWith("str_")||id.startsWith("fast_")||v.kind==="str"||v.kind==="fast";
+      if(m==="all"||rec){try{await c.doc(id).delete()}catch(e){}}}
+    if(m==="all"){try{localStorage.removeItem("sustrato-onb")}catch(e){}}
+    location.reload()}
+  catch(e){S.resetBusy=false;S.reset=null;toast("No se ha podido borrar");render()}}
 async function backupSave(){const c=userCol();if(!c||!S.dl)return;
   try{const snap=await c.get(),docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});const at=new Date().toISOString();
     await saveFile("sustrato-copia-"+at.slice(0,10)+".json",JSON.stringify({app:"sustrato",v:1,at,docs},null,1));
@@ -5650,6 +5670,9 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bksave"){backupSave();return}
   if(t.dataset.act==="bkdo"){backupDo();return}
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
+  if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
+  if(t.dataset.act==="rsno"){S.reset=null;render();return}
+  if(t.dataset.act==="rsdo"){resetDo();return}
   if(t.dataset.act==="reload"){loadActs(true);return}
   if(t.dataset.act==="savestr"){saveStr();return}
   if(t.dataset.pview){S.planView=t.dataset.pview;render();window.scrollTo(0,0);return}
