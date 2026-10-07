@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T10:27:51.539Z">
+<meta name="sustrato-version" content="2026-10-07T10:53:00.113Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2397,6 +2397,12 @@ html[data-theme="dark"] .tr-card{background:#f4f5f7;color:#1c1c1e}
 html[data-theme="dark"] .tr-card p,html[data-theme="dark"] .tr-skip{color:#5f5f64}
 html[data-theme="dark"] .tr-dots i{background:rgba(0,0,0,.15)}html[data-theme="dark"] .tr-dots i.on{background:#1c1c1e}
 html[data-theme="dark"] .tr-next{background:#1c1c1e!important;color:#fff!important}
+
+/* v170 · cuenta */
+.ac-box{margin:8px 0 14px;padding-bottom:14px;border-bottom:.5px solid var(--sep)}
+.ac-g{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--card)!important;color:var(--fg)!important;border:1px solid var(--sep)!important;font-weight:600;min-height:48px}
+html[data-theme="dark"] .ac-g{background:#fff!important;color:#1f1f1f!important;border-color:transparent!important}
+.ac-legal{margin:8px 0 0;font-size:12px;line-height:1.4;color:var(--muted)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2468,7 +2474,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="169";
+const APP_VER="170";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3202,11 +3208,11 @@ window.__stravaDone=ok=>{S.svBusy=false;toast(ok?"Strava conectado":"No se ha po
 /* ---------- Copia de seguridad ---------- */
 function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup")}catch(e){}
   const can=S.db&&S.uid,rs=S.restore;
-  return`<section class="glass pad fade bk-card"><h2>Tus datos</h2><p class="note" style="margin:2px 0 14px">Peso, pulso, sueño, comidas, entrenos, rutinas, platos y perfil. ${last?"Última copia: "+esc(dateLabel(last.slice(0,10)))+".":"Aún no has hecho ninguna copia."}</p>
+  return`<section class="glass pad fade bk-card"><h2>Tus datos</h2>${can?acctBlock():""}<p class="note" style="margin:2px 0 14px">Peso, pulso, sueño, comidas, entrenos, rutinas, platos y perfil. ${last?"Última copia: "+esc(dateLabel(last.slice(0,10)))+".":"Aún no has hecho ninguna copia."}</p>
     ${rs?`<div class="bk-conf"><p><b>¿Restaurar la copia ${rs.cloud?"de la nube ":""}del ${esc(dateLabel((rs.at||"").slice(0,10)))}?</b> Sustituye tus datos actuales por los ${rs.n} bloques del archivo. No se puede deshacer.</p><div class="bk-a"><button class="btn sm primary" data-act="bkdo">Restaurar</button><button class="chip sm" data-act="bkno">Cancelar</button></div></div>`:
     `<div class="bk-a"><button class="btn primary" data-act="bksave" ${can&&S.dl?"":"disabled"}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Descargar copia</button>
       <label class="btn bk-up${can?"":" off"}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></svg> Restaurar<input type="file" id="bkfile" accept="application/json,.json" ${can?"":"disabled"}></label></div>`}
-    ${can?cloudBlock():""}
+    ${can&&!S.acct?cloudBlock():""}
     ${can?resetBlock():""}
   </section>`}
 /* Reiniciar: «Borrar registros» deja perfil, platos, despensa y rutinas; «Empezar de cero» lo borra todo y vuelve a la bienvenida */
@@ -3289,6 +3295,60 @@ async function cloudAction(a){
     try{const j=await cloudDownload(code,false);S.cloudBusy=false;if(!j){toast("No hay ninguna copia con ese código");render();return}
       S.cloudRec=false;S.restore={at:j.at,docs:j.docs,n:Object.keys(j.docs).length,cloud:code};render()}
     catch(e){S.cloudBusy=false;toast(e&&e.name==="OperationError"?"El código no es correcto":"No se ha podido recuperar. Revisa la conexión.");render()}}}
+/* ---------- Cuenta con Google y sincronización entre dispositivos ----------
+   Cada documento guardado lleva la hora de su último cambio; al sincronizar gana el más reciente.
+   Lo que es caché del dispositivo (sub_, eff, weather, cloud) no viaja. */
+const LS=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+const SYNC={u:LS("sustrato-syncu")||{},q:LS("sustrato-syncq")||{},busy:false,t:null};
+S.acct=LS("sustrato-acct");
+function syncMark(id,del){if(!S.acct||CLOUD_SKIP(id))return;const u=Date.now();SYNC.u[id]=u;SYNC.q[id]={u,del:!!del};LS("sustrato-syncu",SYNC.u);LS("sustrato-syncq",SYNC.q);clearTimeout(SYNC.t);SYNC.t=setTimeout(syncFlush,1500)}
+async function syncApi(path,opt){const c=await cloudCfg(),o=Object.assign({},opt||{});o.headers=Object.assign({"Content-Type":"application/json",Authorization:"Bearer "+S.acct.t},o.headers||{});
+  const r=await fetch(c.api.replace(/\/$/,"")+path,o),j=await r.json().catch(()=>null);if(r.status===401){S.acct=null;LS("sustrato-acct",null);toast("Tu sesión ha caducado. Vuelve a entrar con Google.");render();throw{code:"unauthorized"}}if(!r.ok)throw{code:(j&&j.code)||"server"};return j}
+function rawCol(){return S.db&&S.uid?S.db.collection("data/users/"+S.uid):null}
+async function syncFlush(){if(!S.acct||SYNC.busy)return;const ids=Object.keys(SYNC.q);if(!ids.length)return;const c=rawCol();if(!c)return;SYNC.busy=true;
+  try{const docs=[];for(const id of ids){const q=SYNC.q[id];if(q.del)docs.push({id,u:q.u,del:true});else{const d=await c.doc(id).get();if(d.exists)docs.push({id,u:q.u,data:d.data()});else docs.push({id,u:q.u,del:true})}}
+    await syncApi("/sync",{method:"POST",body:JSON.stringify({docs})});ids.forEach(id=>{if(SYNC.q[id]&&SYNC.q[id].u<=(docs.find(x=>x.id===id)||{}).u)delete SYNC.q[id]});LS("sustrato-syncq",SYNC.q);
+    S.acct=Object.assign({},S.acct,{last:new Date().toISOString(),err:null});LS("sustrato-acct",S.acct)}
+  catch(e){if(S.acct){S.acct=Object.assign({},S.acct,{err:e&&e.code||"net"});LS("sustrato-acct",S.acct)}}
+  SYNC.busy=false;if(Object.keys(SYNC.q).length)SYNC.t=setTimeout(syncFlush,30e3)}
+/* Vuelve a leer el estado guardado tras recibir cambios de otro dispositivo */
+async function reloadFromStore(){["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines"].forEach(k=>{delete S[k]});
+  Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();render()}
+async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol();if(!c)return 0;SYNC.pulling=true;let n=0;
+  try{const since=full?0:(LS("sustrato-syncp")||0),r=await syncApi("/sync?since="+since);
+    for(const d of r.docs||[]){if(CLOUD_SKIP(d.id)||!/^[\w.|-]{1,200}$/.test(d.id))continue;if((SYNC.u[d.id]||0)>=d.u||SYNC.q[d.id])continue;
+      try{if(d.del)await c.doc(d.id).delete();else await c.doc(d.id).set(d.data);SYNC.u[d.id]=d.u;n++}catch(e){}}
+    LS("sustrato-syncu",SYNC.u);LS("sustrato-syncp",r.now||Date.now());S.acct=Object.assign({},S.acct,{last:new Date().toISOString(),err:null});LS("sustrato-acct",S.acct);
+    if(n)await reloadFromStore()}
+  catch(e){}SYNC.pulling=false;return n}
+/* Primera vez en este dispositivo: baja lo que haya en la cuenta y sube lo que solo existe aquí */
+async function syncFirst(){const c=rawCol();if(!c)return;await syncPull(true);
+  const snap=await c.get(),now=Date.now();snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id)&&!SYNC.u[d.id]){SYNC.u[d.id]=now;SYNC.q[d.id]={u:now}}});
+  LS("sustrato-syncu",SYNC.u);LS("sustrato-syncq",SYNC.q);await syncFlush()}
+window.__authDone=async t=>{if(!t){toast("No se ha podido iniciar sesión");return}if(S.acct&&S.acct.t===t)return;S.acct={t};
+  try{const me=await syncApi("/me");S.acct={t,email:me.email,name:me.name};LS("sustrato-acct",S.acct);toast("Sesión iniciada. Sincronizando tus datos…");
+    if(!(S.profile||{}).name&&me.name){S.profile=Object.assign({},S.profile,{name:me.name})}await syncFirst();render();toast("Tus datos ya están en tu cuenta")}
+  catch(e){S.acct=null;LS("sustrato-acct",null);toast("No se ha podido iniciar sesión");render()}};
+async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;location.href=c.api.replace(/\/$/,"")+"/auth/google/start?ret="+encodeURIComponent(ret)}catch(e){toast("No hay conexión con el servidor")}}
+/* En la web, la vuelta de Google trae el token en la dirección */
+(function(){const m=/[#&]t=([^&]+)/.exec(location.hash||"");if(m){history.replaceState(null,"",location.pathname+location.search);setTimeout(()=>window.__authDone(decodeURIComponent(m[1])),1500)}else if(/[#&]error=/.test(location.hash||"")){history.replaceState(null,"",location.pathname);setTimeout(()=>toast("No se ha podido iniciar sesión"),1500)}})();
+document.addEventListener("visibilitychange",()=>{if(!S.acct)return;if(document.visibilityState==="visible")syncPull(false);else syncFlush()});
+setInterval(()=>{if(S.acct&&document.visibilityState==="visible")syncPull(false)},60e3);
+function acctBlock(){const a=S.acct;if(!a&&!S.authOn)return"";
+  const G='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg>';
+  if(!a)return`<div class="ac-box"><p class="cl-t"><b>Tu cuenta</b></p><p class="note" style="margin:2px 0 10px">Entra con Google para usar Sustrato en el móvil y en el ordenador con los mismos datos. Se guardan solos.</p>
+    <button class="btn ac-g" data-act="aclogin">${G}<span>Continuar con Google</span></button><p class="ac-legal">Al continuar aceptas que guardemos tus datos, incluidos los de salud, para sincronizarlos entre tus dispositivos. No los compartimos con nadie y puedes borrarlos cuando quieras.</p></div>`;
+  const when=a.last?(()=>{const d=new Date(a.last),k=a.last.slice(0,10);return(k===today()?"hoy":dateLabel(k))+" a las "+pad(d.getHours())+":"+pad(d.getMinutes())})():"pendiente";
+  if(S.acDel)return`<div class="bk-conf rs-conf"><p><b>¿Borrar tu cuenta?</b> Se borran de nuestro servidor todos los datos de ${esc(a.email||"tu cuenta")}. En este móvil se quedan los tuyos, sin sincronizar. No se puede deshacer.</p><div class="bk-a"><button class="btn sm rs-do" data-act="acdeldo">Borrar mi cuenta</button><button class="chip sm" data-act="acdelno">Cancelar</button></div></div>`;
+  return`<div class="ac-box"><p class="cl-t"><b>Tu cuenta</b><span class="cl-ok${a.err?" err":""}">${a.err?"Sin conexión":"Sincronizado"}</span></p><p class="note" style="margin:2px 0 10px">${esc(a.email||"")} · última sincronización ${when}.</p>
+    <div class="bk-a"><button class="btn sm" data-act="acsync">Sincronizar ahora</button><button class="btn sm" data-act="aclogout">Cerrar sesión</button></div><button class="cl-l" data-act="acdel">Borrar mi cuenta y mis datos</button></div>`}
+async function acctAction(a){
+  if(a==="aclogin")return acctLogin();
+  if(a==="acsync"){await syncFlush();const n=await syncPull(false);toast(n?"Sincronizado · "+n+" cambios":"Todo al día");render();return}
+  if(a==="aclogout"){await syncFlush();S.acct=null;["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Sesión cerrada. Tus datos siguen en este móvil.");render();return}
+  if(a==="acdel"){S.acDel=true;render();return}
+  if(a==="acdelno"){S.acDel=false;render();return}
+  if(a==="acdeldo"){try{await syncApi("/account",{method:"DELETE"});S.acDel=false;S.acct=null;["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Cuenta borrada");render()}catch(e){toast("No se ha podido borrar. Revisa la conexión.")}}}
 async function backupSave(){const c=userCol();if(!c||!S.dl)return;
   try{const snap=await c.get(),docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});const at=new Date().toISOString();
     await saveFile("sustrato-copia-"+at.slice(0,10)+".json",JSON.stringify({app:"sustrato",v:1,at,docs},null,1));
@@ -3903,7 +3963,7 @@ async function toggleFasted(id){
 }
 function userCol(){if(!(S.db&&S.uid))return null;const c=S.db.collection("data/users/"+S.uid);
   /* Cualquier cambio en los datos marca que hay que hacer copia en la nube */
-  return{get:()=>c.get(),doc:id=>{const d=c.doc(id),mark=()=>{if(!CLOUD_SKIP(id))S.cloudDirty=true};return{get:()=>d.get(),set:v=>{mark();return d.set(v)},delete:()=>{mark();return d.delete()}}}}}
+  return{get:()=>c.get(),doc:id=>{const d=c.doc(id),mark=del=>{if(!CLOUD_SKIP(id))S.cloudDirty=true;syncMark(id,del)};return{get:()=>d.get(),set:v=>{mark(false);return d.set(v)},delete:()=>{mark(true);return d.delete()}}}}}
 async function persistSub(id,sub){const c=userCol();if(!c)return;try{await c.doc("sub_"+id).set(Object.assign({kind:"sub"},sub))}catch(e){}}
 async function loadStore(){
   const c=userCol();if(!c)return;
@@ -5925,6 +5985,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bkdo"){backupDo();return}
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
   if(/^cl[a-z]+$/.test(t.dataset.act||"")){cloudAction(t.dataset.act);return}
+  if(/^ac[a-z]+$/.test(t.dataset.act||"")){acctAction(t.dataset.act);return}
   if(t.dataset.rpe){const id=t.dataset.rpe,v=+t.dataset.v;S.rpe=S.rpe||{};if((S.rpe[id]||{}).v===v)delete S.rpe[id];else S.rpe[id]={v,d:t.dataset.k};saveRpe();render();return}
   if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
   if(t.dataset.act==="rsno"){S.reset=null;render();return}
@@ -6047,6 +6108,9 @@ setTimeout(hideSplash,4000);
   }}catch(e){}}
   render();
   setTimeout(()=>cloudTick(false),8000);
+  if(S.acct)setTimeout(async()=>{await syncFlush();await syncPull(false)},1200);
+  /* El botón de Google solo aparece cuando el servidor tiene configurado el inicio de sesión */
+  cloudCfg().then(c=>fetch(c.api.replace(/\/$/,"")+"/health")).then(r=>r.json()).then(j=>{S.authOn=!!(j&&j.google&&j.sync);if(S.tab==="perfil")render()}).catch(()=>{});
   {let seen=null;try{seen=localStorage.getItem("sustrato-onb")}catch(e){}const p=S.profile||{};if(!seen&&!(S.profileSaved&&p.age&&p.weight&&p.height))obStart()}
   if(!mcp){S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin Strava";render();return}
   if(!S.profileSaved)prefillFromStrava();
