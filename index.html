@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T13:43:05.243Z">
+<meta name="sustrato-version" content="2026-10-07T13:57:28.668Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2572,6 +2572,8 @@ html.quiet *,html.quiet *::before,html.quiet *::after{animation:none!important;t
 .pf-dots i{width:6px;height:6px;border-radius:50%;background:var(--fill);transition:background .2s,width .2s}
 .pf-dots i.on{background:var(--fg);width:16px;border-radius:3px}
 .pf-sheet .note{margin:0}
+/* v181 · En oscuro, el amarillo teñido queda pardo: fondo neutro elevado y el nombre del deporte en su color */
+html:not([data-theme="light"]) .sp-pick[aria-pressed="true"],html:not([data-theme="light"]) .pa-sp[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 9%,#2c2c2e);color:var(--c)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2643,7 +2645,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="180";
+const APP_VER="181";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4955,7 +4957,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const m=(l,v,u,s)=>`<div class="pf-m"><span>${l}</span><b>${v}${u?`<small>${u}</small>`:""}</b><i>${s||""}</i></div>`;
   const run=a.vo2?`<button class="pf-sp" data-perf="run"><span class="tc-ic" style="--c:${SPC.run}">${SP_ICS.run}</span><span class="pf-bd"><span class="pf-nm">Carrera</span><span class="pf-ms">${m("VO2máx",Math.round(a.vo2),"",dv!=null?tr(dv,""):(vo2Norm(a.vo2)||""))}${m("Umbral",fmtClock(a.thr),"/km","ritmo de 1 hora")}${a.cadR?m("Cadencia",Math.round(a.cadR)," ppm","pasos/min"):""}</span></span></button>`:"";
   const bike=a.ftp?`<button class="pf-sp" data-perf="bike"><span class="tc-ic" style="--c:${SPC.mtb}">${SP_ICS.mtb}</span><span class="pf-bd"><span class="pf-nm">Bici</span><span class="pf-ms">${m("FTP",Math.round(a.ftp)," W",a.pm?tr(df," W"):"aprox.")}${kg?m("W/kg",(a.ftp/kg).toFixed(1).replace(".",","),"",fmtInt(kg)+" kg"):""}${a.cadB?m("Cadencia",Math.round(a.cadB)," rpm","con sensor"):""}</span></span></button>`:"";
-  return`<section class="glass pad fade pf-card"><span class="pkk">Rendimiento</span><h2 class="pf-h">Tu motor</h2>${run}${bike}</section>`}
+  return`<section class="glass pad fade pf-card"><span class="pkk pf-h">Rendimiento</span>${run}${bike}</section>`}
 const SP_ICS={run:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.run}</svg>`,mtb:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.mtb}</svg>`};
 function perfLine(pts,f,fmt){const P=pts.filter(x=>x[f]!=null);if(P.length<2)return"";const w=340,h=96,PT=12,PB=18,ys=P.map(x=>x[f]),lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.25||1,Y=v=>PT+(1-(v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-PT-PB),X=i=>8+i/(pts.length-1)*(w-16);
   const ix=pts.map((x,i)=>x[f]!=null?i:-1).filter(i=>i>=0),d=ix.map((i,j)=>(j?"L":"M")+X(i).toFixed(1)+" "+Y(pts[i][f]).toFixed(1)).join(" "),li=ix[ix.length-1];
@@ -4964,7 +4966,7 @@ function pfGauge(lo,hi,bands,val,lab){const X=v=>Math.max(0,Math.min(100,(v-lo)/
   return`<div class="pf-g"><div class="pf-gb">${bands.map(([a,b,c])=>`<i style="left:${X(a)}%;width:${X(b)-X(a)}%;background:${c}"></i>`).join("")}</div><span class="pf-gm" style="left:${X(val)}%"></span><div class="pf-gl">${lab.map(([v,t])=>`<span style="left:${X(v)}%">${t}</span>`).join("")}</div></div>`}
 function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=num((S.profile||{}).weight)||null,zr=(c,l,v)=>`<div class="pf-zr"><i style="background:${c}"></i><span>${l}</span><b>${v}</b></div>`;
   const card=(t,body)=>`<section class="pf-cd"><span class="pf-ct">${t}</span>${body}</section>`,cards=[];
-  const cad=(c,run)=>{if(!c)return card("Cadencia",`<p class="note">${run?"Tu reloj no ha enviado cadencia.":"Hace falta un sensor de cadencia en la bici."}</p>`);
+  const cad=(c,run)=>{if(!c)return"";
     const lo=run?150:55,hi=run?195:110,ok=run?[165,185]:[80,95],inb=c>=ok[0]&&c<=ok[1],col=inb?"#30d158":"#ff9f0a";
     return card("Cadencia",`<div class="pf-big">${Math.round(c)}<small> ${run?"pasos/min":"rpm"}</small></div><span class="pf-chip" style="--k:${col}">${inb?"En el rango eficiente":c<ok[0]?"Algo baja":"Alta"}</span>
       ${pfGauge(lo,hi,[[lo,ok[0],"var(--fill)"],[ok[0],ok[1],"#30d158"],[ok[1],hi,"var(--fill)"]],c,[[ok[0],ok[0]],[ok[1],ok[1]]])}
@@ -4979,14 +4981,14 @@ function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=
         <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
         <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","> "+fmtClock(paceAt(.65,v)))}${zr(Z_C[2],"Z2 Suave",fmtClock(paceAt(.79,v))+" – "+fmtClock(paceAt(.65,v)))}${zr(Z_C[3],"Z3 Ritmo maratón",fmtClock(paceAt(.86,v))+" – "+fmtClock(paceAt(.8,v)))}${zr(Z_C[4],"Z4 Umbral",fmtClock(paceAt(.92,v))+" – "+fmtClock(paceAt(.87,v)))}${zr(Z_C[5],"Z5 VO2máx","< "+fmtClock(paceAt(.95,v)))}</div>
         <p class="note">Ritmos por kilómetro en llano (método de Daniels). Con calor o en subida, guíate por el pulso.</p>`))}
-    cards.push(cad(a.cadR,true))}
+    const cr=cad(a.cadR,true);if(cr)cards.push(cr)}
   else{const f=a.ftp;
     if(f)cards.push(card("FTP",`<div class="pf-big">${Math.round(f)}<small> W${kg?" · "+(f/kg).toFixed(1).replace(".",",")+" W/kg":""}</small></div><span class="pf-chip" style="--k:${SPC.mtb}">${a.pm?"Con tu potenciómetro":"Aproximado"} · ${a.nb} salida${a.nb===1?"":"s"} en 6 semanas</span>
       <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
       <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","< "+Math.round(f*.55)+" W")}${zr(Z_C[2],"Z2 Fondo",Math.round(f*.56)+"–"+Math.round(f*.75)+" W")}${zr(Z_C[3],"Z3 Tempo",Math.round(f*.76)+"–"+Math.round(f*.9)+" W")}${zr(Z_C[4],"Z4 Umbral",Math.round(f*.91)+"–"+Math.round(f*1.05)+" W")}${zr(Z_C[5],"Z5 VO2máx","> "+Math.round(f*1.05)+" W")}</div>
       ${perfLine(a.trend,"ftp")}
       <p class="note">${a.pm?"Tu mejor potencia de 20 minutos × 0,95.":"Sin potenciómetro: con la física de tus subidas (tu peso, la bici, la pendiente y la velocidad). Fiable en puertos; con viento o barro, menos."}</p>`));
-    cards.push(cad(a.cadB,false))}
+    const cb=cad(a.cadB,false);if(cb)cards.push(cb)}
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade pf-sheet" role="dialog" aria-modal="true" aria-label="Rendimiento">
     <div class="row"><h3>Rendimiento</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="pf-sw">${[["run","Carrera"],["mtb","Bici"]].map(([k,l])=>`<button class="sp-pick" style="--c:${SPC[k]};--on:${k==="run"?"#1c1c1e":"#fff"}" data-perfsp="${k==="mtb"?"bike":"run"}" aria-pressed="${(sp==="bike")===(k==="mtb")}">${SP_ICS[k]}<span>${l}</span></button>`).join("")}</div>
