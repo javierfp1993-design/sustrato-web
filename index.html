@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T18:47:53.362Z">
+<meta name="sustrato-version" content="2026-10-07T18:59:53.448Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2676,6 +2676,29 @@ html[data-theme] .act .badge{min-width:100px!important}
 .rpe-in svg{width:17px;height:17px;stroke-width:2}
 .rpe-dt{margin-top:12px}.rpe-dt .rpe{margin:0}
 @media (prefers-reduced-motion:reduce){.rpe-badge.pop{animation:none}}
+.tc-row.done .tc-tx small{white-space:normal;overflow:visible;text-overflow:clip}
+/* v190 · Tercera tanda: explicaciones plegadas, cifras en recuadros, leyendas y etiquetas uniformes */
+.inote{margin-top:10px}
+.inote summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;padding:4px 0;-webkit-tap-highlight-color:transparent}
+.inote summary::-webkit-details-marker{display:none}
+.inote[open] summary{color:var(--fg)}
+.inote>p{margin:6px 0 0!important}
+.pst-row[data-paedit]{cursor:pointer}
+.pst-row .mb-go{align-self:center;margin-left:auto}
+.pa-ex{display:flex;justify-content:space-between;margin-top:2px}
+/* cifras de resumen: siempre en recuadros (como Resumen semanal, Rendimiento o Avituallamiento) */
+.kv{gap:8px!important;border-top:0!important;padding-top:0!important}
+.kv div,.kv div+div{background:var(--fill2)!important;border:0!important;border-radius:14px!important;padding:10px 12px!important}
+/* leyendas: punto redondo como en el resto */
+.legend i{border-radius:50%!important;width:8px!important;height:8px!important}
+/* deportes: todas las etiquetas del mismo ancho */
+html[data-theme] .badge{width:104px!important;min-width:104px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[data-theme] .act .badge{min-width:104px!important}
+.pst-row[data-paedit]{position:relative;padding-right:30px!important}
+.pst-row .mb-go{position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0}
+/* v190 · Calor en el avituallamiento */
+.fu2-t{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 11px 5px 9px;border-radius:999px;background:var(--fill2);color:var(--fg)}
+.fu2-t.hot{background:color-mix(in srgb,#ff9f0a 20%,transparent)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2747,7 +2770,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="189";
+const APP_VER="190";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3303,13 +3326,19 @@ const WLOC_DEF={name:"Consuegra",lat:39.462,lon:-3.607};
 function wloc(){const w=(S.profile||{}).wloc;return w&&w.lat!=null?w:WLOC_DEF}
 async function loadWeather(){
   const L=wloc();
-  try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${L.lat}&longitude=${L.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FMadrid&forecast_days=10`;
+  try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${L.lat}&longitude=${L.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m&past_days=92&timezone=Europe%2FMadrid&forecast_days=10`;
     const ctl=new AbortController();setTimeout(()=>ctl.abort(),6000);
     const r=await fetch(u,{signal:ctl.signal});if(!r.ok)throw 0;const j=await r.json(),d=j.daily;
     S.wx={src:"live",name:L.name,updatedAt:new Date().toISOString(),days:d.time.map((k,i)=>({date:k,code:d.weathercode[i],hi:d.temperature_2m_max[i],lo:d.temperature_2m_min[i],pop:d.precipitation_probability_max[i]}))};
+    if(j.hourly&&j.hourly.time){const H={};j.hourly.time.forEach((t,i)=>{const k=t.slice(0,10),h=+t.slice(11,13),v=j.hourly.temperature_2m[i];if(v==null)return;(H[k]=H[k]||[])[h]=v});S.wxH=H;LS("sustrato-wxh",H);perfAgg.k=null}
     render();
   }catch(e){/* sin red directa: se usa la previsión guardada */}
 }
+/* Temperatura media durante una sesión (de la previsión por horas, pasada o futura) */
+function tempAt(k,hhmm,min){const H=S.wxH||(S.wxH=LS("sustrato-wxh")||{}),d=H[k];if(!d)return null;const h0=+(String(hhmm||"10:00").slice(0,2))||10,n=Math.max(1,Math.round((min||60)/60));let t=0,c=0;
+  for(let i=0;i<n;i++){const v=d[Math.min(23,h0+i)];if(v!=null){t+=v;c++}}return c?t/c:null}
+/* Calor: el sudor (y las sales que se van con él) sube ~3 % por grado por encima de 20 °C */
+function heatF(T){return T==null?1:Math.max(.75,Math.min(1.6,1+.03*(T-20)))}
 function wxDay(k){return S.wx&&(S.wx.days||[]).find(d=>d.date===k)||null}
 function wxKind(d){const c=d.code;if(c>=95)return"storm";if(c>=71&&c<=77||c===85||c===86)return"snow";if(c>=51&&c<=67||c>=80&&c<=82)return"rain";if(c===45||c===48)return"fog";if(d.pop>=50)return"rain";if(c===3)return"cloud";if(c===1||c===2)return"partly";return"sun"}
 const WX_IC={sun:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/>',
@@ -3469,6 +3498,7 @@ function paHtml(){const p=S.pa,tk=today();
     ${intSlider(p.int||"s")}`}
     <div class="pa-f pa-row2"><label class="pa-time"><span class="pa-l">Hora</span><input type="time" id="pa_time" value="${p.time}"></label><button type="button" class="chip pa-race" data-pa="race:${p.race?"":"1"}" aria-pressed="${!!p.race}">${p.race?"✓ ":""}Es una carrera</button></div>
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":"Añadir el "+esc(dateLabel(p.date))}</button>
+    ${p.editIdx!=null?`<div class="pa-ex"><button type="button" class="ms-link" data-plskip="${p.editIdx}" data-k="${p.origDate}">No lo voy a hacer</button><button type="button" class="ms-link red" data-pldel="${p.editIdx}" data-k="${p.origDate}">Quitar entreno</button></div>`:""}
   </div></div>`}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-sx]");if(!t||!S.pa)return;const [path,a,v]=t.dataset.sx.split("|"),st=S.pa.steps=S.pa.steps||[];
   if(path==="pw"){S.pa.pw=a==="1";renderModal();return}
@@ -3705,7 +3735,7 @@ function trainCard(t){
   /* Cada fila con su hora delante: dentro del día, el orden es la hora */
   const G=[],kg=num((S.profile||{}).weight)||70,tm=v=>v?`<span class="tc-time">${esc(v)}</span>`:`<span class="tc-time tc-nt">—</span>`;
   t.acts.forEach(a=>{const m=pm.pl.find(x=>x.a&&x.a.id===a.id),hh=(a.start||"").slice(11,16),h=[];
-    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport)}${rpeBadge(a.id)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov)}</b>${rv?`<small class="rpe-t" style="--rc:var(--rpe${rv})">${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
+    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport)}${rpeBadge(a.id)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov).replace(/ h (\d+) min$/," h $1")}</b>${rv?`<small class="rpe-t" style="--rc:var(--rpe${rv})">${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
     /* ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar "cómo llegas" a cada persona */
     if(k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id))h.push(rpePicker(a,k));
     G.push({t:hh||"99",h})});
@@ -3772,7 +3802,7 @@ function stepsChart(){
   const avg=has.reduce((s,d)=>s+d.total,0)/has.length,hit=days.filter(d=>d.total>=g).length;
   let streak=0;for(let i=days.length-1;i>=0;i--){if(days[i].total>=g)streak++;else if(i<days.length-1)break}
   const bars=days.map((d,i)=>{const hh=PT+ih-Y(d.total),c=d.total>=g?"#30d158":d.total>=g*.6?"rgba(48,209,88,.55)":"rgba(48,209,88,.28)";
-    return`<g class="vb" data-tip="${esc(dateLabel(d.k))}|${fmtInt(d.total)} pasos${d.manual==null&&d.total?" (estimados)":""}" style="--d:${i*15}ms"><rect x="${(i*bw).toFixed(1)}" y="${PT}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent"/>${d.total?`<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${Y(d.total).toFixed(1)}" width="${(bw*.7).toFixed(1)}" height="${hh.toFixed(1)}" rx="2" fill="${c}"/>`:`<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${PT+ih-2}" width="${(bw*.7).toFixed(1)}" height="2" rx="1" class="vnil"/>`}${i%7===N%7?`<text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${+d.k.slice(8)}/${+d.k.slice(5,7)}</text>`:""}</g>`}).join("");
+    return`<g class="vb" data-tip="${esc(dateLabel(d.k))}|${fmtInt(d.total)} pasos${d.manual==null&&d.total?" (estimados)":""}" style="--d:${i*15}ms"><rect x="${(i*bw).toFixed(1)}" y="${PT}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent"/>${d.total?`<rect x="${(i*bw+bw*.25).toFixed(1)}" y="${Y(d.total).toFixed(1)}" width="${(bw*.5).toFixed(1)}" height="${hh.toFixed(1)}" rx="${(bw*.25).toFixed(1)}" fill="${c}"/>`:`<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${PT+ih-2}" width="${(bw*.7).toFixed(1)}" height="2" rx="1" class="vnil"/>`}${i%7===N%7?`<text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${+d.k.slice(8)}/${+d.k.slice(5,7)}</text>`:""}</g>`}).join("");
   return`<section class="glass pad fade hue-health"><span class="pkk">Pasos · 30 días</span>
     <div class="kv" style="margin-top:8px"><div><span>Media diaria</span><b>${fmtInt(avg)}</b></div><div><span>Días en objetivo</span><b>${hit}/${N}</b></div><div><span>Racha</span><b>${streak} día${streak===1?"":"s"}</b></div></div>
     <svg class="chart vol" viewBox="0 0 ${w} ${h}" role="img" aria-label="Pasos por día en los últimos 30 días"><line x1="0" x2="${w}" y1="${Y(g).toFixed(1)}" y2="${Y(g).toFixed(1)}" class="vavg"/><text class="ax" x="${w-2}" y="${(Y(g)-4).toFixed(1)}" text-anchor="end">objetivo ${fmtInt(g)}</text>${bars}</svg>
@@ -3892,7 +3922,7 @@ function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span>
     <div class="sw-sp">${Object.entries(by).map(([sp,xs])=>{const r=sweatRate(sp);return`<div class="sw-t">${spIcon(sp)}<div><b>${r.toFixed(2).replace(".",",")} <small>L/h</small></b><span>${SPORT_L[sp]} · ${xs.length} ${xs.length===1?"prueba":"pruebas"}</span></div></div>`}).join("")}</div>
     <div class="sw-ch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pruebas de sudor${hasT?" según temperatura":""}"><line x1="0" x2="${W}" y1="${H-14}" y2="${H-14}" stroke="var(--sep,rgba(127,127,127,.3))"/>${dots}</svg><div class="sw-ax"><span>${hasT?r0(tmin+2)+" °C":esc(dateLabel(L[0].d))}</span><span>${hasT?"temperatura":""}</span><span>${hasT?r0(tmax-2)+" °C":esc(dateLabel(L[L.length-1].d))}</span></div></div>
-    <p class="note" style="margin:10px 0 0">Ya se usa en tu avituallamiento y en el agua del día. Repite la prueba con calor y con frío: la tasa cambia mucho con la temperatura.</p></section>`}
+    <details class="inote"><summary>${IC_INFO}Cómo funciona</summary><p class="note" style="margin:10px 0 0">Ya se usa en tu avituallamiento y en el agua del día. Repite la prueba con calor y con frío: la tasa cambia mucho con la temperatura.</p></details></section>`}
 
 /* ---------- Recuperación tras entrenar ---------- */
 function flPrompt(){if(S.day!==today())return"";let hid={};try{hid=JSON.parse(localStorage.getItem("sustrato-flask")||"{}")}catch(e){}
@@ -4024,7 +4054,7 @@ function fitCard(){
     ${svg}
     <div class="legend"><span><i style="background:#3b82f6"></i>Forma · 6 semanas</span><span><i style="background:#ff7a52"></i>Fatiga · 7 días</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ffd21e"></i>Cargado</span></div>
     ${rp&&hist>=21?`<div class="frace-box"><b>${esc(race.n)} · ${esc(dateLabel(race.d))}</b><span>Con lo que tienes planificado llegarías con forma ${r0(rp.ctl)} y frescura ${rp.tsb>0?"+":""}${r0(rp.tsb)}: ${tsbState(rp.tsb)[0].toLowerCase()}.${rp.tsb<-10?" Conviene reducir carga la última semana.":rp.tsb>20?" Quizá te sobre descanso: mete algo de ritmo los días previos.":""}</span></div>`:""}
-    <p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan.</p></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan.</p></details></section>`;
 }
 function riegel(t,d1,d2){return t*Math.pow(d2/d1,1.06)}
 function bestPred(runs,dist){let b=null;runs.forEach(a=>{if(!a.mov||a.dist<3000)return;const t=riegel(a.mov,a.dist,dist);if(!b||t<b.t)b={t,a}});return b}
@@ -4046,7 +4076,7 @@ function predCard(){
     <div class="preds">${p6?`<div><span>6 km</span><b>${fmtT(p6.t)}</b><small>${pace(p6.t,6000)} /km</small></div>`:""}<div><span>10 km</span><b>${fmtT(p10.t)}</b><small>${pace(p10.t,10000)} /km</small></div></div>
     <div class="pgbar"><div class="pgbar-h"><span>Meta 10 km · ${fmtT(goal)} (${pace(goal,10000)} /km)</span><b>${gap<=0?"¡Ya la alcanzas!":"Faltan "+fmtT(gap)}</b></div><div class="pgtrack"><i style="width:${(pc*100).toFixed(0)}%"></i></div></div>
     ${chart}
-    <p class="note">Estimación con la fórmula de Riegel a partir de tus mejores carreras de los últimos 60 días (sin trail). Basada en ${esc(p10.a.name)}, ${esc(dateLabel(p10.a.day))}.</p></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Estimación con la fórmula de Riegel a partir de tus mejores carreras de los últimos 60 días (sin trail). Basada en ${esc(p10.a.name)}, ${esc(dateLabel(p10.a.day))}.</p></details></section>`;
 }
 function bandsCard(){
   const tk=today(),months=[];for(let i=5;i>=0;i--){const d=new Date(tk+"T12:00:00");d.setDate(1);d.setMonth(d.getMonth()-i);months.push(keyOf(d).slice(0,7))}
@@ -4167,7 +4197,7 @@ function fuelCard2(){
       ${[lo,hi].map(v=>`<line x1="${PL}" x2="${w-PR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="wg"/><text class="ax" x="${PL-4}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${r0(v*100)}%</text>`).join("")}
       <path d="${line} L${X(pts.length-1).toFixed(1)} ${PT+ih} L${PL} ${PT+ih} Z" fill="url(#fga)"/><path d="${line}" fill="none" stroke="#3b82f6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" class="draw"/>
       ${pts.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.fr).toFixed(1)}" r="4.5" fill="#3b82f6" class="tipdot fdot" data-tip="${esc(periodLabel("week",p.wk))}|${r0(p.fr*100)} % grasa · ${fmtInt(p.g)} g en ${p.n} sesión${p.n>1?"es":""}"/>`).join("")}</svg>
-    <p class="note">Parte de la energía de tus entrenos que viene de la grasa, semana a semana. Si sube con el mismo tipo de entreno, tu base aeróbica mejora.</p></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Parte de la energía de tus entrenos que viene de la grasa, semana a semana. Si sube con el mismo tipo de entreno, tu base aeróbica mejora.</p></details></section>`;
 }
 function eatCard(){
   const tk=today(),days=[];for(let i=13;i>=0;i--){const k=shiftKey(tk,-i),lk=loggedKcal(k),t=dayTargets(k,true);days.push({k,lk,t:t&&t.kcal})}
@@ -4929,7 +4959,7 @@ function progCard(){
   <section class="glass pad fade acc" style="--ac:#3b82f6"><div class="row"><h2>Eficiencia aeróbica · ritmo a ${hr} ppm</h2><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso de referencia</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:80px"></label></div>
     ${pts.length>=2?effChart(pts):`<p class="empty">${pending?"Analizando tus carreras…":"Hacen falta al menos dos carreras con 3 minutos o más en "+(hr-5)+"–"+(hr+5)+" ppm."}</p>`}
     ${pending&&pts.length>=2?`<p class="note">Analizando ${pending} carrera${pending>1?"s":""} más…</p>`:""}
-    <p class="note">Ritmo medio de los tramos corridos a ${hr-5}–${hr+5} ppm en cada salida. Cuanto más arriba, más rápido vas al mismo pulso. El trail sale más lento por el terreno.</p>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Ritmo medio de los tramos corridos a ${hr-5}–${hr+5} ppm en cada salida. Cuanto más arriba, más rápido vas al mismo pulso. El trail sale más lento por el terreno.</p></details>
   </section>`;
 }
 
@@ -5070,8 +5100,8 @@ async function ensurePerf(){
     S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render()}
   S.pmxBusy=false;savePerf();render()}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
-function perfAt(end){const P=S.pmx||{},E=Object.values(P),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&x.d<=end&&x.d>shiftKey(end,-days));
-  let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);
+function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{hot:x.sp==="run"&&hot(id)})),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&x.d<=end&&x.d>shiftKey(end,-days));
+  let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);{const cool=r.filter(x=>!x.hot);if(cool.length>=2)r=cool}
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
   const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
   const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=top(r,"vo2"),vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
@@ -5119,7 +5149,7 @@ function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=
       cards.push(card(`<span class="pf-cti" style="--c:${VO2_C}">${IC_LUNG}</span>VO2máx`,`<div class="pf-big">${Math.round(v)}<small> ml/kg/min</small></div>${i>=0?`<span class="pf-chip" style="--k:${VO2C[i]}">${VO2L[i]} para tu edad</span>`:""}
         ${row?pfGauge(lo,hi,VO2C.map((c,j)=>[j?row[j]:lo,j<5?row[j+1]:hi,c]),v,[[row[2],Math.round(row[2])],[row[4],Math.round(row[4])]]):""}
         ${perfLine(a.trend,"vo2")}
-        <p class="note">${a.vb&&(!a.vr||a.vb>a.vr)?"Con tu FTP de bici, que en tu caso da el valor más alto.":"Con el ritmo y el pulso de tus mejores rodajes recientes."} El calor, el terreno o el cansancio solo lo bajan, por eso cuentan tus mejores salidas. Es el mejor indicador de salud cardiovascular que hay. Referencia: Cooper Institute.</p>`));
+        <p class="note">${a.vb&&(!a.vr||a.vb>a.vr)?"Con tu FTP de bici, que en tu caso da el valor más alto.":"Con el ritmo y el pulso de tus mejores rodajes recientes."} El calor, el terreno o el cansancio solo lo bajan, por eso cuentan tus mejores salidas y no las de más de 27 °C. Es el mejor indicador de salud cardiovascular que hay. Referencia: Cooper Institute.</p>`));
       cards.push(card("Umbral",`<div class="pf-big">${fmtClock(a.thr)}<small> /km</small></div><span class="pf-chip" style="--k:${Z_C[4]}">El ritmo que aguantarías ~1 hora</span>
         <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
         <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","> "+fmtClock(paceAt(.65,v)))}${zr(Z_C[2],"Z2 Suave",fmtClock(paceAt(.79,v))+" – "+fmtClock(paceAt(.65,v)))}${zr(Z_C[3],"Z3 Ritmo maratón",fmtClock(paceAt(.86,v))+" – "+fmtClock(paceAt(.8,v)))}${zr(Z_C[4],"Z4 Umbral",fmtClock(paceAt(.92,v))+" – "+fmtClock(paceAt(.87,v)))}${zr(Z_C[5],"Z5 VO2máx","< "+fmtClock(paceAt(.95,v)))}</div>
@@ -5157,6 +5187,7 @@ function logEntryFor(k,m,st,extra){
 async function saveLog(){const c=userCol();if(!c)return;try{await c.doc("log").set({kind:"log",days:S.log})}catch(e){toast("No se ha podido guardar el registro")}}
 function setLog(k,mid,entry){S.log=S.log||{};S.log[k]=Object.assign({},S.log[k]);if(entry)S.log[k][mid]=entry;else delete S.log[k][mid];if(!Object.keys(S.log[k]).length)delete S.log[k];saveLog()}
 /* Hoja de una comida: lo planeado (con ración) u otra cosa (buscar, frecuentes, foto). Un solo sitio para registrar. */
+const IC_INFO='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.6v.1"/></svg>';
 const IC_CAM='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg>';
 const IC_SRCH='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>';
 const MS_RAT=[[.5,"½"],[.75,"¾"],[1,"1"],[1.25,"1¼"],[1.5,"1½"]];
@@ -5273,12 +5304,13 @@ function fuelCard(t){
   const k=S.day,canLog=k<=today();
   const rows=long.map(s=>{
     const h=s.min/60,cph=s.min<120?40:s.min<180?60:75,carbs=Math.round(cph*Math.max(0,h-(s.min<120?.5:0)));
-    const flu=Math.round(sweatRate(s.sport)*.75*h*1000/50)*50,na=Math.round(450*h/50)*50,gels=Math.ceil(carbs/25),bott=Math.ceil(flu/500);
+    const T=tempAt(k,s.time,s.min),hf=heatF(T),flu=Math.round(sweatRate(s.sport)*.75*hf*h*1000/50)*50,na=Math.round(450*hf*h/50)*50,gels=Math.ceil(carbs/25),bott=Math.max(1,Math.round(flu/500));
     const steps=[];for(let m=s.min<120?40:30;m<s.min-10;m+=20)steps.push(m);const per=steps.length?Math.round(carbs/steps.length):0;
     const key="fuel_"+s.id,done=!!((S.log[k]||{})[key]);
     return`<details class="fu2${done?" done":""}"><summary>${spIcon(s.sport)}<span class="tc-tx"><b>${esc(s.n)}</b><small>${fmtDur(s.min*60)}${s.time?" · "+esc(s.time):""}</small></span><span class="tc-meta"><b>${carbs} g</b><small>hidratos</small></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="fu2-d">
-        <div class="fu2-k"><div style="--c:#ffd21e"><span>Hidratos</span><b>${carbs}<small> g</small></b><em>${cph} g/h</em></div><div style="--c:#5ac8fa"><span>Líquido</span><b>${(flu/1000).toFixed(1).replace(".",",")}<small> L</small></b><em>con sales</em></div><div style="--c:#5ac8fa"><span>Sodio</span><b>${fmtInt(na)}<small> mg</small></b><em>en total</em></div></div>
+        ${T!=null?`<span class="fu2-t${T>=27?" hot":""}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/></svg>${Math.round(T)} °C${T>=27?" · bebe antes de tener sed":" a esa hora"}</span>`:""}
+        <div class="fu2-k"><div style="--c:#ffd21e"><span>Hidratos</span><b>${carbs}<small> g</small></b><em>${cph} g/h</em></div><div style="--c:#5ac8fa"><span>Líquido</span><b>${(flu/1000).toFixed(1).replace(".",",")}<small> L</small></b><em>${T!=null?(hf>1.05?"+"+Math.round((hf-1)*100)+" % calor":hf<.95?"menos por el fresco":"con sales"):"con sales"}</em></div><div style="--c:#5ac8fa"><span>Sodio</span><b>${fmtInt(na)}<small> mg</small></b><em>en total</em></div></div>
         ${steps.length?`<div class="fu2-tl" aria-label="Cuándo tomarlo">${steps.map(m=>`<span><b>${m}′</b><small>${per} g</small></span>`).join("")}</div>`:""}
         <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} bidón${bott>1?"es":""} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${(()=>{const tl=fuelTol();return tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
         ${canLog?`<button class="btn sm ${done?"":"primary"}" data-fuel="${key}" data-c="${carbs}" aria-pressed="${done}">${done?"✓ Tomado · deshacer":"Marcar como tomado"}</button>`:""}
@@ -5374,7 +5406,7 @@ function strengthCard(){
       <div class="skv"><div><span>${unit==="%"?"Índice":"Mejor serie"}</span><b>${fmt(last)}</b></div><div><span>En 12 semanas</span><b>${fmt(p12)}</b></div></div></div>
     ${strengthChart(pts,pr,unit)}
     <p class="fdesc">${pts.length<3?"Con tus primeras sesiones, ":"A tu ritmo actual, "}en 4 semanas podrías estar ${g4>=0?"un "+g4.toFixed(0)+" % más fuerte":"igual"} y en 12 semanas un ${g12.toFixed(0)} % por encima de hoy.</p>
-    <p class="note">${unit==="kg"&&BW_EX.has(sel)?"En ejercicios con peso corporal sumo tu peso al lastre. ":""}Fuerza estimada de la mejor serie (fórmula de Epley), suponiendo 2 sesiones por semana y un avance que se va frenando: ${pr.rate.toFixed(1).replace(".",",")} % por semana al principio.</p></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${unit==="kg"&&BW_EX.has(sel)?"En ejercicios con peso corporal sumo tu peso al lastre. ":""}Fuerza estimada de la mejor serie (fórmula de Epley), suponiendo 2 sesiones por semana y un avance que se va frenando: ${pr.rate.toFixed(1).replace(".",",")} % por semana al principio.</p></details></section>`;
 }
 
 /* ---------- Menú lateral ---------- */
@@ -5648,7 +5680,7 @@ function mealsCard(t){
     ${logSummary(t,S.day)}
     <div class="meals">${rows}</div>
     ${xLine(t)}
-    <p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></section>`;
+    <details class="inote"><summary>${IC_INFO}Por qué este reparto</summary><p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></details></section>`;
 }
 /* Micros y suplementos: detalle secundario, en una hoja desde el pie de Comidas */
 const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c3.7 4.4 6.6 7.9 6.6 11.8a6.6 6.6 0 0 1-13.2 0c0-3.9 2.9-7.4 6.6-11.8z"/></svg>';
@@ -5852,7 +5884,7 @@ function vPlanTrain(wk){
     if(k>=tk){
       edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
         const es=estSession(s,kg),meta=[fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
-        return`<div class="pst-row" data-pmove="${k}|${i}" title="Mantén pulsado y arrastra a otro día">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small><small class="pst-src">${es.src?"Calculado con "+esc(es.src):"Estimación general: aún no hay sesiones tuyas parecidas"}</small>${stc?stProfile(s.steps,22):""}</div><div class="pst-act"><button class="chip sm" data-paedit="${k}|${i}">Editar</button><button class="chip sm" data-plskip="${i}" data-k="${k}">Saltar</button><button class="chip sm" data-pldel="${i}" data-k="${k}" aria-label="Quitar entreno">Quitar</button></div></div>`}).join("");
+        return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div><span class="mb-go" aria-hidden="true">›</span></div>`}).join("");
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}${k>=tk?wxPill(k):""}</div>
@@ -5863,7 +5895,7 @@ function vPlanTrain(wk){
     <div class="kv${comp.n?" kv4":""}" style="margin-top:12px"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div></section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
-  <p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan.</p>`;
+  <details class="inote"><summary>${IC_INFO}Cómo funciona</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan.</p></details>`;
 }
 function planEditor(k){
   const list=plannedFor(k);
@@ -6080,7 +6112,7 @@ function vPeriod(){
     <section class="glass pad fade hue-gly"><h2>Sustrato quemado</h2>
       ${acts.length?`<div class="bar" style="height:16px;margin-top:12px"><i style="width:${(cho*4/totB*100).toFixed(1)}%;background:var(--carb)"></i><i style="flex:1;background:var(--fat)"></i></div>
       <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos ${fmtInt(cho)} g</span><span><i style="background:var(--fat)"></i>Grasas ${fmtInt(fat)} g</span></div>
-      <p class="note">Equivale a ${fmtInt(cho/nD)} g de hidratos y ${fmtInt(fat/nD)} g de grasa al día de media. Las actividades que no has abierto usan un reparto estimado.</p>`:'<p class="empty">Sin entrenos en este periodo.</p>'}</section>
+      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Equivale a ${fmtInt(cho/nD)} g de hidratos y ${fmtInt(fat/nD)} g de grasa al día de media. Las actividades que no has abierto usan un reparto estimado.</p></details>`:'<p class="empty">Sin entrenos en este periodo.</p>'}</section>
   </div>`;
 }
 function complement(m,got){
@@ -6129,7 +6161,7 @@ function vPlan(){
   return pseg+`
   <section class="glass pad fade"><div class="row"><div class="pnav"><button class="chip" data-plweek="-1" aria-label="Semana anterior">‹</button><h3 aria-level="2" role="heading">${esc(periodLabel("week",wk))}</h3><button class="chip" data-plweek="1" aria-label="Semana siguiente">›</button></div>
     <div class="chips">${weekCopyBtn("menu",wk).replace('class="btn"','class="chip"')}<button class="chip" data-act="shop">Lista de la compra</button>${S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""}<button class="btn primary" data-act="autoweek">Asignar menú de la semana</button></div></div>
-    <p class="note">La asignación automática elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Los platos que elijas tú se respetan.</p></section>
+    <details class="inote"><summary>${IC_INFO}Cómo funciona</summary><p class="note">La asignación automática elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Los platos que elijas tú se respetan.</p></details></section>
   <div class="pweek">${cards}</div>
   ${prof?"":'<p class="note">Completa el perfil para ver los objetivos de cada día.</p>'}`;
 }
@@ -6348,7 +6380,7 @@ function vPerfil(){
       <span><i style="background:#3b82f6"></i><b>Aeróbico</b>Grasas, resistencia</span><span><i style="background:#5ac8fa"></i><b>Hidratación</b>Agua, electrolitos</span>
       <span><i style="background:#30d158"></i><b>Salud</b>Micros, suplementos</span><span><i style="background:#bf5af2"></i><b>Cuerpo</b>Peso, composición</span></div></section>
     <section class="glass pad fade hue-aer"><h2>Bandas de sustrato</h2>
-      ${hp?`<p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Nivel: ${esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())}. Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso</th><th>Hidratos</th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
+      ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Nivel: ${esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())}. Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso</th><th>Hidratos</th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
     </section>
   </div></div>`;
 }
@@ -6367,7 +6399,7 @@ function render(){setTimeout(dropKick,0);
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
   const TT={hoy:"Hoy",plan:"Plan",acts:"Actividades",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};$("#ltitle").textContent=TT[S.tab]||"";
-  const nm=S.profile&&S.profile.name,dn=new Date();$("#hello").textContent="";{const tw=todayWeight(),wt=weekTrend();$("#lsub").innerHTML=esc((nm?"Hola, "+nm+" · ":"")+DOW[dn.getDay()]+" "+dn.getDate()+" de "+MON[dn.getMonth()])+(false?` · <button class="wlink" data-act="wtedit" aria-label="Cambiar el peso de hoy">${String(tw.kg).replace(".",",")} kg</button>${wt!=null&&Math.abs(wt)>=0.05?`<span class="lsub-t">${wt>0?"↑":"↓"} ${Math.abs(wt).toFixed(1).replace(".",",")} kg/sem</span>`:""}`:"")}
+  const nm=S.profile&&S.profile.name,dn=new Date();$("#hello").textContent="";{const tw=todayWeight(),wt=weekTrend();$("#lsub").innerHTML=S.tab!=="hoy"?"":esc((nm?"Hola, "+nm+" · ":"")+DOW[dn.getDay()]+" "+dn.getDate()+" de "+MON[dn.getMonth()])+(false?` · <button class="wlink" data-act="wtedit" aria-label="Cambiar el peso de hoy">${String(tw.kg).replace(".",",")} kg</button>${wt!=null&&Math.abs(wt)>=0.05?`<span class="lsub-t">${wt>0?"↑":"↓"} ${Math.abs(wt).toFixed(1).replace(".",",")} kg/sem</span>`:""}`:"")}
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
@@ -6543,8 +6575,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="planedit"){S.planEdit=!S.planEdit;render();return}
   if(t.dataset.pladd){paOpen(t.dataset.pladd);return}
   if(t.dataset.gotoplan){const k=t.dataset.gotoplan;S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);render();setTimeout(()=>{const el=document.querySelector('[data-trow="'+k+'"]');if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},50);return}
-  if(t.dataset.pldel!=null){planAction("del",+t.dataset.pldel,t.dataset.k);return}
-  if(t.dataset.plskip!=null){planAction("skip",+t.dataset.plskip,t.dataset.k);return}
+  if(t.dataset.pldel!=null){if(S.sheet==="planadd"){S.pa=null;S.sheet=null;renderModal()}planAction("del",+t.dataset.pldel,t.dataset.k);return}
+  if(t.dataset.plskip!=null){if(S.sheet==="planadd"){S.pa=null;S.sheet=null;renderModal()}planAction("skip",+t.dataset.plskip,t.dataset.k);return}
 });
 document.addEventListener("toggle",e=>{if(e.target.classList&&e.target.classList.contains("why"))S.whyOpen=e.target.open},true);
 document.addEventListener("toggle",e=>{if(e.target.classList&&e.target.classList.contains("tc-sub"))S.subOpen=e.target.open},true);
