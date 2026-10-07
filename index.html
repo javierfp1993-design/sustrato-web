@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T10:06:40.186Z">
+<meta name="sustrato-version" content="2026-10-07T10:23:25.024Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2462,7 +2462,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="167";
+const APP_VER="168";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3098,7 +3098,8 @@ document.addEventListener("input",e=>{const m=/^s_(\w+)_(\d+)_([wr])$/.exec(e.ta
 document.addEventListener("toggle",e=>{const k=e.target.dataset&&e.target.dataset.fzex;if(k){S.fzOpen=S.fzOpen||{};S.fzOpen[k]=e.target.open}},true);
 document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#onb")){obRead();const er=$("#oberr");if(er)er.textContent=""}});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("#onb [data-ob],#onb [data-obset]");if(!t)return;e.stopPropagation();obRead();
-  if(t.dataset.obset){const [k,v]=t.dataset.obset.split(":");S.onbP[k]=v;renderOnb();return}
+  /* Elegir una opción solo marca la opción: sin repintar la pantalla entera (evita el parpadeo y el salto de scroll) */
+  if(t.dataset.obset){const [k,v]=t.dataset.obset.split(":");S.onbP[k]=v;document.querySelectorAll(`#onb [data-obset^="${k}:"]`).forEach(b=>b.setAttribute("aria-checked",String(b.dataset.obset===k+":"+v)));const er=$("#oberr");if(er)er.textContent="";return}
   const a=t.dataset.ob;
   if(a==="skip"){S.onb=null;try{localStorage.setItem("sustrato-onb","skip")}catch(e){}renderOnb();if(S.onbP&&Object.keys(S.onbP).length){S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});render()}return}
   if(a==="back"){S.onb.step=Math.max(0,S.onb.step-1);renderOnb();return}
