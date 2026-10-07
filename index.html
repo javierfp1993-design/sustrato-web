@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T20:12:43.802Z">
+<meta name="sustrato-version" content="2026-10-07T20:23:28.437Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2795,7 +2795,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="195";
+const APP_VER="196";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6487,8 +6487,10 @@ function render(){setTimeout(dropKick,0);
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
   const TT={hoy:"Hoy",plan:"Plan",acts:"Actividades",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]]}[S.tab];
-  if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train");$("#ltitle").innerHTML=`<span class="tt" role="tablist" aria-label="${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" role="tab" aria-selected="${k===cur}" data-tt="${k}">${l}</button>`).join("")}</span>`;
-    const tt=$("#ltitle .tt"),on=tt&&tt.querySelector('[aria-selected="true"]');if(on){const l=on.offsetLeft-tt.offsetLeft,r=l+on.offsetWidth;tt.style.scrollBehavior="auto";tt.scrollLeft=r>tt.clientWidth-16?r-tt.clientWidth+16:0;tt.style.scrollBehavior=""}}
+  if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train"),old=$("#ltitle .tt");
+    /* Misma pantalla: no se rehace la fila; la palabra elegida se desliza hasta el margen izquierdo */
+    if(old&&old.dataset.k===S.tab){old.querySelectorAll("[data-tt]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tt===cur)));ttAlign(old,true)}
+    else{$("#ltitle").innerHTML=`<span class="tt" role="tablist" data-k="${S.tab}" aria-label="${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" role="tab" aria-selected="${k===cur}" data-tt="${k}">${l}</button>`).join("")}</span>`;ttAlign($("#ltitle .tt"),false)}}
   else $("#ltitle").textContent=TT[S.tab]||""}
   const nm=S.profile&&S.profile.name,dn=new Date();$("#hello").textContent="";{const tw=todayWeight(),wt=weekTrend();$("#lsub").innerHTML=S.tab!=="hoy"?"":esc((nm?"Hola, "+nm+" · ":"")+DOW[dn.getDay()]+" "+dn.getDate()+" de "+MON[dn.getMonth()])+(false?` · <button class="wlink" data-act="wtedit" aria-label="Cambiar el peso de hoy">${String(tw.kg).replace(".",",")} kg</button>${wt!=null&&Math.abs(wt)>=0.05?`<span class="lsub-t">${wt>0?"↑":"↓"} ${Math.abs(wt).toFixed(1).replace(".",",")} kg/sem</span>`:""}`:"")}
   S.pop=null;
@@ -6772,6 +6774,11 @@ window.__back=function(){const c=document.querySelector('.overlay .xclose')||doc
   new MutationObserver(()=>{if(!t)t=setTimeout(chk,120)}).observe(document.body,{childList:true,subtree:true});setTimeout(chk,500)})();
 
 /* Títulos-pestaña de Plan y Progreso: tocar una palabra o deslizar el dedo cambia de sección */
+function ttAlign(tt,anim){if(!tt)return;const on=tt.querySelector('[aria-selected="true"]');if(!on)return;
+  /* La sección elegida se centra en la pantalla; en los extremos se queda pegada a su margen */
+  tt.style.paddingRight="16px";
+  const c=window.innerWidth/2-tt.getBoundingClientRect().left,x=Math.max(0,Math.min(tt.scrollWidth-tt.clientWidth,on.offsetLeft-tt.firstElementChild.offsetLeft+on.offsetWidth/2-c));
+  if(anim&&!matchMedia("(prefers-reduced-motion: reduce)").matches)tt.scrollTo({left:x,behavior:"smooth"});else{tt.style.scrollBehavior="auto";tt.scrollLeft=x;tt.style.scrollBehavior=""}}
 function ttGo(k){if(S.tab==="prog")S.progSec=k;else if(S.tab==="plan")S.planView=k;else return;render();window.scrollTo(0,0)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(b)ttGo(b.dataset.tt)});
 (function(){let x0=null,y0=0,ok=false;
