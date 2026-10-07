@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T12:00:46.336Z">
+<meta name="sustrato-version" content="2026-10-07T12:16:21.630Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2469,6 +2469,48 @@ div.mbody{cursor:default}
 .tc-sub .chev{color:var(--faint);font-size:18px;transition:transform .2s}
 .tc-sub[open] .chev{transform:rotate(90deg)}
 .tc-sub[open]{padding-bottom:12px}
+/* v174 · gráfico de gasto legible en modo claro */
+.sw-neat{background:rgba(255,255,255,.3)}
+html[data-theme="light"] .sw-neat{background:rgba(60,60,67,.22)}
+html[data-theme="light"] .hatch-g{background:repeating-linear-gradient(45deg,rgba(60,60,67,.38) 0 2px,rgba(60,60,67,.06) 2px 5px)!important}
+html[data-theme="light"] #hatchG rect{fill:rgba(60,60,67,.05)}
+html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
+/* v174 · Resumen «lo que te queda», cámara por comida, micros y suplementos separados */
+.ls2{margin-top:12px;padding:16px 16px 18px;border-radius:18px;background:var(--card2)}
+.ls-l{font-size:13.5px;color:var(--muted)}
+.ls-k{font-size:15px;color:var(--muted);margin-top:2px}
+.ls-k b{font-size:34px;font-weight:700;letter-spacing:-.02em;color:var(--fg);font-variant-numeric:tabular-nums;margin-right:2px}
+.ls-k.over b{color:var(--warn,#ff9f0a)}
+.ls-ms{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.ls-m{font-size:11.5px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ls-m i{display:block;height:5px;border-radius:3px;background:var(--fill);margin-bottom:6px}
+.ls-m.on{color:var(--fg)}.ls-m.on i{background:#30d158}
+.ls-m.skip i{background:repeating-linear-gradient(90deg,var(--fill) 0 4px,transparent 4px 7px)}
+.ls-mac{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.ls-c{background:var(--card);border-radius:14px;padding:10px 10px 11px;min-width:0}
+.ls-n{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.ls-n i{width:8px;height:8px;border-radius:50%;flex:none}
+.ls-c b{display:block;margin-top:3px;font-size:20px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ls-c b small{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:0}
+.ls-b{display:block;height:4px;border-radius:3px;background:var(--fill2);margin-top:7px;overflow:hidden}
+.ls-b i{display:block;height:100%;border-radius:3px}
+.ls-cta{display:flex;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--edge-soft,rgba(127,127,127,.18))}
+.ls-q{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ls-q b{font-size:15.5px;font-weight:600;line-height:1.25}
+.ls-q small{font-size:13px;color:var(--muted)}
+.ls-y{appearance:none;border:0;background:none;padding:0;font:inherit;color:var(--fg);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.ls-go{appearance:none;border:0;flex:none;background:var(--fg);color:var(--bg);font:600 15px var(--font);border-radius:999px;padding:11px 18px;cursor:pointer}
+.ls-go:active{transform:scale(.97)}
+.mline .mcam2{background:var(--card2);width:36px;height:36px}
+.mline .mb-go{appearance:none;border:0;background:none;padding:0 0 0 2px;cursor:pointer;line-height:1}
+.xgrp{margin-top:12px;border-radius:14px;background:var(--card2);overflow:hidden}
+.xgrp .xline{margin:0;border-radius:0;background:none}
+.xgrp .xline+.xline{border-top:1px solid var(--edge-soft,rgba(127,127,127,.18))}
+.xgrp .xline>span.xl-ic{flex:none}
+.xl-ic{width:30px;height:30px;border-radius:8px;background:var(--card);display:grid;place-items:center;flex:none;color:var(--fg)}
+.xl-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.xs-one>section.glass{margin-top:6px}
+.xs-one>section.glass>h2:first-child{display:none}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2540,7 +2582,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="173";
+const APP_VER="174";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4232,7 +4274,7 @@ function weekChart(){
       `<text class="ax" x="${(x+bw/2).toFixed(1)}" y="${H-8}" text-anchor="middle" ${d.k===S.day?'fill="#f4f5f7"':""}>${DOW[dd.getDay()]}</text>`}).join("");
   const grid=[0,mx/2,mx].map(v=>`<line x1="${PL}" x2="${W-8}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,.06)"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${fmtInt(v)}</text>`).join("");
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gasto diario de la última semana">${grid}${bars}</svg>
-<div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i style="background:rgba(255,255,255,.3)"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span></div>`;
+<div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i class="sw-neat"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span></div>`;
 }
 
 /* ---------- Maniquí muscular ---------- */
@@ -4831,16 +4873,19 @@ function weekCopyPlan(kind,wk){const tk=today(),src=kind==="train"?(S.plan||{}):
   return days}
 function weekCopyBtn(kind,wk){const n=weekCopyPlan(kind,wk).length;return n?`<button class="btn" data-wkcopy="${kind}">Repetir semana anterior${n<7?` · ${n} día${n>1?"s":""}`:""}</button>`:""}
 function restoreLog(k,prev){if(prev)S.log[k]=prev;else delete S.log[k];saveLog();render()}
-function quickLog(t,k){
-  if(k>today())return"";const l=S.log[k]||{},pend=MEALS.filter(([id])=>!l[id]).length,y=S.log[shiftKey(k,-1)]||{},hasY=Object.keys(y).some(x=>!x.startsWith("fuel_"));
-  if(!pend)return"";
-  return`<div class="qlog"><button class="btn primary sm" data-act="logall">✓ Comí lo planeado${pend<4?` · ${pend} pendiente${pend>1?"s":""}`:""}</button>${hasY?'<button class="btn sm" data-act="logyday">Como ayer</button>':""}</div>`;
-}
 function logSummary(t,k){
-  const l=S.log[k];if(!l)return quickLog(t,k);const v=Object.values(l);const s=v.reduce((a,x)=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0});
-  const kc=4*s.P+4*s.C+9*s.F,bar=(g,tg,c)=>`<div class="lsb"><i style="width:${Math.min(100,g/tg*100).toFixed(0)}%;background:${c}"></i></div>`;
-  return`<div class="lsum"><div class="row"><span><b>${fmtInt(kc)}</b> de ${fmtInt(t.kcal)} kcal registradas</span><span class="note" style="margin:0">${Object.keys(l).filter(x=>!x.startsWith("fuel_")).length}/4 comidas</span></div>
-    ${quickLog(t,k)}<div class="lsgrid"><span>Proteína ${fmtInt(s.P)}/${fmtInt(t.P)} g</span>${bar(s.P,t.P,"var(--prot)")}<span>Hidratos ${fmtInt(s.C)}/${fmtInt(t.C)} g</span>${bar(s.C,t.C,"var(--carb)")}<span>Grasas ${fmtInt(s.F)}/${fmtInt(t.F)} g</span>${bar(s.F,t.F,"var(--fat)")}</div></div>`;
+  if(k>today())return"";const l=S.log[k]||{},v=Object.values(l),e=v.reduce((a,x)=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0});
+  const left=t.kcal-kcOf(e),over=left<0,mp=mealPlan(t,k).meals,pend=mp.filter(m=>!l[m.id]);
+  const seg=MEALS.map(([id,n])=>{const x=l[id],c=!x?"":x.st==="skip"?"skip":"on";return`<span class="ls-m ${c}"><i></i>${n}</span>`}).join("");
+  const mac=(m,c,n,g,tg)=>{const r=tg-g,ov=r<0;return`<div class="ls-c"><span class="ls-n"><i style="background:${c}"></i>${n}</span><b>${fmtInt(Math.abs(r))}<small> g${ov?" de más":""}</small></b><span class="ls-b"><i style="width:${Math.min(100,g/tg*100).toFixed(0)}%;background:${c}"></i></span></div>`};
+  let cta="";
+  if(pend.length){const nm=pend.map((m,i)=>i?m.n.toLowerCase():m.n),masc=pend.some(m=>m.id==="breakfast"),pl=pend.length>1;
+    const q=pend.length>=3?`¿Las ${pend.length} que faltan, como planeadas?`:`¿${nm.join(" y ")} como planead${masc?"o":"a"}${pl?"s":""}?`;
+    const kc=pend.reduce((a,m)=>a+kcOf(logEntryFor(k,m,"done")),0),y=S.log[shiftKey(k,-1)]||{},hasY=!Object.keys(l).filter(x=>!x.startsWith("fuel_")).length&&Object.keys(y).some(x=>!x.startsWith("fuel_"));
+    cta=`<div class="ls-cta"><span class="ls-q"><b>${esc(q)}</b><small>Suma${pl?"n":""} ${fmtInt(kc)} kcal${hasY?' · <button class="ls-y" data-act="logyday">Lo mismo que ayer</button>':""}</small></span><button class="ls-go" data-act="logall">Apuntar</button></div>`}
+  return`<div class="ls2"><span class="ls-l">${over?"Te has pasado":"Te quedan"}</span><div class="ls-k${over?" over":""}"><b>${fmtInt(Math.abs(left))}</b> kcal</div>
+    <div class="ls-ms">${seg}</div>
+    <div class="ls-mac">${mac("P","var(--prot)","Proteína",e.P,t.P)}${mac("C","var(--carb)","Hidratos",e.C,t.C)}${mac("F","var(--fat)","Grasas",e.F,t.F)}</div>${cta}</div>`;
 }
 /* Foto de la comida: analizar → confirmar en la propia comida → apuntar. Sin abrir editores. */
 function phThumb(file){return new Promise(res=>{const fr=new FileReader();fr.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.8))};i.onerror=()=>res(null);i.src=fr.result};fr.onerror=()=>res(null);fr.readAsDataURL(file)})}
@@ -5246,7 +5291,7 @@ function mealsCard(t){
     else if(st==="skip"){line="Me la salté";kc=0;lab="saltada"}
     const bar=st==="skip"?"":`<span class="mbar"><i style="width:${w(4*(src.P||0))}%;background:var(--prot)"></i><i style="width:${w(4*(src.C||0))}%;background:var(--carb)"></i><i style="width:${w(9*(src.F||0))}%;background:var(--fat)"></i></span>`;
     const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small>${lab}</small>`:""}</span>`;
-    return`<div class="meal mr2${st?" st-"+st:""}"><div class="mline">${chk}${canL?`<button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}: registrar o cambiar">${body}<span class="mb-go" aria-hidden="true">›</span></button>`:`<div class="mbody">${body}</div>`}</div>${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
+    return`<div class="meal mr2${st?" st-"+st:""}"><div class="mline">${chk}${canL?`<button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}: registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}<button class="mb-go" data-mopen="${m.id}" tabindex="-1" aria-hidden="true">›</button>`:`<div class="mbody">${body}</div>`}</div>${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
   const blocks=mp.blocks.length?mp.blocks.map(b=>`${esc(b.label)} ${fromMin(b.st)}–${fromMin(b.en)}`).join(" · "):"Sin entreno";
   return`<section class="glass pad fade hue-gly"><div class="row"><h2>Reparto por comidas</h2><span class="note" style="margin:0">${blocks}</span></div>
     ${logSummary(t,S.day)}
@@ -5255,14 +5300,18 @@ function mealsCard(t){
     <p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></section>`;
 }
 /* Micros y suplementos: detalle secundario, en una hoja desde el pie de Comidas */
-function xLine(t){const mm=menuMicros(S.day);let st;
-  if(mm){const low=micros(t).filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6).map(m=>m.n.toLowerCase());st=low.length?(low.length>2?low.slice(0,2).join(", ")+" y "+(low.length-2)+" más":low.join(" y "))+" por debajo":"Tu menú los cubre"}
-  else{const n=supplements(t).length;st=n?n+" suplemento"+(n>1?"s":"")+" con evidencia para hoy":"Referencias del día"}
-  return`<button class="xline" data-act="xsheet"><span><b>Micros y suplementos</b><small>${esc(st.charAt(0).toUpperCase()+st.slice(1))}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`}
-function xSheetHtml(){const t=dayTargets(S.day);if(!t)return"";
-  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade xs-sheet" role="dialog" aria-modal="true" aria-label="Micros y suplementos">
-    <div class="row"><h3>Micros y suplementos</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    ${microCard(t)}${suppCard(t)}</div></div>`}
+const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3 3.6 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0c0-3.4 2.5-6.4 5.5-10z"/></svg>';
+const IC_PILL='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/></svg>';
+function xLine(t){const mm=menuMicros(S.day),cap=x=>esc(x.charAt(0).toUpperCase()+x.slice(1));let mi;
+  if(mm){const low=micros(t).filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6).map(m=>m.n.toLowerCase());mi=low.length?(low.length>2?low.slice(0,2).join(", ")+" y "+(low.length-2)+" más":low.join(" y "))+" por debajo":"Tu menú los cubre"}
+  else mi="Objetivos de hoy, ajustados al entreno";
+  const n=supplements(t).length,su=n?n+" con evidencia para hoy":"Ninguno indicado para hoy";
+  const row=(k,ic,b,sm)=>`<button class="xline" data-xs="${k}"><span class="xl-ic">${ic}</span><span class="xl-tx"><b>${b}</b><small>${cap(sm)}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`;
+  return`<div class="xgrp">${row("micro",IC_DROP,"Micronutrientes",mi)}${row("supl",IC_PILL,"Suplementos",su)}</div>`}
+function xSheetHtml(){const t=dayTargets(S.day);if(!t)return"";const mi=S.xsKind!=="supl";
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade xs-sheet" role="dialog" aria-modal="true" aria-label="${mi?"Micronutrientes":"Suplementos"}">
+    <div class="row"><h3>${mi?"Micronutrientes del día":"Suplementación para este día"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="xs-one">${mi?microCard(t):suppCard(t)}</div></div></div>`}
 /* ---------- Fichas divulgativas ---------- */
 const EF=(t,y,n,code)=>[`EFSA NDA Panel. ${t}. EFSA Journal ${y};${n}.`,`https://doi.org/10.2903/j.efsa.${code}`];
 const PM=(c,q)=>[c,"https://pubmed.ncbi.nlm.nih.gov/?term="+encodeURIComponent(q)];
@@ -5539,7 +5588,7 @@ function barChart(bk){
       (i%every===0?`<text class="ax" x="${(x+bw/2).toFixed(1)}" y="${H-8}" text-anchor="middle" ${d.hl?'fill="#f4f5f7"':""}>${d.label}</text>`:"")}).join("");
   const grid=[0,mx/2,mx].map(v=>`<line x1="${PL}" x2="${W-8}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,.06)"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${fmtInt(v)}</text>`).join("");
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gasto diario">${grid}${bars}</svg>
-<div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i style="background:rgba(255,255,255,.3)"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i class="hatch-y"></i>Previsto</span>':""}</div>`;
+<div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i class="sw-neat"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i class="hatch-y"></i>Previsto</span>':""}</div>`;
 }
 /* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
 function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});return n?{P,C,F,kcal:4*P+4*C+9*F}:null}
@@ -5984,7 +6033,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.lgr){const mid=t.dataset.lgr,tt=dayTargets(S.day),m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);if(m)setLog(S.day,mid,logEntryFor(S.day,m,"done",{r:+t.dataset.r}));render();return}
   if(t.dataset.act==="logall"){const tt=dayTargets(S.day);if(!tt)return;const prev=JSON.parse(JSON.stringify(S.log[S.day]||null));let n=0;mealPlan(tt,S.day).meals.forEach(m=>{if(!(S.log[S.day]||{})[m.id]){setLog(S.day,m.id,logEntryFor(S.day,m,"done"));n++}});render();undoToast(n+" comida"+(n>1?"s":"")+" registrada"+(n>1?"s":""),()=>{restoreLog(S.day,prev)});return}
   if(t.dataset.mopen){mealOpen(t.dataset.mopen);return}
-  if(t.dataset.act==="xsheet"){S.sheet="xs";renderModal();return}
+  if(t.dataset.xs){S.xsKind=t.dataset.xs;S.sheet="xs";renderModal();return}
   if(S.msh&&(t.dataset.msr||t.dataset.msro||t.dataset.mspick||t.dataset.msskip||t.dataset.msdel)){const p=S.msh,k=p.k,mid=p.mid,m=mshMeal(),cur=(S.log[k]||{})[mid],prev=cur?JSON.parse(JSON.stringify(cur)):null;if(!m)return;
     if(t.dataset.msr){const r=+t.dataset.msr;setLog(k,mid,logEntryFor(k,m,"done",{r}));mshDone(prev,"Apuntado: "+m.n.toLowerCase()+" según lo planeado");return}
     if(t.dataset.msro&&cur){const r=+t.dataset.msro,o=cur.r||1,f=r/o;setLog(k,mid,Object.assign({},cur,{r,P:cur.P*f,C:cur.C*f,F:cur.F*f}));mshDone(prev,"Ración cambiada");return}
