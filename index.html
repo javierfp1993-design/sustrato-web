@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T07:46:11.453Z">
+<meta name="sustrato-version" content="2026-10-07T10:06:40.186Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2381,6 +2381,16 @@ html[data-theme="light"]{--rpe1:#248a3d;--rpe2:#0a84c6;--rpe3:#c46a00;--rpe4:#d7
 .pm-src{opacity:.35}
 .pm-ghost{box-shadow:0 14px 36px rgba(0,0,0,.28);transform:scale(1.03) rotate(-1deg);border-radius:12px;opacity:.97;background:var(--card)!important}
 .trow.pm-over{background:color-mix(in srgb,var(--accent,#0a84ff) 12%,transparent);box-shadow:inset 3px 0 0 var(--accent,#0a84ff)}
+
+/* v167 · recorrido */
+#tour{position:fixed;inset:0;z-index:120}
+.tr-hole{position:fixed;border-radius:20px;box-shadow:0 0 0 9999px rgba(0,0,0,.58);transition:all .25s ease;pointer-events:none}
+.tr-card{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--card);color:var(--fg);border-radius:20px;padding:16px 18px 14px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.tr-card b{display:block;font-size:18px;margin-top:6px}.tr-card p{margin:6px 0 12px;font-size:15px;line-height:1.45;color:var(--muted)}
+.tr-dots{display:flex;gap:5px}.tr-dots i{width:6px;height:6px;border-radius:3px;background:var(--fill)}.tr-dots i.on{width:16px;background:var(--fg)}
+.tr-a{display:flex;justify-content:space-between;align-items:center}.tr-skip{appearance:none;border:0;background:none;color:var(--muted);font:500 15px var(--font);min-height:44px;padding:0 4px;cursor:pointer}.tr-next{min-height:44px;padding:0 20px}
+@media (prefers-reduced-motion:reduce){.tr-hole{transition:none}}
+.ob-again-row{display:flex;gap:8px;flex-wrap:wrap}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2452,7 +2462,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="166";
+const APP_VER="167";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3032,10 +3042,10 @@ function obStart(){S.onb={step:0};S.onbP=Object.assign({level:"mid",diet:"omni",
 function obField(id,l,ph,unit,req){const v=S.onbP[id];return`<label class="f ob-f" for="ob_${id}"><span>${l}${req?"":' <em>opcional</em>'}</span><span class="ob-in"><input id="ob_${id}" inputmode="${id==="name"?"text":"decimal"}" placeholder="${ph}" value="${v!=null&&v!==""?esc(v):""}" autocomplete="off">${unit?`<i>${unit}</i>`:""}</span></label>`}
 function obSeg(key,opts){return`<div class="seg ob-seg" role="radiogroup">${opts.map(([v,l])=>`<button type="button" role="radio" data-obset="${key}:${v}" aria-checked="${String(S.onbP[key]||"")===String(v)}">${l}</button>`).join("")}</div>`}
 function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;el.innerHTML="";document.body.classList.remove("onb-on");return}
-  const st=S.onb.step,p=S.onbP,N=4;let body="",cta="Continuar";
+  const st=S.onb.step,p=S.onbP,N=3;let body="",cta="Continuar";
   if(st===0){cta="Empezar";
     body=`<div class="ob-hero"><svg class="dsvg ob-drop" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl3"><path d="DROP"/></clipPath></defs><g clip-path="url(#dcl3)"><rect width="64" height="64" fill="#ffd21e"/><path d="WAVE V64 H0Z" fill="#3b82f6"/><path class="dgap" d="WAVE" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg>
-      <h2 class="ob-h">Come según cómo entrenas</h2><p class="ob-p">Sustrato lee tus entrenos de Strava y calcula cada día cuánta energía necesitas y qué te conviene comer.</p></div>
+      <h2 class="ob-h">Come según cómo entrenas</h2><p class="ob-p">Sustrato lee tus entrenos y los datos de tu reloj y calcula cada día cuánta energía necesitas y qué te conviene comer.</p></div>
       <ul class="ob-feat">
         <li><span class="ob-ic" style="--c:#ffd21e"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></svg></span><span><b>Energía del día</b><small>Calorías y macros que se ajustan a lo que entrenas.</small></span></li>
         <li><span class="ob-ic" style="--c:#3b82f6"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg></span><span><b>Sustrato por pulso</b><small>Qué parte de cada sesión sale de hidratos y cuál de grasas.</small></span></li>
@@ -3044,16 +3054,11 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
   else if(st===1){body=`<h2 class="ob-h">Sobre ti</h2><p class="ob-p">Con esto calculamos tu gasto en reposo.</p>
       <div class="ob-form">${obField("name","Nombre","Cómo te llamamos","",false)}
       <div class="f ob-f"><span>Sexo</span>${obSeg("sex",[["m","Hombre"],["f","Mujer"]])}</div>
-      <div class="ob-row3">${obField("age","Edad","33","años",true)}${obField("height","Altura","178","cm",true)}${obField("weight","Peso","78","kg",true)}</div></div>`}
-  else if(st===2){body=`<h2 class="ob-h">Tu pulso</h2><p class="ob-p">Sirve para saber de dónde sale la energía de cada entreno. Si no los sabes, déjalos en blanco: los estimamos con tu edad.</p>
-      <div class="ob-form"><div class="ob-row2">${obField("hrmax","FC máxima","186","ppm",false)}${obField("hrrest","FC en reposo","55","ppm",false)}</div>
-      ${obField("lthr","Umbral de lactato","165","ppm",false)}
-      <div class="f ob-f"><span>Nivel de entrenamiento</span>${obSeg("level",Object.entries(LEVELS).map(([k,v])=>[k,v.l.replace("Muy entrenado","Élite")]))}</div></div>`}
+      <div class="ob-row3">${obField("age","Edad","","años",true)}${obField("height","Altura","","cm",true)}${obField("weight","Peso","","kg",true)}</div></div>`}
   else{cta="Empezar a usar Sustrato";const g=p.goal||"recomp";
     body=`<h2 class="ob-h">Tu objetivo</h2><p class="ob-p">Lo puedes cambiar cuando quieras en el perfil.</p>
       <div class="ob-goals" role="radiogroup">${Object.entries(GOALS).map(([k,v])=>`<button type="button" role="radio" class="ob-goal" data-obset="goal:${k}" aria-checked="${g===k}"><span class="ob-rad" aria-hidden="true"></span><span><b>${v.label}</b><small>${OB_GOAL_D[k]||""}</small></span></button>`).join("")}</div>
-      <div class="f ob-f" style="margin-top:18px"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>
-      <div class="f ob-f" style="margin-top:18px"><span>Dónde haces la compra</span>${obSeg("store",[["any","Cualquier súper"],["merc","Mercadona"]])}</div>`}
+      <div class="f ob-f" style="margin-top:18px"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>`}
   const prog=`<div class="ob-prog" aria-label="Paso ${st+1} de ${N}">${Array.from({length:N},(_,i)=>`<i class="${i<=st?"on":""}"></i>`).join("")}</div>`;
   el.innerHTML=`<div class="ob-wrap" role="dialog" aria-modal="true" aria-label="Bienvenida a Sustrato"><div class="ob-top">${st?`<button class="hbtn" data-ob="back" aria-label="Atrás"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>`:"<span></span>"}${prog}<button class="ob-skip" data-ob="skip">${st?"Más tarde":"Saltar"}</button></div>
     <div class="ob-body ob-s${st}">${body}</div>
@@ -3061,7 +3066,32 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
   el.hidden=false;document.body.classList.add("onb-on");
   const f=el.querySelector("input");if(f&&st===1&&!p.age)setTimeout(()=>{},0)}
 function obRead(){document.querySelectorAll("#onb input").forEach(i=>{const k=i.id.slice(3),v=i.value.trim();if(k==="name")S.onbP.name=v||undefined;else S.onbP[k]=v===""?undefined:(num(v)||undefined)})}
-function obFinish(){obRead();S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});S.onb=null;S.onbP=null;try{localStorage.setItem("sustrato-onb","done")}catch(e){}renderOnb();saveProfile(true);{const k=today(),w=num(S.profile.weight);if(w&&!(S.weights||[]).some(x=>x.d===k)){S.weights=(S.weights||[]).concat([{d:k,kg:w}]);saveWeights()}}buzz(12);render();toast("Todo listo. Este es tu día.")}
+
+/* ---------- Recorrido rápido: 4 pasos sobre la pantalla real, siempre saltable ---------- */
+const TOUR=[
+ {sel:".wcard",t:"Así llegas hoy",d:"Cada mañana, con tu pulso, tu VFC y tu sueño, te decimos si es día de apretar o de ir suave."},
+ {sel:"#dropsvg",up:"section",t:"Qué comer y cuánto llevas",d:"La gota se llena con lo que apuntas. Sus colores son hidratos, proteína y grasas. Toca un macro para ver el detalle."},
+ {sel:"#fab",t:"Apunta en un momento",d:"Comidas con una foto o a mano, tu peso o un entreno, desde aquí."},
+ {sel:'.tabbar [data-tab="plan"]',t:"Tu semana",d:"Planifica tus entrenos y el menú se ajusta solo a cada día."}];
+let TOUR_I=-1;
+function tourStart(){if(S.tab!=="hoy"){S.tab="hoy";S.period="day";S.day=today();render()}TOUR_I=0;window.scrollTo(0,0);setTimeout(tourShow,120)}
+function tourEnd(){TOUR_I=-1;const el=$("#tour");if(el)el.remove();try{localStorage.setItem("sustrato-tour","done")}catch(e){}}
+function tourTarget(){const st=TOUR[TOUR_I];let el=document.querySelector(st.sel);if(el&&st.up)el=el.closest(st.up)||el;return el}
+function tourShow(){if(TOUR_I<0)return;let ov=$("#tour");if(!ov){ov=document.createElement("div");ov.id="tour";ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");ov.setAttribute("aria-label","Recorrido por Sustrato");document.body.appendChild(ov)}
+  const st=TOUR[TOUR_I],el=tourTarget();if(!el){TOUR_I++;if(TOUR_I>=TOUR.length)return tourEnd();return tourShow()}
+  const fixed=getComputedStyle(el).position==="fixed"||el.closest(".tabbar,header");if(!fixed){const r0=el.getBoundingClientRect();if(r0.top<70||r0.bottom>innerHeight-260)window.scrollBy(0,r0.top-90)}
+  requestAnimationFrame(()=>{const r=el.getBoundingClientRect(),pad=8,last=TOUR_I===TOUR.length-1;
+    const hy=Math.max(4,r.top-pad),hh=Math.min(innerHeight-8,r.bottom+pad)-hy,below=hy+hh+230<innerHeight,above=hy>230,pos=below?`top:${hy+hh+12}px`:above?`bottom:${innerHeight-hy+12}px`:`bottom:${(document.querySelector(".tabbar")||{offsetHeight:0}).offsetHeight+16}px`;
+    ov.innerHTML=`<div class="tr-hole" style="left:${Math.max(4,r.left-pad)}px;top:${hy}px;width:${Math.min(innerWidth-8,r.right+pad)-Math.max(4,r.left-pad)}px;height:${hh}px"></div>
+      <div class="tr-card" style="${pos}"><div class="tr-dots" aria-hidden="true">${TOUR.map((_,i)=>`<i class="${i===TOUR_I?"on":""}"></i>`).join("")}</div>
+      <b>${st.t}</b><p>${st.d}</p><div class="tr-a"><button type="button" class="tr-skip" data-tr="skip">${last?"":"Saltar"}</button><button type="button" class="btn primary tr-next" data-tr="next">${last?"Empezar":"Siguiente"}</button></div></div>`;
+    const b=ov.querySelector(".tr-next");if(b)b.focus()})}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-tr],[data-tour]");
+  if(t&&t.dataset.tour){tourStart();return}
+  if(TOUR_I<0)return;if(!t){if(e.target.closest&&e.target.closest("#tour")){e.stopPropagation();e.preventDefault()}return}
+  e.stopPropagation();if(t.dataset.tr==="skip")return tourEnd();TOUR_I++;if(TOUR_I>=TOUR.length)tourEnd();else tourShow()},true);
+addEventListener("resize",()=>{if(TOUR_I>=0)tourShow()});
+function obFinish(){obRead();S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});S.onb=null;S.onbP=null;try{localStorage.setItem("sustrato-onb","done")}catch(e){}renderOnb();setTimeout(()=>tourStart(),500);saveProfile(true);{const k=today(),w=num(S.profile.weight);if(w&&!(S.weights||[]).some(x=>x.d===k)){S.weights=(S.weights||[]).concat([{d:k,kg:w}]);saveWeights()}}buzz(12);render();toast("Todo listo. Este es tu día.")}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-obagain]")){obStart()}});
 document.addEventListener("input",e=>{const m=/^s_(\w+)_(\d+)_([wr])$/.exec(e.target.id||"");if(!m)return;const dk=(S.strDate||S.day)+"|"+S.strRoutine;S.strDraft=S.strDraft||{};const d=S.strDraft[dk]=S.strDraft[dk]||{};const ex=d[m[1]]=d[m[1]]||{};const st=ex[m[2]]=ex[m[2]]||{};st[m[3]]=e.target.value;
   const det=e.target.closest(".fz-ex");if(det){const ins=det.querySelectorAll('input[id$="_r"]');let f=0;ins.forEach(i=>{if(i.value!=="")f++});const sp=det.querySelector(".fz-st");if(sp)sp.textContent=f?f+"/"+ins.length:""}});
@@ -3074,7 +3104,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(a==="back"){S.onb.step=Math.max(0,S.onb.step-1);renderOnb();return}
   if(a==="next"){const st=S.onb.step,p=S.onbP;
     if(st===1){const bad=!(p.age>=12&&p.age<=99)?"edad":!(p.height>=120&&p.height<=230)?"altura":!(p.weight>=30&&p.weight<=250)?"peso":"";if(bad){$("#oberr").textContent="Revisa tu "+bad+" para continuar.";const i=$("#ob_"+(bad==="edad"?"age":bad==="altura"?"height":"weight"));if(i)i.focus();return}}
-    if(st>=3){obFinish();return}
+    if(st>=2){obFinish();return}
     S.onb.step++;renderOnb();const b=$("#onb .ob-body");if(b)b.scrollTop=0}
 },true);
 
@@ -4312,6 +4342,8 @@ function shopHtml(){
   </div></div>`;
 }
 async function saveFile(name,data){
+  /* En el móvil, las imágenes van por el menú de compartir nativo */
+  if(data instanceof Blob&&window.__native&&window.__native.shareImage){try{const u=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(data)});await window.__native.shareImage(u,name)}catch(e){toast("No se ha podido compartir")}return}
   if(!S.dl){toast("Esta vista no permite descargar archivos");return}
   try{await S.dl.save({filename:name,data});}
   catch(e){if(e&&e.code==="declined")return;toast(e&&e.code==="rate_limited"?"Ya hay una descarga pendiente":"No se ha podido descargar")}
@@ -5700,7 +5732,7 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2><div class="dr-st" style="margin-top:4px"><i class="sdot ${S.actsState==="ok"?"ok":S.actsState==="err"?"err":""}"></i>${S.actsState==="ok"?"Strava conectado":S.actsState==="err"?"Strava sin conexión":"Conectando con Strava…"}</div></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return appear+`<button class="chip ob-again" data-obagain="1">Ver la introducción otra vez</button><div class="grid2">
+  return appear+`<div class="ob-again-row"><button class="chip ob-again" data-obagain="1">Ver la introducción otra vez</button><button class="chip ob-again" data-tour="1">Ver el recorrido</button></div><div class="grid2">
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
