@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T19:51:12.944Z">
+<meta name="sustrato-version" content="2026-10-07T20:12:43.802Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1264,7 +1264,6 @@ html[data-theme="light"] .tskip{background:rgba(0,0,0,.06)}
 /* plan › menú: cabeceras de día */
 .pday summary{grid-template-columns:minmax(0,1fr) auto!important;gap:12px;align-items:center;padding:12px 16px!important;min-height:64px}
 .pmain{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
-.pd{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.01em;line-height:1}
 .pd.now{color:var(--fg);font-weight:600}
 .pchips{gap:6px}
 .badge.b-rest{background:var(--card2,rgba(127,127,127,.12));color:var(--muted)}
@@ -2705,6 +2704,26 @@ html[data-theme] .act .badge{min-width:104px!important}
 .dr-r:first-child{border-top:0}
 .dr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.dr-t b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dr-t small{font-size:12.5px;color:var(--muted)}
 .dr-v{display:flex;flex-direction:column;align-items:flex-end;gap:2px}.dr-v b{font-size:15px;font-variant-numeric:tabular-nums}.dr-v small{font-size:12px;font-weight:600;color:var(--k)}
+
+/* Progreso por secciones (v193) */
+.pwrap .ax{font:11px var(--font);font-variant-numeric:tabular-nums}
+.pwrap .legend{gap:4px 12px;flex-wrap:wrap}.pwrap .legend>*{white-space:nowrap}
+.fkpi b{font-size:28px}
+.pg-sub{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.pg-pend h2{margin-bottom:4px}
+.pg-p{border-top:.5px solid var(--sep,rgba(128,128,128,.2))}.pg-p:first-of-type{border-top:0}
+.pg-p>summary,div.pg-p{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;list-style:none;cursor:pointer}
+div.pg-p{cursor:default}
+.pg-p>summary::-webkit-details-marker{display:none}
+.pg-p span{display:flex;flex-direction:column;gap:2px;min-width:0}.pg-p b{font-weight:600;font-size:15px}.pg-p small{font-size:13px;color:var(--muted)}
+.pg-ch{color:var(--muted);flex:none;transition:transform .2s}.pg-p[open] .pg-ch{transform:rotate(180deg)}
+.pg-pb{padding:0 0 12px}.pg-pb>.row:first-child h2,.pg-pb>h2:first-child,.pg-pb>.pkk:first-child{display:none}
+
+
+
+.tt{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px;scroll-behavior:smooth}.tt::-webkit-scrollbar{display:none}
+.tt button{appearance:none;border:0;background:none;padding:0;font:inherit;letter-spacing:inherit;color:var(--faint);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s}
+.tt button[aria-selected="true"]{color:var(--fg)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2776,7 +2795,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="194";
+const APP_VER="195";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4510,7 +4529,7 @@ function gastoCard(){const c=weekChart();return c?`<section class="glass pad fad
 function weekChart(){
   const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
   const data=days.map(k=>({k,t:dayTargets(k)}));if(!data[0].t)return"";
-  const W=640,H=200,PL=40,PB=26,PT=12,iw=W-PL-8,ih=H-PB-PT;
+  const W=400,H=170,PL=34,PB=22,PT=10,iw=W-PL-8,ih=H-PB-PT;
   const mx=Math.max(...data.map(d=>d.t.tdee))*1.08;const bw=iw/7*0.56;
   const Y=v=>PT+ih-v/mx*ih;
   const bars=data.map((d,i)=>{const x=PL+iw/7*i+(iw/7-bw)/2,t=d.t;let y=PT+ih;
@@ -5073,7 +5092,7 @@ function complianceTile(){
 function effCard(){
   const hr=effHr(),pts=Object.values(S.eff).filter(e=>e.hr===hr&&e.pace).sort((a,b)=>a.d<b.d?-1:1);
   const pending=S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.day>=shiftKey(today(),-180)).slice(0,30).filter(a=>!S.eff[a.id]||S.eff[a.id].hr!==hr).length;
-  return`<section class="glass pad fade acc" style="--ac:#3b82f6"><div class="row"><div><span class="pkk">Forma aeróbica</span><h2 style="margin:2px 0 0">Ritmo a ${hr} ppm</h2></div><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:72px"></label></div>
+  return`<section class="glass pad fade acc" style="--ac:#3b82f6"><div class="row"><div><h2>Forma aeróbica</h2><p class="pg-sub">Tu ritmo a ${hr} ppm</p></div><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:72px"></label></div>
     ${pts.length>=2?effChart(pts):`<p class="empty">${pending?"Analizando tus carreras…":"Hacen falta al menos dos carreras con 3 minutos o más en "+(hr-5)+"–"+(hr+5)+" ppm."}</p>`}
     ${pending&&pts.length>=2?`<p class="note">Analizando ${pending} carrera${pending>1?"s":""} más…</p>`:""}
     <p class="note">Ritmo medio de los tramos corridos a ${hr-5}–${hr+5} ppm en cada salida. Cuanto más arriba, más rápido vas al mismo pulso.</p></section>`;
@@ -5223,7 +5242,26 @@ function perfNews(){const a=perfAgg(),tk=today();let s=LS("sustrato-perfseen")||
   LS("sustrato-perfseen",s);const n=s.news;if(!n||n.at<shiftKey(tk,-3))return"";const up=n.to>n.from;
   const t=n.k==="run"?`Tu VO2máx ${up?"sube":"baja"} a ${n.to}`:`Tu FTP ${up?"sube":"baja"} a ${n.to} W`,sub=up?"Mejor forma aeróbica que hace unas semanas":"Unas semanas con menos estímulo; vuelve con constancia";
   return`<button type="button" class="pf-news" data-perf="${n.k}"><span class="tc-ic" style="--c:${n.k==="run"?VO2_C:SPC.mtb}">${n.k==="run"?IC_LUNG:SP_ICS.mtb}</span><span class="pf-nt"><b>${t}</b><small>${sub}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`}
-function vProg(){if(S.actsState==="loading"&&!S.acts.length)return`<div class="pwrap" aria-busy="true" aria-label="Cargando progreso">`+skCard(`<i class="sk" style="height:140px;width:100%;border-radius:14px;margin-top:12px"></i>`)+skCard(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px"><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i></div>`)+skCard()+`</div>`;setTimeout(ensureEff,0);setTimeout(ensureProgSubs,400);if(!(S.measures||[]).length&&S.profile&&num(S.profile.neck)&&num(S.profile.waist))trackMeasures();const an=S.lastTab!=="prog";S.lastTab="prog";return`<div class="pwrap${an?" anim":""}">`+weekCard()+weightHero()+(computeAdapt().ok?adaptTile():"")+fitCard()+perfCard()+rhrCard()+predCard()+heatCard()+stepsChart()+gastoCard()+volCard()+strengthCard()+bandsCard()+bodyCard()+effCard()+fuelCard2()+fuelLogCard()+driftCard()+sweatCard()+eatCard()+yoyCard()+recordsCard()+weightHistory()+`</div>`}
+function vProg(){if(S.actsState==="loading"&&!S.acts.length)return`<div class="pwrap" aria-busy="true" aria-label="Cargando progreso">`+skCard(`<i class="sk" style="height:140px;width:100%;border-radius:14px;margin-top:12px"></i>`)+skCard(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px"><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i></div>`)+skCard()+`</div>`;setTimeout(ensureEff,0);setTimeout(ensureProgSubs,400);if(!(S.measures||[]).length&&S.profile&&num(S.profile.neck)&&num(S.profile.waist))trackMeasures();const an=S.lastTab!=="prog";S.lastTab="prog";const sec=PROG_SECS.some(x=>x[0]===S.progSec)?S.progSec:"res";return`<div class="pwrap${an?" anim":""}">`+progSection(sec)+`</div>`}
+/* Progreso por secciones: lo importante primero; lo que aún no tiene datos, junto al final de cada sección. */
+const PROG_SECS=[["res","Resumen"],["ene","Energía"],["for","Forma"],["ent","Entreno"],["cue","Cuerpo"]];
+/* Portada de Progreso: una loseta por sección con su dato clave. Color solo el de cada cosa: hidratos y grasas, salud, deporte, cuerpo. */
+function progSection(sec){
+  const E=(t,need,h)=>({t,need,h:h||""});
+  const L={
+    res:()=>[weekCard(),weightHero(),computeAdapt().ok?adaptTile():""],
+    ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard()),ea=eatCard();
+      return[gastoCard(),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días"),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
+    for:()=>{const pr=predCard(),ef=effCard();return[fitCard(),perfCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
+    ent:()=>{const st=strengthCard();return[volCard(),bandsCard(),heatCard(),st.includes("Aquí verás cómo crece tu fuerza")?E("Evolución de la fuerza","Registra una sesión con peso y repeticiones",st):st,recordsCard()]},
+    cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil",bo):bo,stepsChart(),weightHistory()]}
+  }[sec]();
+  const ok=L.filter(x=>typeof x==="string"&&x),pend=L.filter(x=>x&&typeof x==="object");
+  return ok.join("")+(pend.length?`<section class="glass pad fade pg-pend"><h2>Cuando haya datos</h2>${pend.map(p=>p.h?`<details class="pg-p"><summary><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span>${IC_CHEV_D}</summary><div class="pg-pb">${p.h.replace(/^<section[^>]*>/,"").replace(/<\/section>\s*$/,"")}</div></details>`:`<div class="pg-p"><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span></div>`).join("")}</section>`:"");
+}
+const IC_BACK='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+const IC_CHEV_D='<svg class="pg-ch" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+document.addEventListener("click",e=>{const b=e.target.closest("[data-psec]");if(!b)return;S.progSec=b.dataset.psec||null;S.lastTab="";render();window.scrollTo(0,0)});
 /* ---------- Registro de comidas ---------- */
 function logEntryFor(k,m,st,extra){
   if(st==="skip")return{st,P:0,C:0,F:0};
@@ -6198,8 +6236,9 @@ function vPlan(){
   }).join("");
   const dlRow=x=>`<div class="spark"><span style="min-width:0">${esc(x.n)}${dishAllowed(x)?"":' <span class="pill" style="font-size:11px">Fuera de tu dieta</span>'}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small><span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dislike="${x.id}" aria-pressed="${((S.profile||{}).dislike||[]).includes(x.id)}" aria-label="No me gusta: no incluir en la asignación automática" title="No me gusta"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 13V4h3v9zM17 13l-4 7a2 2 0 0 1-2.8-2.3L11 14H5.5a2 2 0 0 1-2-2.4l1.3-6A2 2 0 0 1 6.8 4H17"/></svg></button>${x.custom?`<button class="dl-ib" data-dishedit="${x.id}" aria-label="Editar plato" title="Editar"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button><button class="dl-ib" data-dishdel="${x.id}" aria-label="Quitar plato" title="Quitar"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button>`:`<button class="dl-ib" data-dishdup="${x.id}" aria-label="Duplicar y editar" title="Duplicar y editar"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></button>`}</span></div>`;
   const ds=allDishes(),custom=ds.filter(x=>x.custom).map(dlRow).join(""),baseL=ds.filter(x=>!x.custom).map(dlRow).join("");
-  const pv=S.planView||"train";
-  const pseg=`<div class="subtabs glass" role="tablist" aria-label="Plan"><button role="tab" data-pview="train" aria-selected="${pv==="train"}">Entrenos</button><button role="tab" data-pview="week" aria-selected="${pv==="week"}">Menú</button><button role="tab" data-pview="dishes" aria-selected="${pv==="dishes"}">Mis platos <span class="cnt">${ds.length}</span></button></div>`;
+  if(!S.planView)S.planView="train";
+  const pv=S.planView;
+  const pseg="";
   if(pv==="train")return pseg+vPlanTrain(wk);
   if(S.planView==="dishes")return pseg+`
   <section class="glass pad fade dnew acc" style="--ac:#ffd21e"><div class="dnew-in"><div><h3>Crea tus platos</h3><p class="note" style="margin:4px 0 0">Elige proteína, hidratos y verdura por raciones. El nombre y los macros salen solos; lo guardas y queda listo para tu menú.</p></div><button class="btn primary big" data-act="dishnew">Nuevo plato</button></div></section>
@@ -6213,6 +6252,7 @@ function vPlan(){
   ${prof?"":'<p class="note">Completa el perfil para ver los objetivos de cada día.</p>'}`;
 }
 
+/* Portada de Plan: misma forma que Progreso. Cada loseta lleva su acción más habitual. */
 function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if(!n||n===t)return base;
   const m=/^(Morning|Lunch|Afternoon|Evening|Night)\s+(.+)$/.exec(n);const T={Morning:"por la mañana",Lunch:"a mediodía",Afternoon:"por la tarde",Evening:"por la tarde",Night:"por la noche"};
   const K={"Run":"Carrera","Trail Run":"Trail","Ride":"Ruta en bici","Mountain Bike Ride":"Ruta en MTB","Gravel Ride":"Ruta gravel","Walk":"Caminata","Hike":"Senderismo","Weight Training":"Fuerza","Workout":"Entreno"};
@@ -6446,7 +6486,10 @@ function render(){setTimeout(dropKick,0);
   $("#view").style.display="flex";$("#view").style.flexDirection="column";$("#view").style.gap="18px";
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
-  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividades",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};$("#ltitle").textContent=TT[S.tab]||"";
+  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividades",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]]}[S.tab];
+  if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train");$("#ltitle").innerHTML=`<span class="tt" role="tablist" aria-label="${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" role="tab" aria-selected="${k===cur}" data-tt="${k}">${l}</button>`).join("")}</span>`;
+    const tt=$("#ltitle .tt"),on=tt&&tt.querySelector('[aria-selected="true"]');if(on){const l=on.offsetLeft-tt.offsetLeft,r=l+on.offsetWidth;tt.style.scrollBehavior="auto";tt.scrollLeft=r>tt.clientWidth-16?r-tt.clientWidth+16:0;tt.style.scrollBehavior=""}}
+  else $("#ltitle").textContent=TT[S.tab]||""}
   const nm=S.profile&&S.profile.name,dn=new Date();$("#hello").textContent="";{const tw=todayWeight(),wt=weekTrend();$("#lsub").innerHTML=S.tab!=="hoy"?"":esc((nm?"Hola, "+nm+" · ":"")+DOW[dn.getDay()]+" "+dn.getDate()+" de "+MON[dn.getMonth()])+(false?` · <button class="wlink" data-act="wtedit" aria-label="Cambiar el peso de hoy">${String(tw.kg).replace(".",",")} kg</button>${wt!=null&&Math.abs(wt)>=0.05?`<span class="lsub-t">${wt>0?"↑":"↓"} ${Math.abs(wt).toFixed(1).replace(".",",")} kg/sem</span>`:""}`:"")}
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
@@ -6727,6 +6770,14 @@ window.__back=function(){const c=document.querySelector('.overlay .xclose')||doc
   if(S.tab!=="hoy"){S.tab="hoy";render();window.scrollTo(0,0)}};
 (function(){if(!window.ReactNativeWebView)return;let last=null,t=0;const chk=()=>{t=0;const v=!!document.querySelector(".overlay")||S.tab!=="hoy";if(v!==last){last=v;try{window.ReactNativeWebView.postMessage(JSON.stringify({t:"back",v}))}catch(e){}}};
   new MutationObserver(()=>{if(!t)t=setTimeout(chk,120)}).observe(document.body,{childList:true,subtree:true});setTimeout(chk,500)})();
+
+/* Títulos-pestaña de Plan y Progreso: tocar una palabra o deslizar el dedo cambia de sección */
+function ttGo(k){if(S.tab==="prog")S.progSec=k;else if(S.tab==="plan")S.planView=k;else return;render();window.scrollTo(0,0)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(b)ttGo(b.dataset.tt)});
+(function(){let x0=null,y0=0,ok=false;
+  document.addEventListener("touchstart",e=>{const t=e.touches[0];ok=(S.tab==="prog"||S.tab==="plan")&&!document.querySelector(".overlay")&&!e.target.closest("svg,input,textarea,.scroll-x,.tt,.chips,.daystrip,.overlay");x0=ok?t.clientX:null;y0=t.clientY},{passive:true});
+  document.addEventListener("touchend",e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<70||Math.abs(dy)>45)return;
+    const L=S.tab==="prog"?PROG_SECS.map(x=>x[0]):["train","week","dishes"],cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train"),i=L.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<L.length)ttGo(L[i])},{passive:true})})();
 })();
 </script>
 
