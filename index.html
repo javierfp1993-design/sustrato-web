@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T12:41:48.452Z">
+<meta name="sustrato-version" content="2026-10-07T12:47:11.938Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2511,24 +2511,6 @@ html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 .xl-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xs-one>section.glass{margin-top:6px}
 .xs-one>section.glass>h2:first-child{display:none}
-/* v175 · Gota de un solo líquido neutro: mide cuánto llevas; los macros, en las columnas */
-.drop .dr-s{fill:url(#drgr)!important}
-.drg0{stop-color:#48484a}.drg1{stop-color:#1c1c1e}
-.dr-top{fill:none;stroke:#fff;stroke-width:.9;opacity:.28}
-html:not([data-theme="light"]) .drg0{stop-color:#f2f2f7}html:not([data-theme="light"]) .drg1{stop-color:#a1a1a6}
-html:not([data-theme="light"]) .dr-top{opacity:.6}
-
-/* v176 · Gota completa: se tiñe de sus macros con una transición discreta */
-.dr-c[data-i="2"]{fill:color-mix(in srgb,var(--carb) 90%,var(--card))}.dr-c[data-i="1"]{fill:color-mix(in srgb,var(--prot) 90%,var(--card))}.dr-c[data-i="0"]{fill:color-mix(in srgb,var(--fat) 90%,var(--card))}
-html[data-theme="light"] .dr-c[data-i="2"]{fill:color-mix(in srgb,var(--carb) 80%,var(--card))}html[data-theme="light"] .dr-c[data-i="1"]{fill:color-mix(in srgb,var(--prot) 80%,var(--card))}html[data-theme="light"] .dr-c[data-i="0"]{fill:color-mix(in srgb,var(--fat) 80%,var(--card))}
-.drop.full .dr-top{stroke:#fff;opacity:.35}
-.dr-sheen{opacity:0;pointer-events:none}
-.dr-rise{transform:translateY(-26px)}
-@keyframes drRise{from{transform:translateY(124px)}to{transform:translateY(-26px)}}
-@keyframes drSheen{0%{opacity:0;transform:translateX(0)}20%{opacity:1}100%{opacity:0;transform:translateX(220px)}}
-.drop.full-in .dr-rise{animation:drRise 2.4s cubic-bezier(.45,.05,.25,1) both;animation-delay:calc(var(--el) + .2s)}
-.drop.full-in .dr-sheen{animation:drSheen 1.5s ease-in-out both;animation-delay:calc(var(--el) + 2.3s)}
-@media (prefers-reduced-motion:reduce){.drop.full-in .dr-rise,.drop.full-in .dr-sheen{animation:none}}
 html.quiet .fade{animation:none!important}
 </style>
 
@@ -2601,7 +2583,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="176";
+const APP_VER="177";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4199,29 +4181,25 @@ function dropY(fa){const W=dropWidths(),N=240;if(!dropY.c){const c=[0];for(let i
   const c=dropY.c,t=Math.max(0,Math.min(1,fa))*c[N];let i=1;while(i<N&&c[i]<t)i++;const f0=(t-c[i-1])/((c[i]-c[i-1])||1);return DROP_BOT-(i-1+f0)/N*(DROP_BOT-DROP_TOP)}
 /* Un solo líquido: la gota se llena con lo comido (kcal comidas / kcal del día) y el líquido tiene los colores de lo comido */
 function dropChart(t,e){const ek=[9*e.F,4*e.P,4*e.C],et=ek.reduce((a,b)=>a+b,0),fill=Math.min(1,et/(t.kcal||1)),sh=et?ek.map(v=>v/et):[0,0,0];
-  /* Día completo (≥95 % del objetivo): el líquido se tiñe de sus macros. La primera vez, con una transición suave de abajo arriba
-     y un brillo que cruza la gota; si se redibuja a mitad, la animación sigue donde iba. */
-  const full=fill>=.95,key=S.day+"|"+t.kcal;let fc="",el=0;
-  if(full){if(DROP.fullK!==key){DROP.fullK=key;DROP.fullAt=performance.now();DROP.sp={t:performance.now()/1000+.35,dir:1}}el=performance.now()-(DROP.fullAt||0);fc=el<4200?" full full-in":" full"}else if(DROP.fullK&&DROP.fullK.startsWith(S.day+"|"))DROP.fullK=null;
-  return`<svg class="drop${fc}" style="--el:-${Math.round(el)}ms" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
-    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath><linearGradient id="drgr" gradientUnits="userSpaceOnUse" x1="0" y1="${DROP_TOP}" x2="0" y2="${DROP_BOT}"><stop offset="0" class="drg0"/><stop offset="1" class="drg1"/></linearGradient><linearGradient id="drsh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><linearGradient id="drmg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".16" stop-color="#fff"/><stop offset="1" stop-color="#fff"/></linearGradient><mask id="drm" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="124"><rect class="dr-rise" x="-10" y="0" width="120" height="150" fill="url(#drmg)"/></mask></defs>
-    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/>${full?'<g mask="url(#drm)"><path class="dr-c" data-i="2" d=""/><path class="dr-c" data-i="1" d=""/><path class="dr-c" data-i="0" d=""/></g><rect class="dr-sheen" x="-60" y="0" width="60" height="124" fill="url(#drsh)"/>':""}<path class="dr-top" d="" transform="translate(0 .9)"/></g></svg>`}
+  return`<svg class="drop" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
+    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath></defs>
+    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/></g></svg>`}
 /* Animación: la superficie ondula y el nivel sube con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
 const DROP={cur:0,v:0,run:false};
 function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg");if(!el)return;
   const tg=+el.dataset.fill,sh=el.dataset.sh.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(rm)DROP.cur=tg;else{DROP.v=(DROP.v+(tg-DROP.cur)*0.010)*0.88;DROP.cur+=DROP.v}
   const moving=Math.abs(tg-DROP.cur)>.0008||Math.abs(DROP.v)>.0004,r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
-  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60,(DROP_BOT-dropY(lv))*0.07),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
+  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
   /* Cada capa va desde su superficie hasta el fondo; se pintan de arriba abajo, así las fronteras son las propias ondas */
-  el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0,pc=el.querySelector('.dr-c[data-i="'+i+'"]');if(hi-lo<1e-4){p.setAttribute("d","");if(pc)pc.setAttribute("d","");return}
+  el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0;if(hi-lo<1e-4){p.setAttribute("d","");return}
     const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
     /* Vaivén + corriente: mecida lenta de lado a lado (compás 4,8 s) y, encima, una onda corta que recorre la superficie
        al doble de compás. Las fronteras más hondas la siguen con menos amplitud y un leve retraso, como el líquido bajo
        la superficie: el grosor de cada macro apenas cambia. */
     const st=DROP.sp?tt-DROP.sp.t:9,sp=rm||st>4?0:DROP.sp.dir*Math.min(9,Math.max(3,amp*2.2))*Math.exp(-st/0.85),T=4.8,f=acc>0?hi/acc:1,ka=0.55+0.45*f,kr=f*f,lag=(1-f)*0.6,A=(rm?0:1)*amp*0.8*ka,ph=2*Math.PI*tt/T-lag,R=(rm?0:1)*amp*0.22*kr;
     for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.15*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph))+R*Math.sin(2*Math.PI*(x/50-2*tt/T)-lag)+sp*ka*Math.cos(Math.PI*x/100)*Math.sin(2*Math.PI*st/1.1-lag);d+=` L${x} ${(yt+w).toFixed(2)}`}
-    p.setAttribute("d",d+` L100 ${yb}Z`);if(pc)pc.setAttribute("d",d+` L100 ${yb}Z`);if(top){const m=el.querySelector(".dr-top");if(m)m.setAttribute("d",hi>.985?"":"M"+d.slice(d.indexOf(" L")+2))}});
+    p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
 const STB={cur:0,v:0,run:false};
