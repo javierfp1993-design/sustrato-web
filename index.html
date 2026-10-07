@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T14:56:54.877Z">
+<meta name="sustrato-version" content="2026-10-07T18:47:53.362Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2662,6 +2662,20 @@ html[data-theme] .act .badge{min-width:100px!important}
 .fu2-k b{font-size:20px;font-weight:700;letter-spacing:-.01em}
 .frace-box{border-left:0!important;background:color-mix(in srgb,#ffd21e 12%,var(--card2))}
 .ime{border-left:0!important;background:color-mix(in srgb,var(--c) 12%,var(--card2))}
+/* v189 · La carita de «¿Cómo fue?» se queda en la actividad */
+.tc-icw{position:relative;flex:0 0 auto;display:grid}
+.rpe-badge{position:absolute;right:-6px;bottom:-6px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--card);color:var(--rc);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.rpe-badge svg{width:22px;height:22px;stroke-width:1.9}
+.rpe-badge.pre{opacity:0}
+.rpe-badge.pop{animation:rpePop .42s cubic-bezier(.3,1.7,.5,1)}
+@keyframes rpePop{0%{transform:scale(.6)}60%{transform:scale(1.22)}100%{transform:scale(1)}}
+.rpe-t{color:var(--rc)!important;font-weight:600}
+.rpe-fly{position:fixed;z-index:200;pointer-events:none;display:grid;place-items:center;transform-origin:center}
+.rpe-fly svg{width:100%;height:100%}
+.rpe-in{display:inline-grid;vertical-align:-3px;margin-left:6px;color:var(--rc)}
+.rpe-in svg{width:17px;height:17px;stroke-width:2}
+.rpe-dt{margin-top:12px}.rpe-dt .rpe{margin:0}
+@media (prefers-reduced-motion:reduce){.rpe-badge.pop{animation:none}}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2733,7 +2747,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="188";
+const APP_VER="189";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3667,13 +3681,23 @@ function skCard(h){return`<section class="glass pad fade" aria-hidden="true"><i 
 const RPE_L=["Fácil","Normal","Duro","Muy duro"];
 /* Caritas: de feliz a agotado. Fácil: ojos sonrientes y boca abierta · Normal: sonrisa tranquila ·
    Duro: boca recta y una gota de sudor · Muy duro: ojos cerrados, boca jadeando y sudor */
-const RPE_FACE=(()=>{const dot='<circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/>',
-  drop='<path d="M20.4 1.8q2 2.8 0 4.2q-2-1.4 0-4.2z" fill="currentColor" stroke="none"/>',
+const RPE_FACE=(()=>{const dot='<circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/>',
   F=[ '<path d="M7.4 10.2q1.6-1.8 3.2 0M13.4 10.2q1.6-1.8 3.2 0"/><path d="M7.8 13.4h8.4q-.7 4.2-4.2 4.2t-4.2-4.2z" fill="currentColor"/>',
       dot+'<path d="M8.6 14.4q3.4 2.4 6.8 0"/>',
-      dot+'<path d="M8.9 15.4h6.2"/>'+drop,
-      '<path d="M7.4 10.4h3M13.6 10.4h3"/><ellipse cx="12" cy="15.6" rx="1.9" ry="2.2"/>'+drop];
+      dot+'<path d="M7.6 7.6l2.6.9M16.4 7.6l-2.6.9M8.9 15.4h6.2"/>',
+      '<path d="M7.6 8.9l2.4 1.3-2.4 1.3M16.4 8.9L14 10.2l2.4 1.3"/><ellipse cx="12" cy="15.7" rx="1.9" ry="2.1"/>'];
   return F.map(x=>`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/>${x}</svg>`)})();
+const rpeOf=id=>((S.rpe||{})[id]||{}).v||0;
+/* La carita elegida pasa a formar parte de la actividad: insignia sobre el icono del deporte */
+function rpeBadge(id){const v=rpeOf(id);return v?`<span class="rpe-badge" style="--rc:var(--rpe${v})" data-rpeb="${esc(id)}" title="Fue ${RPE_L[v-1].toLowerCase()}">${RPE_FACE[v-1]}</span>`:""}
+function rpePicker(a,k){const v=rpeOf(a.id);return`<div class="rpe${v?" on":""}" role="group" aria-label="¿Cómo fue ${esc(SPORT_L[a.sport]||"el entreno")}?"><span class="rpe-q"${v?` style="--rc:var(--rpe${v})"`:""}>${v?"Fue "+RPE_L[v-1].toLowerCase():"¿Cómo fue?"}</span><span class="rpe-f">${RPE_L.map((l,j)=>`<button type="button" class="rpe-b" style="--rc:var(--rpe${j+1})" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${k||a.day}" aria-pressed="${v===j+1}" aria-label="${l}" title="${l}">${RPE_FACE[j]}</button>`).join("")}</span></div>`}
+/* Efecto al elegir: la carita da un saltito y vuela hasta su actividad */
+function rpeFly(svg,from,id){const to=document.querySelector(`#view [data-rpeb="${CSS.escape(id)}"]`);if(!to||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const r=to.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){to.classList.add("pop");return}
+  to.classList.add("pre");const c=document.createElement("div");c.className="rpe-fly";c.style.cssText=`left:${from.left}px;top:${from.top}px;width:${from.width}px;height:${from.height}px;color:${from.color}`;c.innerHTML=svg;document.body.appendChild(c);
+  const dx=r.left+r.width/2-(from.left+from.width/2),dy=r.top+r.height/2-(from.top+from.height/2),sc=r.width/from.width;
+  const an=c.animate([{transform:"translate(0,0) scale(1)"},{transform:"translate(0,-8px) scale(1.4)",offset:.25},{transform:`translate(${dx}px,${dy}px) scale(${sc})`}],{duration:640,easing:"cubic-bezier(.45,0,.2,1)"});
+  an.onfinish=an.oncancel=()=>{c.remove();to.classList.remove("pre");to.classList.add("pop")}}
 async function saveRpe(){const c=userCol();if(!c)return;try{await c.doc("rpe").set({kind:"rpe",map:S.rpe||{}})}catch(e){toast("No se ha podido guardar")}}
 function trainCard(t){
   if(S.actsState==="loading"&&!S.acts.length)return`<section class="glass pad fade tcard" aria-busy="true" aria-label="Cargando entrenos"><i class="sk sk-t"></i>${skRows(1)}</section>`;
@@ -3681,10 +3705,9 @@ function trainCard(t){
   /* Cada fila con su hora delante: dentro del día, el orden es la hora */
   const G=[],kg=num((S.profile||{}).weight)||70,tm=v=>v?`<span class="tc-time">${esc(v)}</span>`:`<span class="tc-time tc-nt">—</span>`;
   t.acts.forEach(a=>{const m=pm.pl.find(x=>x.a&&x.a.id===a.id),hh=(a.start||"").slice(11,16),h=[];
-    h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}${spIcon(a.sport)}<span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov)}</b><small class="ok">✓ Hecho</small></span><span class="tc-go" aria-hidden="true">›</span></button>`);
+    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport)}${rpeBadge(a.id)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov)}</b>${rv?`<small class="rpe-t" style="--rc:var(--rpe${rv})">${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
     /* ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar "cómo llegas" a cada persona */
-    if(k>=shiftKey(tk,-3)&&k<=tk){const v=((S.rpe||{})[a.id]||{}).v;
-      h.push(`<div class="rpe${v?" on":""}" role="group" aria-label="¿Cómo fue ${esc(SPORT_L[a.sport]||"el entreno")}?"><span class="rpe-q"${v?` style="--rc:var(--rpe${v})"`:""}>${v?"Fue "+RPE_L[v-1].toLowerCase():"¿Cómo fue?"}</span><span class="rpe-f">${RPE_L.map((l,j)=>`<button type="button" class="rpe-b" style="--rc:var(--rpe${j+1})" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${k}" aria-pressed="${v===j+1}" aria-label="${l}" title="${l}">${RPE_FACE[j]}</button>`).join("")}</span></div>`)}
+    if(k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id))h.push(rpePicker(a,k));
     G.push({t:hh||"99",h})});
   pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go,es=estSession(s,kg);
     const meta=`<b>${fmtDur((s.dur||0)*60)}</b><small>≈ ${fmtInt(es.kcal)} kcal</small>`;
@@ -6119,7 +6142,7 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
 function actRow(a){
   const main=a.sport==="str"?fmtDur(a.mov):(a.dist/1000).toFixed(1).replace(".",",")+" km";
   const sec=a.sport==="run"||a.sport==="trail"?fmtPace(a.speed):a.sport==="mtb"?fmtSpeed(a.speed):fmtDur(a.mov);
-  return `<button class="act" data-open="${a.id}"><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${esc(dateLabel(a.day))} · ${fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
+  return `<button class="act" data-open="${a.id}"><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><span style="min-width:0"><span class="t">${esc(a.name)}${(()=>{const v=rpeOf(a.id);return v?`<span class="rpe-in" style="--rc:var(--rpe${v})" title="Fue ${RPE_L[v-1].toLowerCase()}">${RPE_FACE[v-1]}</span>`:""})()}</span><span class="s">${esc(dateLabel(a.day))} · ${fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
 }
 function vActs(){
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["mtb","MTB"],["walk","Caminata"],["hike","Senderismo"],["str","Fuerza"]];
@@ -6205,7 +6228,7 @@ function vDetail(){
     <div class="legend"><span><i style="background:var(--carb)"></i>Glucolítico</span><span><i style="background:var(--fat)"></i>Lipolítico</span></div>
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
-    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${a.sport!=="oth"?`<div class="rpe-dt">${rpePicker(a,a.day)}</div>`:""}
     ${(()=>{const pk=["run","trail","walk","hike"].includes(a.sport)?["Distancia","Ritmo"]:["mtb","bike","ride","gravel"].includes(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
       return`<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-sec">${sec.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
@@ -6486,7 +6509,9 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
   if(/^cl[a-z]+$/.test(t.dataset.act||"")){cloudAction(t.dataset.act);return}
   if(/^ac[a-z]+$/.test(t.dataset.act||"")){acctAction(t.dataset.act);return}
-  if(t.dataset.rpe){const id=t.dataset.rpe,v=+t.dataset.v;S.rpe=S.rpe||{};if((S.rpe[id]||{}).v===v)delete S.rpe[id];else S.rpe[id]={v,d:t.dataset.k};saveRpe();render();return}
+  if(t.dataset.rpe){const id=t.dataset.rpe,v=+t.dataset.v,inSheet=!!t.closest("#modal");S.rpe=S.rpe||{};const off=(S.rpe[id]||{}).v===v;if(off)delete S.rpe[id];else S.rpe[id]={v,d:t.dataset.k};saveRpe();buzz(10);
+    const sv=t.querySelector("svg"),rr=sv.getBoundingClientRect(),from={left:rr.left,top:rr.top,width:rr.width,height:rr.height,color:getComputedStyle(document.documentElement).getPropertyValue("--rpe"+v).trim()};
+    if(inSheet){renderModal();render();return}render();if(!off)rpeFly(RPE_FACE[v-1],from,id);return}
   if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
   if(t.dataset.act==="rsno"){S.reset=null;render();return}
   if(t.dataset.act==="rsdo"){resetDo();return}
