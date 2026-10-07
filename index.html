@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T14:01:45.542Z">
+<meta name="sustrato-version" content="2026-10-07T14:08:16.264Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2573,6 +2573,19 @@ html.quiet *,html.quiet *::before,html.quiet *::after{animation:none!important;t
 .pf-sheet .note{margin:0}
 /* v181 · En oscuro, el amarillo teñido queda pardo: fondo neutro elevado y el nombre del deporte en su color */
 html:not([data-theme="light"]) .sp-pick[aria-pressed="true"],html:not([data-theme="light"]) .pa-sp[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 9%,#2c2c2e);color:var(--c)}
+/* v183 · Duración con − / + y accesos directos */
+.dp{display:flex;flex-direction:column;gap:10px}
+.dp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card2);border-radius:16px;padding:8px}
+.dp-b{appearance:none;border:0;width:52px;height:48px;border-radius:12px;background:var(--card);color:var(--fg);font:400 28px/1 var(--font);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.dp-b:active{transform:scale(.94)}
+.dp-v{font-size:28px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.dp-ch{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.dp-c{appearance:none;border:0;min-height:36px;border-radius:10px;background:var(--fill2);color:var(--fg);font:500 13.5px var(--font);cursor:pointer;white-space:nowrap;padding:0 2px}
+.dp-c[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:600}
+.pf-ct{display:flex;align-items:center;gap:8px}
+.pf-cti{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent)}
+.pf-cti svg{width:19px;height:19px}
+html[data-theme="light"] .pf-cti{color:color-mix(in srgb,var(--c) 70%,#000)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2644,7 +2657,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="182";
+const APP_VER="183";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3347,7 +3360,7 @@ function paHtml(){const p=S.pa,tk=today();
     <div class="pa-f"><span class="pa-l">Deporte</span><div class="pa-sps">${sp}</div></div>
     ${rts}
     ${p.sport!=="str"?`<div class="seg pa-mode" role="tablist" aria-label="Tipo de sesión"><button role="tab" type="button" data-pa="mode:simple" aria-selected="${p.mode!=="struct"}" aria-pressed="${p.mode!=="struct"}">Sencilla</button><button role="tab" type="button" data-pa="mode:struct" aria-selected="${p.mode==="struct"}" aria-pressed="${p.mode==="struct"}">Estructurada</button></div>`:""}
-    ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`<div class="pa-f"><div class="pa-lr"><span class="pa-l">Duración</span><span class="pa-dv" id="pa_dv">${fmtDur((+p.dur||0)*60)}</span></div>${durs}</div>
+    ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>
     <div class="pa-f"><span class="pa-l">Intensidad</span><div class="seg pa-int" role="group" aria-label="Intensidad">${Object.entries(INT_L).map(([k,l])=>`<button type="button" data-pa="int:${k}" aria-pressed="${p.int===k}">${l}</button>`).join("")}</div></div>`}
     <div class="pa-f pa-row2"><label class="pa-time"><span class="pa-l">Hora</span><input type="time" id="pa_time" value="${p.time}"></label><button type="button" class="chip pa-race" data-pa="race:${p.race?"":"1"}" aria-pressed="${!!p.race}">${p.race?"✓ ":""}Es una carrera</button></div>
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":"Añadir el "+esc(dateLabel(p.date))}</button>
@@ -4455,14 +4468,30 @@ function rwHtml(){const w=S.rw;
     <div class="row"><span class="pkk">Nueva rutina</span><button class="hbtn xclose" data-act="rwclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <h2 class="rw-h">¿Para qué quieres la fuerza?</h2><p class="rw-sub">Elige y te propongo rutinas hechas. Después puedes cambiar cualquier ejercicio.</p>
     <div class="rw-goals" role="radiogroup" aria-label="Objetivo">${RW_GOALS.map(([k,l,ic])=>`<button type="button" class="rw-goal" role="radio" aria-checked="${w.goal===k}" data-rw="goal:${k}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ic}</svg><b>${l}</b></button>`).join("")}</div>
-    <div class="rw-time"><div class="rw-row"><span>Tiempo</span><b class="pa-dv" id="rw_dv">${fmtMin(w.min)}</b></div>
-      <div class="wheel" role="group" aria-label="Tiempo"><div class="wh-win" aria-hidden="true"></div>${col("rw_h",[0,1,2],"Horas","h")}${col("rw_m",Array.from({length:12},(_,i)=>i*5),"Minutos","min")}</div></div>
+    <div class="rw-time"><div class="rw-row"><span>Tiempo</span></div>${durPick("rw",w.min)}</div>
     <div class="rw-row"><span>Material</span>${seg("mat",[["gym","Gimnasio"],["db","Pesas"],["home","Casa"]],w.mat)}</div>
     <span class="pkk rw-lbl">Te propongo</span>
     <div class="rw-list" id="rw_list">${rwListHtml()}</div>
     <button type="button" class="rw-scratch" data-act="rwscratch">Empezar desde cero</button>
   </div></div>`}
 function renderRw(){const m=$("#modal"),sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=!!(sh&&sh.classList.contains("rw-sheet"));m.innerHTML=rwHtml();m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}rwWheel()}
+/* Duración: − / + de 5 en 5 (mantener pulsado acelera) y accesos directos a lo habitual. Sustituye a la ruleta. */
+const DP={pa:{min:5,max:600,ch:[30,45,60,90,120,180]},rw:{min:15,max:180,ch:[20,30,45,60,75,90]}};
+const dpLab=c=>c<60?c+"′":Math.floor(c/60)+" h"+(c%60?" "+c%60:"");
+function durPick(k,v){const c=DP[k];return`<div class="dp"><div class="dp-row"><button type="button" class="dp-b" data-dpb="${k}|-5" aria-label="5 minutos menos">−</button><b class="dp-v" id="dpv_${k}" aria-live="polite">${fmtMin(v)}</b><button type="button" class="dp-b" data-dpb="${k}|5" aria-label="5 minutos más">+</button></div>
+  <div class="dp-ch" role="group" aria-label="Duraciones habituales">${c.ch.map(x=>`<button type="button" class="dp-c" data-dpc="${k}|${x}" aria-pressed="${v===x}">${dpLab(x)}</button>`).join("")}</div></div>`}
+function dpSet(k,v){const c=DP[k];v=Math.max(c.min,Math.min(c.max,Math.round(v/5)*5));
+  if(k==="pa"){if(!S.pa)return;S.pa.dur=v}else{if(!S.rw||S.rw.min===v)return dpShow(k,v);S.rw.min=v;S.rw.open=-1;const L=$("#rw_list");if(L)L.innerHTML=rwListHtml()}
+  dpShow(k,v)}
+function dpShow(k,v){const e=$("#dpv_"+k);if(e)e.textContent=fmtMin(v);document.querySelectorAll(`[data-dpc^="${k}|"]`).forEach(b=>b.setAttribute("aria-pressed",+b.dataset.dpc.split("|")[1]===v))}
+const dpCur=k=>k==="pa"?(S.pa&&+S.pa.dur)||45:(S.rw&&S.rw.min)||45;
+(function(){let t=null,r=null;const stop=()=>{clearTimeout(t);clearInterval(r);t=r=null};
+  document.addEventListener("pointerdown",e=>{const b=e.target.closest&&e.target.closest("[data-dpb]");if(!b)return;const[k,d]=b.dataset.dpb.split("|");dpSet(k,dpCur(k)+(+d));buzz(6);
+    stop();t=setTimeout(()=>{r=setInterval(()=>dpSet(k,dpCur(k)+(+d)*(dpCur(k)>=60?3:1)),150)},420)});
+  ["pointerup","pointercancel","pointerleave"].forEach(ev=>document.addEventListener(ev,stop));
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dpb],[data-dpc]");if(!b)return;
+    if(b.dataset.dpc){const[k,v]=b.dataset.dpc.split("|");dpSet(k,+v);buzz(8);return}
+    if(e.detail===0){const[k,d]=b.dataset.dpb.split("|");dpSet(k,dpCur(k)+(+d))}})})();
 function fmtMin(v){return v>=60?Math.floor(v/60)+" h"+(v%60?" "+v%60+" min":""):v+" min"}
 function rwWheel(){const h=$("#rw_h"),m=$("#rw_m");if(!h||!m||!S.rw)return;const d=S.rw.min;
   const set=(el,i)=>{el.scrollTop=i*WH;whMark(el)};set(h,Math.min(2,Math.floor(d/60)));set(m,Math.round((d%60)/5)%12);
@@ -4957,6 +4986,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const run=a.vo2?`<button class="pf-sp" data-perf="run"><span class="tc-ic" style="--c:${SPC.run}">${SP_ICS.run}</span><span class="pf-bd"><span class="pf-nm">Carrera</span><span class="pf-ms">${m("VO2máx",Math.round(a.vo2),"",dv!=null?tr(dv,""):(vo2Norm(a.vo2)||""))}${m("Umbral",fmtClock(a.thr),"/km","ritmo de 1 hora")}${a.cadR?m("Cadencia",Math.round(a.cadR)," ppm","pasos/min"):""}</span></span></button>`:"";
   const bike=a.ftp?`<button class="pf-sp" data-perf="bike"><span class="tc-ic" style="--c:${SPC.mtb}">${SP_ICS.mtb}</span><span class="pf-bd"><span class="pf-nm">Bici</span><span class="pf-ms">${m("FTP",Math.round(a.ftp)," W",a.pm?tr(df," W"):"aprox.")}${kg?m("W/kg",(a.ftp/kg).toFixed(1).replace(".",","),"",fmtInt(kg)+" kg"):""}${a.cadB?m("Cadencia",Math.round(a.cadB)," rpm","con sensor"):""}</span></span></button>`:"";
   return`<section class="glass pad fade pf-card"><span class="pkk pf-h">Rendimiento</span>${run}${bike}</section>`}
+const IC_LUNG=`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8v8.4M12 11.2c-.8.8-1.6 1.3-2.6 1.5M12 11.2c.8.8 1.6 1.3 2.6 1.5"/><path d="M9.2 6C5.8 7 3 11.8 3 16.8c0 2.6 1.6 4 3.6 3.6 1.8-.3 2.8-1.6 2.8-3.6V8.3c0-1.4 0-2.1-.2-2.3zM14.8 6c3.4 1 6.2 5.8 6.2 10.8 0 2.6-1.6 4-3.6 3.6-1.8-.3-2.8-1.6-2.8-3.6V8.3c0-1.4 0-2.1.2-2.3z"/></svg>`,VO2_C="#5ac8fa";
 const SP_ICS={run:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.run}</svg>`,mtb:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.mtb}</svg>`};
 function perfLine(pts,f,fmt){const P=pts.filter(x=>x[f]!=null);if(P.length<2)return"";const w=340,h=96,PT=12,PB=18,ys=P.map(x=>x[f]),lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.25||1,Y=v=>PT+(1-(v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-PT-PB),X=i=>8+i/(pts.length-1)*(w-16);
   const ix=pts.map((x,i)=>x[f]!=null?i:-1).filter(i=>i>=0),d=ix.map((i,j)=>(j?"L":"M")+X(i).toFixed(1)+" "+Y(pts[i][f]).toFixed(1)).join(" "),li=ix[ix.length-1];
@@ -4972,7 +5002,7 @@ function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=
       <p class="note">${run?"Media de tus últimas salidas. Entre 165 y 185 pasos por minuto la zancada cae más cerca del cuerpo y castiga menos; subirla un 5 % suele bastar.":"Media de tus últimas salidas con sensor. En llano, entre 80 y 95 rpm cansa menos las piernas; en subidas técnicas es normal bajar."}</p>`)};
   if(sp==="run"){const v=a.vo2,row=vo2Row();
     if(v){const i=row?VO2L.indexOf(vo2Norm(v)):-1,lo=row?row[1]-6:25,hi=row?row[5]+6:60;
-      cards.push(card("VO2máx",`<div class="pf-big">${Math.round(v)}<small> ml/kg/min</small></div>${i>=0?`<span class="pf-chip" style="--k:${VO2C[i]}">${VO2L[i]} para tu edad</span>`:""}
+      cards.push(card(`<span class="pf-cti" style="--c:${VO2_C}">${IC_LUNG}</span>VO2máx`,`<div class="pf-big">${Math.round(v)}<small> ml/kg/min</small></div>${i>=0?`<span class="pf-chip" style="--k:${VO2C[i]}">${VO2L[i]} para tu edad</span>`:""}
         ${row?pfGauge(lo,hi,VO2C.map((c,j)=>[j?row[j]:lo,j<5?row[j+1]:hi,c]),v,[[row[2],Math.round(row[2])],[row[4],Math.round(row[4])]]):""}
         ${perfLine(a.trend,"vo2")}
         <p class="note">${a.vb&&(!a.vr||a.vb>a.vr)?"Con tu FTP de bici, que en tu caso da el valor más alto.":"Con el ritmo y el pulso de tus mejores rodajes recientes."} El calor, el terreno o el cansancio solo lo bajan, por eso cuentan tus mejores salidas. Es el mejor indicador de salud cardiovascular que hay. Referencia: Cooper Institute.</p>`));
@@ -5001,7 +5031,7 @@ function perfNews(){const a=perfAgg(),tk=today();let s=LS("sustrato-perfseen")||
   else if(cur.ftp!=null&&Math.abs(cur.ftp-s.ftp)>=5){s.news={k:"bike",from:s.ftp,to:cur.ftp,at:tk};s.ftp=cur.ftp}
   LS("sustrato-perfseen",s);const n=s.news;if(!n||n.at<shiftKey(tk,-3))return"";const up=n.to>n.from;
   const t=n.k==="run"?`Tu VO2máx ${up?"sube":"baja"} a ${n.to}`:`Tu FTP ${up?"sube":"baja"} a ${n.to} W`,sub=up?"Mejor forma aeróbica que hace unas semanas":"Unas semanas con menos estímulo; vuelve con constancia";
-  return`<button type="button" class="pf-news" data-perf="${n.k}"><span class="tc-ic" style="--c:${n.k==="run"?SPC.run:SPC.mtb}">${SP_ICS[n.k==="run"?"run":"mtb"]}</span><span class="pf-nt"><b>${t}</b><small>${sub}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`}
+  return`<button type="button" class="pf-news" data-perf="${n.k}"><span class="tc-ic" style="--c:${n.k==="run"?VO2_C:SPC.mtb}">${n.k==="run"?IC_LUNG:SP_ICS.mtb}</span><span class="pf-nt"><b>${t}</b><small>${sub}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`}
 function vProg(){if(S.actsState==="loading"&&!S.acts.length)return`<div class="pwrap" aria-busy="true" aria-label="Cargando progreso">`+skCard(`<i class="sk" style="height:140px;width:100%;border-radius:14px;margin-top:12px"></i>`)+skCard(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px"><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i></div>`)+skCard()+`</div>`;setTimeout(ensureEff,0);setTimeout(ensureProgSubs,400);if(!(S.measures||[]).length&&S.profile&&num(S.profile.neck)&&num(S.profile.waist))trackMeasures();const an=S.lastTab!=="prog";S.lastTab="prog";return`<div class="pwrap${an?" anim":""}">`+weekCard()+weightHero()+(computeAdapt().ok?adaptTile():"")+fitCard()+perfCard()+rhrCard()+predCard()+heatCard()+stepsChart()+gastoCard()+volCard()+strengthCard()+bandsCard()+bodyCard()+effCard()+fuelCard2()+fuelLogCard()+sweatCard()+eatCard()+yoyCard()+recordsCard()+weightHistory()+`</div>`}
 /* ---------- Registro de comidas ---------- */
 function logEntryFor(k,m,st,extra){
