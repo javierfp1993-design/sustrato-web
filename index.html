@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T12:16:21.630Z">
+<meta name="sustrato-version" content="2026-10-07T12:35:05.404Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2506,11 +2506,18 @@ html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 .xgrp{margin-top:12px;border-radius:14px;background:var(--card2);overflow:hidden}
 .xgrp .xline{margin:0;border-radius:0;background:none}
 .xgrp .xline+.xline{border-top:1px solid var(--edge-soft,rgba(127,127,127,.18))}
-.xgrp .xline>span.xl-ic{flex:none}
+.xgrp .xline>span.xl-ic{flex:none;display:grid;place-items:center;flex-direction:initial;gap:0}.xl-ic svg{width:18px;height:18px;display:block}
 .xl-ic{width:30px;height:30px;border-radius:8px;background:var(--card);display:grid;place-items:center;flex:none;color:var(--fg)}
 .xl-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xs-one>section.glass{margin-top:6px}
 .xs-one>section.glass>h2:first-child{display:none}
+/* v175 · Gota de un solo líquido neutro: mide cuánto llevas; los macros, en las columnas */
+.drop .dr-s{fill:url(#drgr)!important}
+.drg0{stop-color:#48484a}.drg1{stop-color:#1c1c1e}
+.dr-top{fill:none;stroke:#fff;stroke-width:.9;opacity:.28}
+html:not([data-theme="light"]) .drg0{stop-color:#f2f2f7}html:not([data-theme="light"]) .drg1{stop-color:#a1a1a6}
+html:not([data-theme="light"]) .dr-top{opacity:.6}
+.dr-ex line{stroke:var(--muted);stroke-width:1.6;stroke-linecap:round}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2582,7 +2589,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="174";
+const APP_VER="175";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4180,15 +4187,19 @@ function dropY(fa){const W=dropWidths(),N=240;if(!dropY.c){const c=[0];for(let i
 /* Un solo líquido: la gota se llena con lo comido (kcal comidas / kcal del día) y el líquido tiene los colores de lo comido */
 function dropChart(t,e){const ek=[9*e.F,4*e.P,4*e.C],et=ek.reduce((a,b)=>a+b,0),fill=Math.min(1,et/(t.kcal||1)),sh=et?ek.map(v=>v/et):[0,0,0];
   return`<svg class="drop" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
-    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath></defs>
-    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/></g></svg>`}
+    <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath><linearGradient id="drgr" gradientUnits="userSpaceOnUse" x1="0" y1="${DROP_TOP}" x2="0" y2="${DROP_BOT}"><stop offset="0" class="drg0"/><stop offset="1" class="drg1"/></linearGradient></defs>
+    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/><path class="dr-top" d="" transform="translate(0 .9)"/></g>${dropExpected(t)}</svg>`}
+/* Lo previsto a esta hora: dos marcas finas a los lados de la gota, a la altura de las comidas cuya hora ya pasó */
+function dropExpected(t){if(S.day!==today())return"";const d=new Date(),nm=d.getHours()*60+d.getMinutes(),ex=Math.min(1,mealPlan(t,S.day).meals.filter(m=>m.min<=nm).reduce((a,m)=>a+m.kcal,0)/(t.kcal||1));if(ex<.02)return"";
+  const y=dropY(ex),x=50+(dropWidths()[Math.round(y*2)]||40)/2,ln=(a,b)=>`<line x1="${a.toFixed(1)}" x2="${b.toFixed(1)}" y1="${y.toFixed(2)}" y2="${y.toFixed(2)}"/>`;
+  return`<g class="dr-ex" aria-hidden="true">${ln(x+2.5,x+8)}${ln(100-x-2.5,100-x-8)}</g>`}
 /* Animación: la superficie ondula y el nivel sube con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
 const DROP={cur:0,v:0,run:false};
 function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg");if(!el)return;
   const tg=+el.dataset.fill,sh=el.dataset.sh.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(rm)DROP.cur=tg;else{DROP.v=(DROP.v+(tg-DROP.cur)*0.010)*0.88;DROP.cur+=DROP.v}
   const moving=Math.abs(tg-DROP.cur)>.0008||Math.abs(DROP.v)>.0004,r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
-  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
+  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60,(DROP_BOT-dropY(lv))*0.07),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
   /* Cada capa va desde su superficie hasta el fondo; se pintan de arriba abajo, así las fronteras son las propias ondas */
   el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0;if(hi-lo<1e-4){p.setAttribute("d","");return}
     const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
@@ -4197,7 +4208,7 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
        la superficie: el grosor de cada macro apenas cambia. */
     const st=DROP.sp?tt-DROP.sp.t:9,sp=rm||st>4?0:DROP.sp.dir*Math.min(9,Math.max(3,amp*2.2))*Math.exp(-st/0.85),T=4.8,f=acc>0?hi/acc:1,ka=0.55+0.45*f,kr=f*f,lag=(1-f)*0.6,A=(rm?0:1)*amp*0.8*ka,ph=2*Math.PI*tt/T-lag,R=(rm?0:1)*amp*0.22*kr;
     for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.15*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph))+R*Math.sin(2*Math.PI*(x/50-2*tt/T)-lag)+sp*ka*Math.cos(Math.PI*x/100)*Math.sin(2*Math.PI*st/1.1-lag);d+=` L${x} ${(yt+w).toFixed(2)}`}
-    p.setAttribute("d",d+` L100 ${yb}Z`)});
+    p.setAttribute("d",d+` L100 ${yb}Z`);if(top){const m=el.querySelector(".dr-top");if(m)m.setAttribute("d",hi>.985?"":"M"+d.slice(d.indexOf(" L")+2))}});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
 function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
 const STB={cur:0,v:0,run:false};
@@ -5300,8 +5311,8 @@ function mealsCard(t){
     <p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></section>`;
 }
 /* Micros y suplementos: detalle secundario, en una hoja desde el pie de Comidas */
-const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3 3.6 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0c0-3.4 2.5-6.4 5.5-10z"/></svg>';
-const IC_PILL='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/></svg>';
+const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c3.7 4.4 6.6 7.9 6.6 11.8a6.6 6.6 0 0 1-13.2 0c0-3.9 2.9-7.4 6.6-11.8z"/></svg>';
+const IC_PILL='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 19.5a4.6 4.6 0 0 1-6.5-6.5l9-9a4.6 4.6 0 0 1 6.5 6.5z"/><path d="M8.5 8.5l7 7"/></svg>';
 function xLine(t){const mm=menuMicros(S.day),cap=x=>esc(x.charAt(0).toUpperCase()+x.slice(1));let mi;
   if(mm){const low=micros(t).filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6).map(m=>m.n.toLowerCase());mi=low.length?(low.length>2?low.slice(0,2).join(", ")+" y "+(low.length-2)+" más":low.join(" y "))+" por debajo":"Tu menú los cubre"}
   else mi="Objetivos de hoy, ajustados al entreno";
