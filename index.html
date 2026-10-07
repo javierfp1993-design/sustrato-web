@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T10:53:00.113Z">
+<meta name="sustrato-version" content="2026-10-07T11:03:07.578Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2403,6 +2403,9 @@ html[data-theme="dark"] .tr-next{background:#1c1c1e!important;color:#fff!importa
 .ac-g{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--card)!important;color:var(--fg)!important;border:1px solid var(--sep)!important;font-weight:600;min-height:48px}
 html[data-theme="dark"] .ac-g{background:#fff!important;color:#1f1f1f!important;border-color:transparent!important}
 .ac-legal{margin:8px 0 0;font-size:12px;line-height:1.4;color:var(--muted)}
+
+/* v171 · origen de la estimación */
+.pst-src{display:block;font-size:11.5px;color:var(--muted);opacity:.85;margin-top:1px}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2474,7 +2477,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="170";
+const APP_VER="171";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2577,8 +2580,30 @@ function stTotal(st){return stFlat(st).reduce((a,x)=>a+(+x.d||0),0)}
 function stInt(st){const f=stFlat(st),T=stTotal(st)||1,z=f.reduce((a,x)=>a+x.z*x.d,0)/T;return z<2.6?"s":z<3.4?"m":"i"}
 function stShort(st){const b=(st||[]).find(x=>x.rep);if(b){const w=b.s.find(y=>y.t==="work")||b.s[0];return b.rep+" × "+(w.d>=1?w.d+"′":w.d*60+"″")+" "+Z_L[w.z].toLowerCase()}const w=(st||[]).filter(x=>x.t==="work"||x.t==="run").sort((a,b)=>b.d-a.d)[0];return w?w.d+"′ "+Z_L[w.z].toLowerCase():"Estructurado"}
 function stProfile(st,h){const f=stFlat(st),T=stTotal(st)||1;let x=0;return`<svg class="stprof" viewBox="0 0 ${T} ${h||40}" preserveAspectRatio="none" aria-hidden="true">${f.map(y=>{const hh=(h||40)*(.2+.8*y.z/5),r=`<rect x="${x}" y="${(h||40)-hh}" width="${Math.max(.01,y.d-T*.004)}" height="${hh}" fill="${Z_C[y.z]}" rx="${T*.004}"/>`;x+=y.d;return r}).join("")}</svg>`}
-function estSession(s,kg){if(s.steps&&s.steps.length&&s.sport!=="str"){const B=MET[s.sport]||MET.run,met={1:B.s*.85,2:B.s,3:B.m,4:B.i,5:B.i*1.1};let kcal=0,cho=0;stFlat(s.steps).forEach(y=>{const k=met[y.z]*kg*y.d/60;kcal+=k;cho+=k*Z_F[y.z]});return{kcal,cho,fat:kcal-cho}}
-const met=(MET[s.sport]||MET.run)[s.int]||8;const kcal=met*kg*(s.dur||0)/60;const fr=s.sport==="str"?.7:CHOF[s.int]||.6;return{kcal,cho:kcal*fr,fat:kcal*(1-fr)}}
+/* ---------- Calibración personal ----------
+   Con tus actividades de los últimos 4 meses: gasto real por minuto y reparto hidratos/grasas por deporte e intensidad.
+   Se mezcla con las tablas generales según cuántas sesiones haya (con pocas, pesa lo general; con muchas, lo tuyo). */
+const med=a=>{if(!a.length)return null;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
+let CAL=null,CAL_K="";
+function calib(kg){const k=S.acts.length+"|"+Object.keys(S.subs||{}).length+"|"+kg+"|"+(S.acts[0]&&S.acts[0].id);if(CAL&&CAL_K===k)return CAL;
+  const from=shiftKey(today(),-120),out={};
+  ["run","trail","mtb","walk","hike","str"].forEach(sp=>{const L=S.acts.filter(a=>a.sport===sp&&a.day>=from&&a.mov>=600&&a.kcal>0);if(!L.length)return;
+    /* intensidad de cada sesión: por el pulso (reparto calculado) o, si no, por su velocidad frente a tus otras sesiones */
+    const sp3=L.map(a=>a.speed||0).filter(Boolean).sort((x,y)=>x-y),t1=sp3[Math.floor(sp3.length/3)],t2=sp3[Math.floor(sp3.length*2/3)];
+    const intOf=a=>{const u=S.subs[a.id];if(u&&u.cho+u.fat>0){const f=u.cho/(u.cho+u.fat);return f<.62?"s":f<.8?"m":"i"}if(sp==="str"||sp3.length<6||!a.speed)return"m";return a.speed<=t1?"s":a.speed>=t2?"i":"m"};
+    const B={s:[],m:[],i:[]},R=[];
+    L.forEach(a=>{const it=intOf(a),kpm=a.kcal/(a.mov/60),gen=(MET[sp][it]||8)*kg/60,u=S.subs[a.id];R.push(kpm/gen);B[it].push({kpm,chof:u&&u.cho+u.fat>0?u.cho/(u.cho+u.fat):null})});
+    out[sp]={n:L.length,f:med(R),b:{}};
+    Object.entries(B).forEach(([it,xs])=>{if(xs.length)out[sp].b[it]={n:xs.length,kpm:med(xs.map(x=>x.kpm)),chof:med(xs.map(x=>x.chof).filter(v=>v!=null)),nc:xs.filter(x=>x.chof!=null).length}})});
+  CAL=out;CAL_K=k;return out}
+function calibFor(sport,int,kg){const c=calib(kg)[sport];if(!c)return null;const gen=(MET[sport]||MET.run)[int]*kg/60,ws=c.n/(c.n+4),fs=1+ws*((c.f||1)-1),b=c.b[int];
+  let kpm=gen*fs,n=c.n,chof=null;
+  if(b){const wb=b.n/(b.n+3);kpm=wb*b.kpm+(1-wb)*gen*fs;if(b.chof!=null){const wc=b.nc/(b.nc+3);chof=wc*b.chof+(1-wc)*(sport==="str"?.7:CHOF[int]||.6)}n=b.n}
+  return{kpm,chof,f:fs,n,src:b?(b.n===1?"1 sesión tuya parecida":`${b.n} sesiones tuyas parecidas`):(c.n===1?`1 sesión tuya de ${SPORT_L[sport].toLowerCase()}, ajustada a la intensidad`:`${c.n} sesiones tuyas de ${SPORT_L[sport].toLowerCase()}, ajustadas a la intensidad`)}}
+function estSession(s,kg){const c0=calib(kg)[s.sport],fsp=c0?1+(c0.n/(c0.n+4))*((c0.f||1)-1):1;
+  if(s.steps&&s.steps.length&&s.sport!=="str"){const B=MET[s.sport]||MET.run,met={1:B.s*.85,2:B.s,3:B.m,4:B.i,5:B.i*1.1};let kcal=0,cho=0;stFlat(s.steps).forEach(y=>{const k=met[y.z]*kg*y.d/60*fsp;kcal+=k;cho+=k*Z_F[y.z]});return{kcal,cho,fat:kcal-cho,src:c0?(c0.n===1?`1 sesión tuya de ${SPORT_L[s.sport].toLowerCase()}`:`${c0.n} sesiones tuyas de ${SPORT_L[s.sport].toLowerCase()}`):null}}
+  const it=s.int||"m",cb=calibFor(s.sport,it,kg),kpm=cb?cb.kpm:((MET[s.sport]||MET.run)[it]||8)*kg/60,kcal=kpm*(s.dur||0),fr=cb&&cb.chof!=null?cb.chof:s.sport==="str"?.7:CHOF[it]||.6;
+  return{kcal,cho:kcal*fr,fat:kcal*(1-fr),src:cb?cb.src:null}}
 const sameKind=(a,b)=>a===b||(a==="run"&&b==="trail")||(a==="trail"&&b==="run");
 function plannedFor(k){return(S.plan&&S.plan[k])||[]}
 function planMatch(k){
@@ -5325,8 +5350,8 @@ function vPlanTrain(wk){
     let edit="";
     if(k>=tk){
       edit=pl.map((s,i)=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
-        const meta=[fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null].filter(Boolean).join(" · ");
-        return`<div class="pst-row" data-pmove="${k}|${i}" title="Mantén pulsado y arrastra a otro día">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div><div class="pst-act"><button class="chip sm" data-paedit="${k}|${i}">Editar</button><button class="chip sm" data-plskip="${i}" data-k="${k}">Saltar</button><button class="chip sm" data-pldel="${i}" data-k="${k}" aria-label="Quitar entreno">Quitar</button></div></div>`}).join("");
+        const es=estSession(s,kg),meta=[fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
+        return`<div class="pst-row" data-pmove="${k}|${i}" title="Mantén pulsado y arrastra a otro día">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small><small class="pst-src">${es.src?"Calculado con "+esc(es.src):"Estimación general: aún no hay sesiones tuyas parecidas"}</small>${stc?stProfile(s.steps,22):""}</div><div class="pst-act"><button class="chip sm" data-paedit="${k}|${i}">Editar</button><button class="chip sm" data-plskip="${i}" data-k="${k}">Saltar</button><button class="chip sm" data-pldel="${i}" data-k="${k}" aria-label="Quitar entreno">Quitar</button></div></div>`}).join("");
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}${k>=tk?wxPill(k):""}</div>
