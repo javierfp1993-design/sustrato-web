@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T19:05:36.909Z">
+<meta name="sustrato-version" content="2026-10-07T19:13:01.934Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2776,7 +2776,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="191";
+const APP_VER="192";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -2811,27 +2811,41 @@ function bodyFat(p){
   else{if(w-n<=0)return null;bf=495/(1.0324-0.19077*Math.log10(w-n)+0.15456*Math.log10(h))-450}
   return bf>3&&bf<60?bf:null;
 }
+/* Grasa corporal: media de Marina de EE. UU. y RFM (cintura/altura) con medidas; si no, IMC y edad (Deurenberg, poco fiable en deportistas). */
+function bfEst(p){
+  const h=num(p.height),w=num(p.waist),kg=num(p.weight),a=num(p.age),fem=p.sex==="f";const ok=v=>v!=null&&v>3&&v<60;
+  const nv=bodyFat(p),rfm=h&&w?(fem?76:64)-20*h/w:null;
+  if(ok(nv)&&ok(rfm))return{bf:(nv+rfm)/2,src:"med",how:"media de la fórmula de la Marina de EE. UU. y del RFM (cintura y altura)"};
+  if(ok(nv))return{bf:nv,src:"med",how:"fórmula de la Marina de EE. UU."};
+  if(ok(rfm))return{bf:rfm,src:"med",how:"RFM (cintura y altura)"};
+  if(h&&kg&&a){const v=1.2*kg/(h/100)**2+.23*a-10.8*(fem?0:1)-5.4;if(ok(v))return{bf:v,src:"imc",how:"IMC y edad (orientativo: en deportistas con mucho músculo sobrestima la grasa)"}}
+  return null;
+}
 function basal(p){
   const w=num(p.weight),h=num(p.height),a=num(p.age);
-  const bf=bodyFat(p);
+  const e=bfEst(p),bf=e?e.bf:null;
   const mif=(w&&h&&a)?(10*w+6.25*h-5*a+(p.sex==="f"?-161:5)):null;
-  const kat=(w&&bf!=null)?370+21.6*w*(1-bf/100):null;
-  if(kat&&mif)return{bmr:(kat+mif)/2,method:"Media de Katch-McArdle (masa magra) y Mifflin-St Jeor",bf,mif,kat};
-  if(mif)return{bmr:mif,method:"Mifflin-St Jeor",bf,mif,kat};
-  if(kat)return{bmr:kat,method:"Katch-McArdle (masa magra)",bf,mif,kat};
+  const cun=(w&&bf!=null)?500+22*w*(1-bf/100):null;
+  if(cun&&mif){const wc=e.src==="med"?.7:.15;return{bmr:wc*cun+(1-wc)*mif,method:e.src==="med"?"70 % Cunningham (masa magra, la que mejor acierta en deportistas) y 30 % Mifflin-St Jeor":"Mifflin-St Jeor, con un 15 % de Cunningham (masa magra estimada por IMC)",bf,bfSrc:e.src,bfHow:e.how,mif,cun}}
+  if(mif)return{bmr:mif,method:"Mifflin-St Jeor",bf,mif,cun};
+  if(cun)return{bmr:cun,method:"Cunningham (masa magra)",bf,bfSrc:e.src,bfHow:e.how,mif,cun};
   return null;
 }
 const LEVELS={beg:{l:"Principiante",s:-0.05},mid:{l:"Intermedio",s:0},trained:{l:"Entrenado",s:0.04},elite:{l:"Muy entrenado",s:0.07}};
 function hrParams(p){
   const a=num(p.age);let max=num(p.hrmax);if(!max&&a)max=208-0.7*a;const rest=num(p.hrrest)||60;
   const lthr=num(p.lthr);
-  const lv=(LEVELS[p.level]||LEVELS.mid).s, fem=p.sex==="f";
+  const fem=p.sex==="f",vl=vo2Level();let lv=vl!=null?vl:(LEVELS[p.level]||LEVELS.mid).s;
+  const wh=num(p.waist)&&num(p.height)?num(p.waist)/num(p.height):0;const whs=wh>.5?Math.min(.03,(wh-.5)*.3):0;
   if(lthr){ /* x = FC / umbral de lactato; cruce al ~86 % del umbral, 90 % hidratos en el umbral */
-    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,mid:0.86+lv*sc+(fem?0.015:0),k:0.0637,sc};
+    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,mid:0.86+lv*sc+(fem?0.015:0)-whs*sc,k:0.0637,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
   }
   if(!max)return null;
-  return{mode:"hrr",max,rest,mid:SUB_MID+lv+(fem?0.03:0),k:SUB_K,sc:1};
+  return{mode:"hrr",max,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
 }
+/* Nivel aeróbico desde el VO2max estimado de tus actividades (por categorías, para que no cambie con cada sesión) */
+const VO2_LV=[-0.05,-0.03,0,0.03,0.05,0.07];
+function vo2Level(){try{if(!S.pmx||!S.acts||!S.acts.length)return null;const g=perfAgg();if(!g||!g.vo2||(g.nr||0)+(g.nb||0)<2)return null;const n=vo2Norm(g.vo2);const i=VO2L.indexOf(n);return i<0?null:VO2_LV[i]}catch(e){return null}}
 function xOf(hr,hp){return hp.mode==="lt"?hr/hp.lthr:Math.max(0,(hr-hp.rest)/(hp.max-hp.rest))}
 function ctxShift(hp,ctx){
   let s=0;if(!ctx)return 0;
@@ -4107,10 +4121,10 @@ async function ensureProgSubs(){
   S.progSubBusy=false;if(S.tab==="prog")render();
 }
 function bodyCard(){
-  const p=S.profile||{},M=(S.measures||[]).slice();const bf=bodyFat(p),kg=num(p.weight);
-  if(!bf||!kg)return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span><p class="empty">Añade cuello y cintura${p.sex==="f"?" y cadera":""} en el perfil para ver tu grasa y tu masa magra, y cómo cambian con el tiempo.</p><button class="chip sm" data-goto="perfil">Ir al perfil</button></section>`;
+  const p=S.profile||{},M=(S.measures||[]).slice();const be=bfEst(p),bf=be&&be.src==="med"?be.bf:null,kg=num(p.weight);
+  if(!bf||!kg)return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span><p class="empty">Añade tu cintura (y el cuello${p.sex==="f"?" y la cadera":""} para afinar) en el perfil para ver tu grasa y tu masa magra, y cómo cambian con el tiempo.</p><button class="chip sm" data-goto="perfil">Ir al perfil</button></section>`;
   const fat=kg*bf/100,lean=kg-fat;
-  const hist=M.map(m=>{const q=Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip});const b=bodyFat(q),w=m.kg||kg;return b?{d:m.d,bf:b,lean:w*(1-b/100),fat:w*b/100}:null}).filter(Boolean);
+  const hist=M.map(m=>{const q=Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip});const e=bfEst(Object.assign(q,{weight:m.kg||kg})),b=e&&e.src==="med"?e.bf:null,w=m.kg||kg;return b?{d:m.d,bf:b,lean:w*(1-b/100),fat:w*b/100}:null}).filter(Boolean);
   let chart="";if(hist.length>=2){const w=400,h=120,PL=30,PR=30,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,d0=hist[0].d,span=Math.max(1,daysBetween(d0,hist[hist.length-1].d));
     const X=d=>PL+daysBetween(d0,d)/span*iw,ls=hist.map(x=>x.lean),bs=hist.map(x=>x.bf),l0=Math.min(...ls)-1,l1=Math.max(...ls)+1,b0=Math.min(...bs)-1,b1=Math.max(...bs)+1,YL=v=>PT+ih-(v-l0)/(l1-l0)*ih,YB=v=>PT+ih-(v-b0)/(b1-b0)*ih;
     chart=`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución de masa magra y grasa"><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YL(x.lean).toFixed(1)).join(" ")}" fill="none" stroke="#bf5af2" stroke-width="2.4"/><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YB(x.bf).toFixed(1)).join(" ")}" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="4 3"/>
@@ -6407,14 +6421,14 @@ function vPerfil(){
     ${stravaCard()}
     ${dataCard()}
     <section class="glass pad fade hue-body"><h2>Composición y basal</h2>
-      ${b?`<div class="kv"><div><span>Gasto basal</span><b>${fmtInt(b.bmr)} kcal</b></div><div><span>Grasa corporal</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><p class="note">Método: ${esc(b.method)}.${b.bf!=null?" Grasa estimada con el método de la Marina de EE. UU. a partir de tus medidas.":" Añade cuello y cintura para estimar tu grasa corporal y afinar el cálculo."}</p>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
+      ${b?`<div class="kv"><div><span>Gasto basal</span><b>${fmtInt(b.bmr)} kcal</b></div><div><span>Grasa corporal</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Basal: ${esc(b.method)}.${b.bf!=null?" Grasa: "+esc(b.bfHow)+".":""}${b.bfSrc!=="med"?" Añade cuello y cintura para afinarlo: con medidas el basal se apoya sobre todo en tu masa magra.":""} Después se corrige solo con la evolución de tu peso.</p></details>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
     </section>
     <section class="glass pad fade"><h2>Cómo leer los colores</h2><div class="clegend">
       <span><i style="background:#ff5b2e"></i><b>Músculo</b>Proteína, fuerza</span><span><i style="background:#ffd21e"></i><b>Glucógeno</b>Hidratos, energía</span>
       <span><i style="background:#3b82f6"></i><b>Aeróbico</b>Grasas, resistencia</span><span><i style="background:#5ac8fa"></i><b>Hidratación</b>Agua, electrolitos</span>
       <span><i style="background:#30d158"></i><b>Salud</b>Micros, suplementos</span><span><i style="background:#bf5af2"></i><b>Cuerpo</b>Peso, composición</span></div></section>
     <section class="glass pad fade hue-aer"><h2>Bandas de sustrato</h2>
-      ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Nivel: ${esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())}. Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso</th><th>Hidratos</th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
+      ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Forma aeróbica: ${hp.lvSrc==="vo2"?"según el VO2max estimado de tus actividades ("+esc(vo2Norm(perfAgg().vo2).toLowerCase())+")":"nivel "+esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())+" del perfil, hasta que haya datos de VO2max"}.${hp.whs?" Tu cintura supera la mitad de tu altura, así que la grasa entra algo más tarde.":""} Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso</th><th>Hidratos</th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
     </section>
   </div></div>`;
 }
