@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T12:47:11.938Z">
+<meta name="sustrato-version" content="2026-10-07T13:02:02.844Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2583,7 +2583,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="177";
+const APP_VER="178";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4177,8 +4177,8 @@ function dropWidths(){if(DROP_W)return DROP_W;const p=document.createElementNS("
   const L=p.getTotalLength(),lo={},hi={};for(let i=0;i<=1000;i++){const q=p.getPointAtLength(i/1000*L),k=Math.round(q.y*2);lo[k]=Math.min(lo[k]??99,q.x);hi[k]=Math.max(hi[k]??0,q.x)}sv.remove();
   const W=[];for(let k=0;k<=250;k++)W[k]=hi[k]!=null?hi[k]-lo[k]:0;for(let k=1;k<250;k++)if(!W[k]&&k>DROP_TOP*2&&k<DROP_BOT*2)W[k]=(W[k-1]+(W[k+1]||W[k-1]))/2;DROP_W=W;return W}
 /* Altura a la que llega una fracción del volumen de la gota (desde abajo) */
-function dropY(fa){const W=dropWidths(),N=240;if(!dropY.c){const c=[0];for(let i=1;i<=N;i++){const y=DROP_BOT-i/N*(DROP_BOT-DROP_TOP);c.push(c[i-1]+(W[Math.round(y*2)]||0))}dropY.c=c}
-  const c=dropY.c,t=Math.max(0,Math.min(1,fa))*c[N];let i=1;while(i<N&&c[i]<t)i++;const f0=(t-c[i-1])/((c[i]-c[i-1])||1);return DROP_BOT-(i-1+f0)/N*(DROP_BOT-DROP_TOP)}
+/* Nivel por altura, como una jarra medidora: con poca comida las capas tienen cuerpo en vez de quedar en hilos sobre el fondo ancho */
+function dropY(fa){return DROP_BOT-Math.max(0,Math.min(1,fa))*(DROP_BOT-DROP_TOP)}
 /* Un solo líquido: la gota se llena con lo comido (kcal comidas / kcal del día) y el líquido tiene los colores de lo comido */
 function dropChart(t,e){const ek=[9*e.F,4*e.P,4*e.C],et=ek.reduce((a,b)=>a+b,0),fill=Math.min(1,et/(t.kcal||1)),sh=et?ek.map(v=>v/et):[0,0,0];
   return`<svg class="drop" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
@@ -4190,7 +4190,7 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
   const tg=+el.dataset.fill,sh=el.dataset.sh.split(",").map(Number),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(rm)DROP.cur=tg;else{DROP.v=(DROP.v+(tg-DROP.cur)*0.010)*0.88;DROP.cur+=DROP.v}
   const moving=Math.abs(tg-DROP.cur)>.0008||Math.abs(DROP.v)>.0004,r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,tt=(ts||0)/1000;
-  const lv=DROP.cur,amp=rm?0:Math.min(3.8,lv*60),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
+  const lv=DROP.cur,amp=rm?0:Math.min(2.6,lv*40),cum=[];let acc=0;sh.forEach(v=>{acc+=v*lv;cum.push(acc)});
   /* Cada capa va desde su superficie hasta el fondo; se pintan de arriba abajo, así las fronteras son las propias ondas */
   el.querySelectorAll(".dr-s").forEach(p=>{const i=+p.dataset.i,hi=cum[i],lo=i?cum[i-1]:0;if(hi-lo<1e-4){p.setAttribute("d","");return}
     const yb=DROP_BOT+2,yt=dropY(hi),top=i===sh.length-1||cum.slice(i+1).every(v=>v-hi<1e-6);let d=`M0 ${yb}`;
