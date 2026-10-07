@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-07T13:30:51.508Z">
+<meta name="sustrato-version" content="2026-10-07T13:43:05.243Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1529,7 +1529,8 @@ html[data-theme="light"] .tag-pre{color:#8a4f00!important}html[data-theme="light
 .pa-sps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .pa-sp{appearance:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border-radius:14px;border:1.5px solid transparent;background:var(--card2,rgba(127,127,127,.14));color:var(--fg);font:500 13px var(--font);cursor:pointer}
 .pa-sp .tc-ic{width:36px;height:36px}
-.pa-sp[aria-pressed="true"]{border-color:var(--fg)}
+.pa-sp[aria-pressed="true"]{border-color:transparent;background:color-mix(in srgb,var(--c) 20%,var(--card2));font-weight:600}
+.pa-sp[aria-pressed="true"] .tc-ic{background:var(--c);color:var(--on,#fff)}
 .pa-two{display:grid!important;grid-template-columns:1fr;gap:20px}
 .pa-two input[type=time]{max-width:170px}
 .pa-two label{display:flex;flex-direction:column;gap:10px}
@@ -2511,7 +2512,7 @@ html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 .xl-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xs-one>section.glass{margin-top:6px}
 .xs-one>section.glass>h2:first-child{display:none}
-html.quiet .fade{animation:none!important}
+html.quiet *,html.quiet *::before,html.quiet *::after{animation:none!important;transition:none!important}
 /* v179 · Rendimiento: carrera y bici diferenciadas; entrenos de bici por potencia */
 .pf-h{margin:2px 0 6px}
 .pf-sp{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;gap:12px;align-items:flex-start;padding:14px 0 12px;border-top:1px solid var(--edge-soft,rgba(127,127,127,.15));cursor:pointer}
@@ -2545,6 +2546,32 @@ html.quiet .fade{animation:none!important}
 .str-pw{display:flex;align-items:center;gap:8px;margin-top:8px}
 .str-pw .str-step b{min-width:64px}
 .str-pw small{color:var(--muted);font-size:12.5px}
+/* v180 · Rendimiento: tarjetas que se deslizan, color con significado, deporte con relleno */
+.pf-sw{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sp-pick{appearance:none;border:0;font:500 15px var(--font);color:var(--fg);background:var(--card2);border-radius:14px;padding:8px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .18s}
+.sp-pick svg{width:34px;height:34px;padding:6px;border-radius:10px;color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent);box-sizing:border-box;flex:none}
+.sp-pick[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 20%,var(--card2));font-weight:600}
+.sp-pick[aria-pressed="true"] svg{background:var(--c);color:var(--on,#fff)}
+.pf-sw button{box-shadow:none!important}
+.pf-car{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.pf-car::-webkit-scrollbar{display:none}
+.pf-cd{flex:0 0 calc(100% - 22px);scroll-snap-align:center;background:var(--card2);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box}
+.pf-car>.pf-cd:only-child{flex-basis:100%}
+.pf-ct{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.pf-cd .pf-big{margin-top:-4px}
+.pf-chip{align-self:flex-start;font-size:13px;font-weight:600;color:var(--fg);background:color-mix(in srgb,var(--k) 22%,transparent);border-radius:999px;padding:5px 11px 5px 9px;display:inline-flex;align-items:center;gap:6px}
+.pf-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--k)}
+.pf-g{position:relative;margin:8px 0 18px}
+.pf-gb{position:relative;height:10px;border-radius:999px;overflow:hidden;background:var(--fill)}
+.pf-gb i{position:absolute;top:0;bottom:0}
+.pf-gm{position:absolute;top:-5px;width:4px;height:20px;margin-left:-2px;border-radius:3px;background:var(--fg);box-shadow:0 0 0 2px var(--card2)}
+.pf-gl span{position:absolute;top:14px;transform:translateX(-50%);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pf-zb{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;height:8px}.pf-zb i{border-radius:3px}
+.pf-zr{padding:8px 0}
+.pf-dots{display:flex;justify-content:center;gap:6px;margin-top:-2px}
+.pf-dots i{width:6px;height:6px;border-radius:50%;background:var(--fill);transition:background .2s,width .2s}
+.pf-dots i.on{background:var(--fg);width:16px;border-radius:3px}
+.pf-sheet .note{margin:0}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2616,7 +2643,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="179";
+const APP_VER="180";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3306,7 +3333,7 @@ function paHtml(){const p=S.pa,tk=today();
   const days=Array.from({length:14},(_,i)=>shiftKey(tk,i));
   const inStrip=days.includes(p.date);
   const dchips=days.map(k=>{const d=new Date(k+"T12:00:00"),n=plannedFor(k).length;return`<button type="button" class="pa-day" data-pa="date:${k}" aria-pressed="${p.date===k}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><i class="${n?"on":""}"></i></button>`}).join("");
-  const sp=["run","trail","mtb","str","walk","hike"].map(x=>`<button type="button" class="pa-sp" data-pa="sport:${x}" aria-pressed="${p.sport===x}">${spIcon(x)}<span>${SPORT_L[x]}</span></button>`).join("");
+  const sp=["run","trail","mtb","str","walk","hike"].map(x=>`<button type="button" class="pa-sp" style="--c:${SPC[x]||"#98989d"};--on:${x==="run"||x==="walk"?"#1c1c1e":"#fff"}" data-pa="sport:${x}" aria-pressed="${p.sport===x}">${spIcon(x)}<span>${SPORT_L[x]}</span></button>`).join("");
   const col=(id,vals,lab,unit)=>`<div class="wh-c"><div class="wh-col" id="${id}" tabindex="0" role="listbox" aria-label="${lab}"><div class="wh-pad"></div>${vals.map(v=>`<div class="wh-i" role="option" data-v="${v}">${v}</div>`).join("")}<div class="wh-pad"></div></div><span class="wh-u">${unit}</span></div>`;
   const durs=`<div class="wheel" role="group" aria-label="Duración"><div class="wh-win" aria-hidden="true"></div>${col("wh_h",Array.from({length:10},(_,i)=>i),"Horas","h")}${col("wh_m",Array.from({length:12},(_,i)=>i*5),"Minutos","min")}</div>`;
   const rts=p.sport==="str"?`<div class="pa-f"><span class="pa-l">Rutina</span><div class="chips">${allRoutines().map(r=>`<button type="button" class="chip sm" data-pa="routine:${esc(r.id)}" aria-pressed="${p.routine===r.id}">${esc(routineShort(r))}</button>`).join("")}</div></div>`:"";
@@ -3480,8 +3507,9 @@ async function syncFlush(){if(!S.acct||SYNC.busy)return;const ids=Object.keys(SY
   catch(e){if(S.acct){S.acct=Object.assign({},S.acct,{err:e&&e.code||"net"});LS("sustrato-acct",S.acct)}}
   SYNC.busy=false;if(Object.keys(SYNC.q).length)SYNC.t=setTimeout(syncFlush,30e3)}
 /* Vuelve a leer el estado guardado tras recibir cambios de otro dispositivo */
-async function reloadFromStore(){["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines"].forEach(k=>{delete S[k]});
-  Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();quietRender()}
+function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.profile,S.str,S.dishes,S.rhr,S.hrv,S.hrvMan,S.sleep,S.steps,S.stepsH,S.fasted,S.rpe,S.fuel,S.sweat,S.measures,S.routines,S.pantry])}catch(e){return String(Math.random())}}
+async function reloadFromStore(){const sig0=stateSig();["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines"].forEach(k=>{delete S[k]});
+  Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();if(stateSig()!==sig0)quietRender()}
 function quietRender(){const h=document.documentElement;h.classList.add("quiet");render();clearTimeout(quietRender.t);quietRender.t=setTimeout(()=>h.classList.remove("quiet"),500)}
 async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol();if(!c)return 0;SYNC.pulling=true;let n=0;
   try{const since=full?0:(LS("sustrato-syncp")||0),r=await syncApi("/sync?since="+since);
@@ -3583,7 +3611,7 @@ async function hcMerge(){if(!window.__native||!window.__native.health)return;try
   S.rhr=Object.assign({},S.rhr||{},h.rhr||{});S.steps=Object.assign({},S.steps||{},h.steps||{});S.stepsH=h.stepsH||S.stepsH||{};S.hcSleepH=h.sleepH||S.hcSleepH||{};
   S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d)),from=S.resetAt||"";(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!from||x.d>from))(S.weights=S.weights||[]).push(x)})}catch(e){}}
 /* Relectura ligera desde el móvil (al volver a la app): mezcla lo nuevo de Health Connect y repinta */
-window.__hcRefresh=async()=>{await hcMerge();render()};
+window.__hcRefresh=async()=>{const b=stateSig();await hcMerge();if(stateSig()!==b)quietRender()};
 function stepsCard(k){
   const st=stepsOf(k),g=stepGoal(),v=st.total,pc=Math.min(1,v/g),R=46,C=2*Math.PI*R,km=v*0.00075,kg=num((S.profile||{}).weight)||70,kcal=Math.max(0,v-st.est)*0.0005*kg;
   const ring=`<svg class="stp-ring" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="${R}" class="stp-tr"/>${pc>0?`<circle cx="55" cy="55" r="${R}" class="stp-v" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pc)).toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}${v>=g?`<circle cx="55" cy="55" r="${R}" class="stp-glow" stroke-dasharray="${C.toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}</svg>`;
@@ -4901,9 +4929,10 @@ async function ensurePerf(){
 function perfAt(end){const P=S.pmx||{},E=Object.values(P),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&x.d<=end&&x.d>shiftKey(end,-days));
   let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
-  const top=b.map(x=>x.ftp).sort((x,y)=>y-x).slice(0,3);
-  return{vo2:r.length>=2?med(r.map(x=>x.vo2)):null,nr:r.length,ftp:top.length?top.reduce((s,x)=>s+x,0)/top.length:null,nb:b.length,pm:!!pm.length}}
-function perfAgg(){const tk=today(),k=Object.keys(S.pmx||{}).length+"|"+tk;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
+  const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
+  const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=top(r,"vo2"),vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
+  return{vo2:vr!=null||vb!=null?Math.max(vr||0,vb||0):null,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
+function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
   const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,ftp:x.ftp})}
   const cadR=med(S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.cad).slice(0,12).map(a=>a.cad*2)),cadB=med(S.acts.filter(a=>a.sport==="mtb"&&a.cad).slice(0,12).map(a=>a.cad));
   const thr=now.vo2?(()=>{const tg=.88*now.vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(vo2Cost(m)<tg)lo=m;else hi=m}return 60000/lo})():null;
@@ -4913,7 +4942,9 @@ function paceAt(fr,vo2){const tg=fr*vo2;let lo=60,hi=500;for(let i=0;i<40;i++){c
 const VO2N={m:[[29,33,36.5,42.5,46.5,52.5],[39,31.5,35.5,41,45,49.5],[49,30.2,33.6,39,43.8,48.1],[59,26.1,31,35.8,41,45.4],[200,20.5,26.1,32.3,36.5,44.3]],
   f:[[29,23.6,29,33,37,41.1],[39,22.8,27,31.5,35.7,40.1],[49,21,24.5,29,32.9,37],[59,20.2,22.8,27,31.5,35.8],[200,17.5,20.3,24.5,30.3,31.5]]};
 function vo2Norm(v){const p=S.profile||{},age=num(p.age);if(!age||!v)return null;const row=(VO2N[p.sex==="f"?"f":"m"]).find(r=>age<=r[0]);
-  const L=["Muy bajo","Bajo","Regular","Bueno","Excelente","Superior"];let i=0;for(let j=1;j<=5;j++)if(v>=row[j])i=j;return L[i]}
+  let i=0;for(let j=1;j<=5;j++)if(v>=row[j])i=j;return VO2L[i]}
+const VO2L=["Bajo","Bajo la media","En la media","Bueno","Excelente","Superior"],VO2C=["#ff453a","#ff9f0a","#ffd21e","#30d158","#00c7be","#0a84ff"];
+function vo2Row(){const p=S.profile||{},age=num(p.age);return age?(VO2N[p.sex==="f"?"f":"m"]).find(r=>age<=r[0]):null}
 const PW_PCT={1:.5,2:.65,3:.83,4:.98,5:1.12};
 function pwZone(w,ftp){const f=w/ftp;return f<.56?1:f<.76?2:f<.91?3:f<1.06?4:5}
 function perfFtp(){const a=perfAgg();return a.ftp?Math.round(a.ftp):null}
@@ -4929,23 +4960,39 @@ const SP_ICS={run:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" s
 function perfLine(pts,f,fmt){const P=pts.filter(x=>x[f]!=null);if(P.length<2)return"";const w=340,h=96,PT=12,PB=18,ys=P.map(x=>x[f]),lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.25||1,Y=v=>PT+(1-(v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-PT-PB),X=i=>8+i/(pts.length-1)*(w-16);
   const ix=pts.map((x,i)=>x[f]!=null?i:-1).filter(i=>i>=0),d=ix.map((i,j)=>(j?"L":"M")+X(i).toFixed(1)+" "+Y(pts[i][f]).toFixed(1)).join(" "),li=ix[ix.length-1];
   return`<svg class="chart pf-ch" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución"><path d="${d}" fill="none" stroke="var(--fg)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${X(li).toFixed(1)}" cy="${Y(pts[li][f]).toFixed(1)}" r="4" fill="var(--fg)"/><text class="ax" x="8" y="${h-3}">hace 4 meses</text><text class="ax" x="${w-8}" y="${h-3}" text-anchor="end">hoy</text></svg>`}
-function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=num((S.profile||{}).weight)||null;
-  const tabs=sp==="run"?[["vo2","VO2máx"],["thr","Umbral"],["cad","Cadencia"]]:[["ftp","FTP"],["cad","Cadencia"]];let tb=S.perfTab;if(!tabs.some(x=>x[0]===tb))tb=tabs[0][0];
-  const zr=(c,l,v)=>`<div class="pf-zr"><i style="background:${c}"></i><span>${l}</span><b>${v}</b></div>`;let body="";
-  if(sp==="run"&&tb==="vo2"){const nm=vo2Norm(a.vo2);body=`<div class="pf-big">${a.vo2?Math.round(a.vo2):"—"}<small> ml/kg/min</small></div><span class="pf-conf">${a.nr} rodaje${a.nr===1?"":"s"} con pulso fiable · últimas semanas</span>${perfLine(a.trend,"vo2")}
-    ${nm?`<p class="pf-nm2">${nm} para tu edad</p>`:""}<p class="note">Estimado con el ritmo y el pulso de tus tramos estables (sin calentamiento ni lecturas de muñeca que se caen). Es el mejor indicador de salud cardiovascular que hay y mejora con constancia. Referencia: tablas del Cooper Institute.</p>`}
-  else if(sp==="run"&&tb==="thr"){const v=a.vo2;body=v?`<div class="pf-big">${fmtClock(a.thr)}<small> /km</small></div><span class="pf-conf">El ritmo que aguantarías ~1 hora</span>
-    <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","> "+fmtClock(paceAt(.65,v)))}${zr(Z_C[2],"Z2 Suave",fmtClock(paceAt(.79,v))+" – "+fmtClock(paceAt(.65,v)))}${zr(Z_C[3],"Z3 Ritmo maratón",fmtClock(paceAt(.86,v))+" – "+fmtClock(paceAt(.8,v)))}${zr(Z_C[4],"Z4 Umbral",fmtClock(paceAt(.92,v))+" – "+fmtClock(paceAt(.87,v)))}${zr(Z_C[5],"Z5 VO2máx","< "+fmtClock(paceAt(.95,v)))}</div>
-    <p class="note">Ritmos por kilómetro en llano, calculados con tu VO2máx (método de Daniels). Con calor o en subida, guíate por el pulso.</p>`:`<p class="note">Hace falta tu VO2máx.</p>`}
-  else if(sp==="bike"&&tb==="ftp"){const f=a.ftp;body=f?`<div class="pf-big">${Math.round(f)}<small> W${kg?" · "+(f/kg).toFixed(1).replace(".",",")+" W/kg":""}</small></div><span class="pf-conf">${a.pm?"Con tu potenciómetro":"Aproximado"} · ${a.nb} salida${a.nb===1?"":"s"} en 6 semanas</span>${perfLine(a.trend,"ftp")}
-    <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","< "+Math.round(f*.55)+" W")}${zr(Z_C[2],"Z2 Fondo",Math.round(f*.56)+"–"+Math.round(f*.75)+" W")}${zr(Z_C[3],"Z3 Tempo",Math.round(f*.76)+"–"+Math.round(f*.9)+" W")}${zr(Z_C[4],"Z4 Umbral",Math.round(f*.91)+"–"+Math.round(f*1.05)+" W")}${zr(Z_C[5],"Z5 VO2máx","> "+Math.round(f*1.05)+" W")}</div>
-    <p class="note">${a.pm?"Tu mejor potencia de 20 minutos × 0,95.":"Sin potenciómetro: calculado con la física de tus subidas (tu peso, la bici, la pendiente y la velocidad). Fiable en puertos; con viento o barro, menos. Si usas potenciómetro, se usa tu potencia real."}</p>`:`<p class="note">Aún no hay subidas suficientes para calcularlo.</p>`}
-  else{const c=sp==="run"?a.cadR:a.cadB;body=c?`<div class="pf-big">${Math.round(c)}<small> ${sp==="run"?"pasos/min":"rpm"}</small></div><span class="pf-conf">Media de tus últimas salidas</span><p class="note">${sp==="run"?"La mayoría de corredores rinden mejor entre 165 y 185 pasos por minuto; subirla un 5 % suele reducir el impacto de cada zancada.":"En llano, entre 80 y 95 rpm cansa menos las piernas; en subidas técnicas de montaña es normal bajar."}</p>`:`<p class="note">${sp==="run"?"Tu reloj no ha enviado cadencia.":"Hace falta un sensor de cadencia en la bici."}</p>`}
+function pfGauge(lo,hi,bands,val,lab){const X=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
+  return`<div class="pf-g"><div class="pf-gb">${bands.map(([a,b,c])=>`<i style="left:${X(a)}%;width:${X(b)-X(a)}%;background:${c}"></i>`).join("")}</div><span class="pf-gm" style="left:${X(val)}%"></span><div class="pf-gl">${lab.map(([v,t])=>`<span style="left:${X(v)}%">${t}</span>`).join("")}</div></div>`}
+function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=num((S.profile||{}).weight)||null,zr=(c,l,v)=>`<div class="pf-zr"><i style="background:${c}"></i><span>${l}</span><b>${v}</b></div>`;
+  const card=(t,body)=>`<section class="pf-cd"><span class="pf-ct">${t}</span>${body}</section>`,cards=[];
+  const cad=(c,run)=>{if(!c)return card("Cadencia",`<p class="note">${run?"Tu reloj no ha enviado cadencia.":"Hace falta un sensor de cadencia en la bici."}</p>`);
+    const lo=run?150:55,hi=run?195:110,ok=run?[165,185]:[80,95],inb=c>=ok[0]&&c<=ok[1],col=inb?"#30d158":"#ff9f0a";
+    return card("Cadencia",`<div class="pf-big">${Math.round(c)}<small> ${run?"pasos/min":"rpm"}</small></div><span class="pf-chip" style="--k:${col}">${inb?"En el rango eficiente":c<ok[0]?"Algo baja":"Alta"}</span>
+      ${pfGauge(lo,hi,[[lo,ok[0],"var(--fill)"],[ok[0],ok[1],"#30d158"],[ok[1],hi,"var(--fill)"]],c,[[ok[0],ok[0]],[ok[1],ok[1]]])}
+      <p class="note">${run?"Media de tus últimas salidas. Entre 165 y 185 pasos por minuto la zancada cae más cerca del cuerpo y castiga menos; subirla un 5 % suele bastar.":"Media de tus últimas salidas con sensor. En llano, entre 80 y 95 rpm cansa menos las piernas; en subidas técnicas es normal bajar."}</p>`)};
+  if(sp==="run"){const v=a.vo2,row=vo2Row();
+    if(v){const i=row?VO2L.indexOf(vo2Norm(v)):-1,lo=row?row[1]-6:25,hi=row?row[5]+6:60;
+      cards.push(card("VO2máx",`<div class="pf-big">${Math.round(v)}<small> ml/kg/min</small></div>${i>=0?`<span class="pf-chip" style="--k:${VO2C[i]}">${VO2L[i]} para tu edad</span>`:""}
+        ${row?pfGauge(lo,hi,VO2C.map((c,j)=>[j?row[j]:lo,j<5?row[j+1]:hi,c]),v,[[row[2],Math.round(row[2])],[row[4],Math.round(row[4])]]):""}
+        ${perfLine(a.trend,"vo2")}
+        <p class="note">${a.vb&&(!a.vr||a.vb>a.vr)?"Con tu FTP de bici, que en tu caso da el valor más alto.":"Con el ritmo y el pulso de tus mejores rodajes recientes."} El calor, el terreno o el cansancio solo lo bajan, por eso cuentan tus mejores salidas. Es el mejor indicador de salud cardiovascular que hay. Referencia: Cooper Institute.</p>`));
+      cards.push(card("Umbral",`<div class="pf-big">${fmtClock(a.thr)}<small> /km</small></div><span class="pf-chip" style="--k:${Z_C[4]}">El ritmo que aguantarías ~1 hora</span>
+        <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
+        <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","> "+fmtClock(paceAt(.65,v)))}${zr(Z_C[2],"Z2 Suave",fmtClock(paceAt(.79,v))+" – "+fmtClock(paceAt(.65,v)))}${zr(Z_C[3],"Z3 Ritmo maratón",fmtClock(paceAt(.86,v))+" – "+fmtClock(paceAt(.8,v)))}${zr(Z_C[4],"Z4 Umbral",fmtClock(paceAt(.92,v))+" – "+fmtClock(paceAt(.87,v)))}${zr(Z_C[5],"Z5 VO2máx","< "+fmtClock(paceAt(.95,v)))}</div>
+        <p class="note">Ritmos por kilómetro en llano (método de Daniels). Con calor o en subida, guíate por el pulso.</p>`))}
+    cards.push(cad(a.cadR,true))}
+  else{const f=a.ftp;
+    if(f)cards.push(card("FTP",`<div class="pf-big">${Math.round(f)}<small> W${kg?" · "+(f/kg).toFixed(1).replace(".",",")+" W/kg":""}</small></div><span class="pf-chip" style="--k:${SPC.mtb}">${a.pm?"Con tu potenciómetro":"Aproximado"} · ${a.nb} salida${a.nb===1?"":"s"} en 6 semanas</span>
+      <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
+      <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","< "+Math.round(f*.55)+" W")}${zr(Z_C[2],"Z2 Fondo",Math.round(f*.56)+"–"+Math.round(f*.75)+" W")}${zr(Z_C[3],"Z3 Tempo",Math.round(f*.76)+"–"+Math.round(f*.9)+" W")}${zr(Z_C[4],"Z4 Umbral",Math.round(f*.91)+"–"+Math.round(f*1.05)+" W")}${zr(Z_C[5],"Z5 VO2máx","> "+Math.round(f*1.05)+" W")}</div>
+      ${perfLine(a.trend,"ftp")}
+      <p class="note">${a.pm?"Tu mejor potencia de 20 minutos × 0,95.":"Sin potenciómetro: con la física de tus subidas (tu peso, la bici, la pendiente y la velocidad). Fiable en puertos; con viento o barro, menos."}</p>`));
+    cards.push(cad(a.cadB,false))}
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade pf-sheet" role="dialog" aria-modal="true" aria-label="Rendimiento">
     <div class="row"><h3>Rendimiento</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <div class="pf-sw">${[["run","Carrera"],["bike","Bici"]].map(([k,l])=>`<button data-perfsp="${k}" aria-pressed="${sp===k}"><span class="tc-ic" style="--c:${k==="run"?SPC.run:SPC.mtb}">${SP_ICS[k==="run"?"run":"mtb"]}</span>${l}</button>`).join("")}</div>
-    <div class="seg pf-tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-perftab="${k}" aria-pressed="${tb===k}" aria-selected="${tb===k}">${l}</button>`).join("")}</div>
-    ${body}</div></div>`}
+    <div class="pf-sw">${[["run","Carrera"],["mtb","Bici"]].map(([k,l])=>`<button class="sp-pick" style="--c:${SPC[k]};--on:${k==="run"?"#1c1c1e":"#fff"}" data-perfsp="${k==="mtb"?"bike":"run"}" aria-pressed="${(sp==="bike")===(k==="mtb")}">${SP_ICS[k]}<span>${l}</span></button>`).join("")}</div>
+    <div class="pf-car" id="pfcar">${cards.join("")}</div>
+    ${cards.length>1?`<div class="pf-dots" aria-hidden="true">${cards.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
+  </div></div>`}
 /* En Hoy, solo cuando cambia de verdad: unos días, dentro de la tarjeta de la mañana */
 function perfNews(){const a=perfAgg(),tk=today();let s=LS("sustrato-perfseen")||{};const cur={vo2:a.vo2?Math.round(a.vo2):null,ftp:a.ftp?Math.round(a.ftp/5)*5:null};
   if(s.vo2==null&&cur.vo2!=null)s.vo2=cur.vo2;if(s.ftp==null&&cur.ftp!=null)s.ftp=cur.ftp;
@@ -6330,6 +6377,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="re_ne
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="wtref"){const b=document.querySelector('[data-act="wtrefsave"]');if(b)b.click()}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="wt"){const b=document.querySelector('[data-act="savewt"]');if(b)b.click()}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.detail){S.detail=null;renderModal()}});
+document.addEventListener("scroll",e=>{const c=e.target;if(!c||c.id!=="pfcar")return;const w=c.firstElementChild?c.firstElementChild.offsetWidth+10:1,i=Math.round(c.scrollLeft/w);document.querySelectorAll(".pf-dots i").forEach((d,j)=>d.classList.toggle("on",j===i))},true);
 document.addEventListener("input",e=>{if(e.target.id==="msq"&&S.msh){S.msh.q=e.target.value;const l=$("#msl"),m=mshMeal();if(l&&m)l.innerHTML=mshList(m)}});
 document.addEventListener("change",e=>{
   if(e.target.id==="strdate"&&e.target.value){S.strDate=e.target.value;render();return}
