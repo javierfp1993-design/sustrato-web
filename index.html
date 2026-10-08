@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T13:22:46.306Z">
+<meta name="sustrato-version" content="2026-10-08T13:32:47.353Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2913,6 +2913,9 @@ html body .legend{row-gap:6px}
 .dt-faces button[aria-pressed="true"]{background:color-mix(in srgb,var(--rc) 16%,transparent)}
 @keyframes dtIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.dt-faces{animation:none}}
+.dr-e{font:500 8.5px var(--font);fill:var(--muted)}
+/* v209: el cuadrito de la gota de la cabecera recorta su contenido (en Android la tapa animada tapaba las esquinas) */
+header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolation:isolate}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2984,7 +2987,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="208";
+const APP_VER="209";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4652,7 +4655,7 @@ function dropY(fa){return DROP_BOT-Math.max(0,Math.min(1,fa))*(DROP_BOT-DROP_TOP
 function dropChart(t,e){const ek=[9*e.F,4*e.P,4*e.C],et=ek.reduce((a,b)=>a+b,0),fill=Math.min(1,et/(t.kcal||1)),sh=et?ek.map(v=>v/et):[0,0,0];
   return`<svg class="drop" id="dropsvg" viewBox="0 0 100 124" role="img" aria-label="Llevas ${fmtInt(et)} de ${fmtInt(t.kcal)} kcal" data-fill="${fill.toFixed(4)}" data-sh="${sh.map(v=>v.toFixed(4)).join(",")}">
     <defs><clipPath id="drc"><path d="${DROP_D}"/></clipPath></defs>
-    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/></g></svg>`}
+    <g clip-path="url(#drc)"><rect width="100" height="124" class="dr-bg"/><path class="dr-s" data-i="2" fill="var(--carb)" d=""/><path class="dr-s" data-i="1" fill="var(--prot)" d=""/><path class="dr-s" data-i="0" fill="var(--fat)" d=""/></g>${et?"":`<text x="50" y="86" text-anchor="middle" class="dr-e">Aún sin</text><text x="50" y="97" text-anchor="middle" class="dr-e">comidas</text>`}</svg>`}
 /* Animación: la superficie ondula y el nivel sube con inercia. Se pausa fuera de pantalla y con "reducir movimiento". */
 const DROP={cur:0,v:0,run:false};
 function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg");if(!el)return;
@@ -6250,12 +6253,13 @@ function vHoy(){
   const tk=today();
   const per=`<div class="seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-period="${k}" aria-pressed="${S.period===k}">${l}</button>`).join("")}</div>`;
   if(S.period!=="day"){S.anchor=S.anchor||S.day;
-    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></div></div></section>`+vPeriod()}
+    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button></div></div></section>`+vPeriod()}
   const dsel=new Date(S.day+"T12:00:00");
-  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]}${dsel.getFullYear()!==new Date().getFullYear()?" "+dsel.getFullYear():""}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
+  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]}${dsel.getFullYear()!==new Date().getFullYear()?" "+dsel.getFullYear():""}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
     return`<button class="day ${k>tk?"fut":""}" data-day="${k}" aria-pressed="${k===S.day}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${has?"on":pl?"pl":miss?"miss":""}"></span></button>`}).join("")}</div>`;
   const p=S.profile||{};const t=dayTargets(S.day);
   const goalChips=`<div class="chips" role="group" aria-label="Objetivo">${Object.entries(GOALS).map(([k,g])=>`<button class="chip" data-goal="${k}" aria-pressed="${(p.goal||"recomp")===k}">${g.label}</button>`).join("")}</div>`;
+  if(!t&&!S.storeLoaded)return`<section class="glass pad boot-sk" aria-label="Cargando"><i class="sk" style="height:180px;width:100%;border-radius:14px"></i></section><section class="glass pad boot-sk"><i class="sk" style="height:120px;width:100%;border-radius:14px"></i></section>`;
   if(!t){
     return `<section class="glass pad fade">${strip}<div style="height:16px"></div><h3>Completa tu perfil</h3><p class="note">Para calcular tu gasto basal y tus macros necesito al menos sexo, edad, altura y peso. Con las medidas de cuello, cintura y cadera el cálculo usa tu masa magra y es más preciso.</p><div style="height:12px"></div><button class="btn primary" data-goto="perfil">Ir al perfil</button></section>`;
   }
@@ -6995,7 +6999,7 @@ var T0=Date.now();function hideSplash(){const sp=document.getElementById("splash
 setTimeout(hideSplash,4000);
 (async function boot(){
   const cl=window.claude;
-  if(!cl||!cl.use){S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin conexión";render();return}
+  if(!cl||!cl.use){S.storeLoaded=true;S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin conexión";render();return}
   const [user,db,mcp,sample,dl]=await Promise.all([cl.use("user"),cl.use("db"),cl.use("mcp"),cl.use("sample"),cl.use("downloads")]);
   S.db=db;S.mcp=mcp;S.sample=sample;S.dl=dl;stravaRefresh();
   if(sample&&sample.limits){try{const lim=await sample.limits();S.sampleImg=!!(lim&&lim.images)}catch(e){}}
@@ -7010,6 +7014,7 @@ setTimeout(hideSplash,4000);
     S.stepsH=h.stepsH||{};
     if(h.rhrBase&&S.profile){S.profile=Object.assign({},S.profile,{hrrest:h.rhrBase})}
   }}catch(e){}}
+  S.storeLoaded=true;
   render();
   setTimeout(()=>cloudTick(false),8000);
   if(S.acct)setTimeout(async()=>{await syncFlush();await syncPull(false)},1200);
