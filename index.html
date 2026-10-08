@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T12:24:53.253Z">
+<meta name="sustrato-version" content="2026-10-08T12:44:23.366Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2869,6 +2869,30 @@ html[data-theme="dark"] .seg>.seg-th{background:#636366}
 .wc-neo .rg-x{min-height:92px;justify-content:flex-start;align-items:center;text-align:center}
 .wc-neo .rg-x .chip{align-self:center}
 .wc-neo .rg-w{max-width:320px}
+.strip-m{white-space:nowrap}
+#dropsvg{width:min(150px,40vw)}
+.mw-main{width:100%;margin-top:12px}
+.mw-sec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.mw-sec>.chip{width:100%;margin:0;justify-content:center;text-align:center}
+.mw-sec.odd>.chip:first-child{grid-column:1/-1}
+.dl-ib{border-radius:50%!important}
+.dl-bar{max-width:none!important}
+/* v206: hojas opacas (antes dejaban ver la página de detrás) */
+html body .sheet{background:var(--card)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-theme="dark"] body .sheet,html:not([data-theme="light"]) body .sheet{background:#1c1c1e!important}
+html[data-theme="light"] body .sheet{background:#fff!important}
+.chip.danger{color:#d70015!important}
+html[data-theme="dark"] .chip.danger{color:#ff453a!important}
+.sheet .legend span{min-height:0!important;padding:0!important;line-height:1.6}
+.bands td.num{white-space:nowrap}
+.bands th small{font-weight:400;color:var(--muted);font-size:12px}
+.bk-a .btn{min-height:44px!important;height:auto!important;padding:0 14px!important;font-size:15px!important}
+/* v206: estados vacíos con un único patrón: una frase en gris y, si procede, una acción debajo */
+html body .empty{font-size:15px;font-weight:400;line-height:1.4;color:var(--muted);padding:4px 0}
+.empty+.chip,.empty+.btn{margin-top:10px}
+html body .legend{row-gap:6px}
+.spark:has(.dl-bar)>span:first-child{flex:1}
+.dl-bar{width:100%}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2940,7 +2964,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="205";
+const APP_VER="206";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3738,7 +3762,7 @@ function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup
   const can=S.db&&S.uid,rs=S.restore;
   return`<section class="glass pad fade bk-card"><h2>Tus datos</h2>${can?acctBlock():""}<p class="note" style="margin:2px 0 14px">Peso, pulso, sueño, comidas, entrenos, rutinas, platos y perfil. ${last?"Última copia: "+esc(dateLabel(last.slice(0,10)))+".":"Aún no has hecho ninguna copia."}</p>
     ${rs?`<div class="bk-conf"><p><b>¿Restaurar la copia ${rs.cloud?"de la nube ":""}del ${esc(dateLabel((rs.at||"").slice(0,10)))}?</b> Sustituye tus datos actuales por los ${rs.n} bloques del archivo. No se puede deshacer.</p><div class="bk-a"><button class="btn sm primary" data-act="bkdo">Restaurar</button><button class="chip sm" data-act="bkno">Cancelar</button></div></div>`:
-    `<div class="bk-a"><button class="btn primary" data-act="bksave" ${can&&S.dl?"":"disabled"}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Descargar</button>
+    `<div class="bk-a"><button class="btn" data-act="bksave" ${can&&S.dl?"":"disabled"}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Descargar</button>
       <label class="btn bk-up${can?"":" off"}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V9M7 14l5-5 5 5M5 4h14"/></svg> Restaurar<input type="file" id="bkfile" accept="application/json,.json" ${can?"":"disabled"}></label></div>`}
     ${can&&!S.acct?cloudBlock():""}
     ${can?resetBlock():""}
@@ -4091,7 +4115,7 @@ function sweatBlock(a){if(a.sport==="str"||a.mov<1800)return"";const ex=(S.sweat
   const f=(id,l,u,v,ph)=>`<label class="sw-f" for="${id}"><span>${l}</span><span class="sw-in"><input id="${id}" inputmode="decimal" placeholder="${String(ph).replace(".",",")}" value="${v!=null?String(v).replace(".",","):""}"><i>${u}</i></span></label>`;
   return`<div class="sw-box"><div class="sw-h"><span class="sw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><h2>Tu tasa de sudor</h2><p>${ex?"Calculada en esta sesión":"Pésate justo antes y justo después, sin ropa mojada, y apunta lo que bebiste."}</p></div>${ex?`<b class="sw-r">${ex.rate.toFixed(2).replace(".",",")} L/h</b>`:""}</div>
     <div class="sw-g">${f("sw_pre","Peso antes","kg",ex&&ex.pre,(num((S.profile||{}).weight)||"")+"")}${f("sw_post","Peso después","kg",ex&&ex.post,"")}${f("sw_drk","Bebido","ml",ex&&ex.drank,"0")}</div>
-    <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button>${ex?`<button class="chip sm" data-sweatdel="${a.id}">Borrar</button>`:""}</div></div>`}
+    <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button>${ex?`<button class="chip sm danger" data-sweatdel="${a.id}">Borrar</button>`:""}</div></div>`}
 function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   const how=`<ol class="sw-how"><li>Pésate justo antes de una sesión de al menos 45 minutos.</li><li>Apunta lo que bebas durante.</li><li>Sécate y vuelve a pesarte al terminar.</li><li>Abre la actividad en Sustrato y rellena "Tu tasa de sudor".</li></ol>`;
   if(!L.length)return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span><div class="sw-empty"><span class="sw-ic big" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><b>Hidratación a tu medida</b><p>Cada persona suda distinto. Con una prueba sencilla, el avituallamiento y el agua del día usan tus litros por hora reales en lugar de una media.</p></div></div>${how}</section>`;
@@ -4215,7 +4239,7 @@ function fitCard(){
   const ti=pts.findIndex(x=>x.k===tk),line=(f,a,b)=>pts.slice(a,b).map((x,j)=>(j?"L":"M")+X(a+j).toFixed(1)+" "+Y(x[f]).toFixed(1)).join(" ");
   const past=ti<0?n:ti+1;
   const area=line("ctl",0,past)+` L${X(past-1).toFixed(1)} ${PT+H1} L${X(0)} ${PT+H1} Z`;
-  const bw=iw/n,tcol=v=>v>5?"#30d158":v>-10?"var(--faint)":v>-30?"#ffd21e":"#ff9f0a";
+  const bw=iw/n,tcol=v=>v>5?"#30d158":v>-10?"var(--faint)":v>-30?"#ff9f0a":"#ff453a";
   const bars=pts.map((x,i)=>`<rect x="${(X(i)-bw/2+.3).toFixed(1)}" y="${Math.min(Y2c,Y2(x.tsb)).toFixed(1)}" width="${Math.max(.8,bw-.6).toFixed(2)}" height="${Math.max(.6,Math.abs(Y2(x.tsb)-Y2c)).toFixed(1)}" fill="${tcol(x.tsb)}" opacity="${x.fut?.4:.9}"/>`).join("");
   const hits=pts.map((x,i)=>`<rect x="${(X(i)-bw/2).toFixed(1)}" y="0" width="${bw.toFixed(2)}" height="${h-PB}" class="fhit" data-tip="${esc(dateLabel(x.k))}${x.fut?" · previsto":""}|Forma ${r0(x.ctl)} · Fatiga ${r0(x.atl)} · Frescura ${x.tsb>0?"+":""}${r0(x.tsb)}"/>`).join("");
   const ri=race?pts.findIndex(x=>x.k===race.d):-1,rp=ri>=0?pts[ri]:null;
@@ -4237,7 +4261,7 @@ function fitCard(){
     <p class="fdesc">${st[1]}</p>
     ${hist<42?`<p class="note" style="margin-top:4px">Calibrando: hay ${hist} ${hist===1?"día":"días"} de historial. Hasta tener 6 semanas, la forma es aproximada y pesa menos en "Cómo llegas hoy".</p>`:""}
     ${svg}
-    <div class="legend"><span><i style="background:#3b82f6"></i>Forma</span><span><i style="background:#ff7a52"></i>Fatiga</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ffd21e"></i>Cargado</span></div>
+    <div class="legend"><span><i style="background:#3b82f6"></i>Forma</span><span><i style="background:#ff7a52"></i>Fatiga</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ff9f0a"></i>Cargado</span><span><i style="background:#ff453a"></i>Muy cargado</span></div>
     ${rp&&hist>=21?`<div class="frace-box"><b>${esc(race.n)} · ${esc(dateLabel(race.d))}</b><span>Con lo que tienes planificado llegarías con forma ${r0(rp.ctl)} y frescura ${rp.tsb>0?"+":""}${r0(rp.tsb)}: ${tsbState(rp.tsb)[0].toLowerCase()}.${rp.tsb<-10?" Conviene reducir carga la última semana.":rp.tsb>20?" Quizá te sobre descanso: mete algo de ritmo los días previos.":""}</span></div>`:""}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan.</p></details></section>`;
 }
@@ -5227,7 +5251,7 @@ function weightHero(){
   const arrow=wk==null?"":wk<-.02?"↓":wk>.02?"↑":"→";
   return`<section class="glass pad fade phero">
     <div class="row" style="align-items:flex-start"><div><span class="pkk">Peso actual</span><div data-vzread><div class="pbig">${String(last.kg).replace(".",",")}<small>kg</small></div>
-      <div class="pmeta">${wk!=null?`<span class="ppill">${arrow} ${(wk>0?"+":"")+wk.toFixed(2).replace(".",",")} kg/sem</span>`:""}<span class="note" style="margin:0">${all.length<2?"Primer pesaje. Con unos cuantos más verás aquí tu evolución.":(delta>0?"+":"")+delta.toFixed(1).replace(".",",")+" kg desde "+esc(dateLabel(first.d))}</span></div></div></div>
+      <div class="pmeta">${wk!=null?`<span class="ppill">${arrow} ${Math.abs(wk).toFixed(2).replace(".",",")} kg/sem</span>`:""}<span class="note" style="margin:0">${all.length<2?"Primer pesaje. Con unos cuantos más verás aquí tu evolución.":(delta>0?"+":"")+delta.toFixed(1).replace(".",",")+" kg desde "+esc(dateLabel(first.d))}</span></div></div></div>
       ${all.length<2?"":`<div class="seg sm" role="group" aria-label="Rango">${[["30","1 m"],["90","3 m"],["all","Todo"]].map(([k,l])=>`<button data-wtrange="${k}" aria-pressed="${rg===k}">${l}</button>`).join("")}</div>`}</div>
     ${bigWeightChart(W)}
     ${weightRange(W,all,wk,rg)}
@@ -5412,7 +5436,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
       <h3 class="pf-zh">Tus vatios por zonas</h3>
       <div class="pf-zl">${zrow(1,"Recuperación","menos de "+W(.55)+" W")}${zrow(2,"Resistencia",W(.56)+" – "+W(.75)+" W")}${zrow(3,"Tempo",W(.76)+" – "+W(.90)+" W")}${zrow(4,"Umbral",W(.91)+" – "+W(1.05)+" W")}${zrow(5,"VO2max","más de "+W(1.06)+" W")}</div>
       <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${a.pm?"Tu mejor potencia de 20 minutos de las últimas semanas × 0,95.":"Sin potenciómetro, la potencia se calcula con la física de tus subidas (tu peso, la bici, la pendiente y la velocidad); FTP = mejor 20 minutos × 0,95. Es una estimación: el viento y el firme la mueven."} Niveles orientativos en W/kg. Zonas de Coggan sobre tu FTP.</p></details>`}
-  return`<section class="glass pad fade pf-card2"><span class="pkk">Rendimiento</span>${sw}${body}</section>`}
+  return`<section class="glass pad fade pf-card2" id="pfcard" style="scroll-margin-top:72px"><span class="pkk">Rendimiento</span>${sw}${body}</section>`}
 const IC_LUNG=`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8v8.4M12 11.2c-.8.8-1.6 1.3-2.6 1.5M12 11.2c.8.8 1.6 1.3 2.6 1.5"/><path d="M9.2 6C5.8 7 3 11.8 3 16.8c0 2.6 1.6 4 3.6 3.6 1.8-.3 2.8-1.6 2.8-3.6V8.3c0-1.4 0-2.1-.2-2.3zM14.8 6c3.4 1 6.2 5.8 6.2 10.8 0 2.6-1.6 4-3.6 3.6-1.8-.3-2.8-1.6-2.8-3.6V8.3c0-1.4 0-2.1.2-2.3z"/></svg>`,VO2_C="#30d158";
 const SP_ICS={run:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.run}</svg>`,mtb:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.mtb}</svg>`};
 function perfLine(pts,f,fmt){const P=pts.filter(x=>x[f]!=null);if(P.length<2)return"";const w=340,h=96,PT=12,PB=18,ys=P.map(x=>x[f]),lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.25||1,Y=v=>PT+(1-(v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-PT-PB),X=i=>8+i/(pts.length-1)*(w-16);
@@ -6218,7 +6242,7 @@ function vHoy(){
   if(S.period!=="day"){S.anchor=S.anchor||S.day;
     return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></div></div></section>`+vPeriod()}
   const dsel=new Date(S.day+"T12:00:00");
-  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]} ${dsel.getFullYear()}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
+  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]}${dsel.getFullYear()!==new Date().getFullYear()?" "+dsel.getFullYear():""}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 11v7a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-7"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
     return`<button class="day ${k>tk?"fut":""}" data-day="${k}" aria-pressed="${k===S.day}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${has?"on":pl?"pl":miss?"miss":""}"></span></button>`}).join("")}</div>`;
   const p=S.profile||{};const t=dayTargets(S.day);
   const goalChips=`<div class="chips" role="group" aria-label="Objetivo">${Object.entries(GOALS).map(([k,g])=>`<button class="chip" data-goal="${k}" aria-pressed="${(p.goal||"recomp")===k}">${g.label}</button>`).join("")}</div>`;
@@ -6463,7 +6487,8 @@ function vPlan(){
   <section class="glass pad fade"><h2>Base · ${ds.filter(x=>!x.custom).length}</h2>${baseL}</section>`;
   return pseg+`
   <section class="glass pad fade"><div class="row"><div class="pnav"><button class="chip" data-plweek="-1" aria-label="Semana anterior">‹</button><h3 aria-level="2" role="heading">${esc(periodLabel("week",wk))}</h3><button class="chip" data-plweek="1" aria-label="Semana siguiente">›</button></div>
-    <div class="chips">${weekCopyBtn("menu",wk).replace('class="btn"','class="chip"')}<button class="chip" data-act="shop">Lista de la compra</button>${S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""}<button class="btn primary" data-act="autoweek">Asignar menú de la semana</button></div></div>
+    </div><button class="btn primary mw-main" data-act="autoweek">Asignar menú de la semana</button>
+    ${(()=>{const L=[weekCopyBtn("menu",wk).replace('class="btn"','class="chip"'),'<button class="chip" data-act="shop">Lista de la compra</button>',S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""].filter(Boolean);return`<div class="mw-sec${L.length%2?" odd":""}">${L.join("")}</div>`})()}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">La asignación automática elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Los platos que elijas tú se respetan.</p></details></section>
   <div class="pweek">${cards}</div>
   ${prof?"":'<p class="note">Completa el perfil para ver los objetivos de cada día.</p>'}`;
@@ -6636,7 +6661,7 @@ function vPerfil(){
   const f=(id,l,ph,unit)=>`<label class="f" for="p_${id}">${l}${unit?" ("+unit+")":""}<input id="p_${id}" inputmode="decimal" placeholder="${ph}" value="${p[id]!=null?esc(p[id]):""}"></label>`;
   const bands=hp?BANDS.map(bd=>{const lo=bd.lo<=0?null:hrForFrac(bd.lo,hp),hi=bd.hi>1?null:hrForFrac(bd.hi,hp);
     const rng=lo==null?"< "+r0(hi):hi==null?"> "+r0(lo):r0(lo)+"–"+r0(hi);
-    return`<tr><td><span class="sw" style="display:inline-block;vertical-align:middle;margin-right:8px;background:${bd.col}"></span>${bd.name}</td><td class="num">${rng} ppm</td><td class="num">${bd.lo<=0?"<35":r0(bd.lo*100)+"–"+Math.min(100,r0(bd.hi*100))} %</td><td style="color:var(--muted);font-size:13px">${bd.desc}</td></tr>`}).join(""):"";
+    return`<tr><td><span class="sw" style="display:inline-block;vertical-align:middle;margin-right:8px;background:${bd.col}"></span>${bd.name}</td><td class="num">${rng}</td><td class="num">${bd.lo<=0?"<35":r0(bd.lo*100)+"–"+Math.min(100,r0(bd.hi*100))}</td><td style="color:var(--muted);font-size:13px">${bd.desc}</td></tr>`}).join(""):"";
   const MT=MEALS.map(([id,n,def])=>p["meal_"+id]||def).sort(),EX=[["noLactose","lactosa"],["noGluten","gluten"],["noNuts","frutos secos"],["noShell","marisco"]].filter(([k])=>p[k]).map(x=>x[1]);
   const DI={omni:"Omnívora",pesce:"Pescetariana",veggie:"Vegetariana",vegan:"Vegana"};
   const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
@@ -6678,14 +6703,14 @@ function vPerfil(){
     ${stravaCard()}
     ${dataCard()}
     <section class="glass pad fade hue-body"><h2>Composición y basal</h2>
-      ${b?`<div class="kv"><div><span>Gasto basal</span><b>${fmtInt(b.bmr)} kcal</b></div><div><span>Grasa corporal</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Basal: ${esc(b.method)}.${b.bf!=null?" Grasa: "+esc(b.bfHow)+".":""}${b.bfSrc!=="med"?" Añade cuello y cintura para afinarlo: con medidas el basal se apoya sobre todo en tu masa magra.":""} Después se corrige solo con la evolución de tu peso.</p></details>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
+      ${b?`<div class="kv"><div><span>Gasto basal</span><b>${fmtInt(b.bmr)} kcal</b></div><div><span>Grasa</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Basal: ${esc(b.method)}.${b.bf!=null?" Grasa: "+esc(b.bfHow)+".":""}${b.bfSrc!=="med"?" Añade cuello y cintura para afinarlo: con medidas el basal se apoya sobre todo en tu masa magra.":""} Después se corrige solo con la evolución de tu peso.</p></details>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
     </section>
     <section class="glass pad fade"><h2>Cómo leer los colores</h2><div class="clegend">
       <span><i style="background:#ff5b2e"></i><b>Músculo</b>Proteína, fuerza</span><span><i style="background:#ffd21e"></i><b>Glucógeno</b>Hidratos, energía</span>
       <span><i style="background:#3b82f6"></i><b>Aeróbico</b>Grasas, resistencia</span><span><i style="background:#5ac8fa"></i><b>Hidratación</b>Agua, electrolitos</span>
       <span><i style="background:#30d158"></i><b>Salud</b>Micros, suplementos</span><span><i style="background:#bf5af2"></i><b>Cuerpo</b>Peso, composición</span></div></section>
     <section class="glass pad fade hue-aer"><h2>Bandas de sustrato</h2>
-      ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Forma aeróbica: ${hp.lvSrc==="vo2"?"según el VO2max estimado de tus actividades ("+esc(vo2Norm(perfAgg().vo2).toLowerCase())+")":"nivel "+esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())+" del perfil, hasta que haya datos de VO2max"}.${hp.whs?" Tu cintura supera la mitad de tu altura, así que la grasa entra algo más tarde.":""} Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso</th><th>Hidratos</th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
+      ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Forma aeróbica: ${hp.lvSrc==="vo2"?"según el VO2max estimado de tus actividades ("+esc(vo2Norm(perfAgg().vo2).toLowerCase())+")":"nivel "+esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())+" del perfil, hasta que haya datos de VO2max"}.${hp.whs?" Tu cintura supera la mitad de tu altura, así que la grasa entra algo más tarde.":""} Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso <small>ppm</small></th><th>Hidratos <small>%</small></th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
     </section>
   </div></div>`;
 }
@@ -6730,7 +6755,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.dpk){const[k,mid]=t.dataset.dpk.split("|");S.dpk={k,mid,q:""};S.sheet="dpk";renderModal();return}
   if(t.dataset.dpkp){dpkAssign(t.dataset.dpkp);return}
   if(t.dataset.dpka){const v=t.dataset.dpka;if(v==="new"){const p=S.dpk;S.dpk=null;S.sheet=null;renderModal();pbOpen(null,{k:p.k,mid:p.mid});return}dpkAssign(v);return}
-  if(t.dataset.perf){S.perfSp=t.dataset.perf;S.perfTab=null;S.sheet="perf";renderModal();return}
+  if(t.dataset.perf){/* v206: lleva a Rendimiento (Progreso › Forma) con el deporte elegido, no a la hoja antigua */S.pfSp=t.dataset.perf==="bike"?"bike":"run";S.prevTab=S.tab;S.tab="prog";S.progSec="for";render();setTimeout(()=>{const el=document.getElementById("pfcard");if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},60);return}
   if(t.dataset.perfsp){S.perfSp=t.dataset.perfsp;S.perfTab=null;renderModal();return}
   if(t.dataset.perftab){S.perfTab=t.dataset.perftab;renderModal();return}
   if(t.dataset.mopen){mealOpen(t.dataset.mopen);return}
