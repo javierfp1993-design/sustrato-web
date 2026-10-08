@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T09:15:30.459Z">
+<meta name="sustrato-version" content="2026-10-08T09:29:11.914Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2765,6 +2765,21 @@ div.pg-p{cursor:default}
 .vz-leg button.off{opacity:.35}
 .vz-leg button[aria-pressed="true"]{background:var(--fill2);color:var(--fg);font-weight:600}
 .vzl-l{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.rh-v.up{color:#1f9d48;font-weight:600}.rh-v.dn{color:#c46a00;font-weight:600}
+html:not([data-theme="light"]) .rh-v.up{color:#30d158}html:not([data-theme="light"]) .rh-v.dn{color:#ff9f0a}
+.vz-go{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:600 13px var(--font);padding:6px 10px;border-radius:999px;margin-left:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vhead .vz-go{flex:none}
+/* la lectura en vivo nunca cambia la altura de la tarjeta */
+.vz-live{flex-wrap:nowrap!important}.vz-live span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.vhead .vz-go{margin-left:auto}
+
+/* Casilla única (v198): mismo relleno, rótulo en una línea, cifra 20/600, unidad y nota en gris */
+.kv>div,.ws-g>div,.rh-t,.rec{padding:12px 14px!important;border-radius:14px}
+.kv>div>span,.ws-g>div>span,.rh-t>span,.rec>span{display:flex!important;align-items:center;gap:6px;font-size:12px!important;color:var(--muted)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv>div>b,.ws-g>div>b,.rh-t>b,.rec>b{font:600 20px/1.25 var(--font)!important;letter-spacing:-.01em!important}
+.kv b small,.ws-g b small,.rh-t b small,.rec b small{font-size:12px;font-weight:500;color:var(--muted)}
+.kd{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.vhead b{white-space:nowrap;flex:none}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2836,7 +2851,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="197";
+const APP_VER="198";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3884,7 +3899,7 @@ function stepsChart(){
   const bars=days.map((d,i)=>{const hh=PT+ih-Y(d.total),c=d.total>=g?"#30d158":d.total>=g*.6?"rgba(48,209,88,.55)":"rgba(48,209,88,.28)";
     return`<g class="vb" data-tip="${esc(dateLabel(d.k))}|${fmtInt(d.total)} pasos${d.manual==null&&d.total?" (estimados)":""}" style="--d:${i*15}ms"><rect x="${(i*bw).toFixed(1)}" y="${PT}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent"/>${d.total?`<rect x="${(i*bw+bw*.25).toFixed(1)}" y="${Y(d.total).toFixed(1)}" width="${(bw*.5).toFixed(1)}" height="${hh.toFixed(1)}" rx="${(bw*.25).toFixed(1)}" fill="${c}"/>`:`<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${PT+ih-2}" width="${(bw*.7).toFixed(1)}" height="2" rx="1" class="vnil"/>`}${i%7===N%7?`<text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${+d.k.slice(8)}/${+d.k.slice(5,7)}</text>`:""}</g>`}).join("");
   return`<section class="glass pad fade hue-health"><span class="pkk">Pasos · 30 días</span>
-    <div class="kv" style="margin-top:8px"><div><span>Media diaria</span><b>${fmtInt(avg)}</b></div><div><span>Días en objetivo</span><b>${hit}/${N}</b></div><div><span>Racha</span><b>${streak} día${streak===1?"":"s"}</b></div></div>
+    <div class="kv" style="margin-top:8px"><div><span>Media diaria</span><b>${fmtInt(avg)}</b></div><div><span>En objetivo</span><b>${hit}/${N}</b></div><div><span>Racha</span><b>${streak} día${streak===1?"":"s"}</b></div></div>
     <svg class="chart vol" viewBox="0 0 ${w} ${h}" role="img" aria-label="Pasos por día en los últimos 30 días"><line x1="0" x2="${w}" y1="${Y(g).toFixed(1)}" y2="${Y(g).toFixed(1)}" class="vavg"/><text class="ax" x="${w-2}" y="${(Y(g)-4).toFixed(1)}" text-anchor="end">objetivo ${fmtInt(g)}</text>${bars}</svg>
     <p class="note">Los días sin apuntar se estiman con tus caminatas y carreras de Strava, así que pueden quedarse cortos.</p></section>`;
 }
@@ -3931,9 +3946,9 @@ function rhrCard(){const M=S.rhr||{},tk=today(),keys=Object.keys(M).sort(),rg=+(
   const T=(fem?[[25,60,65,69,78],[35,59,64,68,76],[45,59,64,69,78],[55,60,65,69,77],[65,59,64,68,77],[200,59,64,68,76]]:[[25,55,61,65,73],[35,54,61,65,74],[45,56,62,66,75],[55,57,63,67,76],[65,56,61,67,75],[200,55,61,65,73]]).find(r=>age<=r[0]);
   const lo=T[1]-10,hi=T[4]+10,scale=[[lo,T[1]+1,"Atleta"],[T[1]+1,T[2]+1,"Excelente"],[T[2]+1,T[3]+1,"Bueno"],[T[3]+1,T[4]+1,"Media"],[T[4]+1,hi,"Alto"]],sj=Math.max(0,scale.findIndex(x=>aw<x[1])),sp=sj<0?100:Math.max(1,Math.min(99,(sj+Math.max(0,Math.min(1,(aw-scale[sj][0])/(scale[sj][1]-scale[sj][0]))))/scale.length*100));
   return`<section class="glass pad fade rh-card"><div class="row"><span class="pkk">Pulso en reposo</span><div class="seg sm" role="group" aria-label="Periodo">${[["30","30 d"],["90","3 m"],["365","1 a"]].map(([k,l])=>`<button data-rhrr="${k}" aria-pressed="${String(rg)===k}">${l}</button>`).join("")}</div></div>
-    <div class="rh-hero">${heart(cur,true)}<div class="rh-num" data-vzread><b>${Math.round(cur)}</b><span>ppm</span><small>media de los últimos 7 días</small></div>
-      ${first&&Math.abs(dlt)>=.5?`<div class="rh-dl ${good?"good":bad?"bad":""}"><b>${dlt<0?"↓":"↑"} ${Math.abs(dlt).toFixed(0)}</b><span>ppm en ${rg===365?"un año":rg+" días"}</span></div>`:""}</div>
-    <div class="rh-chart">${VZ.line({id:"rh",color:"#ff375f",label:"Evolución del pulso en reposo",pts:pts.filter(p=>p.v).map(p=>({d:p.k,v:p.v})),line:pts.filter(p=>p.r!=null).map(p=>({d:p.k,v:p.r})),refs:[{v:best,label:"mín. "+best.toFixed(0)}],minPad:2,tip:p=>p.v+" ppm",read:p=>{const r=rhrAvg(p.d,7);return`<b>${p.v}</b><span>ppm</span><small>${esc(dateLabel(p.d))}${r?" · media "+r.toFixed(0):""}${S.hcSleepH&&S.hcSleepH[p.d]?" · durmió "+fmtH(S.hcSleepH[p.d]):""}</small>`}})}</div>
+    <div class="vhead" data-vzread><b>${Math.round(cur)}</b><span>ppm · media de 7 días</span></div>
+    <p class="vplan-t">${first&&Math.abs(dlt)>=.5?`<span class="rh-v ${good?"up":bad?"dn":""}">${dlt<0?"↓":"↑"} ${Math.abs(dlt).toFixed(0)} ppm</span> en ${rg===365?"un año":rg+" días"} · `:""}${scale[sj]?scale[sj][2]+" para tu edad":""}</p>
+    <div class="rh-chart">${VZ.line({id:"rh",color:"#ff375f",label:"Evolución del pulso en reposo",pts:pts.filter(p=>p.v).map(p=>({d:p.k,v:p.v})),line:pts.filter(p=>p.r!=null).map(p=>({d:p.k,v:p.r})),refs:[{v:best,label:"mín. "+best.toFixed(0)}],minPad:2,tip:p=>p.v+" ppm",read:p=>{const r=rhrAvg(p.d,7);return`<b>${p.v}</b><span>ppm · ${esc(dateLabel(p.d))}${S.hcSleepH&&S.hcSleepH[p.d]?" · durmió "+fmtH(S.hcSleepH[p.d]):""}</span>`}})}</div>
     <div class="rh-tiles"><div class="rh-t ${stt[0]}"><span>Hoy</span><b>${tv?tv+" ppm"+(dd!=null?` <small>${dd>0?"+":""}${dd.toFixed(0)}</small>`:""):"—"}</b><p>${stt[1]}</p></div>
       <div class="rh-t ${good?"ok":bad?"mid":""}"><span>Base aeróbica</span><b>${good?"Creciendo":bad?"A vigilar":"Estable"}</b><p>${good?"Tu corazón trabaja menos para lo mismo.":bad?"Puede ser fatiga acumulada, poco sueño o estrés.":"Sin cambios notables en el periodo."}</p></div></div>
     <div class="rh-scale"><div class="rh-bar">${scale.map(([a,b,l],j)=>`<span class="${(aw>=a||j===0)&&(aw<b||j===scale.length-1)?"on":""}" style="flex:1"><em>${l}</em><u>${j===0?"≤"+(b-1):j===scale.length-1?a+"+":a+"–"+(b-1)}</u></span>`).join("")}<i style="left:${sp.toFixed(1)}%"></i></div><p class="note" style="margin:6px 0 0">Para ${fem?"mujeres":"hombres"} de tu edad, medido despierto${night?`: tu reloj da el mínimo de la noche, así que se compara como ${r0(aw)} ppm`:""}. Lo que importa es tu propia tendencia.</p></div>
@@ -4235,7 +4250,7 @@ function heatCard(){
   let streak=0;for(let i=0;i<60;i++){const wk=shiftKey(mondayOf(tk),-7*i),e=shiftKey(wk,6);const n=S.acts.some(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=e);if(n)streak++;else if(i>0||wk!==mondayOf(tk))break}
   const dAct=Object.keys(by).length,tot=acts.reduce((s,a)=>s+a.mov,0)/3600;
   return`<section class="glass pad fade hue-health"><span class="pkk">Constancia · 6 meses</span>
-    <div class="kv" style="margin-top:8px"><div><span>Racha</span><b>${streak} sem</b></div><div><span>Días entrenados</span><b>${dAct}</b></div><div><span>Horas</span><b>${fmtInt(tot)}</b></div></div>
+    <div class="kv" style="margin-top:8px"><div><span>Racha</span><b>${streak} sem</b></div><div><span>Días</span><b>${dAct}</b></div><div><span>Horas</span><b>${fmtInt(tot)}</b></div></div>
     <div class="hmw"><svg class="chart heat" viewBox="0 0 ${w} ${h}" role="img" aria-label="Calendario de entrenos de los últimos 6 meses">${mon}${days}${cells}</svg></div>
     <div class="hml"><span>Menos</span>${[0,1,2,3,4].map(i=>`<i class="hm l${i}"></i>`).join("")}<span>Más</span></div></section>`;
 }
@@ -4250,7 +4265,7 @@ function volCard(){
   const order=["walk","hike","run","trail","mtb","str"];
   const cols=weeks.map((x,i)=>{const cur=i===N-1,pend=x.pn-x.cp.n,ptxt=x.pn?` · Plan: ${x.cp.ok} de ${x.pn} hechos${pend>0&&cur?" ("+pend+" por delante)":""}`:"";
     return{x:VZ.sd(x.wk),cur,segs:order.filter(sp=>x.by[sp]).map(sp=>({v:x.by[sp],c:SPC[sp]})),ghost:cur&&x.pn&&x.pv&&!iso?x.pv:0,
-      read:`<b>${fmt(x.t)}</b><span>${cur?"esta semana":"semana del "+VZ.sd(x.wk)}${x.t&&!iso?" · "+Object.entries(x.by).sort((a,b)=>b[1]-a[1]).map(([k,v])=>SPORT_L[k]+" "+fmt(v)).join(" · "):""}</span>`,go:()=>{S.vzl={wk:x.wk,iso};S.sheet="vzl";renderModal()},
+      read:`<b>${fmt(x.t)}</b><span>${cur?"esta semana":"semana del "+VZ.sd(x.wk)}</span>${x.t?'<button type="button" class="vz-go">Ver sesiones ›</button>':""}`,go:()=>{S.vzl={wk:x.wk,iso};S.sheet="vzl";renderModal()},
       tip:`${esc(periodLabel("week",x.wk))}|${x.t?Object.entries(x.by).map(([k,v])=>SPORT_L[k]+" "+fmt(v)).join(" · "):"Sin entrenos"}${ptxt}`}});
   const cur=weeks[N-1].t,avg=weeks.slice(N-5,N-1).reduce((s,x)=>s+x.t,0)/4,dd=daysBetween(w0,tk);
   const avgSo=[1,2,3,4].reduce((s,j)=>{const wk=shiftKey(w0,-7*j),e=shiftKey(wk,dd);return s+S.acts.filter(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=e&&(!iso||a.sport===iso)).reduce((t,a)=>t+(m==="h"?a.mov/3600:m==="km"?a.dist/1000:a.kcal||0),0)},0)/4,dv=avgSo?(cur-avgSo)/avgSo:null;
@@ -4336,8 +4351,12 @@ function recordsCard(){
   document.addEventListener("pointermove",e=>{const h=drag||(e.pointerType==="mouse"&&e.target.closest("[data-scrub]"));if(h)scrub(h,e.clientX)});
   document.addEventListener("pointerup",e=>{if(!drag)return;const sv=drag.ownerSVGElement,b=sv&&sv.__best,tap=down&&Math.abs(e.clientX-down.x)<8&&Date.now()-down.t<400;drag=null;
     /* toque corto sobre una barra con detalle: se abre lo que hay detrás */
-    if(tap&&b&&b.go){unscrub(sv);b.go();return}
+    const d=SCRUB[sv&&sv.querySelector("[data-scrub]").dataset.scrub];
+    if(d&&d.bars){if(tap&&sv.__sel===b.i){unscrub(sv);sv.__sel=null}else sv.__sel=b.i;return}
     if(e.pointerType!=="mouse"){clearTimeout(T0);T0=setTimeout(()=>unscrub(sv),1600)}});
+  document.addEventListener("pointercancel",()=>{if(!drag)return;const sv=drag.ownerSVGElement;drag=null;const d=SCRUB[sv.querySelector("[data-scrub]").dataset.scrub];if(!(d&&d.bars)){clearTimeout(T0);T0=setTimeout(()=>unscrub(sv),1600)}});
+  document.addEventListener("pointerdown",e=>{if(e.target.closest("[data-scrub],.vz-go,[data-vziso]"))return;document.querySelectorAll("svg.vz-sel").forEach(sv=>{unscrub(sv);sv.__sel=null})});
+  document.addEventListener("click",e=>{const g=e.target.closest(".vz-go");if(!g)return;const sv=g.closest("section").querySelector("svg.vz-sel"),b=sv&&sv.__best;if(b&&b.go){unscrub(sv);sv.__sel=null;b.go()}});
   document.addEventListener("pointerout",e=>{const h=e.target.closest&&e.target.closest("[data-scrub]");if(h&&e.pointerType==="mouse"&&!drag)unscrub(h.ownerSVGElement)});
 })();
 
@@ -6424,7 +6443,7 @@ function vDetail(){
   let subHtml;
   if(!hp)subHtml='<p class="note">Indica tu FC máxima y en reposo (o tu edad) en el perfil para calcular el sustrato.</p>';
   else if(!s)subHtml='<p class="empty sk-chart" aria-label="Calculando sustrato"><i class="sk" style="height:120px;width:100%;border-radius:12px"></i><span class="vh">Calculando sustrato…</span></p>';
-  else subHtml=`<div class="kv" style="margin:0 0 12px"><div><span>Hidratos</span><b style="color:var(--t-carb,var(--carb))">${fmtInt(s.cho/4)} g</b></div><div><span>Grasas</span><b style="color:var(--t-fat,var(--fat))">${fmtInt(s.fat/9)} g</b></div><div><span>% hidratos</span><b>${r0(s.cho/(s.cho+s.fat)*100)} %</b></div></div>
+  else subHtml=`<div class="kv" style="margin:0 0 12px"><div><span><i class="kd" style="background:var(--carb)"></i>Hidratos</span><b>${fmtInt(s.cho/4)} <small>g</small></b></div><div><span><i class="kd" style="background:var(--fat)"></i>Grasas</span><b>${fmtInt(s.fat/9)} <small>g</small></b></div><div><span>% hidratos</span><b>${r0(s.cho/(s.cho+s.fat)*100)} %</b></div></div>
     ${s.series?`<button class="chartbtn" data-subfull="${a.id}" aria-label="Ver el sustrato en pantalla completa">${areaChart(s.series)}<span class="chartx" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>Explorar</span></button>`:""}
     <div class="legend"><span><i style="background:var(--carb)"></i>Glucolítico</span><span><i style="background:var(--fat)"></i>Lipolítico</span></div>
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
