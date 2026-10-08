@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T12:56:21.054Z">
+<meta name="sustrato-version" content="2026-10-08T13:22:46.306Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2895,6 +2895,24 @@ html body .legend{row-gap:6px}
 .dl-bar{width:100%}
 .pfit .vplan-t .fdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 .pfit .vplan-t b{color:var(--fg);font-weight:600}
+.dt-hero{margin:18px 0 14px!important}
+.dt-hero b{font-size:44px!important;letter-spacing:-.035em!important}
+.dt-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:.5px solid var(--sep);margin-bottom:18px}
+.dt-g>div,.dt-g>.dt-fe{padding:12px 0 12px 12px;border-bottom:.5px solid var(--sep);border-left:.5px solid var(--sep);min-height:64px;min-width:0}
+.dt-g>:nth-child(3n+1){border-left:0;padding-left:0}
+.dt-g span{display:block;font-size:13px;color:var(--muted)}
+.dt-g b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dt-fe{appearance:none;border-top:0;border-right:0;background:none;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.dt-fe b{display:flex;align-items:center;gap:6px;font-size:17px}
+.dt-add{font-style:normal;font-size:15px;font-weight:600;background:var(--fill2);border-radius:999px;padding:3px 12px}
+.dt-fi{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--rc);color:#fff}
+.dt-fi svg{width:18px;height:18px;stroke:#fff}
+.dt-faces{grid-column:1/-1;display:flex;gap:8px;padding:12px 0;border-bottom:.5px solid var(--sep);animation:dtIn .25s ease}
+.dt-faces button{flex:1;appearance:none;border:0;background:var(--fill2);border-radius:14px;padding:8px 0 6px;color:var(--fg);font:500 12px var(--font);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-height:64px}
+.dt-faces button .dt-fi{width:32px;height:32px}.dt-faces button .dt-fi svg{width:24px;height:24px}
+.dt-faces button[aria-pressed="true"]{background:color-mix(in srgb,var(--rc) 16%,transparent)}
+@keyframes dtIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.dt-faces{animation:none}}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2966,7 +2984,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="207";
+const APP_VER="208";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4691,7 +4709,7 @@ function areaChart(series,dur){
   const choArea=tot+back+"Z",f1=v=>v.toFixed(v<10&&v%1?1:0).replace(".",",");
   return `<svg class="chart vz" viewBox="0 0 ${W} ${H}" role="img" aria-label="Energía por minuto: hidratos y grasas">
 ${VZ.grid(ticks.filter(v=>v<mx),Y,PL,W-PR,f1)}<line x1="${PL}" x2="${W-PR}" y1="${Y(0)}" y2="${Y(0)}" class="vz-g"/>
-<path d="${choArea}" fill="var(--carb)"/><path d="${fatArea}" fill="var(--fat)"/><path d="${fatTop}" fill="none" stroke="var(--card)" stroke-width="2" stroke-linejoin="round"/>
+<path d="${choArea}" fill="color-mix(in srgb,var(--carb) 35%,transparent)"/><path d="${fatArea}" fill="color-mix(in srgb,var(--fat) 35%,transparent)"/><path d="${tot}" fill="none" stroke="var(--carb)" stroke-width="2" stroke-linejoin="round"/><path d="${fatTop}" fill="none" stroke="var(--fat)" stroke-width="2" stroke-linejoin="round"/>
 <text class="ax" x="${PL}" y="${PT-8}">kcal/min</text><text class="ax" x="${PL}" y="${H-5}">0</text><text class="ax" x="${W-PR}" y="${H-5}" text-anchor="end">${dur?fmtDur(dur):"final"}</text></svg>`;
 }
 function bandBar(bands){
@@ -6577,10 +6595,16 @@ function vDetail(){
     <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos</span><span><i style="background:var(--fat)"></i>Grasas</span></div>
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
-    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${a.sport!=="oth"?`<div class="rpe-dt">${rpePicker(a,a.day)}</div>`:""}
+    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${(()=>{const pk=["run","trail","walk","hike"].includes(a.sport)?["Distancia","Ritmo"]:["mtb","bike","ride","gravel"].includes(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
-      return`<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-sec">${sec.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
+      /* v208: rejilla de 3 × 2 a todo el ancho; «Sensaciones» es una casilla más y las caritas solo salen al editar */
+      const RN={"FC media":"Pulso medio","FC máxima":"Pulso máx.","Deriva cardiaca":"Deriva"};
+      let it=sec.filter(([k,v])=>!(k==="Desnivel"&&!a.elev)).map(([k,v])=>[RN[k]||k,k==="Deriva cardiaca"?String(v).split(" · ")[0]:v]);
+      const fe=a.sport!=="oth";const room=fe?(it.length+1>=6?5:2):(it.length>=6?6:3);it=it.slice(0,room);
+      const rv=rpeOf(a.id),feT=fe?`<button type="button" class="dt-fe" data-fe="1" aria-expanded="${!!S.feOpen}" aria-label="Sensaciones: ${rv?RPE_L[rv-1]:"sin valorar"}. Tocar para ${rv?"cambiar":"valorar"}"><span>Sensaciones</span><b>${rv?`<i class="dt-fi" style="--rc:var(--rpe${rv})">${RPE_FACE[rv-1]}</i>${RPE_L[rv-1]}`:`<em class="dt-add">Valorar</em>`}</b></button>`:"";
+      const faces=fe&&S.feOpen?`<div class="dt-faces" role="group" aria-label="¿Cómo fue?">${RPE_L.map((l,j)=>`<button type="button" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${a.day}" aria-pressed="${rv===j+1}" style="--rc:var(--rpe${j+1})"><i class="dt-fi">${RPE_FACE[j]}</i>${l}</button>`).join("")}</div>`:"";
+      return`<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}${feT}${faces}</div>`})()}
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
@@ -7072,6 +7096,10 @@ function rgAnim(){document.querySelectorAll(".rg-a:not([data-done])").forEach(el
 document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-rgday]");if(d){S.rgDay=d.dataset.rgday===today()?null:d.dataset.rgday;S.rgSel=null;buzz(8);rgSeen();render();return}
   const g=e.target.closest&&e.target.closest("[data-rgk]");if(!g)return;const k=g.dataset.rgk;S.rgSel=!k||S.rgSel===k?null:k;buzz(8);rgSeen();render()});
 function rgSeen(){S._rgHint=1;try{localStorage.setItem("sustrato-rghint","1")}catch(e){}}
+
+/* Sensaciones en el detalle: la casilla abre las caras; al elegir se cierran */
+document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-fe]");if(f){S.feOpen=!S.feOpen;buzz(6);renderModal();return}
+  if(e.target.closest&&(e.target.closest(".dt-faces [data-rpe]")||e.target.closest("[data-open]")))S.feOpen=false},true);
 
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
