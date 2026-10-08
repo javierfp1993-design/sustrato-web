@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T13:32:47.353Z">
+<meta name="sustrato-version" content="2026-10-08T13:40:14.069Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2916,6 +2916,12 @@ html body .legend{row-gap:6px}
 .dr-e{font:500 8.5px var(--font);fill:var(--muted)}
 /* v209: el cuadrito de la gota de la cabecera recorta su contenido (en Android la tapa animada tapaba las esquinas) */
 header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolation:isolate}
+.dt-name{display:flex;align-items:center;gap:8px}
+.dt-rv{appearance:none;border:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--rc) 16%,transparent);color:var(--rc);cursor:pointer;flex:none;padding:0}
+.dt-rv svg{width:22px;height:22px}
+.dt-rv:active{transform:scale(.92)}
+.dt-fq{font-size:13px;color:var(--muted);margin:14px 0 8px}
+.dt-faces{border-bottom:0!important;padding:0 0 4px!important}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2987,7 +2993,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="209";
+const APP_VER="210";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6599,16 +6605,17 @@ function vDetail(){
     <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos</span><span><i style="background:var(--fat)"></i>Grasas</span></div>
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
-    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px" class="dt-name">${esc(a.name)}${(()=>{const v=rpeOf(a.id);return v&&a.sport!=="oth"?`<button type="button" class="dt-rv" data-fe="1" style="--rc:var(--rpe${v})" aria-expanded="${!!S.feOpen}" aria-label="Fue ${RPE_L[v-1].toLowerCase()}. Tocar para cambiar">${RPE_FACE[v-1]}</button>`:""})()}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${(()=>{const pk=["run","trail","walk","hike"].includes(a.sport)?["Distancia","Ritmo"]:["mtb","bike","ride","gravel"].includes(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
       /* v208: rejilla de 3 × 2 a todo el ancho; «Sensaciones» es una casilla más y las caritas solo salen al editar */
       const RN={"FC media":"Pulso medio","FC máxima":"Pulso máx.","Deriva cardiaca":"Deriva"};
       let it=sec.filter(([k,v])=>!(k==="Desnivel"&&!a.elev)).map(([k,v])=>[RN[k]||k,k==="Deriva cardiaca"?String(v).split(" · ")[0]:v]);
-      const fe=a.sport!=="oth";const room=fe?(it.length+1>=6?5:2):(it.length>=6?6:3);it=it.slice(0,room);
-      const rv=rpeOf(a.id),feT=fe?`<button type="button" class="dt-fe" data-fe="1" aria-expanded="${!!S.feOpen}" aria-label="Sensaciones: ${rv?RPE_L[rv-1]:"sin valorar"}. Tocar para ${rv?"cambiar":"valorar"}"><span>Sensaciones</span><b>${rv?`<i class="dt-fi" style="--rc:var(--rpe${rv})">${RPE_FACE[rv-1]}</i>${RPE_L[rv-1]}`:`<em class="dt-add">Valorar</em>`}</b></button>`:"";
-      const faces=fe&&S.feOpen?`<div class="dt-faces" role="group" aria-label="¿Cómo fue?">${RPE_L.map((l,j)=>`<button type="button" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${a.day}" aria-pressed="${rv===j+1}" style="--rc:var(--rpe${j+1})"><i class="dt-fi">${RPE_FACE[j]}</i>${l}</button>`).join("")}</div>`:"";
-      return`<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}${feT}${faces}</div>`})()}
+      /* v210: sin casilla de sensaciones; las caras salen arriba mientras no se valore, y la elegida se queda junto al nombre */
+      const fe=a.sport!=="oth";it=it.slice(0,it.length>=6?6:3);
+      const rv=rpeOf(a.id),feT="";
+      const faces=fe&&(!rv||S.feOpen)?`<div class="dt-faces" role="group" aria-label="¿Cómo fue?">${RPE_L.map((l,j)=>`<button type="button" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${a.day}" aria-pressed="${rv===j+1}" style="--rc:var(--rpe${j+1})"><i class="dt-fi">${RPE_FACE[j]}</i>${l}</button>`).join("")}</div>`:"";
+      return`${faces?`<p class="dt-fq">${rv?"¿Cambiar cómo fue?":"¿Cómo fue?"}</p>`+faces:""}<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
