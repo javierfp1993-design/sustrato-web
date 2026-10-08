@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T14:34:22.767Z">
+<meta name="sustrato-version" content="2026-10-08T14:40:43.251Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3049,7 +3049,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="213";
+const APP_VER="214";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4707,7 +4707,10 @@ function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks|
   return`<svg class="dtl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tus comidas del día y el entreno">${band}<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="dt-base"/>${now}${bars}</svg>`}
 /* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
    cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
-function eatenToday(){const l=(S.log||{})[S.day]||{};return Object.entries(l).filter(([k])=>!k.startsWith("fuel_")).reduce((a,[,x])=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0})}
+/* Hidratos del avituallamiento de un día (geles, bebida…): el registro tras la sesión manda; si no, lo marcado como tomado en el plan */
+function fuelCho(k){const L=(S.fuel||[]).filter(x=>x.d===k),ids=new Set(L.map(x=>"fuel_a"+x.id));let c=L.reduce((t,x)=>t+(x.carbs||0),0);
+  Object.entries((S.log||{})[k]||{}).forEach(([id,x])=>{if(id.startsWith("fuel_")&&x&&!ids.has(id))c+=x.C||0});return c}
+function eatenToday(){const l=(S.log||{})[S.day]||{};const r=Object.entries(l).filter(([k])=>!k.startsWith("fuel_")).reduce((a,[,x])=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0});r.C+=fuelCho(S.day);return r}
 /* La gota del logo (mismo trazo, ápice apenas suavizado), plana y sin borde */
 const DROP_D="M46.8 9 Q50 3.6 53.2 9 Q69.2 29.4 84.56 58.2 A40.8 40.8 0 1 1 15.44 58.2 Q30.8 29.4 46.8 9Z",DROP_TOP=4,DROP_BOT=120.6;
 let DROP_W=null;
@@ -6377,7 +6380,7 @@ function barChart(bk){
 `<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i style="background:color-mix(in srgb,#ffd21e 40%,transparent)"></i>Previsto</span>':""}</div>`;
 }
 /* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
-function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});return n?{P,C,F,kcal:4*P+4*C+9*F}:null}
+function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});const fc=fuelCho(k);if(fc){C+=fc;n=n||1}return n?{P,C,F,kcal:4*P+4*C+9*F,fuel:fc}:null}
 function constCard(p,T,tk){
   const g=(S.profile||{}).goal||"recomp",tol=g==="loss"?0.10:g==="recomp"?0.10:0.12;
   const st=r=>r==null?"none":r>1+tol?"over":r<1-tol?"under":"ok";
@@ -7214,15 +7217,16 @@ function glyIntake(k){const lg=(S.log||{})[k]||{},ids=MEALS.map(m=>m[0]),ne=ids.
   const a=(S.glyAns||{})[k];if(a)return{C:t.C*({si:1,menos:.7,mas:1.2}[a]||1),src:"ans"};return{C:t.C,src:"est"}}
 function glyState(){const cap=glyCap();if(!cap)return null;const w=num((S.profile||{}).weight),tk=today();if(S._gly&&S._gly.k===tk&&S._gly.sig===glySig())return S._gly.v;
   let G=cap*GLY_HAB;const hist=[];let lastEst=false,yIn=null,yUse=0;
-  for(let i=21;i>=1;i--){const k=shiftKey(tk,-i),use=glyDayCho(k),inn=glyIntake(k);if(!inn)continue;
+  for(let i=21;i>=1;i--){const k=shiftKey(tk,-i),fu=fuelCho(k),use=Math.max(0,glyDayCho(k)-fu),inn=glyIntake(k);if(!inn)continue;
     G=Math.max(0,Math.min(cap,G+Math.min(8*w,Math.max(0,inn.C-2*w))-use));
     if(inn.src==="est")G+=(cap*GLY_HAB-G)/3;
-    hist.push({k:shiftKey(k,1),g:G});if(i===1){lastEst=inn.src==="est";yIn=inn;yUse=use}}
+    hist.push({k:shiftKey(k,1),g:G});if(i===1){lastEst=inn.src==="est";yIn=inn;yUse=use;S._glyFuel=fu}}
   const v={cap,g:G,pct:Math.round(G/cap*100),est:lastEst,yIn,yUse,hist:hist.slice(-7),need:Math.max(0,Math.round(cap*GLY_HAB-G))};
   S._gly={k:tk,sig:glySig(),v};return v}
 function glySig(){return JSON.stringify([S.glyAns||{},Object.keys(S.log||{}).length,S.acts.length,Object.keys(S.subs||{}).length,(S.profile||{}).weight])}
 function glyCard(){const g=glyState();if(!g||S.day!==today())return"";const f1=v=>fmtInt(v);
-  const why=g.yIn?(g.yIn.src==="log"?`Ayer <b>gastaste ${f1(g.yUse)} g</b> entrenando y <b>comiste ${f1(g.yIn.C)} g</b> de hidratos.`:g.yIn.src==="ans"?`Ayer <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y dices que comiste ${({si:"lo previsto",menos:"menos de lo previsto",mas:"más de lo previsto"})[(S.glyAns||{})[shiftKey(today(),-1)]]||"lo previsto"}.`:`Ayer no apuntaste comidas: <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y supongo que comiste lo previsto.`):"";
+  const fz=S._glyFuel?` (descontados ${f1(S._glyFuel)} g que tomaste durante la sesión)`:"";
+  const why=g.yIn?(g.yIn.src==="log"?`Ayer <b>gastaste ${f1(g.yUse)} g</b> entrenando${fz} y <b>comiste ${f1(g.yIn.C)} g</b> de hidratos.`:g.yIn.src==="ans"?`Ayer <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y dices que comiste ${({si:"lo previsto",menos:"menos de lo previsto",mas:"más de lo previsto"})[(S.glyAns||{})[shiftKey(today(),-1)]]||"lo previsto"}.`:`Ayer no apuntaste comidas: <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y supongo que comiste lo previsto.`):"";
   const H=g.hist,X=i=>4+i*(392/Math.max(1,H.length-1)),Y=v=>42-(Math.max(.3,v/g.cap)-.3)/.7*38;
   return`<section class="glass pad fade gly-card"><span class="pkk">Depósito de glucógeno</span>
     <div class="vhead" data-vzread><b>${g.est?"≈ ":""}${g.pct}<small class="u">%</small></b><span>${g.est?"≈ ":""}${f1(g.g)} de ${f1(g.cap)} g</span>${g.est?'<span class="gly-tag">Estimado</span>':""}</div>
