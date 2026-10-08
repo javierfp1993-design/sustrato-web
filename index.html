@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T12:05:29.385Z">
+<meta name="sustrato-version" content="2026-10-08T12:20:29.958Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2861,6 +2861,14 @@ html[data-theme="dark"] .seg>.seg-th{background:#636366}
 @media (prefers-reduced-motion:reduce){.rg-a{transition:none}}
 .wc-neo .rg{margin-top:0}.wc-neo .rg-hint{margin:-8px 0 0}.wc-neo .rg-wk{margin:-4px 0 0}
 .wc-neo .wc-sec{margin-top:4px}.wc-neo .wf-list{margin-top:-12px}
+.wc-neo .rg{flex-direction:column;gap:12px;align-items:stretch}
+.wc-neo .rg-g{width:180px;height:180px;margin:0 auto}
+.wc-neo .rg-c b{font-size:44px}
+.wc-neo .rg-c b.t{font-size:17px}
+.wc-neo .rg-c small{font-size:13px;margin-bottom:6px}
+.wc-neo .rg-x{min-height:92px;justify-content:flex-start;align-items:center;text-align:center}
+.wc-neo .rg-x .chip{align-self:center}
+.wc-neo .rg-w{max-width:320px}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2932,7 +2940,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="203";
+const APP_VER="204";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -7030,9 +7038,9 @@ function rgWhy(it,fb){const L=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+
   return pos.length?`A favor: <b>${L(pos)}</b>.`:esc(fb)}
 function rgDayK(tk){return S.rgDay&&S.rgDay<tk&&S.rgDay>=shiftKey(tk,-6)?S.rgDay:tk}
 function rgHint(){try{return!localStorage.getItem("sustrato-rghint")&&!S._rgHint}catch(e){return!S._rgHint}}
-function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k===S.rgSel)||null,n=it.length,step=n>3?12:14,w=n>3?8:9,R0=63;
+function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k===S.rgSel)||null,n=it.length,step=n>3?13:16,w=n>3?9:11,R0=102;
   const rings=it.map((x,i)=>{const rr=R0-i*step,C=2*Math.PI*rr,fr=x.c==null?0:Math.max(.05,Math.min(1,Math.abs(x.c)/RG_MX[x.k])*.42),neg=x.c<0;
-    return`<g class="rg-r${sel?(sel.k===x.k?" on":" off"):""}" data-rgk="${x.k}"><circle class="rg-t" cx="70" cy="70" r="${rr}" stroke-width="${w}"/>${fr?`<circle class="rg-a" data-k="${x.k}${neg?"-":"+"}" data-l="${(C*fr).toFixed(1)}" data-c="${C.toFixed(1)}" cx="70" cy="70" r="${rr}" stroke-width="${w}" stroke="${rgCol(x.c)}" transform="${neg?"matrix(-1 0 0 1 140 0) ":""}rotate(-90 70 70)"/>`:""}<circle class="rg-s" cx="70" cy="${70-rr}" r="${n>3?2.2:2.6}"/><circle class="rg-h" cx="70" cy="70" r="${rr}" stroke-width="${step}"><title>${esc(x.l)}</title></circle></g>`}).join("");
+    return`<g class="rg-r${sel?(sel.k===x.k?" on":" off"):""}" data-rgk="${x.k}"><circle class="rg-t" cx="110" cy="110" r="${rr}" stroke-width="${w}"/>${fr?`<circle class="rg-a" data-k="${x.k}${neg?"-":"+"}" data-l="${(C*fr).toFixed(1)}" data-c="${C.toFixed(1)}" cx="110" cy="110" r="${rr}" stroke-width="${w}" stroke="${rgCol(x.c)}" transform="${neg?"matrix(-1 0 0 1 220 0) ":""}rotate(-90 110 110)"/>`:""}<circle class="rg-s" cx="110" cy="${110-rr}" r="${n>3?3:3.5}"/><circle class="rg-h" cx="110" cy="110" r="${rr}" stroke-width="${step}"><title>${esc(x.l)}</title></circle></g>`}).join("");
   const ctr=sel?`<b class="${typeof sel.v==="string"?"t":""}">${esc(String(sel.v))}</b>${sel.u?`<small>${sel.u}</small>`:""}`:`<b>${r.sc}</b>`;
   const dl=day===tk?"Hoy":"El "+DOW[new Date(day+"T12:00:00").getDay()]+" "+(+day.slice(8));
   const act=sel&&day===tk?(sel.k==="hrv"?"hrvedit":sel.k==="sleep"||(sel.k==="rhr"&&!window.__native)?"wtedit":""):"";
@@ -7040,7 +7048,7 @@ function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k=
     :`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p>`;
   const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
   const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
-  return`<div class="rg"><div class="rg-g${sel?" sel":""}"><svg viewBox="0 0 140 140" role="img" aria-label="Disposición ${r.sc} de 100. Toca un anillo para ver su porqué">${rings}</svg><button type="button" class="rg-c" data-rgk="" aria-label="Volver al resumen">${ctr}</button></div><div class="rg-x">${tx}</div></div>
+  return`<div class="rg"><div class="rg-g${sel?" sel":""}"><svg viewBox="0 0 220 220" role="img" aria-label="Disposición ${r.sc} de 100. Toca un anillo para ver su porqué">${rings}</svg><button type="button" class="rg-c" data-rgk="" aria-label="Volver al resumen">${ctr}</button></div><div class="rg-x">${tx}</div></div>
     ${rgHint()?`<p class="rg-hint">De fuera a dentro: ${nm}. Toca un anillo para ver su porqué.</p>`:""}
     <div class="rg-wk" role="group" aria-label="Cómo llegaste cada día">${wk}</div>`}
 function rgRows(tk,hrvSpecial){const day=rgDayK(tk),{it}=rgItems(day),I=p=>`<svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
