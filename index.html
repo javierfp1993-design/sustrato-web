@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T14:50:48.853Z">
+<meta name="sustrato-version" content="2026-10-08T15:01:46.465Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2808,10 +2808,10 @@ small.u{font-size:max(12px,.6em);font-weight:500;color:var(--muted);letter-spaci
 .pnav .chip{min-width:38px;min-height:38px;justify-content:center}
 html[data-theme] .badge.dashed{box-shadow:none!important;background:color-mix(in srgb,var(--bc) 8%,transparent)!important;opacity:1}
 .act .m small.u{display:inline;font-size:12px}
-.tday span,.tday small{color:var(--fg)!important}
-.day .dot.on{background:var(--fg)!important;opacity:.55}
-.day .dot.pl{box-shadow:inset 0 0 0 1.5px var(--faint)!important}
-.day .dot.miss{box-shadow:inset 0 0 0 1.5px #ff9f0a!important}
+
+
+
+
 .pa-day i.on{background:var(--faint)!important}
 html body .kv>div,html body .kv>div+div,html body .ws-g>div{padding:12px 14px!important}
 .ws-g .ws-na{display:block;font-size:13px;color:var(--muted);margin-top:2px}
@@ -3063,7 +3063,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="215";
+const APP_VER="216";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3458,12 +3458,13 @@ function macroTips(t,q){const tips=amountTips(t);if(!q)return tips.slice(0,2);co
     tips.push(`Las grasas saturadas pasan del 10 % de lo que comes (${r0(9*q.sat/q.kcal*100)} %).${top?` Cambiar ${name(top[0])} por ${QSWAP[top[0]]} lo baja.`:" Más aceite de oliva y frutos secos lo equilibran."}`)}
   const w=weekOmega3(t);if(w!=null&&w<1.1)tips.push(`Esta semana vas corto de omega‑3 (${w.toFixed(1).replace(".",",")} g al día de media). Pescado azul un par de veces o un puñado de nueces lo cubre.`);
   return tips.slice(0,2)}
-function macroVerdicts(t,q){const A=macroAmount(t),amt=m=>A.over[m]?["mid",`${A.over[m]} g de más`]:A.under[m]?["mid",`Faltan ${A.under[m]} g`]:null;
-  if(!q){const r={C:amt("C"),P:amt("P"),F:amt("F")};return r.C||r.P||r.F?r:null}
+function macroVerdicts(t,q){/* v216: solo calidad (lo que falta en gramos ya lo dice la fila), con textos que no se confunden con «cantidad completa» */
+  if(!q)return null;
   const glyc=(t.ex||0)>=500||(t.acts||[]).some(a=>a.mov>=4500)||(t.plan||[]).some(p=>!p.skip&&(p.dur>=75||p.int==="i"));
-  const cBad=q.COut>30&&q.sugOut/q.COut>0.33&&!glyc,pBad=Object.values(q.meals).some(M=>M.P>=8&&M.comp/M.P<0.5),
-    sBad=q.kcal>800&&9*q.sat/q.kcal>0.10,w=weekOmega3(t),wBad=w!=null&&w<1.1;
-  return{C:amt("C")||(cBad?["mid","Muchos azúcares"]:["ok","Energía duradera"]),P:amt("P")||(pBad?["mid","Falta combinar"]:["ok","Completa"]),F:amt("F")||(sBad?["mid","Muchas saturadas"]:wBad?["mid","Falta omega‑3"]:["ok","Saludables"])}}
+  const cBad=q.COut>30&&q.sugOut/q.COut>0.33&&!glyc,sBad=q.kcal>800&&9*q.sat/q.kcal>0.10,w=weekOmega3(t),wBad=w!=null&&w<1.1;
+  const low=Object.values(q.meals).filter(M=>M.P>=8&&M.comp/M.P<0.5),lys=low.some(M=>M.lys>0&&!M.met),met=low.some(M=>M.met>0&&!M.lys);
+  const pTxt=!low.length?["ok","Aminograma completo"]:lys&&met?["mid","Falta lisina y metionina"]:lys?["mid","Falta lisina"]:met?["mid","Falta metionina"]:["mid","Aminograma incompleto"];
+  return{C:cBad?["mid","Muchos azúcares"]:["ok","Hidratos lentos"],P:pTxt,F:sBad?["mid","Muchas saturadas"]:wBad?["mid","Falta omega‑3"]:["ok","Grasas saludables"]}}
 const QEXPL={C:"Los hidratos lentos (avena, arroz, pan integral, legumbres) te dan energía poco a poco. Los rápidos (fruta, miel, azúcar) actúan enseguida: perfectos antes y después de entrenar, mejor con moderación el resto del día.",
  P:"La proteína completa tiene todo lo que tu músculo necesita: carne, pescado, huevo, lácteos, soja o quinoa. La vegetal suele ir incompleta, pero legumbre y cereal en la misma comida se completan (lentejas con arroz, hummus con pan).",
  F:"Las grasas del aceite de oliva, el aguacate, los frutos secos y el pescado azul cuidan tu corazón; el omega‑3 (pescado azul, nueces) además ayuda a recuperar. Las saturadas (embutido, queso curado, mantequilla), mejor con moderación."};
@@ -7267,7 +7268,7 @@ function glbFrame(ts){GLB.run=false;const el=document.getElementById("glyband");
 const MQ_OK='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',MQ_MID='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 7v6M12 17v.1"/></svg>';
 function macroRows(L,btn){return`<div class="mrs">${L.map(x=>{const eaten=x.g>0,pc=eaten?Math.min(100,x.g/x.tg*100):0,left=Math.round(x.tg-x.g);
   const sub=[x.gk?x.gk+" g/kg":"",eaten?(Math.abs(left)<=2?"completo":left>0?`faltan ${fmtInt(left)} g`:`${fmtInt(-left)} g de más`):""].filter(Boolean).join(" · ");
-  const q=x.q?`<span class="mr-q ${x.q[0]}">${x.q[0]==="ok"?MQ_OK:MQ_MID}${esc(x.q[1])}</span>`:"";
+  const q=x.q?`<span class="mr-q ${x.q[0]}">${esc(x.q[1])}</span>`:"";
   const inner=`<span class="mr-h"><span>${x.n}</span><b>${fmtInt(eaten?x.g:x.tg)}<small>${eaten?" / "+fmtInt(x.tg):""} g</small></b></span><span class="mr-bar"><i style="width:${pc.toFixed(0)}%;background:${x.c}"></i></span><span class="mr-s"><span>${sub}</span>${q}</span>`;
   return btn?`<button type="button" class="mr-r" data-macro="${x.m}" aria-label="${x.n}: ver alimentos">${inner}</button>`:`<div class="mr-r">${inner}</div>`}).join("")}</div>`}
 
