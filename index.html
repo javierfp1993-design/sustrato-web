@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T09:29:11.914Z">
+<meta name="sustrato-version" content="2026-10-08T09:42:49.329Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2780,6 +2780,7 @@ html:not([data-theme="light"]) .rh-v.up{color:#30d158}html:not([data-theme="ligh
 .kv b small,.ws-g b small,.rh-t b small,.rec b small{font-size:12px;font-weight:500;color:var(--muted)}
 .kd{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
 .vhead b{white-space:nowrap;flex:none}
+.sth{justify-content:center}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2851,7 +2852,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="198";
+const APP_VER="199";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3874,9 +3875,9 @@ function stepsCard(k){
   /* Franja líquida hasta el objetivo (mismo compás que la gota); al tocarla, los pasos por horas */
   const band=`<button class="stb" data-stph="" tabindex="-1"><svg viewBox="0 0 340 44" preserveAspectRatio="none" id="stpband" data-f="${pc.toFixed(4)}" aria-hidden="true"><defs><clipPath id="stbc"><rect width="340" height="44" rx="22"/></clipPath></defs><g clip-path="url(#stbc)"><rect width="340" height="44" class="stb-bg"/><path class="stb-l" d=""/></g></svg></button>`;
   const hrs=showH?(()=>{const mx=Math.max(1,...H),now=k===today()?new Date().getHours():24,best=H.reduce((b,x,i)=>x>H[b]?i:b,0);
-    return`<div class="sth"><div class="sth-bars" role="img" aria-label="Pasos por horas">${H.slice(6).map((x,j)=>{const i=j+6,fut=i>now;return`<i class="${fut?"sth-f":"sth-b"}" style="height:${x?Math.max(3,x/mx*100).toFixed(1):3}%"></i>`}).join("")}</div><div class="sth-x">${H.slice(6).map((x,j)=>`<span>${(j+6)%3===0?(j+6)+"h":""}</span>`).join("")}</div><p class="note" style="margin:6px 0 0">Tu mejor rato: de ${best} a ${best+1} h · ${fmtInt(H[best])} pasos</p></div>`})():"";
+    return`<div class="sth">${VZ.bars({id:"sh"+k,label:"Pasos por horas",h:250,cols:H.slice(6).map((x,j)=>{const i=j+6,fut=i>now;return{x:i+"h",cur:k===today()&&i===now,segs:fut?[]:[{v:x,c:"#30d158"}],read:`<b>${fmtInt(x)}</b><span>pasos de ${i} a ${i+1} h${i===best&&x?" · tu mejor rato":""}</span>`}})})}<p class="note" style="margin:6px 0 0">Tu mejor rato: de ${best} a ${best+1} h · ${fmtInt(H[best])} pasos</p></div>`})():"";
   return`<section class="glass pad fade stp"><h2>Pasos · ${esc(dateLabel(k))}</h2>
-    <div class="stp-hd"><b>${fmtInt(v)}</b><span>de ${fmtInt(g)}</span></div>
+    <div class="stp-hd" data-vzread><b>${fmtInt(v)}</b><span>de ${fmtInt(g)}</span></div>
     ${upd.html}
     ${upd.stale?"":`<p class="stp-left">${v>=g?"Objetivo cumplido"+(v>g?" · "+fmtInt(v-g)+" de más":""):`Te faltan ${fmtInt(left)} · unos ${Math.max(1,Math.round(left/100))} min caminando`}</p>`}
     ${band}${hrs}
@@ -3893,15 +3894,15 @@ function stepsCard(k){
 function stepsChart(){
   const tk=today(),N=30,days=[];for(let i=N-1;i>=0;i--){const k=shiftKey(tk,-i);days.push({k,...stepsOf(k)})}
   const has=days.filter(d=>d.total>0);if(has.length<2)return"";
-  const g=stepGoal(),mx=Math.max(g*1.25,...days.map(d=>d.total)),w=400,h=150,PT=12,PB=18,ih=h-PT-PB,bw=w/N,Y=v=>PT+ih-v/mx*ih;
-  const avg=has.reduce((s,d)=>s+d.total,0)/has.length,hit=days.filter(d=>d.total>=g).length;
+  const g=stepGoal(),avg=has.reduce((s,d)=>s+d.total,0)/has.length,hit=days.filter(d=>d.total>=g).length;
   let streak=0;for(let i=days.length-1;i>=0;i--){if(days[i].total>=g)streak++;else if(i<days.length-1)break}
-  const bars=days.map((d,i)=>{const hh=PT+ih-Y(d.total),c=d.total>=g?"#30d158":d.total>=g*.6?"rgba(48,209,88,.55)":"rgba(48,209,88,.28)";
-    return`<g class="vb" data-tip="${esc(dateLabel(d.k))}|${fmtInt(d.total)} pasos${d.manual==null&&d.total?" (estimados)":""}" style="--d:${i*15}ms"><rect x="${(i*bw).toFixed(1)}" y="${PT}" width="${bw.toFixed(1)}" height="${ih}" fill="transparent"/>${d.total?`<rect x="${(i*bw+bw*.25).toFixed(1)}" y="${Y(d.total).toFixed(1)}" width="${(bw*.5).toFixed(1)}" height="${hh.toFixed(1)}" rx="${(bw*.25).toFixed(1)}" fill="${c}"/>`:`<rect x="${(i*bw+bw*.15).toFixed(1)}" y="${PT+ih-2}" width="${(bw*.7).toFixed(1)}" height="2" rx="1" class="vnil"/>`}${i%7===N%7?`<text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${+d.k.slice(8)}/${+d.k.slice(5,7)}</text>`:""}</g>`}).join("");
+  const cols=days.map(d=>({x:VZ.sd(d.k),cur:d.k===tk,segs:[{v:d.total,c:d.total>=g?"#30d158":"color-mix(in srgb,#30d158 45%,var(--card))"}],
+    read:`<b>${fmtInt(d.total)}</b><span>pasos el ${esc(dateLabel(d.k))}${d.manual==null&&d.total?" · estimados":""}</span>`}));
   return`<section class="glass pad fade hue-health"><span class="pkk">Pasos · 30 días</span>
-    <div class="kv" style="margin-top:8px"><div><span>Media diaria</span><b>${fmtInt(avg)}</b></div><div><span>En objetivo</span><b>${hit}/${N}</b></div><div><span>Racha</span><b>${streak} día${streak===1?"":"s"}</b></div></div>
-    <svg class="chart vol" viewBox="0 0 ${w} ${h}" role="img" aria-label="Pasos por día en los últimos 30 días"><line x1="0" x2="${w}" y1="${Y(g).toFixed(1)}" y2="${Y(g).toFixed(1)}" class="vavg"/><text class="ax" x="${w-2}" y="${(Y(g)-4).toFixed(1)}" text-anchor="end">objetivo ${fmtInt(g)}</text>${bars}</svg>
-    <p class="note">Los días sin apuntar se estiman con tus caminatas y carreras de Strava, así que pueden quedarse cortos.</p></section>`;
+    <div class="vhead" data-vzread><b>${fmtInt(avg)}</b><span>pasos al día de media</span></div>
+    <div class="kv" style="margin-top:8px;grid-template-columns:1fr 1fr"><div><span>En objetivo</span><b>${hit} <small>de ${N} días</small></b></div><div><span>Racha</span><b>${streak} <small>día${streak===1?"":"s"}</small></b></div></div>
+    ${VZ.bars({id:"st",label:"Pasos por día en los últimos 30 días",cols,refs:[{v:g,label:"objetivo"}]})}
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Pasos de tu reloj o tu móvil. En verde, los días que llegas a tu objetivo de ${fmtInt(g)}. Los días sin datos se estiman con tus caminatas y carreras, así que pueden quedarse cortos.</p></details></section>`;
 }
 /* ---------- Progreso avanzado ---------- */
 function actLoad(a){const k=a.kcal||(a.mov/60*8);return(a.sport==="str"?.6:1)*k/10}
@@ -4016,7 +4017,7 @@ function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   const dots=pts.map((p,i)=>`<circle cx="${X(p,i).toFixed(1)}" cy="${Y(p.rate).toFixed(1)}" r="6" fill="${SPC[p.sport]||"#5ac8fa"}" data-tip="${esc(SPORT_L[p.sport])} · ${esc(dateLabel(p.d))}|${p.rate.toFixed(2).replace(".",",")} L/h${p.t!=null?" · "+r0(p.t)+" °C":""}"/>`).join("");
   return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span>
     ${Object.keys(by).length===1?(()=>{const sp=Object.keys(by)[0],r=sweatRate(sp),n=by[sp].length;return`<div class="vhead"><b>${r.toFixed(2).replace(".",",")}</b><span>L/h en ${esc(SPORT_L[sp])} · ${n} ${n===1?"prueba":"pruebas"}</span></div>`})():`<div class="sw-sp">${Object.entries(by).map(([sp,xs])=>{const r=sweatRate(sp);return`<div class="sw-t">${spIcon(sp)}<div><b>${r.toFixed(2).replace(".",",")} <small>L/h</small></b><span>${SPORT_L[sp]} · ${xs.length} ${xs.length===1?"prueba":"pruebas"}</span></div></div>`}).join("")}</div>`}
-    <div class="sw-ch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pruebas de sudor${hasT?" según temperatura":""}"><line x1="0" x2="${W}" y1="${H-14}" y2="${H-14}" stroke="var(--sep,rgba(127,127,127,.3))"/>${dots}</svg><div class="sw-ax"><span>${hasT?r0(tmin+2)+" °C":esc(dateLabel(L[0].d))}</span><span>${hasT?"temperatura":""}</span><span>${hasT?r0(tmax-2)+" °C":esc(dateLabel(L[L.length-1].d))}</span></div></div>
+    <div class="sw-ch" style="${L.length<3?"display:none":""}"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pruebas de sudor${hasT?" según temperatura":""}"><line x1="0" x2="${W}" y1="${H-14}" y2="${H-14}" stroke="var(--sep,rgba(127,127,127,.3))"/>${dots}</svg><div class="sw-ax"><span>${hasT?r0(tmin+2)+" °C":esc(dateLabel(L[0].d))}</span><span>${hasT?"temperatura":""}</span><span>${hasT?r0(tmax-2)+" °C":esc(dateLabel(L[L.length-1].d))}</span></div></div>
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:10px 0 0">Peso antes menos peso después, más lo bebido, entre las horas de la sesión. Ya se usa en tu avituallamiento y en el agua del día. Repite la prueba con calor y con frío: la tasa cambia mucho con la temperatura.</p></details></section>`}
 
 /* ---------- Recuperación tras entrenar ---------- */
@@ -4113,9 +4114,10 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
   const gc={good:"#30d158",meh:"#ff9f0a",bad:"#ff453a"};
   const dots=L.map((x,i)=>`<line x1="${X(i).toFixed(1)}" x2="${X(i).toFixed(1)}" y1="${Y(x.tg||0).toFixed(1)}" y2="${Y(x.cph).toFixed(1)}" stroke="rgba(127,127,127,.35)" stroke-width="2"/>${x.tg?`<rect x="${(X(i)-6).toFixed(1)}" y="${(Y(x.tg)-1).toFixed(1)}" width="12" height="2" fill="var(--fg)" opacity=".5"/>`:""}<circle cx="${X(i).toFixed(1)}" cy="${Y(x.cph).toFixed(1)}" r="6" fill="${gc[x.gi]||"#8e8e93"}" data-tip="${esc(dateLabel(x.d))} · ${esc(SPORT_L[x.sport])}|${x.cph} g/h${x.tg?" (objetivo "+x.tg+")":""} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}"/>`).join("");
   return`<section class="glass pad fade fl-card"><span class="pkk">Avituallamiento en carrera</span>
-    <div class="vhead"><b>${tol!=null?tol:"—"}</b><span>${tol!=null?"g/h de hidratos sin molestias":"aún sin una toma sin molestias"} · ${L.length} ${L.length===1?"sesión":"sesiones"}</span></div>
-    <svg class="fl-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Hidratos por hora en tus sesiones largas">${[30,60,90].filter(v=>v<mx).map(v=>`<line x1="34" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(127,127,127,.18)" stroke-dasharray="2 4"/><text x="0" y="${(Y(v)+4).toFixed(1)}" class="ax" font-size="11" fill="currentColor" opacity=".55">${v} g/h</text>`).join("")}${dots}</svg>
-    <div class="ws-lg"><span><i style="background:#30d158"></i>Bien</span><span><i style="background:#ff9f0a"></i>Regular</span><span><i style="background:#ff453a"></i>Molestias</span><span><i style="background:var(--fg);opacity:.5;border-radius:1px;height:2px;width:10px"></i>Objetivo</span></div>
+    <div class="vhead" data-vzread><b>${tol!=null?tol:"—"}</b><span>${tol!=null?"g/h de hidratos sin molestias":"aún sin una toma sin molestias"} · ${L.length} ${L.length===1?"sesión":"sesiones"}</span></div>
+    ${VZ.bars({id:"fl",label:"Hidratos por hora en tus sesiones largas",cols:L.map(x=>({x:VZ.sd(x.d),segs:[{v:x.cph,c:gc[x.gi]||"var(--vz-n2)"}],read:`<b>${x.cph}</b><span>g/h el ${esc(dateLabel(x.d))} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}</span>`})),refs:[{v:60,label:"60 g/h"}]})}
+    <svg class="fl-ch" style="display:none" viewBox="0 0 ${W} ${H}" role="img" aria-hidden="true">${[30,60,90].filter(v=>v<mx).map(v=>`<line x1="34" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(127,127,127,.18)" stroke-dasharray="2 4"/><text x="0" y="${(Y(v)+4).toFixed(1)}" class="ax" font-size="11" fill="currentColor" opacity=".55">${v} g/h</text>`).join("")}${dots}</svg>
+    <div class="ws-lg"><span><i style="background:#30d158"></i>Bien</span><span><i style="background:#ff9f0a"></i>Regular</span><span><i style="background:#ff453a"></i>Molestias</span></div>
     <p class="note" style="margin:8px 0 0">${tol!=null&&tol<60?"Entrena el estómago: sube unos 10 g/h cada semana en tus sesiones largas hasta 60–90 g/h.":"El intestino se entrena: practica en las tiradas largas lo que tomarás en carrera."}</p></section>`}
 function fitCard(){
   if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
@@ -4159,7 +4161,9 @@ function predCard(){
   const goal=num((S.profile||{}).goal10k)||3000;
   const trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),b=bestPred(runs.filter(a=>a.day<=e&&a.day>shiftKey(e,-60)),10000);if(b)trend.push({k:e,t:b.t})}
   const fmtT=sec=>{sec=Math.round(sec);const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),x=sec%60;return(h?h+":"+pad(m):m)+":"+pad(x)},pace=(t,d)=>fmtClock(t/(d/1000));
-  let chart="";if(trend.length>=3){const w=400,h=110,PL=36,PR=6,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,ys=trend.map(x=>x.t).concat([goal]);const lo=Math.min(...ys)-30,hi=Math.max(...ys)+30;
+  let chart="";if(trend.length>=3){const T={};trend.forEach(x=>T[x.k]=x.t);chart=VZ.line({id:"pr",color:"#ffd21e",inv:true,label:"Evolución de la marca estimada en 10 km",pts:trend.map(x=>({d:x.k,v:x.t})),refs:[{v:goal,label:"meta"}],minPad:15,fmt:fmtT,
+      read:p=>`<div><span>10 km · semana del ${VZ.sd(shiftKey(p.d,-6))}</span><b>${fmtT(p.v)}</b><small>${pace(p.v,10000)} /km</small></div>`})}
+  if(false){const w=400,h=110,PL=36,PR=6,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,ys=trend.map(x=>x.t).concat([goal]);const lo=Math.min(...ys)-30,hi=Math.max(...ys)+30;
     const X=i=>PL+i/(trend.length-1)*iw,Y=v=>PT+(v-lo)/(hi-lo)*ih; /* más rápido arriba */
     const ln=trend.map((x,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(x.t).toFixed(1)).join(" ");
     chart=`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución de la marca estimada en 10 km"><line x1="${PL}" x2="${w-PR}" y1="${Y(goal).toFixed(1)}" y2="${Y(goal).toFixed(1)}" class="pgoal"/><text class="ax" x="${PL-4}" y="${(Y(goal)+4).toFixed(1)}" text-anchor="end">${fmtT(goal)}</text>
@@ -4168,7 +4172,7 @@ function predCard(){
       <text class="ax" x="${PL}" y="${h-4}">hace 4 meses</text><text class="ax" x="${w-PR}" y="${h-4}" text-anchor="end">hoy</text></svg>`}
   const gap=p10.t-goal,first=trend.length?trend[0].t:p10.t,pc=first>goal?Math.max(0,Math.min(1,(first-p10.t)/(first-goal))):1;
   return`<section class="glass pad fade hue-gly"><span class="pkk">Marca estimada</span>
-    <div class="preds">${p6?`<div><span>6 km</span><b>${fmtT(p6.t)}</b><small>${pace(p6.t,6000)} /km</small></div>`:""}<div><span>10 km</span><b>${fmtT(p10.t)}</b><small>${pace(p10.t,10000)} /km</small></div></div>
+    <div class="preds" data-vzread>${p6?`<div><span>6 km</span><b>${fmtT(p6.t)}</b><small>${pace(p6.t,6000)} /km</small></div>`:""}<div><span>10 km</span><b>${fmtT(p10.t)}</b><small>${pace(p10.t,10000)} /km</small></div></div>
     <div class="pgbar"><div class="pgbar-h"><span>Meta 10 km · ${fmtT(goal)} (${pace(goal,10000)} /km)</span><b>${gap<=0?"¡Ya la alcanzas!":"Faltan "+fmtT(gap)}</b></div><div class="pgtrack"><i style="width:${(pc*100).toFixed(0)}%"></i></div></div>
     ${chart}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Estimación con la fórmula de Riegel a partir de tus mejores carreras de los últimos 60 días (sin trail). Basada en ${esc(p10.a.name)}, ${esc(dateLabel(p10.a.day))}.</p></details></section>`;
@@ -4200,7 +4204,9 @@ function bodyCard(){
   if(!bf||!kg)return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span><p class="empty">Añade tu cintura (y el cuello${p.sex==="f"?" y la cadera":""} para afinar) en el perfil para ver tu grasa y tu masa magra, y cómo cambian con el tiempo.</p><button class="chip sm" data-goto="perfil">Ir al perfil</button></section>`;
   const fat=kg*bf/100,lean=kg-fat;
   const hist=M.map(m=>{const q=Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip});const e=bfEst(Object.assign(q,{weight:m.kg||kg})),b=e&&e.src==="med"?e.bf:null,w=m.kg||kg;return b?{d:m.d,bf:b,lean:w*(1-b/100),fat:w*b/100}:null}).filter(Boolean);
-  let chart="";if(hist.length>=2){const w=400,h=120,PL=30,PR=30,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,d0=hist[0].d,span=Math.max(1,daysBetween(d0,hist[hist.length-1].d));
+  let chart="";if(hist.length>=2){const H={};hist.forEach(x=>H[x.d]=x);chart=`<p class="vplan-t">Tu % de grasa, medida a medida</p>`+VZ.line({id:"bf",color:"#bf5af2",label:"Evolución del porcentaje de grasa",pts:hist.map(x=>({d:x.d,v:x.bf})),minPad:.6,fmt:v=>v.toFixed(1).replace(".",",")+" %",tfmt:v=>r0(v)+"%",
+      read:p=>{const x=H[p.d];return`<div><b>${x.lean.toFixed(1).replace(".",",")} kg</b><span>masa magra · ${esc(dateLabel(x.d))}</span></div><div><b>${x.bf.toFixed(1).replace(".",",")} %</b><span>grasa · ${x.fat.toFixed(1).replace(".",",")} kg</span></div>`}})}
+  if(false){const w=400,h=120,PL=30,PR=30,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,d0=hist[0].d,span=Math.max(1,daysBetween(d0,hist[hist.length-1].d));
     const X=d=>PL+daysBetween(d0,d)/span*iw,ls=hist.map(x=>x.lean),bs=hist.map(x=>x.bf),l0=Math.min(...ls)-1,l1=Math.max(...ls)+1,b0=Math.min(...bs)-1,b1=Math.max(...bs)+1,YL=v=>PT+ih-(v-l0)/(l1-l0)*ih,YB=v=>PT+ih-(v-b0)/(b1-b0)*ih;
     chart=`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución de masa magra y grasa"><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YL(x.lean).toFixed(1)).join(" ")}" fill="none" stroke="#bf5af2" stroke-width="2.4"/><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YB(x.bf).toFixed(1)).join(" ")}" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="4 3"/>
       ${hist.map(x=>`<circle cx="${X(x.d).toFixed(1)}" cy="${YL(x.lean).toFixed(1)}" r="4" fill="#bf5af2" class="tipdot" data-tip="${esc(dateLabel(x.d))}|Magra ${x.lean.toFixed(1).replace(".",",")} kg · grasa ${x.bf.toFixed(1).replace(".",",")} %"/>`).join("")}
@@ -4209,7 +4215,7 @@ function bodyCard(){
   const f1=v=>v.toFixed(1).replace(".",",");
   return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span>
     <div class="bcomp"><div class="bstack" role="img" aria-label="Masa magra ${f1(lean)} kg y grasa ${f1(fat)} kg"><i class="bl" style="width:${(lean/kg*100).toFixed(1)}%" data-tip="Masa magra|${f1(lean)} kg"></i><i class="bf" style="width:${(fat/kg*100).toFixed(1)}%" data-tip="Grasa|${f1(fat)} kg · ${f1(bf)} %"></i></div>
-      <div class="bkv"><div><b>${f1(lean)} kg</b><span>masa magra</span></div><div><b>${f1(bf)} %</b><span>grasa · ${f1(fat)} kg</span></div></div></div>
+      <div class="bkv" data-vzread><div><b>${f1(lean)} kg</b><span>masa magra</span></div><div><b>${f1(bf)} %</b><span>grasa · ${f1(fat)} kg</span></div></div></div>
     ${chart||`<p class="note">Cuando actualices cuello y cintura en el perfil (cada 2–4 semanas, por la mañana), aquí verás cómo evolucionan tu masa magra y tu grasa.</p>`}
     <p class="note">Estimación por medidas (media de la fórmula de la Marina de EE. UU. y del RFM), con un margen de ±3 %. Lo útil es la tendencia.</p></section>`;
 }
@@ -4280,16 +4286,12 @@ function fuelCard2(){
   const tk=today(),w0=mondayOf(tk),pts=[];
   for(let i=11;i>=0;i--){const wk=shiftKey(w0,-7*i),e=shiftKey(wk,6);let c=0,f=0,n=0;S.acts.forEach(a=>{if(a.day<wk||a.day>e)return;const x=S.subs[a.id];if(x&&x.hasHr){c+=x.cho;f+=x.fat;n++}});if(n)pts.push({wk,fr:f/(c+f),n,g:f/9})}
   if(pts.length<3)return"";
-  const w=400,h=150,PL=30,PR=8,PT=14,PB=20,iw=w-PL-PR,ih=h-PT-PB,lo=Math.max(0,Math.floor((Math.min(...pts.map(p=>p.fr))-.05)*20)/20),hi=Math.min(1,Math.ceil((Math.max(...pts.map(p=>p.fr))+.05)*20)/20);
-  const X=i=>PL+i/(pts.length-1)*iw,Y=v=>PT+ih-(v-lo)/(hi-lo)*ih;
-  const line=pts.map((p,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(p.fr).toFixed(1)).join(" ");
-  const r=linreg(pts.map((p,i)=>[i,p.fr])),up=r&&r.m>0;
+  const r=linreg(pts.map((p,i)=>[i,p.fr])),up=r&&r.m>.002,dn=r&&r.m<-.002,P={};pts.forEach(p=>P[p.wk]=p);
   return`<section class="glass pad fade hue-aer"><span class="pkk">Motor de grasas</span>
-    <div class="vhead"><b>${r0(pts[pts.length-1].fr*100)} %</b><span>de la energía sale de grasa</span>${r?`<span class="ppill ${up?"good":""}">${up?"↑ quemas más grasa":"→ estable"}</span>`:""}</div>
-    <svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Porcentaje de grasa quemada por semana"><defs><linearGradient id="fga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82f6" stop-opacity=".4"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/></linearGradient></defs>
-      ${[lo,hi].map(v=>`<line x1="${PL}" x2="${w-PR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="wg"/><text class="ax" x="${PL-4}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${r0(v*100)}%</text>`).join("")}
-      <path d="${line} L${X(pts.length-1).toFixed(1)} ${PT+ih} L${PL} ${PT+ih} Z" fill="url(#fga)"/><path d="${line}" fill="none" stroke="#3b82f6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" class="draw"/>
-      ${pts.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.fr).toFixed(1)}" r="4.5" fill="#3b82f6" class="tipdot fdot" data-tip="${esc(periodLabel("week",p.wk))}|${r0(p.fr*100)} % grasa · ${fmtInt(p.g)} g en ${p.n} sesión${p.n>1?"es":""}"/>`).join("")}</svg>
+    <div class="vhead" data-vzread><b>${r0(pts[pts.length-1].fr*100)} %</b><span>de la energía sale de grasa</span></div>
+    ${r?`<p class="vplan-t">${up?"↑ Quemas más grasa que hace unas semanas":dn?"↓ Quemas algo menos grasa que hace unas semanas":"→ Estable en las últimas semanas"}</p>`:""}
+    ${VZ.line({id:"fu",color:"#3b82f6",label:"Porcentaje de grasa quemada por semana",pts:pts.map(p=>({d:p.wk,v:p.fr*100})),minPad:3,fmt:v=>r0(v)+" %",
+      read:p=>{const x=P[p.d];return`<b>${r0(x.fr*100)} %</b><span>semana del ${VZ.sd(x.wk)} · ${fmtInt(x.g)} g de grasa en ${x.n} ${x.n>1?"sesiones":"sesión"}</span>`}})}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Parte de la energía de tus entrenos que viene de la grasa, semana a semana. Si sube con el mismo tipo de entreno, tu base aeróbica mejora.</p></details></section>`;
 }
 function eatCard(){
@@ -4301,8 +4303,9 @@ function eatCard(){
     const r=d.lk/d.t,c=Math.abs(r-1)<=.1?"#30d158":"#ff9f0a";
     return`<g class="vb" data-tip="${esc(dateLabel(d.k))}|${fmtInt(d.lk)} de ${fmtInt(d.t)} kcal (${r0(r*100)} %)" style="--d:${i*30}ms"><rect x="${i*bw}" y="${PT}" width="${bw}" height="${ih}" fill="transparent"/><rect x="${(i*bw+bw*.18).toFixed(1)}" y="${Y(r).toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${(PT+ih-Y(r)).toFixed(1)}" rx="3" fill="${c}"/><text class="ax" x="${(i*bw+bw/2).toFixed(1)}" y="${h-6}" text-anchor="middle">${"dlmxjvs"[dd.getDay()]}</text></g>`}).join("");
   return`<section class="glass pad fade hue-gly"><span class="pkk">Comer según el plan · 14 días</span>
-    <div class="vhead"><b>${ok}/${n}</b><span>días en objetivo (±10 %)</span></div>
-    <svg class="chart vol" viewBox="0 0 ${w} ${h}" role="img" aria-label="Calorías registradas frente al objetivo"><rect x="0" y="${Y(1.1).toFixed(1)}" width="${w}" height="${(Y(.9)-Y(1.1)).toFixed(1)}" class="vband"/><line x1="0" x2="${w}" y1="${Y(1).toFixed(1)}" y2="${Y(1).toFixed(1)}" class="vavg"/>${bars}</svg>
+    <div class="vhead" data-vzread><b>${ok} <small>de ${n}</small></b><span>días en objetivo (±10 %)</span></div>
+    ${VZ.bars({id:"eat",label:"Calorías registradas frente al objetivo",cols:days.map(d=>{const r=d.lk!=null&&d.t?d.lk/d.t:null;return{x:VZ.sd(d.k),cur:d.k===tk,segs:r?[{v:r*100,c:Math.abs(r-1)<=.1?"#30d158":"#ff9f0a"}]:[],
+      read:r?`<b>${r0(r*100)} %</b><span>${fmtInt(d.lk)} de ${fmtInt(d.t)} kcal el ${esc(dateLabel(d.k))}</span>`:`<b>—</b><span>${esc(dateLabel(d.k))} sin registrar</span>`}}),refs:[{v:100,label:"objetivo"}]})}
     <div class="legend"><span><i style="background:#30d158"></i>En objetivo</span><span><i style="background:#ff9f0a"></i>Fuera (por encima o por debajo)</span></div>
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Calorías apuntadas cada día frente al objetivo de ese día. Cuenta como en objetivo si quedas a menos de un 10 % por arriba o por abajo. Los días con menos de dos comidas apuntadas no cuentan.</p></details></section>`;
 }
@@ -5086,14 +5089,14 @@ const VZ={w:400,
   line(o){const w=VZ.w,h=o.h||170,PL=34,PR=(o.refs||[]).some(r=>r.label)?44:8,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts,L=o.line||P;if(P.length<2)return"";
     const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));const vs=P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v));
     let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(o.minPad||.5,(hi-lo)*.18);lo-=pad;hi+=pad;
-    const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>PT+ih-(v-lo)/(hi-lo)*ih,fmt=o.fmt||(v=>fmtInt(v));
-    const ln=L.map((p,i)=>(i?"L":"M")+X(p.d).toFixed(1)+" "+Y(p.v).toFixed(1)).join(" "),ar=ln+` L${X(L[L.length-1].d).toFixed(1)} ${PT+ih} L${X(L[0].d).toFixed(1)} ${PT+ih}Z`;
+    const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>o.inv?PT+(v-lo)/(hi-lo)*ih:PT+ih-(v-lo)/(hi-lo)*ih,fmt=o.fmt||(v=>fmtInt(v));
+    const ln=L.map((p,i)=>(i?"L":"M")+X(p.d).toFixed(1)+" "+Y(p.v).toFixed(1)).join(" "),ar=ln+` L${X(L[L.length-1].d).toFixed(1)} ${o.inv?PT:PT+ih} L${X(L[0].d).toFixed(1)} ${o.inv?PT:PT+ih}Z`;
     const last=L[L.length-1],lx=X(last.d),ly=Y(last.v),gid="vzg"+o.id;
     SCRUB[o.id]={w,PT,pts:P.map(p=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:o.tip?o.tip(p):fmt(p.v),read:o.read?o.read(p):null}))};
-    const ticks=VZ.nice(lo,hi,3).filter(v=>v>lo&&v<hi).slice(0,3);
+    const ticks=VZ.nice(lo,hi,3).filter(v=>v>lo&&v<hi).slice(0,3),tf=o.tfmt||fmt;
     return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.color}" stop-opacity=".22"/><stop offset="1" stop-color="${o.color}" stop-opacity="0"/></linearGradient></defs>
-      ${VZ.grid(ticks,Y,PL,w-PR,fmt)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
-      <path d="${ar}" fill="url(#${gid})"/>${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
+      ${VZ.grid(ticks,Y,PL,w-PR,tf)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
+      ${o.inv?"":`<path d="${ar}" fill="url(#${gid})"/>`}${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
       <path d="${ln}" fill="none" stroke="${o.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4.5" fill="${o.color}" class="vz-last scr-hide"/>
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="5" fill="${o.color}"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
@@ -5102,12 +5105,12 @@ const VZ={w:400,
   /* Barras (apiladas o no). o={label,cols:[{x:"rótulo",segs:[{v,c}],ghost,tip,cur}],refs:[{v,label}],fmt,grid,h} */
   bars(o){const w=VZ.w,h=o.h||170,PL=o.grid?34:4,PR=(o.refs||[]).some(r=>r.label)?44:4,PB=20,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length,slot=iw/n,bw=Math.min(24,slot*.62);
     const tot=c=>c.segs.reduce((a,s)=>a+s.v,0),mx=Math.max(...C.map(c=>Math.max(tot(c),c.ghost||0)),...(o.refs||[]).map(r=>r.v),1e-9)*1.1,Y=v=>PT+ih-v/mx*ih,fmt=o.fmt||(v=>fmtInt(v));
-    const every=Math.ceil(n/7);
+    const every=Math.ceil(n/7),ci=C.findIndex(c=>c.cur),showX=i=>i===ci||(i%every===(n-1)%every&&(ci<0||Math.abs(i-ci)>=Math.max(2,every)));
     const cols=C.map((c,i)=>{const x=PL+i*slot+(slot-bw)/2;let y=PT+ih;const segs=c.segs.filter(s=>s.v>0);let out="";
       if(c.ghost&&c.ghost>tot(c)){out+=`<path d="${VZ.bar(x,Y(c.ghost),bw,Y(tot(c))-Y(c.ghost)-(tot(c)?2:0),4)}" class="vz-ghost"/>`}
       segs.forEach((s,j)=>{const hh=s.v/mx*ih,top=j===segs.length-1;y-=hh;const gh=Math.max(0,hh-(j?2:0));out+=top?`<path d="${VZ.bar(x,y,bw,gh,4)}" fill="${s.c}"/>`:`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${gh.toFixed(1)}" fill="${s.c}"/>`});
       if(!segs.length&&!c.ghost)out+=`<rect x="${x.toFixed(1)}" y="${PT+ih-2}" width="${bw.toFixed(1)}" height="2" rx="1" class="vnil"/>`;
-      const lab=(i%every===(n-1)%every||c.cur)?`<text class="ax${c.cur?" vz-cur":""}" x="${(x+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${c.x}</text>`:"";
+      const lab=showX(i)?`<text class="ax${c.cur?" vz-cur":""}" x="${(x+bw/2).toFixed(1)}" y="${h-5}" text-anchor="middle">${c.x}</text>`:"";
       return`<g class="vb"${c.tip&&!o.id?` data-tip="${c.tip}"`:""}><rect x="${(PL+i*slot).toFixed(1)}" y="0" width="${slot.toFixed(1)}" height="${PT+ih}" fill="transparent"/>${out}${lab}</g>`}).join("");
     const ticks=o.grid?VZ.nice(0,mx,2).filter(v=>v>0&&v<mx).slice(0,3):[];
     if(o.id)SCRUB[o.id]={w,PT,bars:true,pts:C.map((c,i)=>({i,x:PL+i*slot+slot/2,y:Y(tot(c)),read:c.read||null,go:c.go||null}))};
