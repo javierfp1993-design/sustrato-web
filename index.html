@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T14:13:02.628Z">
+<meta name="sustrato-version" content="2026-10-08T14:34:22.767Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2962,6 +2962,22 @@ html[data-theme="dark"] .gsi-material-button:not(:disabled):active .gsi-material
 .cx-del{color:#d70015!important}html[data-theme="dark"] .cx-del{color:#ff453a!important}
 .cx .cx-ic.cx-sv{color:#fc5200;background:color-mix(in srgb,#fc5200 16%,transparent)}
 .cx .cx-ic.cx-hc{background:var(--fill2)}html[data-theme="dark"] .cx .cx-ic.cx-hc{background:#fff}
+.gly-card .vhead{align-items:baseline}
+.gly-tag{margin-left:auto;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--fill2);color:var(--muted);align-self:center}
+.gly-tank{margin:12px 0 4px}.gly-tank svg{display:block;width:100%;height:32px}
+.gly-bg{fill:var(--fill2)}.gly-hab{fill:color-mix(in srgb,#ffd21e 16%,transparent)}
+.gly-l{fill:#ffd21e}.gly-tank.est .gly-l{fill:color-mix(in srgb,#ffd21e 60%,var(--card))}
+.gly-sc{position:relative;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.gly-spk{display:block;width:100%;height:46px;margin-top:12px}
+.gly-sb{fill:color-mix(in srgb,#ffd21e 12%,transparent)}.gly-sl{fill:none;stroke:#ffd21e;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}.gly-sd{fill:#ffd21e}
+.gly-q{background:var(--fill2);border-radius:14px;padding:12px 14px;margin:4px 0 0}
+.gly-q p{margin:0 0 10px;font-size:15px}.gly-q p small{display:block;color:var(--muted);font-size:13px}
+.gly-ch{display:flex;gap:8px}.gly-ch button{flex:1;appearance:none;border:0;background:var(--card);color:var(--fg);font:600 14px var(--font);border-radius:10px;min-height:38px;cursor:pointer}
+.gly-ch button:active{transform:scale(.97)}
+.gly-sug{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;background:color-mix(in srgb,#ffd21e 14%,transparent);border-radius:14px;padding:10px 12px;font-size:13px}
+.gly-sug .chip{flex:none;background:var(--card)}
+.gly-in{margin:8px 0 0;font-size:13px;color:var(--muted)}
+html[data-theme="dark"] .gly-sb{fill:color-mix(in srgb,#ffd21e 7%,transparent)}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3033,7 +3049,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="212";
+const APP_VER="213";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3214,7 +3230,9 @@ function dayTargets(k,raw){
   let bonus=0,tomorrow=null;const tk=nextKey(k);
   if(tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
-  return{b,neat,ex,tdee,kcal,P,F,C,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps};
+  /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
+  let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
+  return{b,neat,ex,tdee,kcal,P,F,C,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
 }
 
 /* ---------- Reparto por comidas ---------- */
@@ -4147,6 +4165,7 @@ function readiness(tk,FSc){tk=tk||today();const M=S.rhr||{},f=[];let sc=70,n=0;
       f.push({k:"hrv",c:v,l:"VFC",v:r>=1.05?"Alta":r>=.95?"Normal":r>=.85?"Baja":"Muy baja",s:v>0?"ok":v>-15?"mid":"hi",tip:`Variabilidad cardiaca de esta noche: ${Math.round(hv)} ms frente a ${Math.round(b)} ms de media de tu última semana`})}}
   if(S.acts.length){const FS=FSc||fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",c:v,l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",c:v,l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
+  if(tk===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs){n++;const v=Math.round((gs.pct>=75?4:gs.pct>=55?-8:-18)*(gs.est?.5:1));sc+=v;f.push({k:"gly",c:v,l:"Glucógeno",v:(gs.est?"≈ ":"")+gs.pct+" %",s:v>0?"ok":v>-10?"mid":"hi"})}}finally{S._glyBusy=false}}
   sc=Math.max(5,Math.min(98,sc));
   const vd=sc>=78?["Día para apretar","Buen momento para un entreno clave o de calidad.","#30d158","#17663d"]:sc>=58?["Mantén el plan","Estás en condiciones de hacer lo previsto.","var(--fg)","var(--fg)"]:sc>=38?["Mejor suave","Rebaja la intensidad: rodaje cómodo o técnica.","#ff9f0a","#9a5410"]:["Toca recuperar","Descanso o actividad muy suave. Prioriza dormir y comer bien.","#ff453a","#9b2a22"];
   return{sc,n,f,vd,sl}}
@@ -4650,6 +4669,7 @@ async function loadStore(){
       else if(d.id==="fuellog"&&v.list)S.fuel=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="sweat"&&v.list)S.sweat=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="sleep"&&v.map)S.sleep=JSON.parse(JSON.stringify(v.map));
+      else if(d.id==="glyans"&&v.map)S.glyAns=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="measures"&&v.list)S.measures=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="routines"&&v.list)S.routines=JSON.parse(JSON.stringify(v.list));
       else if(v.kind==="str")S.str.push(Object.assign({},v));
@@ -4719,7 +4739,7 @@ function dropFrame(ts){DROP.run=false;const el=document.getElementById("dropsvg"
     for(let x=0;x<=100;x+=2){const w=A*(Math.cos(Math.PI*x/100)*Math.cos(ph)+0.15*Math.cos(2*Math.PI*x/100)*Math.cos(2*ph))+R*Math.sin(2*Math.PI*(x/50-2*tt/T)-lag)+sp*ka*Math.cos(Math.PI*x/100)*Math.sin(2*Math.PI*st/1.1-lag);d+=` L${x} ${(yt+w).toFixed(2)}`}
     p.setAttribute("d",d+` L100 ${yb}Z`)});
   if((vis&&!rm&&lv>0.002)||moving){DROP.run=true;requestAnimationFrame(dropFrame)}}
-function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}}
+function dropKick(){if(!DROP.run){DROP.run=true;requestAnimationFrame(dropFrame)}if(!STB.run){STB.run=true;requestAnimationFrame(stbFrame)}if(typeof GLB!=="undefined"&&!GLB.run){GLB.run=true;requestAnimationFrame(glbFrame)}}
 const STB={cur:0,v:0,run:false};
 function stbFrame(ts){STB.run=false;const el=document.getElementById("stpband");if(!el)return;const tg=+el.dataset.f,rm=matchMedia("(prefers-reduced-motion: reduce)").matches,tt=(ts||0)/1000;
   if(rm)STB.cur=tg;else{STB.v=(STB.v+(tg-STB.cur)*0.010)*0.88;STB.cur+=STB.v}
@@ -5200,7 +5220,7 @@ function weightBar(){
       <div class="wc-hd"><div><span>${hi} · Cómo llegas hoy</span></div><button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
       ${rgHero(tk)}
       ${clash&&!S.rgDay?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
-      ${rgRows(tk,(!S.rgDay&&(S.hrvEdit||!hv))?hrvR:null)}
+      ${S.rgDay?"":glyAsk()}${rgRows(tk,(!S.rgDay&&(S.hrvEdit||!hv))?hrvR:null)}
       ${sl||S.rgDay?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
       ${perfNews()}
       <button type="button" class="wf-wt" data-act="wtedit" aria-label="Peso: ${td?String(td.kg).replace(".",",")+" kg":"sin registrar hoy"}. Toca para editar"><span>Peso</span><span>${td?`<b>${String(td.kg).replace(".",",")} kg</b>${wsub?" · "+esc(wsub):""}`:`<em>Apuntar</em>`}</span></button>
@@ -6318,6 +6338,7 @@ function vHoy(){
   const panel=raceCard(t)+mealsCard(t)+fuelCard(t);
   return `
   ${weightBar()}
+  ${glyCard()}
   ${recovCard()}
   ${flPrompt()}
   ${weekTeaser()}
@@ -6329,6 +6350,7 @@ function vHoy(){
       ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,mq=macroQuality(t,S.day),mv=macroVerdicts(t,mq),qq=mv?{C:mv.C,P:mv.P,F:mv.F}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1)),col=(m,c,n,g,tg,gk)=>`<button class="qc" data-macro="${m}" aria-label="${n}: ver alimentos"><span class="qc-n"><i style="background:${c}"></i>${n}</span><b>${fmtInt(ek>0?g:tg)}<small>${ek>0?" / "+fmtInt(tg):""} g</small></b><span class="qc-bar"><i style="width:${ek>0?Math.min(100,g/tg*100).toFixed(0):0}%;background:${c}"></i></span><small class="qc-k">${gk} g/kg</small>${qq&&qq[m]?`<small class="qc-q"><i class="qv-d ${qq[m][0]}"></i>${qq[m][1]}</small>`:""}</button>`;
         return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal":"kcal para hoy"}</span></div></div>
         <div class="qc3">${col("P","var(--prot)","Proteína",e.P,t.P,(t.P/kg).toFixed(1).replace(".",","))}${col("C","var(--carb)","Hidratos",e.C,t.C,(t.C/kg).toFixed(1).replace(".",","))}${col("F","var(--fat)","Grasas",e.F,t.F,(t.F/kg).toFixed(1).replace(".",","))}</div>
+        ${t.glySug?`<div class="gly-sug"><span>¿Subir <b>${fmtInt(t.glySug)} g</b> de hidratos para rellenar tu glucógeno? Es una estimación: ayer no apuntaste comidas.</span><button type="button" class="chip sm" data-glyapply="1">Aplicar</button></div>`:t.glyAdd?`<p class="gly-in">Hidratos +${fmtInt(t.glyAdd)} g para rellenar tu glucógeno.</p>`:""}
         ${mq?"":`<button class="qhint" data-gomenu="1">Asigna el menú de hoy para ver de qué tipo son tus macros<span aria-hidden="true">›</span></button>`}
         ${tips.length?`<div class="qs"><span>Sugerencia</span><p>${esc(tips[ti])}</p>${tips.length>1?`<button class="qs-n" data-qtip="1">${ti?"Ver la anterior":"Ver otra"}</button>`:""}</div>`:""}
 `})()}
@@ -6336,7 +6358,7 @@ function vHoy(){
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
         <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos y día a día":"Actividad diaria"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
-        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}</p>
+        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}</p>
       </details>
     </div>
   </section>
@@ -7102,7 +7124,7 @@ function unitize(root){(root||document).querySelectorAll("section b, .sheet b, .
 
 /* Cómo llegas hoy (v203): anillos de equilibrio. Cada anillo es un factor; su color nace en la semilla de arriba
    (tu normal) y va a la derecha si suma o a la izquierda si resta. Nunca se "cierran": no son un objetivo. */
-const RG_MX={hrv:22,rhr:30,tsb:20,sleep:20},RGP={};
+const RG_MX={hrv:22,rhr:30,tsb:20,sleep:20,gly:18},RGP={};
 const rgCol=c=>c==null?"var(--faint)":c>0?"#30d158":c>-15?"#ff9f0a":"#ff453a";
 const rgVd=sc=>sc>=78?"#30d158":sc>=58?"color-mix(in srgb,#30d158 50%,var(--card))":sc>=38?"#ff9f0a":"#ff453a";
 function rgItems(k){const r=readiness(k),F={};r.f.forEach(x=>F[x.k]=x);const o=(S.profile||{}).sex==="f"?"a":"o",sg=n=>n>0?"+":n<0?"−":"±",cv=x=>x&&x.c!=null?x.c:null;
@@ -7119,6 +7141,8 @@ function rgItems(k){const r=readiness(k),F={};r.f.forEach(x=>F[x.k]=x);const o=(
     why:c>0?"Días más suaves que tu media de semanas: tienes margen.":c<0?"Vienes de días más duros que tu media: aún los asimilas.":"Carga reciente parecida a la habitual."})}
   const sl=(S.sleep||{})[k];if(sl&&F.sleep)it.push({k:"sleep",l:"Sueño",has:true,c:F.sleep.c,v:F.sleep.v,u:"",sub:"Cómo has dormido",ph:{good:"has dormido bien",ok:"has dormido regular",bad:"has dormido mal"}[sl],
     why:{good:"Dormir bien es lo que más acelera la recuperación.",ok:"Una noche regular resta poco; si se repite, pesa.",bad:"Una mala noche baja la VFC y sube el pulso: tómatelo con calma."}[sl]});
+  if(F.gly){const gs=glyState(),c=F.gly.c;it.push({k:"gly",l:"Glucógeno",has:true,c,v:(gs&&gs.est?"≈ ":"")+(gs?gs.pct:""),u:"%",sub:gs&&gs.est?"Estimado · ayer sin apuntar":"Frente a tu nivel habitual",ph:c>0?"el glucógeno lleno":c>-10?"el glucógeno algo bajo":"el glucógeno bajo",
+    why:gs?(gs.need?`Te faltan unos ${fmtInt(gs.need)} g para tu nivel habitual. ${c<-10?"Para una sesión intensa, empieza con hidratos o toma durante.":"Los hidratos de hoy ya lo tienen en cuenta."}`:"Depósito en tu nivel habitual: listo para una sesión larga o intensa."):""})}
   return{r,it}}
 function rgWhy(it,fb){const L=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a[a.length-1],cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
   const neg=it.filter(x=>x.c<0&&x.ph).map(x=>x.ph),pos=it.filter(x=>x.c>0&&x.ph).map(x=>x.ph);
@@ -7135,12 +7159,12 @@ function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k=
   const tx=sel?`<p class="rg-k">${esc(sel.l)}</p><h4>${sel.c>0?"Suma "+sel.c+" puntos":sel.c<0?"Resta "+(-sel.c)+" puntos":sel.c===0?"Neutro":"Sin dato"}</h4><p class="rg-w">${esc(sel.why)}</p>${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}`
     :`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p>`;
   const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
-  const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
+  const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño",gly:"glucógeno"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
   return`<div class="rg"><div class="rg-g${sel?" sel":""}"><svg viewBox="0 0 220 220" role="img" aria-label="Disposición ${r.sc} de 100. Toca un anillo para ver su porqué">${rings}</svg><button type="button" class="rg-c" data-rgk="" aria-label="Volver al resumen">${ctr}</button></div><div class="rg-x">${tx}</div></div>
     ${rgHint()?`<p class="rg-hint">De fuera a dentro: ${nm}. Toca un anillo para ver su porqué.</p>`:""}
     <div class="rg-wk" role="group" aria-label="Cómo llegaste cada día">${wk}</div>`}
 function rgRows(tk,hrvSpecial){const day=rgDayK(tk),{it}=rgItems(day),I=p=>`<svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
-  const IC={hrv:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',rhr:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',tsb:'<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>',sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'};
+  const IC={gly:'<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M7 14h10"/>',hrv:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',rhr:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',tsb:'<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>',sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'};
   const rows=it.map(x=>x.k==="hrv"&&hrvSpecial?hrvSpecial:`<button type="button" class="wf-row" data-rgk="${x.k}" aria-pressed="${S.rgSel===x.k}">${I(IC[x.k])}<span class="wf-n">${esc(x.l)}<small>${esc(x.sub)}</small></span><span class="wf-v">${esc(String(x.v))}${x.u?`<small>${x.u}</small>`:""}</span><i class="wf-dot" style="background:${rgCol(x.c)}" aria-hidden="true"></i></button>`).join("");
   return`<span class="wc-sec">${day===tk?"Así amaneces":"Así amaneciste el "+DOW[new Date(day+"T12:00:00").getDay()]}</span><div class="wf-list">${rows}</div>`}
 function rgAnim(){document.querySelectorAll(".rg-a:not([data-done])").forEach(el=>{el.dataset.done=1;const k=el.dataset.k,L=+el.dataset.l,C=+el.dataset.c,from=RGP[k]!=null?RGP[k]:0;RGP[k]=L;
@@ -7176,6 +7200,50 @@ function knowCard(){return`<section class="glass pad fade kn-card"><span class="
 function avShrink(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=192,c=document.createElement("canvas");c.width=c.height=k;const x=c.getContext("2d"),m=Math.min(im.width,im.height);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,k,k);res(c.toDataURL("image/jpeg",.85))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 document.addEventListener("change",async e=>{if(e.target.id!=="avin"||!e.target.files||!e.target.files[0])return;try{const u=await avShrink(e.target.files[0]);S.profile=Object.assign({},S.profile||{},{avatar:u});await saveProfile(true);toast("Foto guardada");render()}catch(err){toast("No se ha podido usar esa imagen")}});
 document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest('[data-act="avdel"]');if(!b)return;S.profile=Object.assign({},S.profile||{});delete S.profile.avatar;await saveProfile(true);render()});
+
+/* ---------- Depósito de glucógeno (v213): pasa de un día a otro según lo que gastas y lo que comes ----------
+   Capacidad por masa magra (≈15 g/kg de músculo, músculo ≈ ½ de la masa magra, + 100 g de hígado).
+   Cada día: + hidratos comidos por encima de un gasto de fondo (2 g/kg), con tope de reposición (8 g/kg);
+   − hidratos de los entrenos (modelo de sustrato). Días sin apuntar: se supone lo previsto (o lo que contestes
+   por la mañana) y el valor se acerca un tercio a tu nivel habitual (80 %), para que un error no se arrastre. */
+const GLY_HAB=.8;
+function glyCap(){const p=S.profile||{},w=num(p.weight);if(!w)return null;const be=bfEst(p),lm=w*(1-((be&&be.bf)||18)/100);return Math.round(15*lm*.5+100)}
+function glyDayCho(k){let c=0,n=0;S.acts.forEach(a=>{if(a.day!==k)return;const x=S.subs[a.id];if(x)c+=x.cho/4;else if(a.kcal)c+=a.kcal*.55/4;n++});return c}
+function glyIntake(k){const lg=(S.log||{})[k]||{},ids=MEALS.map(m=>m[0]),ne=ids.filter(id=>lg[id]).length;const t=dayTargets(k);if(!t)return null;
+  if(ne>=2){const mp=mealPlan(t,k);let C=0;mp.meals.forEach(m=>{const e=lg[m.id];if(!e)C+=m.C;else if(e.st==="skip")C+=0;else if(e.C!=null&&e.st!=="done")C+=e.C;else C+=m.C*(e.r||1)});return{C,src:"log"}}
+  const a=(S.glyAns||{})[k];if(a)return{C:t.C*({si:1,menos:.7,mas:1.2}[a]||1),src:"ans"};return{C:t.C,src:"est"}}
+function glyState(){const cap=glyCap();if(!cap)return null;const w=num((S.profile||{}).weight),tk=today();if(S._gly&&S._gly.k===tk&&S._gly.sig===glySig())return S._gly.v;
+  let G=cap*GLY_HAB;const hist=[];let lastEst=false,yIn=null,yUse=0;
+  for(let i=21;i>=1;i--){const k=shiftKey(tk,-i),use=glyDayCho(k),inn=glyIntake(k);if(!inn)continue;
+    G=Math.max(0,Math.min(cap,G+Math.min(8*w,Math.max(0,inn.C-2*w))-use));
+    if(inn.src==="est")G+=(cap*GLY_HAB-G)/3;
+    hist.push({k:shiftKey(k,1),g:G});if(i===1){lastEst=inn.src==="est";yIn=inn;yUse=use}}
+  const v={cap,g:G,pct:Math.round(G/cap*100),est:lastEst,yIn,yUse,hist:hist.slice(-7),need:Math.max(0,Math.round(cap*GLY_HAB-G))};
+  S._gly={k:tk,sig:glySig(),v};return v}
+function glySig(){return JSON.stringify([S.glyAns||{},Object.keys(S.log||{}).length,S.acts.length,Object.keys(S.subs||{}).length,(S.profile||{}).weight])}
+function glyCard(){const g=glyState();if(!g||S.day!==today())return"";const f1=v=>fmtInt(v);
+  const why=g.yIn?(g.yIn.src==="log"?`Ayer <b>gastaste ${f1(g.yUse)} g</b> entrenando y <b>comiste ${f1(g.yIn.C)} g</b> de hidratos.`:g.yIn.src==="ans"?`Ayer <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y dices que comiste ${({si:"lo previsto",menos:"menos de lo previsto",mas:"más de lo previsto"})[(S.glyAns||{})[shiftKey(today(),-1)]]||"lo previsto"}.`:`Ayer no apuntaste comidas: <b>gastaste unos ${f1(g.yUse)} g</b> entrenando y supongo que comiste lo previsto.`):"";
+  const H=g.hist,X=i=>4+i*(392/Math.max(1,H.length-1)),Y=v=>42-(Math.max(.3,v/g.cap)-.3)/.7*38;
+  return`<section class="glass pad fade gly-card"><span class="pkk">Depósito de glucógeno</span>
+    <div class="vhead" data-vzread><b>${g.est?"≈ ":""}${g.pct}<small class="u">%</small></b><span>${g.est?"≈ ":""}${f1(g.g)} de ${f1(g.cap)} g</span>${g.est?'<span class="gly-tag">Estimado</span>':""}</div>
+    <div class="gly-tank${g.est?" est":""}"><svg viewBox="0 0 340 32" preserveAspectRatio="none" id="glyband" data-f="${(g.g/g.cap).toFixed(4)}" aria-hidden="true"><defs><clipPath id="glyc"><rect width="340" height="32" rx="16"/></clipPath></defs><g clip-path="url(#glyc)"><rect width="340" height="32" class="gly-bg"/><rect width="${(340*GLY_HAB).toFixed(1)}" height="32" class="gly-hab"/><path class="gly-l" d=""/></g></svg></div>
+    <div class="gly-sc"><span>vacío</span><span style="position:absolute;left:${GLY_HAB*100}%;transform:translateX(-50%)">habitual</span><span>lleno</span></div>
+    <p class="note" style="margin:10px 0 0">${why} ${g.need?`Para volver a tu nivel habitual te faltan <b>unos ${f1(g.need)} g</b>.`:"Estás en tu nivel habitual o por encima."}</p>
+    ${H.length>1?`<svg class="gly-spk" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="${Y(g.cap*GLY_HAB).toFixed(1)}" width="400" height="${(46-Y(g.cap*GLY_HAB)).toFixed(1)}" class="gly-sb"/><path d="${H.map((x,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(x.g).toFixed(1)).join(" ")}" class="gly-sl"/><circle cx="${X(H.length-1).toFixed(1)}" cy="${Y(H[H.length-1].g).toFixed(1)}" r="4" class="gly-sd"/></svg><div class="gly-sc"><span>hace ${H.length-1} días</span><span>hoy</span></div>`:""}
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Capacidad estimada con tu masa magra: unos ${f1(g.cap)} g entre músculo e hígado. Cada día resta lo que gastan tus entrenos (modelo de sustrato) y suma los hidratos que comes por encima de un gasto de fondo de 2 g por kilo, con un tope de reposición de unos 8 g por kilo al día. Los días sin apuntar se supone lo previsto y el valor se acerca a tu nivel habitual. Es una estimación: sirve para ver la tendencia.</p></details></section>`}
+/* Pregunta de la mañana si ayer no hay comidas apuntadas */
+function glyAsk(){const yk=shiftKey(today(),-1),g=glyState();if(!g||!g.yIn||g.yIn.src==="log"||(S.glyAns||{})[yk])return"";
+  return`<div class="gly-q"><p>¿Ayer comiste como estaba previsto?<small>No apuntaste comidas. Con esto afino tu depósito de glucógeno.</small></p><div class="gly-ch">${[["menos","Menos"],["si","Sí"],["mas","Más"]].map(([k,l])=>`<button type="button" data-glyans="${k}">${l}</button>`).join("")}</div></div>`}
+async function saveGlyAns(){const c=userCol();if(!c)return;try{await c.doc("glyans").set({kind:"glyans",map:S.glyAns||{}})}catch(e){}}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-glyans]");if(!b)return;S.glyAns=Object.assign({},S.glyAns||{},{[shiftKey(today(),-1)]:b.dataset.glyans});S._gly=null;buzz(8);saveGlyAns();render()});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-glyapply]");if(!b)return;S.glyApply=today();buzz(8);render()});
+const GLB={cur:0,v:0,run:false};
+function glbFrame(ts){GLB.run=false;const el=document.getElementById("glyband");if(!el)return;const tg=+el.dataset.f,rm=matchMedia("(prefers-reduced-motion: reduce)").matches,tt=(ts||0)/1000;
+  if(rm)GLB.cur=tg;else{GLB.v=(GLB.v+(tg-GLB.cur)*0.010)*0.88;GLB.cur+=GLB.v}
+  const x=GLB.cur*340,A=rm||GLB.cur>=0.999?0:Math.min(3.5,x/10);let d=`M-2 -2 L${x.toFixed(1)} -2`;for(let y=0;y<=34;y+=2)d+=` L${(x+A*Math.sin(2*Math.PI*(y/32-tt/4.8))).toFixed(2)} ${y}`;
+  const p=el.querySelector(".gly-l");if(p)p.setAttribute("d",GLB.cur>0.002?d+" L-2 34Z":"");
+  const r=el.getBoundingClientRect(),vis=r.bottom>0&&r.top<innerHeight,moving=Math.abs(tg-GLB.cur)>.0008||Math.abs(GLB.v)>.0004;
+  if((vis&&!rm&&GLB.cur>0.002&&GLB.cur<0.999)||moving){GLB.run=true;requestAnimationFrame(glbFrame)}}
 
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
