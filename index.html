@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T15:07:17.724Z">
+<meta name="sustrato-version" content="2026-10-08T15:11:46.661Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2992,6 +2992,9 @@ button.mr-r{cursor:pointer}button.mr-r:active{opacity:.7}
 .mr-q{display:inline-flex;align-items:center;gap:5px;font-weight:600;white-space:nowrap}
 .mr-q.ok{color:#248a3d}.mr-q.mid{color:#c46a00}
 html[data-theme="dark"] .mr-q.ok{color:#30d158}html[data-theme="dark"] .mr-q.mid{color:#ff9f0a}
+html.modal-open,html.modal-open body{overflow:hidden!important;overscroll-behavior:none}
+.overlay{overscroll-behavior:contain}
+.overlay .sheet{overscroll-behavior:contain}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3063,7 +3066,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="217";
+const APP_VER="218";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -7272,6 +7275,10 @@ function macroRows(L,btn){return`<div class="mrs">${L.map(x=>{const eaten=x.g>0,
   const inner=`<span class="mr-h"><span>${x.n}</span><b>${fmtInt(eaten?x.g:x.tg)}<small>${eaten?" / "+fmtInt(x.tg):""} g</small></b></span><span class="mr-bar"><i style="width:${pc.toFixed(0)}%;background:${x.c}"></i></span><span class="mr-s"><span>${sub}</span>${q}</span>`;
   return btn?`<button type="button" class="mr-r" data-macro="${x.m}" aria-label="${x.n}: ver alimentos">${inner}</button>`:`<div class="mr-r">${inner}</div>`}).join("")}</div>`}
 
+/* v218: con una hoja abierta, el fondo no se mueve (ni con el dedo fuera de la hoja) */
+function scrollLock(){const o=[...document.querySelectorAll(".overlay")].some(e=>e.offsetParent!==null||getComputedStyle(e).position==="fixed"&&e.getClientRects().length);document.documentElement.classList.toggle("modal-open",o)}
+document.addEventListener("touchmove",e=>{if(!document.documentElement.classList.contains("modal-open"))return;const sh=e.target.closest&&e.target.closest(".sheet,.full,.pop");if(!sh&&e.cancelable)e.preventDefault()},{passive:false});
+
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
 function segKey(g){return(g.getAttribute("aria-label")||"")+"|"+g.className.replace(/\s*th-on/,"")+"|"+((g.querySelector("button")||{}).outerHTML||"").replace(/aria-(pressed|selected|checked)="[^"]*"/g,"").slice(0,80)}
@@ -7293,7 +7300,7 @@ function segThumbs(){document.querySelectorAll(".seg").forEach(g=>{if(g.querySel
   document.addEventListener("click",e=>{if(sup&&e.target.closest&&e.target.closest(".seg.th-on")&&e.isTrusted){e.stopPropagation();e.preventDefault()}},true);
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".seg.th-on>button");if(b&&b!==segOn(b.parentNode))buzz(8)},true);
   addEventListener("resize",()=>document.querySelectorAll(".seg.th-on").forEach(x=>segPlace(x,false)))})();
-(function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs();rgAnim()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
+(function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs();rgAnim();scrollLock()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
 })();
 </script>
 
