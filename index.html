@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T12:44:23.366Z">
+<meta name="sustrato-version" content="2026-10-08T12:56:21.054Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2893,6 +2893,8 @@ html body .empty{font-size:15px;font-weight:400;line-height:1.4;color:var(--mute
 html body .legend{row-gap:6px}
 .spark:has(.dl-bar)>span:first-child{flex:1}
 .dl-bar{width:100%}
+.pfit .vplan-t .fdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.pfit .vplan-t b{color:var(--fg);font-weight:600}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2964,7 +2966,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="206";
+const APP_VER="207";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4233,7 +4235,7 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
     <p class="note" style="margin:8px 0 0">${tol!=null&&tol<60?"Entrena el estómago: sube unos 10 g/h cada semana en tus sesiones largas hasta 60–90 g/h.":"El intestino se entrena: practica en las tiradas largas lo que tomarás en carrera."}</p></section>`}
 function fitCard(){
   if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
-  const st=tsbState(now.tsb),w=400,h=230,PL=4,PR=4,PT=22,H1=128,G=14,H2=46,PB=20,iw=w-PL-PR,n=pts.length;
+  const st=tsbState(now.tsb),w=400,h=230,PL=34,PR=4,PT=22,H1=128,G=14,H2=46,PB=20,iw=w-PL-PR,n=pts.length;
   const mx=Math.max(...pts.map(x=>Math.max(x.ctl,x.atl)),10)*1.1,X=i=>PL+i/(n-1)*iw,Y=v=>PT+H1-v/mx*H1;
   const tm=Math.max(20,...pts.map(x=>Math.abs(x.tsb))),Y2c=PT+H1+G+H2/2,Y2=v=>Y2c-v/tm*(H2/2);
   const ti=pts.findIndex(x=>x.k===tk),line=(f,a,b)=>pts.slice(a,b).map((x,j)=>(j?"L":"M")+X(a+j).toFixed(1)+" "+Y(x[f]).toFixed(1)).join(" ");
@@ -4244,9 +4246,12 @@ function fitCard(){
   const hits=pts.map((x,i)=>`<rect x="${(X(i)-bw/2).toFixed(1)}" y="0" width="${bw.toFixed(2)}" height="${h-PB}" class="fhit" data-tip="${esc(dateLabel(x.k))}${x.fut?" · previsto":""}|Forma ${r0(x.ctl)} · Fatiga ${r0(x.atl)} · Frescura ${x.tsb>0?"+":""}${r0(x.tsb)}"/>`).join("");
   const ri=race?pts.findIndex(x=>x.k===race.d):-1,rp=ri>=0?pts[ri]:null;
   const months=[];pts.forEach((x,i)=>{if(x.k.slice(8)==="01")months.push(`<text class="ax" x="${X(i).toFixed(1)}" y="${h-6}" text-anchor="middle">${MON[+x.k.slice(5,7)-1].slice(0,3).toLowerCase()}</text>`)});
-  const svg=`<svg class="chart fit" viewBox="0 0 ${w} ${h}" role="img" aria-label="Forma, fatiga y frescura en los últimos 90 días${race?" y proyección hasta "+race.n:""}">
+  const sg=v=>v>0?"+"+r0(v):v<0?"−"+Math.abs(r0(v)):"0";
+  SCRUB.fit={w,PT,pts:pts.map((x,i)=>({x:X(i),y:Y(x.ctl),a:esc(dateLabel(x.k)),b:"Forma "+r0(x.ctl),read:`<b>${r0(x.ctl)}</b><span>forma · fatiga ${r0(x.atl)} · frescura ${sg(x.tsb)} · ${esc(VZ.sd(x.k))}${x.fut?" (previsto)":""}</span>`}))};
+  const svg=`<svg class="chart fit vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="Forma, fatiga y frescura en los últimos 90 días${race?" y proyección hasta "+race.n:""}">
     <defs><linearGradient id="ctlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82f6" stop-opacity=".35"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/></linearGradient></defs>
     ${ti>=0&&ti<n-1?`<rect x="${X(ti).toFixed(1)}" y="${PT-6}" width="${(X(n-1)-X(ti)).toFixed(1)}" height="${H1+G+H2+6}" class="ffut"/>`:""}
+    ${VZ.grid(VZ.nice(0,mx,3).filter(v=>v>0&&v<mx).slice(0,3),Y,PL,w-PR,v=>fmtInt(v))}
     <path d="${area}" fill="url(#ctlg)"/>
     <path d="${line("ctl",0,past)}" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linejoin="round" class="draw"/>
     <path d="${line("atl",0,past)}" fill="none" stroke="#ff7a52" stroke-width="1.6" stroke-linejoin="round" opacity=".9"/>
@@ -4255,10 +4260,10 @@ function fitCard(){
     <text class="ax" x="${PL}" y="${PT+H1+G-3}">frescura</text>
     ${ti>=0?`<line x1="${X(ti).toFixed(1)}" x2="${X(ti).toFixed(1)}" y1="${PT-8}" y2="${PT+H1+G+H2}" class="ftoday"/><text class="ax" x="${X(ti).toFixed(1)}" y="${PT-11}" text-anchor="middle">hoy</text>`:""}
     ${rp?`<line x1="${X(ri).toFixed(1)}" x2="${X(ri).toFixed(1)}" y1="${PT-8}" y2="${PT+H1+G+H2}" class="frace"/><text class="ax frace-t" x="${(X(ri)-3).toFixed(1)}" y="${PT-11}" text-anchor="end">${esc(race.n)}</text>`:""}
-    ${months.join("")}${hits}</svg>`;
+    ${months.join("")}<g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+H1+G+H2}"/><circle class="scr-d" r="5" fill="#3b82f6"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g><rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="fit"/></svg>`;
   return`<section class="glass pad fade pfit"><span class="pkk">Forma y fatiga</span>
-    <div class="fkpi"><div><span><i class="fdot" style="background:#3b82f6"></i>Forma</span><b>${r0(now.ctl)}</b></div><div><span><i class="fdot" style="background:#ff7a52"></i>Fatiga</span><b>${r0(now.atl)}</b></div><div><span>Frescura</span><b>${now.tsb>0?"+":now.tsb<0?"−":""}${Math.abs(r0(now.tsb))}</b></div><div class="fst"><span class="fstate" style="--sc:${tcol(now.tsb)}">${st[0]}</span></div></div>
-    <p class="fdesc">${st[1]}</p>
+    <div class="vhead" data-vzread><b>${r0(now.ctl)}</b><span>forma · fatiga ${r0(now.atl)} · frescura ${sg(now.tsb)}</span></div>
+    <p class="vplan-t"><span class="fdot" style="background:${tcol(now.tsb)}"></span><b>${st[0]}</b> · ${st[1]}</p>
     ${hist<42?`<p class="note" style="margin-top:4px">Calibrando: hay ${hist} ${hist===1?"día":"días"} de historial. Hasta tener 6 semanas, la forma es aproximada y pesa menos en "Cómo llegas hoy".</p>`:""}
     ${svg}
     <div class="legend"><span><i style="background:#3b82f6"></i>Forma</span><span><i style="background:#ff7a52"></i>Fatiga</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ff9f0a"></i>Cargado</span><span><i style="background:#ff453a"></i>Muy cargado</span></div>
@@ -4673,34 +4678,21 @@ function donut(t){
   const segs=parts.map(p=>{const len=Math.max(0,p.v/tot*C-gap);const s=`<circle data-macro="${p.m}" class="dn-${p.m}" cx="80" cy="80" r="${R}" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${(C-len).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}" transform="rotate(-90 80 80)"/>`;off+=p.v/tot*C;return s}).join("");
   return `<svg class="donut" width="160" height="160" viewBox="0 0 160 160" role="img" aria-label="Reparto de macros"><circle cx="80" cy="80" r="${R}" fill="none" class="dn-bg" stroke-width="10"/>${segs}<text x="80" y="82" text-anchor="middle" fill="var(--fg)" class="dn-k">${fmtInt(t.kcal)}</text><text x="80" y="101" text-anchor="middle" fill="var(--muted)" style="font:12.5px var(--font)">kcal al día</text></svg>`;
 }
-function areaChart(series){
+function areaChart(series,dur){
+  /* v207: gramática VZ. Dos áreas apiladas en color plano (grasa abajo, hidratos encima) separadas por una línea del color de la tarjeta */
   if(!series||!series.length)return"";
-  const hasH=false; /* el pulso no se dibuja: el sustrato ya deriva de él */
-  const W=640,H=180,PL=36,PR=hasH?40:8,PB=22,PT=10,iw=W-PL-PR,ih=H-PB-PT,n=series.length;
-  const mx=Math.max(...series.map(s=>s.c+s.f),1)*1.1;
+  const W=VZ.w,H=170,PL=34,PR=8,PB=20,PT=20,iw=W-PL-PR,ih=H-PB-PT,n=series.length;
+  const mx0=Math.max(...series.map(s=>s.c+s.f),1),ticks=VZ.nice(0,mx0*1.08,3).filter(v=>v>0),mx=Math.max(mx0*1.08,ticks[ticks.length-1]||0);
   const X=i=>PL+i/(n-1)*iw,Y=v=>PT+ih-v/mx*ih;
   let fatTop="",tot="";
   series.forEach((s,i)=>{fatTop+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(s.f).toFixed(1)+" ";tot+=(i?"L":"M")+X(i).toFixed(1)+" "+Y(s.f+s.c).toFixed(1)+" "});
   const fatArea=fatTop+`L${X(n-1).toFixed(1)} ${Y(0)} L${X(0).toFixed(1)} ${Y(0)} Z`;
   let back="";for(let i=n-1;i>=0;i--)back+="L"+X(i).toFixed(1)+" "+Y(series[i].f).toFixed(1)+" ";
-  const choArea=tot+back+"Z";
-  const ticks=[0,mx/2,mx].map(v=>`<line x1="${PL}" x2="${W-PR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,.07)"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${v.toFixed(v<10?1:0).replace(".",",")}</text>`).join("");
-  let hrLayer="";
-  if(hasH){
-    const hv=series.map(s=>s.h).filter(v=>v);let lo=Math.min(...hv),hi=Math.max(...hv);
-    lo=Math.floor((lo-5)/10)*10;hi=Math.ceil((hi+5)/10)*10;
-    const YH=v=>PT+ih-(v-lo)/(hi-lo)*ih;let d="",started=false;
-    series.forEach((s,i)=>{if(!s.h)return;d+=(started?"L":"M")+X(i).toFixed(1)+" "+YH(s.h).toFixed(1)+" ";started=true});
-    hrLayer=`<defs><filter id="hrglow" x="-5%" y="-20%" width="110%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`+
-      `<path d="${d}" fill="none" stroke="#ffffff" stroke-opacity=".9" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" filter="url(#hrglow)"/>`+
-      [lo,(lo+hi)/2,hi].map(v=>`<text class="ax" x="${W-PR+6}" y="${(YH(v)+4).toFixed(1)}" style="fill:rgba(255,255,255,.7)">${r0(v)}</text>`).join("")+
-      `<text class="ax" x="${W-PR-4}" y="${PT+10}" text-anchor="end" style="fill:rgba(255,255,255,.7)">ppm</text>`;
-  }
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Energía por minuto: hidratos y grasas">
-<defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd21e" stop-opacity=".85"/><stop offset="1" stop-color="#ffd21e" stop-opacity=".35"/></linearGradient>
-<linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82f6" stop-opacity=".8"/><stop offset="1" stop-color="#3b82f6" stop-opacity=".25"/></linearGradient></defs>
-${ticks}<path d="${choArea}" fill="url(#gc)"/><path d="${fatArea}" fill="url(#gf)"/><path d="${tot}" fill="none" stroke="#ffe270" stroke-width="1.5"/>${hrLayer}
-<text class="ax" x="${PL}" y="${H-5}">inicio</text><text class="ax" x="${W-PR}" y="${H-5}" text-anchor="end">final</text><text class="ax" x="${PL+4}" y="${PT+10}">kcal/min</text></svg>`;
+  const choArea=tot+back+"Z",f1=v=>v.toFixed(v<10&&v%1?1:0).replace(".",",");
+  return `<svg class="chart vz" viewBox="0 0 ${W} ${H}" role="img" aria-label="Energía por minuto: hidratos y grasas">
+${VZ.grid(ticks.filter(v=>v<mx),Y,PL,W-PR,f1)}<line x1="${PL}" x2="${W-PR}" y1="${Y(0)}" y2="${Y(0)}" class="vz-g"/>
+<path d="${choArea}" fill="var(--carb)"/><path d="${fatArea}" fill="var(--fat)"/><path d="${fatTop}" fill="none" stroke="var(--card)" stroke-width="2" stroke-linejoin="round"/>
+<text class="ax" x="${PL}" y="${PT-8}">kcal/min</text><text class="ax" x="${PL}" y="${H-5}">0</text><text class="ax" x="${W-PR}" y="${H-5}" text-anchor="end">${dur?fmtDur(dur):"final"}</text></svg>`;
 }
 function bandBar(bands){
   if(!bands)return'<p class="note">Sin pulso registrado: reparto estimado.</p>';
@@ -6287,17 +6279,12 @@ function vHoy(){
   <p class="app-ver">Sustrato · versión ${APP_VER}</p>`;
 }
 function barChart(bk){
+  /* v207: gramática VZ (barras apiladas con tocar y leer). Basal y actividad diaria en neutros; el ejercicio, en su amarillo */
   if(!bk.length)return"";
-  const W=640,H=200,PL=44,PB=26,PT=12,iw=W-PL-8,ih=H-PB-PT,n=bk.length;
-  const mx=Math.max(1,...bk.map(b=>b.b+b.neat+b.ex))*1.08,slot=iw/n,bw=Math.max(3,slot*(n>20?.7:.56));
-  const Y=v=>PT+ih-v/mx*ih;const every=n>20?Math.ceil(n/8):1;
-  const bars=bk.map((d,i)=>{const x=PL+slot*i+(slot-bw)/2;let y=PT+ih;const op=1;
-    const seg=(v,c)=>{const h=v/mx*ih;y-=h;return`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(0,h-1.5).toFixed(1)}" rx="${Math.min(5,bw/2).toFixed(1)}" fill="${c}" fill-opacity="${op}"/>`};
-    return seg(d.b,"url(#hatchG)")+seg(d.neat,"rgba(255,255,255,.3)")+seg(d.ex,d.fut?"url(#hatchY)":"#ffd21e")+
-      (i%every===0?`<text class="ax" x="${(x+bw/2).toFixed(1)}" y="${H-8}" text-anchor="middle" ${d.hl?'fill="#f4f5f7"':""}>${d.label}</text>`:"")}).join("");
-  const grid=[0,mx/2,mx].map(v=>`<line x1="${PL}" x2="${W-8}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,.06)"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${fmtInt(v)}</text>`).join("");
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gasto diario">${grid}${bars}</svg>
-<div class="legend"><span><i class="hatch-g"></i>Basal</span><span><i class="sw-neat"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i class="hatch-y"></i>Previsto</span>':""}</div>`;
+  const cols=bk.map(d=>{const t=d.b+d.neat+d.ex;return{x:d.label,cur:!!d.hl,segs:[{v:d.b,c:"var(--vz-n1)"},{v:d.neat,c:"var(--vz-n2)"},{v:d.ex,c:d.fut?"color-mix(in srgb,#ffd21e 40%,transparent)":"#ffd21e"}],
+    read:`<b>${fmtInt(t)}</b><span>kcal · ${esc(String(d.label))}${d.ex?` · ${fmtInt(d.ex)} de ejercicio${d.fut?" previsto":""}`:""}</span>`}});
+  return VZ.bars({id:"gasto",label:"Gasto por día",cols,grid:true,h:190})+
+`<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:#ffd21e"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i style="background:color-mix(in srgb,#ffd21e 40%,transparent)"></i>Previsto</span>':""}</div>`;
 }
 /* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
 function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});return n?{P,C,F,kcal:4*P+4*C+9*F}:null}
@@ -6428,7 +6415,7 @@ function vPeriod(){
   return`
   <div class="grid2">
     ${constCard(p,T,tk)}
-    <section class="glass pad fade"><h2>Gasto ${p==="year"?"medio por mes":"por día"}</h2><div style="margin-top:8px">${barChart(bk)}</div></section>
+    <section class="glass pad fade"><h2>Gasto ${p==="year"?"medio por mes":"por día"}</h2>${bk.length?`<div class="vhead" data-vzread><b>${fmtInt(bk.reduce((x,d)=>x+d.b+d.neat+d.ex,0)/bk.length)}</b><span>kcal de media ${p==="year"?"al mes":"al día"}</span></div>`:""}<div style="margin-top:8px">${barChart(bk)}</div></section>
   </div>
   <div class="grid2">
     <section class="glass pad fade hue-aer"><h2>Entreno del periodo</h2>
@@ -6586,8 +6573,8 @@ function vDetail(){
   if(!hp)subHtml='<p class="note">Indica tu FC máxima y en reposo (o tu edad) en el perfil para calcular el sustrato.</p>';
   else if(!s)subHtml='<p class="empty sk-chart" aria-label="Calculando sustrato"><i class="sk" style="height:120px;width:100%;border-radius:12px"></i><span class="vh">Calculando sustrato…</span></p>';
   else subHtml=`<div class="kv" style="margin:0 0 12px"><div><span><i class="kd" style="background:var(--carb)"></i>Hidratos</span><b>${fmtInt(s.cho/4)} <small>g</small></b></div><div><span><i class="kd" style="background:var(--fat)"></i>Grasas</span><b>${fmtInt(s.fat/9)} <small>g</small></b></div><div><span>% hidratos</span><b>${r0(s.cho/(s.cho+s.fat)*100)} %</b></div></div>
-    ${s.series?`<button class="chartbtn" data-subfull="${a.id}" aria-label="Ver el sustrato en pantalla completa">${areaChart(s.series)}<span class="chartx" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>Explorar</span></button>`:""}
-    <div class="legend"><span><i style="background:var(--carb)"></i>Glucolítico</span><span><i style="background:var(--fat)"></i>Lipolítico</span></div>
+    ${s.series?`<button class="chartbtn" data-subfull="${a.id}" aria-label="Ver el sustrato en pantalla completa">${areaChart(s.series,a.mov)}<span class="chartx" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg>Explorar</span></button>`:""}
+    <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos</span><span><i style="background:var(--fat)"></i>Grasas</span></div>
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
     <div class="row"><div><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><h3 style="margin-top:8px">${esc(a.name)}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${a.sport!=="oth"?`<div class="rpe-dt">${rpePicker(a,a.day)}</div>`:""}
