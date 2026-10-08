@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-08T10:40:26.838Z">
+<meta name="sustrato-version" content="2026-10-08T12:05:29.385Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2831,6 +2831,36 @@ html[data-theme="dark"] .seg>.seg-th{background:#636366}
 .pf-pick button b{display:block;font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--muted);transition:color .2s}
 .pf-pick button[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 16%,transparent)}
 .pf-pick button[aria-pressed="true"] span,.pf-pick button[aria-pressed="true"] b{color:var(--fg)}
+.rg{display:flex;align-items:center;gap:16px;margin-top:6px}
+.rg-g{position:relative;width:140px;height:140px;flex:none}
+.rg-g svg{display:block;width:100%;height:100%;overflow:visible}
+.rg-t{fill:none;stroke:var(--fill2)}
+.rg-a{fill:none;stroke-linecap:round;stroke-dasharray:0 999;transition:stroke-dasharray .9s cubic-bezier(.25,1,.3,1)}
+.rg-s{fill:var(--card)}
+.rg-h{fill:none;stroke:transparent;pointer-events:stroke;cursor:pointer}
+.rg-r{transition:opacity .3s}.rg-g.sel .rg-r.off{opacity:.2}
+.rg-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);appearance:none;border:0;background:none;color:var(--fg);font:inherit;display:flex;align-items:baseline;gap:3px;padding:0;cursor:pointer;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.rg-c b{font-size:34px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.rg-c b.t{font-size:15px;letter-spacing:0}
+.rg-c small{font-size:12px;color:var(--muted);font-weight:500;align-self:flex-end;margin-bottom:4px}
+.rg-x{flex:1;min-width:0;min-height:140px;display:flex;flex-direction:column;justify-content:center}
+.rg-k{font-size:13px;color:var(--muted);margin:0}
+.rg-x h4{font-size:20px;font-weight:700;margin:2px 0 0!important;letter-spacing:-.01em;line-height:1.2;color:var(--fg)}
+.rg-w{font-size:13px;color:var(--muted);margin:4px 0 0;line-height:1.35}
+.rg-w b{color:var(--fg);font-weight:600}
+.rg-x .chip{align-self:flex-start;margin-top:10px}
+.rg-hint{font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center}
+.rg-wk{display:flex;gap:4px;margin:14px 0 0}
+.rg-wk button{flex:1;appearance:none;border:0;background:none;padding:8px 0 6px;border-radius:8px;font:400 11px var(--font);color:var(--muted);cursor:pointer;min-height:38px;transition:background .2s}
+.rg-wk button i{display:block;height:6px;border-radius:3px;margin:0 4px 6px}
+.rg-wk button[aria-pressed="true"]{background:var(--fill2);color:var(--fg);font-weight:600}
+.rg-wk button:disabled{cursor:default;opacity:.6}
+.wf-dot{width:8px;height:8px;border-radius:50%;flex:none;margin-left:4px}
+.wf-row[aria-pressed="true"]{background:var(--fill2);border-radius:10px;margin:0 -8px;padding-left:8px;padding-right:8px;width:calc(100% + 16px)}
+.wf-row[aria-pressed="true"],.wf-row[aria-pressed="true"]+.wf-row{border-top-color:transparent}
+@media (prefers-reduced-motion:reduce){.rg-a{transition:none}}
+.wc-neo .rg{margin-top:0}.wc-neo .rg-hint{margin:-8px 0 0}.wc-neo .rg-wk{margin:-4px 0 0}
+.wc-neo .wc-sec{margin-top:4px}.wc-neo .wf-list{margin-top:-12px}
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2902,7 +2932,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="202";
+const APP_VER="203";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5077,12 +5107,10 @@ function weightBar(){
     const wv=weightVerdict(),wsub=wv?wv[1]:td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" vs "+ref})():"";
     return`<section class="glass pad fade wcard wc-done wc-neo">
       <div class="wc-hd"><div><span>${hi} · Cómo llegas hoy</span></div><button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
-      <div class="wc-rd wc-hero" style="--vc:${r.vd[2]}"><div class="wc-rdh"><b class="wc-sc">${r.sc}</b><div><h4>${r.vd[0]}</h4><p class="wc-adv">${r.vd[1]}</p></div></div>
-        ${tp?`<div class="wc-trend"><svg viewBox="0 0 300 40" preserveAspectRatio="none" role="img" aria-label="Disposición de los últimos 7 días"><line x1="0" x2="300" y1="${(40-5-(58-20)/80*30).toFixed(1)}" y2="${(40-5-(58-20)/80*30).toFixed(1)}" class="wc-tl"/><path d="${tp.d}" class="wc-tp"/>${tp.last?`<circle cx="${tp.last[0].toFixed(1)}" cy="${tp.last[1].toFixed(1)}" r="4" class="wc-td"/>`:""}</svg><div class="wc-tx"><span>${esc(DOW[new Date(trend[0].k+"T12:00:00").getDay()])}</span><span>Últimos 7 días</span><span>hoy</span></div></div>`:`<div class="wc-meter" role="img" aria-label="Disposición ${r.sc} de 100"><i style="width:${r.sc}%"></i></div>`}</div>
-      ${clash?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
-      <span class="wc-sec">Así amaneces</span>
-      <div class="wf-list">${hrvR}${rhrR}${tsbR}${slR}</div>
-      ${sl?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
+      ${rgHero(tk)}
+      ${clash&&!S.rgDay?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
+      ${rgRows(tk,(!S.rgDay&&(S.hrvEdit||!hv))?hrvR:null)}
+      ${sl||S.rgDay?"":`<div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`}
       ${perfNews()}
       <button type="button" class="wf-wt" data-act="wtedit" aria-label="Peso: ${td?String(td.kg).replace(".",",")+" kg":"sin registrar hoy"}. Toca para editar"><span>Peso</span><span>${td?`<b>${String(td.kg).replace(".",",")} kg</b>${wsub?" · "+esc(wsub):""}`:`<em>Apuntar</em>`}</span></button>
     </section>`}
@@ -6976,6 +7004,55 @@ function unitize(root){(root||document).querySelectorAll("section b, .sheet b, .
     if(h){const sp=document.createElement("span");sp.innerHTML=h;el.replaceChild(sp,n);sp.outerHTML=h}
     if(el.tagName==="B")el.querySelectorAll(":scope>small.u").forEach(x=>{const p=x.previousSibling;if(p&&p.nodeType===3)p.textContent=p.textContent.replace(/[\s\u00a0]+$/,"")})})}
 
+/* Cómo llegas hoy (v203): anillos de equilibrio. Cada anillo es un factor; su color nace en la semilla de arriba
+   (tu normal) y va a la derecha si suma o a la izquierda si resta. Nunca se "cierran": no son un objetivo. */
+const RG_MX={hrv:22,rhr:30,tsb:20,sleep:20},RGP={};
+const rgCol=c=>c==null?"var(--faint)":c>0?"#30d158":c>-15?"#ff9f0a":"#ff453a";
+const rgVd=sc=>sc>=78?"#30d158":sc>=58?"color-mix(in srgb,#30d158 50%,var(--card))":sc>=38?"#ff9f0a":"#ff453a";
+function rgItems(k){const r=readiness(k),F={};r.f.forEach(x=>F[x.k]=x);const o=(S.profile||{}).sex==="f"?"a":"o",sg=n=>n>0?"+":n<0?"−":"±",cv=x=>x&&x.c!=null?x.c:null;
+  const H=S.hrv||{},hv=H[k],hp=[];for(let i=1;i<=7;i++){const x=H[shiftKey(k,-i)];if(x)hp.push(x)}const hb=hp.length>=3?hp.reduce((a,b)=>a+b,0)/hp.length:null,hpc=hv&&hb?Math.round((hv/hb-1)*100):null;
+  const rv=(S.rhr||{})[k],base=rhrAvg(shiftKey(k,-1),7),dd=rv&&base?Math.round(rv-base):null,it=[];
+  it.push({k:"hrv",l:"VFC",has:!!hv,c:cv(F.hrv),v:hv?Math.round(hv):"—",u:hv?"ms":"",sub:hv?(hpc!=null?`${sg(hpc)}${Math.abs(hpc)} % sobre tu media`:`${hp.length}/3 noches para tu media`):"Sin dato",
+    ph:F.hrv?{"Alta":"la VFC alta","Normal":"la VFC normal","Baja":"la VFC algo baja","Muy baja":"la VFC muy baja"}[F.hrv.v]||"":"",
+    why:hpc!=null?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media de 7 días. ${cv(F.hrv)<0?"Baja con cansancio, estrés o mal sueño.":"Señal de buena recuperación."}`:"Con 3 noches registradas tendrás tu media."});
+  const cr=cv(F.rhr);
+  it.push({k:"rhr",l:"Pulso en reposo",has:!!rv,c:cr,v:rv||"—",u:rv?"ppm":"",sub:dd!=null?`${sg(dd)}${Math.abs(dd)} vs tu media`:rv?"En reposo":"Sin dato",
+    ph:cr==null?"":cr>=10?"el pulso bajo":cr>0?"el pulso en tu media":cr>-20?"el pulso algo alto":"el pulso alto",
+    why:dd==null?"Con unos días de datos tendrás tu media.":dd>3?"Algo alto: puede ser fatiga, calor o un catarro que empieza.":dd<=-3?"Más bajo que tu media: buena señal de recuperación.":"En tu media: el corazón no trabaja de más."});
+  if(F.tsb){const c=F.tsb.c;it.push({k:"tsb",l:"Carga de entreno",has:true,c,v:F.tsb.v.charAt(0).toUpperCase()+F.tsb.v.slice(1),u:"",sub:"Frente a lo habitual",ph:c>0?"llegas fresc"+o:c<0?"llegas cargad"+o:"",
+    why:c>0?"Días más suaves que tu media de semanas: tienes margen.":c<0?"Vienes de días más duros que tu media: aún los asimilas.":"Carga reciente parecida a la habitual."})}
+  const sl=(S.sleep||{})[k];if(sl&&F.sleep)it.push({k:"sleep",l:"Sueño",has:true,c:F.sleep.c,v:F.sleep.v,u:"",sub:"Cómo has dormido",ph:{good:"has dormido bien",ok:"has dormido regular",bad:"has dormido mal"}[sl],
+    why:{good:"Dormir bien es lo que más acelera la recuperación.",ok:"Una noche regular resta poco; si se repite, pesa.",bad:"Una mala noche baja la VFC y sube el pulso: tómatelo con calma."}[sl]});
+  return{r,it}}
+function rgWhy(it,fb){const L=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a[a.length-1],cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+  const neg=it.filter(x=>x.c<0&&x.ph).map(x=>x.ph),pos=it.filter(x=>x.c>0&&x.ph).map(x=>x.ph);
+  if(neg.length)return`<b>${cap(L(neg))}</b> ${neg.length>1?"restan":"resta"}${pos.length?`, pero <b>${L(pos)}</b>`:""}.`;
+  return pos.length?`A favor: <b>${L(pos)}</b>.`:esc(fb)}
+function rgDayK(tk){return S.rgDay&&S.rgDay<tk&&S.rgDay>=shiftKey(tk,-6)?S.rgDay:tk}
+function rgHint(){try{return!localStorage.getItem("sustrato-rghint")&&!S._rgHint}catch(e){return!S._rgHint}}
+function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k===S.rgSel)||null,n=it.length,step=n>3?12:14,w=n>3?8:9,R0=63;
+  const rings=it.map((x,i)=>{const rr=R0-i*step,C=2*Math.PI*rr,fr=x.c==null?0:Math.max(.05,Math.min(1,Math.abs(x.c)/RG_MX[x.k])*.42),neg=x.c<0;
+    return`<g class="rg-r${sel?(sel.k===x.k?" on":" off"):""}" data-rgk="${x.k}"><circle class="rg-t" cx="70" cy="70" r="${rr}" stroke-width="${w}"/>${fr?`<circle class="rg-a" data-k="${x.k}${neg?"-":"+"}" data-l="${(C*fr).toFixed(1)}" data-c="${C.toFixed(1)}" cx="70" cy="70" r="${rr}" stroke-width="${w}" stroke="${rgCol(x.c)}" transform="${neg?"matrix(-1 0 0 1 140 0) ":""}rotate(-90 70 70)"/>`:""}<circle class="rg-s" cx="70" cy="${70-rr}" r="${n>3?2.2:2.6}"/><circle class="rg-h" cx="70" cy="70" r="${rr}" stroke-width="${step}"><title>${esc(x.l)}</title></circle></g>`}).join("");
+  const ctr=sel?`<b class="${typeof sel.v==="string"?"t":""}">${esc(String(sel.v))}</b>${sel.u?`<small>${sel.u}</small>`:""}`:`<b>${r.sc}</b>`;
+  const dl=day===tk?"Hoy":"El "+DOW[new Date(day+"T12:00:00").getDay()]+" "+(+day.slice(8));
+  const act=sel&&day===tk?(sel.k==="hrv"?"hrvedit":sel.k==="sleep"||(sel.k==="rhr"&&!window.__native)?"wtedit":""):"";
+  const tx=sel?`<p class="rg-k">${esc(sel.l)}</p><h4>${sel.c>0?"Suma "+sel.c+" puntos":sel.c<0?"Resta "+(-sel.c)+" puntos":sel.c===0?"Neutro":"Sin dato"}</h4><p class="rg-w">${esc(sel.why)}</p>${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}`
+    :`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p>`;
+  const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
+  const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
+  return`<div class="rg"><div class="rg-g${sel?" sel":""}"><svg viewBox="0 0 140 140" role="img" aria-label="Disposición ${r.sc} de 100. Toca un anillo para ver su porqué">${rings}</svg><button type="button" class="rg-c" data-rgk="" aria-label="Volver al resumen">${ctr}</button></div><div class="rg-x">${tx}</div></div>
+    ${rgHint()?`<p class="rg-hint">De fuera a dentro: ${nm}. Toca un anillo para ver su porqué.</p>`:""}
+    <div class="rg-wk" role="group" aria-label="Cómo llegaste cada día">${wk}</div>`}
+function rgRows(tk,hrvSpecial){const day=rgDayK(tk),{it}=rgItems(day),I=p=>`<svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const IC={hrv:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',rhr:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',tsb:'<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>',sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'};
+  const rows=it.map(x=>x.k==="hrv"&&hrvSpecial?hrvSpecial:`<button type="button" class="wf-row" data-rgk="${x.k}" aria-pressed="${S.rgSel===x.k}">${I(IC[x.k])}<span class="wf-n">${esc(x.l)}<small>${esc(x.sub)}</small></span><span class="wf-v">${esc(String(x.v))}${x.u?`<small>${x.u}</small>`:""}</span><i class="wf-dot" style="background:${rgCol(x.c)}" aria-hidden="true"></i></button>`).join("");
+  return`<span class="wc-sec">${day===tk?"Así amaneces":"Así amaneciste el "+DOW[new Date(day+"T12:00:00").getDay()]}</span><div class="wf-list">${rows}</div>`}
+function rgAnim(){document.querySelectorAll(".rg-a:not([data-done])").forEach(el=>{el.dataset.done=1;const k=el.dataset.k,L=+el.dataset.l,C=+el.dataset.c,from=RGP[k]!=null?RGP[k]:0;RGP[k]=L;
+  el.style.transition="none";el.style.strokeDasharray=`${from} ${C}`;el.getBoundingClientRect();el.style.transition="";el.style.strokeDasharray=`${L} ${C}`})}
+document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-rgday]");if(d){S.rgDay=d.dataset.rgday===today()?null:d.dataset.rgday;S.rgSel=null;buzz(8);rgSeen();render();return}
+  const g=e.target.closest&&e.target.closest("[data-rgk]");if(!g)return;const k=g.dataset.rgk;S.rgSel=!k||S.rgSel===k?null:k;buzz(8);rgSeen();render()});
+function rgSeen(){S._rgHint=1;try{localStorage.setItem("sustrato-rghint","1")}catch(e){}}
+
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
 function segKey(g){return(g.getAttribute("aria-label")||"")+"|"+g.className.replace(/\s*th-on/,"")+"|"+((g.querySelector("button")||{}).outerHTML||"").replace(/aria-(pressed|selected|checked)="[^"]*"/g,"").slice(0,80)}
@@ -6997,7 +7074,7 @@ function segThumbs(){document.querySelectorAll(".seg").forEach(g=>{if(g.querySel
   document.addEventListener("click",e=>{if(sup&&e.target.closest&&e.target.closest(".seg.th-on")&&e.isTrusted){e.stopPropagation();e.preventDefault()}},true);
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".seg.th-on>button");if(b&&b!==segOn(b.parentNode))buzz(8)},true);
   addEventListener("resize",()=>document.querySelectorAll(".seg.th-on").forEach(x=>segPlace(x,false)))})();
-(function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
+(function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs();rgAnim()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
 })();
 </script>
 
