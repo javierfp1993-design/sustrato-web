@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T15:31:23.802Z">
+<meta name="sustrato-version" content="2026-10-09T15:59:53.200Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="226";
+const APP_VER="227";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5502,44 +5502,58 @@ function bikeFtp(st,kg,road){const t=st&&st.time,d=st&&st.distance,z=st&&st.alti
   return best?{ftp:best,src:"est"}:null}
 /* Deriva cardiaca (desacople): cuánto empeora la relación rendimiento/pulso de la 1.ª a la 2.ª mitad.
    Carrera: velocidad por latido. Bici: potencia (real o estimada con la física) por latido. Sin los 10 primeros minutos. */
-function drift(st,run,kg,road){const t=st&&st.time,h=st&&st.heart_rate;if(!t||!h)return null;const n=Math.min(t.length,h.length);let out=[];
+function driftPrep(st,run,kg,road){const t=st&&st.time,h=st&&st.heart_rate;if(!t||!h)return null;const n=Math.min(t.length,h.length);let out=[];
   if(run){const v=st.velocity_smooth;if(!v)return null;for(let i=0;i<n;i++)out.push(v[i]>1.5?v[i]:null)}
   else{const w=st.watts,d=st.distance,z=st.altitude;if(w&&w.some(x=>x>0)){for(let i=0;i<n;i++)out.push(w[i]>0?w[i]:null)}
     else{if(!d||!z)return null;const m=kg+(road?9:13),crr=road?.005:.012,cda=road?.32:.45;out.push(null);
       for(let i=1;i<n;i++){const dt=t[i]-t[i-1];if(dt<=0||dt>60){out.push(null);continue}const vm=(d[i]-d[i-1])/dt,vz=(z[i]-z[i-1])/dt;if(vm<2){out.push(null);continue}
         out.push(Math.max(0,(m*9.81*vz+crr*m*9.81*vm+.5*1.12*cda*vm*vm*vm)/.97))}}}
-  /* a igual esfuerzo: esfuerzo suavizado en 60 s, se agrupa por tramos y se compara el pulso de cada mitad */
   const sm=[];for(let i=0;i<n;i++){let a=i,sum=0,c=0;while(a>=0&&t[i]-t[a]<=60){if(out[a]!=null){sum+=out[a];c++}a--}sm.push(c?sum/c:null)}
+  return{t,h,n,out,sm}}
+function drift(st,run,kg,road){const P=driftPrep(st,run,kg,road);if(!P)return null;const{t,h,n,out,sm}=P;
+  /* a igual esfuerzo: esfuerzo suavizado en 60 s, se agrupa por tramos y se compara el pulso de cada mitad */
   const idx=[];for(let i=0;i<n;i++)if(t[i]>=600&&sm[i]!=null&&out[i]!=null&&h[i]>60)idx.push(i);if(idx.length<20)return null;
   const T0=t[idx[0]],T1=t[idx[idx.length-1]];if(T1-T0<2700)return null;const mid=(T0+T1)/2,bw=run?.2:25,lo=run?1.8:60;
   const B={};idx.forEach(i=>{if(sm[i]<lo)return;const b=Math.floor(sm[i]/bw),k=t[i]<mid?0:1;const o=B[b]=B[b]||[[0,0],[0,0]];o[k][0]+=h[i];o[k][1]++});
   let d=0,w=0,base=0;Object.values(B).forEach(o=>{if(o[0][1]<3||o[1][1]<3)return;const h1=o[0][0]/o[0][1],h2=o[1][0]/o[1][1],ww=Math.min(o[0][1],o[1][1]);d+=(h2-h1)*ww;base+=h1*ww;w+=ww});
   return w>=10&&base>0?Math.round(d/base*1000)/10:null}
+/* Durabilidad (v227): minuto en que, a igual esfuerzo, el pulso supera en más de un 5 % al de la primera media hora
+   (10–40 min). Se mira en ventanas de 15 min. Devuelve {at: minutos o null si aguanta toda la salida, tot: minutos analizados}. */
+function durab(st,run,kg,road){const P=driftPrep(st,run,kg,road);if(!P)return null;const{t,h,n,out,sm}=P,bw=run?.2:25,lo=run?1.8:60;
+  const ok=i=>t[i]>=600&&sm[i]!=null&&out[i]!=null&&h[i]>60&&sm[i]>=lo;const ref={};
+  for(let i=0;i<n;i++)if(ok(i)&&t[i]<2400){const b=Math.floor(sm[i]/bw);const o=ref[b]=ref[b]||[0,0];o[0]+=h[i];o[1]++}
+  if(Object.values(ref).reduce((a,o)=>a+o[1],0)<15)return null;const end=t[n-1];if(end<4500)return null;
+  for(let w0=2400;w0+900<=end;w0+=900){const B={};for(let i=0;i<n;i++)if(ok(i)&&t[i]>=w0&&t[i]<w0+900){const b=Math.floor(sm[i]/bw);const o=B[b]=B[b]||[0,0];o[0]+=h[i];o[1]++}
+    let d=0,base=0,w=0;Object.keys(B).forEach(b=>{const r=ref[b],o=B[b];if(!r||r[1]<3||o[1]<3)return;const ww=Math.min(r[1],o[1]);d+=(o[0]/o[1]-r[0]/r[1])*ww;base+=r[0]/r[1]*ww;w+=ww});
+    if(w>=8&&base>0&&d/base>.05)return{at:Math.round(w0/60),tot:Math.round(end/60)}}
+  return{at:null,tot:Math.round(end/60)}}
 /* Hidratos por hora que tomaste en una sesión: lo apuntado en «¿Qué tomaste?» o el avituallamiento marcado */
 function cphOf(a){const f=(S.fuel||[]).find(x=>x.id===a.id);if(f&&f.cph!=null)return f.cph;const l=(S.log[a.day]||{})["fuel_a"+a.id];return l&&a.mov?Math.round((l.C||0)/(a.mov/3600)):null}
 const drC=v=>v==null?"var(--muted)":v<5?"#30d158":v<10?"#ff9f0a":"#ff453a",drL=v=>v<5?"Estable":v<10?"Moderada":"Alta";
 function driftCard(){const L=S.acts.filter(a=>a.mov>=4500&&(S.pmx||{})[a.id]&&S.pmx[a.id].dr!=null&&!S.pmx[a.id].err).slice(0,10);if(L.length<1)return"";
-  const rows=L.map(a=>({a,dr:S.pmx[a.id].dr,c:cphOf(a)}));const hi=rows.filter(r=>r.c!=null&&r.c>=45),lo=rows.filter(r=>r.c!=null&&r.c<45),avg=x=>x.reduce((s,r)=>s+r.dr,0)/x.length;
+  const rows=L.map(a=>({a,dr:S.pmx[a.id].dr,c:cphOf(a),du:S.pmx[a.id].du}));
+  const D=rows.filter(r=>r.du),cut=D.filter(r=>r.du.at!=null).map(r=>r.du.at).sort((x,y)=>x-y),med=cut.length?Math.round(cut.reduce((x,y)=>x+y,0)/cut.length/5)*5:null,full=D.length-cut.length;
+  const aguante=D.length>=2?(cut.length?`Aguante: a igual esfuerzo, tu pulso se mantiene estable hasta ${fmtDur(med*60)} de media${full?` (en ${full===1?"una salida":full+" salidas"} aguantaste hasta el final)`:""}.`:`Aguante: en tus ${D.length} últimas salidas largas el pulso se mantiene estable de principio a fin.`):"";const hi=rows.filter(r=>r.c!=null&&r.c>=45),lo=rows.filter(r=>r.c!=null&&r.c<45),avg=x=>x.reduce((s,r)=>s+r.dr,0)/x.length;
   let ins="";if(hi.length>=2&&lo.length>=2){const dh=avg(hi),dl=avg(lo);ins=dh<dl-1?`Con 45 g/h o más de hidratos tu pulso deriva un ${dh.toFixed(1).replace(".",",")} % de media; con menos, un ${dl.toFixed(1).replace(".",",")} %. Comer durante las salidas largas te sienta bien.`:`De momento comer más no cambia tu deriva (${dh.toFixed(1).replace(".",",")} % frente a ${dl.toFixed(1).replace(".",",")} %). Mira el calor y cómo llegas.`}
   else ins=rows.some(r=>r.c!=null)?"Cuando tengas al menos dos salidas largas comiendo 45 g/h o más y otras dos comiendo menos, te diré cómo te afecta.":"Apunta lo que tomas en tus salidas largas («¿Qué tomaste?») y te diré si comer más te ayuda a mantener el ritmo.";
   return`<section class="glass pad fade"><span class="pkk">Deriva cardiaca en salidas largas</span>
-    <div class="dr-l">${rows.map(r=>`<button class="dr-r" data-open="${r.a.id}"><span class="tc-ic" style="--c:${SPC[r.a.sport]||"#98989d"};width:34px;height:34px;border-radius:10px">${spSvg(r.a.sport)}</span><span class="dr-t"><b>${esc(r.a.name)}</b><small>${esc(dateLabel(r.a.day))} · ${fmtDur(r.a.mov)}${r.c!=null?" · "+r.c+" g/h":""}</small></span><span class="dr-v" style="--k:${drC(r.dr)}"><b>${r.dr>0?"+":""}${String(r.dr).replace(".",",")} %</b><small>${drL(r.dr)}</small></span></button>`).join("")}</div>
-    <p class="note" style="margin:10px 0 0">${ins}</p>
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">A igual esfuerzo (mismo ritmo en carrera; misma potencia, real o estimada, en bici), compara tu pulso en la primera y en la segunda mitad, sin los 10 primeros minutos. Por debajo del 5 % es estable; por encima del 10 %, el cansancio, el calor o la falta de hidratos y líquido se están notando.</p></details></section>`}
+    <div class="dr-l">${rows.map(r=>`<button class="dr-r" data-open="${r.a.id}"><span class="tc-ic" style="--c:${SPC[r.a.sport]||"#98989d"};width:34px;height:34px;border-radius:10px">${spSvg(r.a.sport)}</span><span class="dr-t"><b>${esc(r.a.name)}</b><small>${esc(dateLabel(r.a.day))} · ${fmtDur(r.a.mov)}${r.c!=null?" · "+r.c+" g/h":""}${r.du?(r.du.at!=null?" · estable hasta "+fmtDur(r.du.at*60):" · estable toda la salida"):""}</small></span><span class="dr-v" style="--k:${drC(r.dr)}"><b>${r.dr>0?"+":""}${String(r.dr).replace(".",",")} %</b><small>${drL(r.dr)}</small></span></button>`).join("")}</div>
+    ${aguante?`<p class="note" style="margin:10px 0 0">${aguante}</p>`:""}<p class="note" style="margin:10px 0 0">${ins}</p>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">A igual esfuerzo (mismo ritmo en carrera; misma potencia, real o estimada, en bici), compara tu pulso en la primera y en la segunda mitad, sin los 10 primeros minutos. Por debajo del 5 % es estable; por encima del 10 %, el cansancio, el calor o la falta de hidratos y líquido se están notando. El aguante es el momento en que, a igual esfuerzo, tu pulso pasa a ser más de un 5 % más alto que en la primera media hora (mirado cada 15 minutos): cuanto más tarde, más resistente eres a la fatiga.</p></details></section>`}
 async function savePerf(){const c=userCol();if(!c)return;try{await c.doc("pmx").set({kind:"pmx",map:S.pmx})}catch(e){}}
 function perfHk(){const hp=hrParams(S.profile||{});return hp?Math.round(hp.max)+"-"+Math.round(hp.rest):""}
 const perfRun=a=>(a.sport==="run"||a.sport==="trail")&&a.dist>=3000&&a.mov>=900&&(a.elev||0)/a.dist<.015;
 const perfBike=a=>a.sport==="mtb"&&a.mov>=1200;
 async function ensurePerf(){
   if(S.pmxBusy||S.actsState!=="ok")return;S.pmx=S.pmx||{};const from=shiftKey(today(),-120),hk=perfHk(),kg=num((S.profile||{}).weight)||75,hp=hrParams(S.profile||{});
-  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&p.hk!==hk)||(p.sp==="bike"&&p.kg!==kg)}).slice(0,40);
+  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&p.hk!==hk)||(p.sp==="bike"&&p.kg!==kg)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,40);
   if(!todo.length)return;S.pmxBusy=true;let n=0;
   for(const a of todo){const run=perfRun(a),sid=a.sid||a.id;
     try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
-      const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;
-      if(run)S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,vo2:hp?runVo2(st,hp):null,dr};
-      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr}}
-    }catch(e){S.pmx[a.id]={v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
+      const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;const du=a.mov>=4500?durab(st,run,kg,a.type==="Ride"):null;
+      if(run)S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,vo2:hp?runVo2(st,hp):null,dr,du};
+      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du}}
+    }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
     S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render()}
   S.pmxBusy=false;savePerf();render()}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
