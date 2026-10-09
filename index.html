@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T11:36:37.923Z">
+<meta name="sustrato-version" content="2026-10-09T11:45:43.129Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3108,7 +3108,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="223";
+const APP_VER="224";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4632,7 +4632,7 @@ document.addEventListener("click",e=>{const d=e.target.closest(".hcar-dots i");i
 /* ---------- Gestos ---------- */
 (function(){let sx=0,sy=0,st=0,tgt=null,on=false;
   const ignore=el=>el.closest(".seg,input,select,textarea,.scroll-x,.sheet,.full,.hcar,#radial,.wizard,svg.chart,.chartwrap");
-  document.addEventListener("touchstart",e=>{if(e.touches.length!==1){on=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();tgt=e.target;on=!ignore(e.target)&&!!(e.target.closest&&e.target.closest(".daystrip"))},{passive:true});
+  document.addEventListener("touchstart",e=>{if(e.touches.length!==1){on=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();tgt=e.target;on=!ignore(e.target)&&!!(e.target.closest&&e.target.closest(".dsec"))},{passive:true});
   document.addEventListener("touchend",e=>{if(!on)return;on=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
     if(Math.abs(dx)<60||Math.abs(dx)<2*Math.abs(dy)||Date.now()-st>700)return;
     const dir=dx<0?1:-1;
@@ -6406,7 +6406,7 @@ function vHoy(){
   ${recovCard()}
   ${flPrompt()}
   ${weekTeaser()}
-  <section class="glass pad fade daystrip">${strip}</section>
+  <section class="glass pad fade dsec">${strip}</section>
   <div class="hcar${S.day<=today()?" hcar-en":""}"><div class="hcar-track">
   <section class="glass pad fade hero">
     <div class="hero-l">
