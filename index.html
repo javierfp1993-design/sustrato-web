@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T11:45:43.129Z">
+<meta name="sustrato-version" content="2026-10-09T15:05:24.885Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3037,6 +3037,13 @@ html[data-theme="dark"] .en-q.ok{color:#30d158}html[data-theme="dark"] .en-q.lo{
 .en-r[aria-expanded="true"] .en-ch{transform:rotate(90deg)}
 .en .stp-ed{margin-top:8px}
 @media (max-width:899px){.hcar-en .hcar-track{align-items:flex-start;overflow-y:hidden;transition:height .2s ease-out}}
+/* VFC con tu rango (v225) */
+.vz .vz-band{fill:var(--vz-n1);opacity:.7}
+.hv-ch{margin:10px 0 2px;text-align:left}
+.hv-lg{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;margin:4px 0 0;font-size:12px;color:var(--muted)}
+.hv-lg span{display:inline-flex;align-items:center;gap:6px}
+.hv-lg i{display:inline-block;flex:none}.hv-d{width:8px;height:8px;border-radius:50%;background:#ff375f;opacity:.35}.hv-l{width:14px;height:2px;border-radius:1px;background:#ff375f}.hv-b{width:14px;height:8px;border-radius:2px;background:var(--vz-n1)}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3108,7 +3115,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="224";
+const APP_VER="225";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4222,7 +4229,10 @@ function readiness(tk,FSc){tk=tk||today();const M=S.rhr||{},f=[];let sc=70,n=0;
   else f.push({k:"rhr",l:"Pulso",v:"Sin dato",s:"",tip:"Apunta tu pulso al despertar"});
   /* VFC (rMSSD de la noche) frente a tu media de los 7 días anteriores: el indicador de recuperación más sensible */
   {const H=S.hrv||{},hv=H[tk],prev=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)prev.push(x)}
-    if(hv&&prev.length>=3){const b=prev.reduce((p,q)=>p+q,0)/prev.length,r=hv/b;n++;const v=r>=1.05?12:r>=.95?4:r>=.85?-10:-22;sc+=v;
+    const hs=hv?hrvStat(tk):null;
+    if(hs){n++;const v=hs.st==="hi"?8:hs.st==="in"?(hv<hs.lo*.9?-2:4):hs.run>=3?-18:-10;sc+=v;
+      f.push({k:"hrv",c:v,l:"VFC",v:hs.st==="hi"?"Alta":hs.st==="in"?"Normal":hs.run>=3?"Muy baja":"Baja",s:v>0?"ok":v>-15?"mid":"hi",tip:`Tu media de 7 días (${Math.round(hs.m)} ms) frente a tu rango normal (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms)`})}
+    else if(hv&&prev.length>=3){const b=prev.reduce((p,q)=>p+q,0)/prev.length,r=hv/b;n++;const v=r>=1.05?12:r>=.95?4:r>=.85?-10:-22;sc+=v;
       f.push({k:"hrv",c:v,l:"VFC",v:r>=1.05?"Alta":r>=.95?"Normal":r>=.85?"Baja":"Muy baja",s:v>0?"ok":v>-15?"mid":"hi",tip:`Variabilidad cardiaca de esta noche: ${Math.round(hv)} ms frente a ${Math.round(b)} ms de media de tu última semana`})}}
   if(S.acts.length){const FS=FSc||fitnessSeries(),P=FS.pts,now=P.find(x=>x.k===tk);if(now){n++;const t=now.tsb,w=Math.min(1,FS.hist/42),v=Math.round((t>5?10:t>-10?0:t>-25?-10:-20)*w);sc+=v;f.push({k:"tsb",c:v,l:"Forma",v:tsbState(t)[0].replace(/o$/,"a"),s:v>=0?"ok":v>-15?"mid":"hi",tip:"Balance entre la carga de las últimas semanas y la de los últimos días"})}}
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",c:v,l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
@@ -5274,7 +5284,7 @@ function weightBar(){
     const icV=I('<path d="M3 12h4l2-5 4 10 2-5h6"/>'),icH=I('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),icL=I('<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>'),icS=I('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>');
     const H=S.hrv||{},hv=H[tk],hman=(S.hrvMan||{})[tk]!=null,hp=[];for(let i=1;i<=7;i++){const x=H[shiftKey(tk,-i)];if(x)hp.push(x)}
     const hb=hp.length>=3?hp.reduce((p,q)=>p+q,0)/hp.length:null,hpc=hv&&hb?Math.round((hv/hb-1)*100):null;
-    const hrvR=S.hrvEdit?hrvRow():hv?row(icV,"VFC",hpc!=null?`${hpc>0?"+":hpc<0?"−":"±"}${Math.abs(hpc)} % sobre tu media`:`${hp.length}/3 noches para tu media`,`${Math.round(hv)}<small>ms</small>`,F.hrv?F.hrv.c:null,hman?"hrvedit":"")
+    const hrvR=S.hrvEdit?hrvRow():hv?row(icV,"VFC",(()=>{const hs=hrvStat(tk);return hs?(hs.st==="in"?`En tu rango · media 7 días ${Math.round(hs.m)}`:hs.st==="lo"?`Bajo tu rango · ${hs.run===1?"1 día":hs.run+" días"}`:"Por encima de tu rango"):hpc!=null?(hpc?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media`:"En tu media"):`${hp.length}/3 noches para tu media`})(),`${Math.round(hv)}<small>ms</small>`,F.hrv?F.hrv.c:null,hman?"hrvedit":"")
       :(()=>{const ks=Object.keys(H).filter(k=>k<tk&&!(S.hrvMan||{})[k]).sort(),lk=ks[ks.length-1];return`<div class="wf-row">${icV}<span class="wf-n">VFC<small>${lk?`Sin dato de hoy · última ${Math.round(H[lk])} ms`:"Sin dato de hoy"}</small></span><button type="button" class="wf-add" data-act="hrvedit">Añadir</button></div>`})();
     const rhrR=row(icH,"Pulso en reposo",dd!=null?`${dd>0?"+":dd<0?"−":"±"}${Math.abs(dd).toFixed(0)} vs tu media`:rv?"En reposo":"Sin dato de hoy",rv?`${rv}<small>ppm</small>`:"—",F.rhr?F.rhr.c:null,window.__native?"":"wtedit");
     const tsbR=F.tsb?row(icL,"Carga de entreno","Frente a lo habitual",esc(F.tsb.v.charAt(0).toUpperCase()+F.tsb.v.slice(1)),F.tsb.c,""):"";
@@ -5339,8 +5349,8 @@ const VZ={w:400,
   ref(y,PL,R,label){return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-ref"/>${label?`<text class="ax vz-rl" x="${R+9}" y="${(y+4).toFixed(1)}">${label}</text>`:""}`},
   bar(x,y,w,h,r){if(h<=0)return"";r=Math.min(r,h,w/2);return`M${x.toFixed(1)} ${(y+h).toFixed(1)}V${(y+r).toFixed(1)}Q${x.toFixed(1)} ${y.toFixed(1)} ${(x+r).toFixed(1)} ${y.toFixed(1)}H${(x+w-r).toFixed(1)}Q${(x+w).toFixed(1)} ${y.toFixed(1)} ${(x+w).toFixed(1)} ${(y+r).toFixed(1)}V${(y+h).toFixed(1)}Z`},
   /* Línea de tendencia. o={id,color,label,pts:[{d,v}],line:[{d,v}],refs:[{v,label}],fmt,tip,h} */
-  line(o){const w=VZ.w,h=o.h||170,PL=34,PR=(o.refs||[]).some(r=>r.label)?44:8,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts,L=o.line||P;if(P.length<2)return"";
-    const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));const vs=P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v));
+  line(o){const w=VZ.w,h=o.h||170,PL=34,PR=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?44:8,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts,L=o.line||P;if(P.length<2)return"";
+    const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));const vs=P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v),o.band?[o.band.lo,o.band.hi]:[]);
     let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(o.minPad||.5,(hi-lo)*.18);lo-=pad;hi+=pad;
     const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>o.inv?PT+(v-lo)/(hi-lo)*ih:PT+ih-(v-lo)/(hi-lo)*ih,fmt=o.fmt||(v=>fmtInt(v));
     const ln=L.map((p,i)=>(i?"L":"M")+X(p.d).toFixed(1)+" "+Y(p.v).toFixed(1)).join(" "),ar=ln+` L${X(L[L.length-1].d).toFixed(1)} ${o.inv?PT:PT+ih} L${X(L[0].d).toFixed(1)} ${o.inv?PT:PT+ih}Z`;
@@ -5348,8 +5358,8 @@ const VZ={w:400,
     SCRUB[o.id]={w,PT,pts:P.map(p=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:o.tip?o.tip(p):fmt(p.v),read:o.read?o.read(p):null}))};
     const ticks=VZ.nice(lo,hi,3).filter(v=>v>lo&&v<hi).slice(0,3),tf=o.tfmt||fmt;
     return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.color}" stop-opacity=".22"/><stop offset="1" stop-color="${o.color}" stop-opacity="0"/></linearGradient></defs>
-      ${VZ.grid(ticks,Y,PL,w-PR,tf)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
-      ${o.inv?"":`<path d="${ar}" fill="url(#${gid})"/>`}${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
+      ${o.band?`<rect x="${PL}" y="${Y(o.inv?o.band.lo:o.band.hi).toFixed(1)}" width="${iw}" height="${Math.abs(Y(o.band.lo)-Y(o.band.hi)).toFixed(1)}" rx="3" class="vz-band"/>${o.band.label?`<text class="ax vz-rl" x="${w-PR+9}" y="${((Y(o.band.lo)+Y(o.band.hi))/2+4).toFixed(1)}">${o.band.label}</text>`:""}`:""}${VZ.grid(ticks,Y,PL,w-PR,tf)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
+      ${o.inv||o.band?"":`<path d="${ar}" fill="url(#${gid})"/>`}${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
       <path d="${ln}" fill="none" stroke="${o.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4.5" fill="${o.color}" class="vz-last scr-hide"/>
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="5" fill="${o.color}"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
@@ -7194,11 +7204,12 @@ const RG_MX={hrv:22,rhr:30,tsb:20,sleep:20,gly:18},RGP={};
 const rgCol=c=>c==null?"var(--faint)":c>0?"#30d158":c>-15?"#ff9f0a":"#ff453a";
 const rgVd=sc=>sc>=78?"#30d158":sc>=58?"color-mix(in srgb,#30d158 50%,var(--card))":sc>=38?"#ff9f0a":"#ff453a";
 function rgItems(k){const r=readiness(k),F={};r.f.forEach(x=>F[x.k]=x);const o=(S.profile||{}).sex==="f"?"a":"o",sg=n=>n>0?"+":n<0?"−":"±",cv=x=>x&&x.c!=null?x.c:null;
-  const H=S.hrv||{},hv=H[k],hp=[];for(let i=1;i<=7;i++){const x=H[shiftKey(k,-i)];if(x)hp.push(x)}const hb=hp.length>=3?hp.reduce((a,b)=>a+b,0)/hp.length:null,hpc=hv&&hb?Math.round((hv/hb-1)*100):null;
+  const H=S.hrv||{},hv=H[k],hp=[];for(let i=1;i<=7;i++){const x=H[shiftKey(k,-i)];if(x)hp.push(x)}const hb=hp.length>=3?hp.reduce((a,b)=>a+b,0)/hp.length:null,hpc=hv&&hb?Math.round((hv/hb-1)*100):null;const hs=hv?hrvStat(k):null;
   const rv=(S.rhr||{})[k],base=rhrAvg(shiftKey(k,-1),7),dd=rv&&base?Math.round(rv-base):null,it=[];
-  it.push({k:"hrv",l:"VFC",has:!!hv,c:cv(F.hrv),v:hv?Math.round(hv):"—",u:hv?"ms":"",sub:hv?(hpc!=null?`${sg(hpc)}${Math.abs(hpc)} % sobre tu media`:`${hp.length}/3 noches para tu media`):"Sin dato",
+  it.push({k:"hrv",l:"VFC",has:!!hv,c:cv(F.hrv),v:hv?Math.round(hv):"—",u:hv?"ms":"",sub:hv?(hs?(hs.st==="in"?`En tu rango · media 7 días ${Math.round(hs.m)}`:hs.st==="lo"?`Bajo tu rango · ${hs.run===1?"1 día":hs.run+" días"}`:"Por encima de tu rango"):hpc!=null?(hpc?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media`:"En tu media"):`${hp.length}/3 noches para tu media`):"Sin dato",
     ph:F.hrv?{"Alta":"la VFC alta","Normal":"la VFC normal","Baja":"la VFC algo baja","Muy baja":"la VFC muy baja"}[F.hrv.v]||"":"",
-    why:hpc!=null?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media de 7 días. ${cv(F.hrv)<0?"Baja con cansancio, estrés o mal sueño.":"Señal de buena recuperación."}`:"Con 3 noches registradas tendrás tu media."});
+    why:hs?(hs.st==="in"?`Tu media de 7 días (${Math.round(hs.m)} ms) está dentro de tu rango normal (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms). Esta noche, ${Math.round(hv)} ms.${hv<hs.lo*.9?" Una noche baja suelta pesa poco.":""}`:hs.st==="lo"?`Tu media de 7 días (${Math.round(hs.m)} ms) lleva ${hs.run===1?"1 día":hs.run+" días"} por debajo de tu rango (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms). Suele pasar con carga acumulada, estrés o mal sueño${hs.run>=3?": mejor un día suave.":"."}`:`Tu media de 7 días (${Math.round(hs.m)} ms) está por encima de tu rango (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms): buena recuperación.`)
+      :hpc!=null?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media de 7 días. ${cv(F.hrv)<0?"Baja con cansancio, estrés o mal sueño.":"Señal de buena recuperación."}${hrvN(k)<14?` Con 14 noches (llevas ${hrvN(k)}) verás tu rango normal.`:""}`:"Con 3 noches registradas tendrás tu media."});
   const cr=cv(F.rhr);
   it.push({k:"rhr",l:"Pulso en reposo",has:!!rv,c:cr,v:rv||"—",u:rv?"ppm":"",sub:dd!=null?`${sg(dd)}${Math.abs(dd)} vs tu media`:rv?"En reposo":"Sin dato",
     ph:cr==null?"":cr>=10?"el pulso bajo":cr>0?"el pulso en tu media":cr>-20?"el pulso algo alto":"el pulso alto",
@@ -7222,7 +7233,7 @@ function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k=
   const ctr=sel?`<b class="${typeof sel.v==="string"?"t":""}">${esc(String(sel.v))}</b>${sel.u?`<small>${sel.u}</small>`:""}`:`<b>${r.sc}</b>`;
   const dl=day===tk?"Hoy":"El "+DOW[new Date(day+"T12:00:00").getDay()]+" "+(+day.slice(8));
   const act=sel&&day===tk?(sel.k==="hrv"?"hrvedit":sel.k==="sleep"||(sel.k==="rhr"&&!window.__native)?"wtedit":""):"";
-  const tx=sel?`<p class="rg-k">${esc(sel.l)}</p><h4>${sel.c>0?"Suma "+sel.c+" puntos":sel.c<0?"Resta "+(-sel.c)+" puntos":sel.c===0?"Neutro":"Sin dato"}</h4><p class="rg-w">${esc(sel.why)}</p>${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}`
+  const tx=sel?`<p class="rg-k">${esc(sel.l)}</p><h4>${sel.c>0?"Suma "+sel.c+" puntos":sel.c<0?"Resta "+(-sel.c)+" puntos":sel.c===0?"Neutro":"Sin dato"}</h4><p class="rg-w">${esc(sel.why)}</p>${sel.k==="hrv"?(()=>{const hs=hrvStat(day);return hs?hrvChart(day,hs):""})():""}${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}`
     :`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p>`;
   const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
   const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño",gly:"glucógeno"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
@@ -7412,6 +7423,19 @@ function segThumbs(){document.querySelectorAll(".seg").forEach(g=>{if(g.querySel
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".seg.th-on>button");if(b&&b!==segOn(b.parentNode))buzz(8)},true);
   addEventListener("resize",()=>document.querySelectorAll(".seg.th-on").forEach(x=>segPlace(x,false)))})();
 (function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs();rgAnim();scrollLock();dayBackPos();hcarFit()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
+/* VFC con tu rango normal (v225): línea base de 60 noches ± ½ desviación sobre ln(rMSSD) (Plews, HRV4Training).
+   Lo que cuenta es la media de 7 días frente a ese rango; una noche suelta pesa poco. Con menos de 14 noches, el cálculo anterior. */
+function hrvM7(H,d){const a=[];for(let i=0;i<7;i++){const x=H[shiftKey(d,-i)];if(x>0)a.push(Math.log(x))}return a.length>=3?Math.exp(a.reduce((p,q)=>p+q,0)/a.length):null}
+function hrvStat(k){const H=S.hrv||{},ln=[];for(let i=1;i<=60;i++){const x=H[shiftKey(k,-i)];if(x>0)ln.push(Math.log(x))}
+  if(ln.length<14)return null;const mu=ln.reduce((p,q)=>p+q,0)/ln.length,sd=Math.sqrt(ln.reduce((p,q)=>p+(q-mu)*(q-mu),0)/ln.length),swc=.5*sd;
+  const lo=Math.exp(mu-swc),hi=Math.exp(mu+swc),m=hrvM7(H,k);if(m==null)return null;
+  const st=m<lo?"lo":m>hi?"hi":"in";let run=0;if(st==="lo")for(let i=0;i<14;i++){const v=hrvM7(H,shiftKey(k,-i));if(v!=null&&v<lo)run++;else break}
+  const hv=H[k];return{lo,hi,m,st,run,hv,n:ln.length}}
+function hrvChart(k,s){const H=S.hrv||{},pts=[],line=[];for(let i=29;i>=0;i--){const d=shiftKey(k,-i),x=H[d];if(x>0)pts.push({d,v:x});const m=hrvM7(H,d);if(m!=null)line.push({d,v:m})}
+  if(pts.length<2||line.length<2)return"";
+  return`<div class="hv-ch">${VZ.line({id:"hv",color:"#ff375f",label:"VFC de las últimas 30 noches con tu rango normal",pts,line,band:{lo:s.lo,hi:s.hi,label:"rango"},fmt:v=>fmtInt(v),tip:p=>fmtInt(p.v)+" ms",h:150})}<p class="hv-lg"><span><i class="hv-d"></i>cada noche</span><span><i class="hv-l"></i>media de 7 días</span><span><i class="hv-b"></i>tu rango normal</span></p></div>`}
+function hrvN(k){const H=S.hrv||{};let n=0;for(let i=1;i<=60;i++)if(H[shiftKey(k,-i)]>0)n++;return n}
+
 })();
 </script>
 
