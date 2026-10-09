@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T11:11:37.036Z">
+<meta name="sustrato-version" content="2026-10-09T11:36:37.923Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3108,7 +3108,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="222";
+const APP_VER="223";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3278,6 +3278,7 @@ function dayTargets(k,raw){
   const tdee=b.bmr+neat+ex;
   const g=GOALS[p.goal]||GOALS.recomp;
   let kcal=tdee*(1+g.adj);if(kcal<b.bmr)kcal=b.bmr;
+  let eaFloor=0;{const L=eaLean();if(L){const mk=ex+eaThr().lo*L;if(kcal<mk){eaFloor=mk-kcal;kcal=mk}}}
   let choBurn=0,fatBurn=0,pending=0;
   acts.forEach(a=>{const s=S.subs[a.id];if(s){choBurn+=s.cho/4;fatBurn+=s.fat/9}else if(a.kcal)pending++});
   plan.forEach(x=>{choBurn+=x.cho/4;fatBurn+=x.fat/9});
@@ -3291,7 +3292,7 @@ function dayTargets(k,raw){
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
   /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
   let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
-  return{b,neat,ex,tdee,kcal,P,F,C,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
+  return{b,neat,ex,tdee,kcal,eaFloor,P,F,C,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
 }
 
 /* ---------- Reparto por comidas ---------- */
@@ -6421,7 +6422,7 @@ function vHoy(){
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
         <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos y día a día":"Actividad diaria"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
-        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}</p>
+        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.eaFloor?" · +"+fmtInt(t.eaFloor)+" kcal para no bajar de "+eaThr().lo+" de disponibilidad energética":""}${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}</p>
       </details>
     </div>
   </section>
@@ -7338,18 +7339,19 @@ function eaIntake(k,t){const lg=(S.log||{})[k]||{},ne=MEALS.filter(m=>lg[m[0]]).
   if(ne>=2){const mp=mealPlan(t,k);let K=0;mp.meals.forEach(m=>{const e=lg[m.id];if(!e)K+=m.kcal;else if(e.st==="skip")K+=0;else if(e.P!=null||e.C!=null||e.F!=null)K+=4*(e.P||0)+4*(e.C||0)+9*(e.F||0);else K+=m.kcal*(e.r||1)});return{K:K+4*fuelCho(k),src:"log"}}
   const a=(S.glyAns||{})[k];if(a)return{K:t.kcal*({si:1,menos:.7,mas:1.2}[a]||1),src:"ans"};return{K:t.kcal,src:"est"}}
 function eaDay(k){const L=eaLean();if(!L)return null;const t=dayTargets(k);if(!t)return null;const I=eaIntake(k,t);return{k,v:(I.K-t.ex)/L,src:I.src,t,K:I.K,L}}
-const eaSt=v=>v>=45?"ok":v<30?"lo":"";
+function eaThr(){return{lo:(S.profile||{}).sex==="f"?30:25,ok:45}}
+const eaSt=v=>{const T=eaThr();return v>=T.ok?"ok":v<T.lo?"lo":""};
 const EA_L={ok:"Óptima","":"Suficiente",lo:"Baja"};
 function energyCard(k){try{return energyCard0(k)}catch(e){try{console.error("Energía",e)}catch(_){}
   return`<section class="glass pad fade en"><h2>Energía · ${esc(dateLabel(k))}</h2><p class="note" style="margin:10px 0 0">No he podido calcularla ahora mismo.</p><p class="note" style="margin:6px 0 0;font-size:12px">Detalle para Claude: ${esc(String(e&&e.message||e).slice(0,160))} · ${esc(String(e&&e.stack||"").split("\n").slice(1,3).join(" ").replace(/\s+/g," ").slice(0,200))}</p></section>`}}
 function energyCard0(k){
   const d=eaDay(k);if(!d)return"";const t=d.t,v=Math.max(0,d.v),st=eaSt(d.v),open=S.enOpen,isT=k===today();
   const wk=[];for(let i=6;i>=0;i--){let x=d;if(i){try{x=eaDay(shiftKey(k,-i))}catch(e){x=null}}if(x)wk.push(x)}
-  const avg=wk.reduce((a,x)=>a+x.v,0)/wk.length,nLo=wk.filter(x=>x.v<30).length,nEst=wk.filter(x=>x!==d&&x.src==="est").length;
+  const TH=eaThr(),lg=wk.filter(x=>x.k!==today()&&x.src==="log"),avg=lg.length?lg.reduce((a,x)=>a+x.v,0)/lg.length:null,nLo=lg.filter(x=>x.v<TH.lo).length,nEst=wk.filter(x=>x.k!==today()&&x.src!=="log").length,alert=lg.length>=3&&avg<TH.lo;
   const pos=Math.min(60,Math.max(0,d.v))/60*100;
   const bars=wk.map(x=>{const c=eaSt(x.v),h=Math.max(8,Math.min(100,x.v/60*100)),dd=new Date(x.k+"T12:00:00");
     return`<div><i class="${c}${x.k===today()?" t":""}${x.src==="est"&&x.k!==today()?" e":""}" style="height:${h.toFixed(0)}%"></i><span>${x.k===k&&isT?"<b>Hoy</b>":"DLMXJVS"[dd.getDay()]}</span></div>`}).join("");
-  const ctx=`Media de 7 días: ${fmtInt(avg)}${nLo?` · ${nLo===1?"un día bajo":nLo+" días bajos"}`:""}${nEst?` · ${nEst===1?"un día":nEst+" días"} sin comidas apuntadas, contados como tu objetivo`:""}`;
+  const ctx=avg!=null?`Media de ${lg.length===1?"tu día":"tus "+lg.length+" días"} con comidas apuntadas: ${fmtInt(avg)}${nLo?` · ${nLo===1?"uno bajo":nLo+" bajos"}`:""}${nEst?` · ${nEst===1?"un día sin comidas no cuenta":nEst+" días sin comidas no cuentan"}`:""}`:`Apunta tus comidas para ver tu media real; los días sin comidas no cuentan.`;
   /* gasto */
   const st2=stepsOf(k),neatV=t.neat,exV=t.ex,bas=t.b.bmr,tot=bas+neatV+exV,done=t.acts.reduce((a,x)=>a+(x.kcal||0),0),pend=t.plan.reduce((a,x)=>a+x.kcal,0);
   const H=(S.stepsH||{})[k];
@@ -7365,13 +7367,13 @@ function energyCard0(k){
     <h2>Energía · ${esc(dateLabel(k))}</h2>
     <div class="en-hd"><b>${fmtInt(v)}</b><span>kcal/kg magra</span></div>
     <p class="en-vd"><span class="en-q ${st}">${EA_L[st]}</span> · lo que queda para tu cuerpo tras entrenar</p>
-    <div class="en-scw" role="img" aria-label="Disponibilidad energética ${fmtInt(v)}: ${EA_L[st]}"><div class="en-sc"><i class="z1"></i><i class="z2"></i><i class="z3"></i></div><span class="en-seed" style="left:${pos.toFixed(1)}%"></span></div>
-    <div class="en-scl"><span>Baja</span><span>Suficiente</span><span>Óptima</span></div>
+    <div class="en-scw" role="img" aria-label="Disponibilidad energética ${fmtInt(v)}: ${EA_L[st]}"><div class="en-sc"><i class="z1" style="flex:${TH.lo}"></i><i class="z2" style="flex:${TH.ok-TH.lo}"></i><i class="z3" style="flex:${60-TH.ok}"></i></div><span class="en-seed" style="left:${pos.toFixed(1)}%"></span></div>
+    <div class="en-scl"><span style="flex:${TH.lo}">Baja</span><span style="flex:${TH.ok-TH.lo};text-align:center">Suficiente</span><span style="flex:${60-TH.ok};text-align:right">Óptima</span></div>
     <div class="en-wk" aria-label="Últimos 7 días">${bars}</div>
     <p class="en-ctx">${ctx}</p>
-    ${avg<30?`<p class="en-al">Varios días por debajo de 30: riesgo de fatiga, lesión y alteraciones hormonales (RED‑S). Sube la comida los días de más carga.</p>`:""}
+    ${alert?`<p class="en-al">Varios días comiendo por debajo de ${TH.lo}: riesgo de fatiga, lesión y alteraciones hormonales (RED‑S). Sube la comida los días de más carga.</p>`:""}
     <button class="en-more" data-enrow="ea" aria-expanded="${open==="ea"}">Qué es y cómo se calcula<span aria-hidden="true">›</span></button>
-    ${open==="ea"?`<div class="en-x"><p>Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p>Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p>45 o más es óptima. Entre 30 y 45 es suficiente para la mayoría. Por debajo de 30 durante varios días seguidos aumenta el riesgo de RED‑S.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></div>`:""}
+    ${open==="ea"?`<div class="en-x"><p>Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p>Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p>${TH.ok} o más es óptima. Entre ${TH.lo} y ${TH.ok}, suficiente. Por debajo de ${TH.lo} varios días seguidos aumenta el riesgo de RED‑S.${TH.lo===25?" En hombres el umbral es más bajo que el clásico de 30, que viene de estudios con mujeres.":""} Es una estimación orientativa, no un diagnóstico. Tu objetivo de comida nunca te deja por debajo de ${TH.lo}.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></div>`:""}
     <div class="en-g"><div class="en-gh"><b>Gasto</b><span><b>${fmtInt(tot)}</b><small class="u">kcal</small></span></div>
       <div class="en-band" aria-hidden="true"><i style="flex:${bas.toFixed(0)};background:var(--vz-n2)"></i>${neatV>0?`<i style="flex:${neatV.toFixed(0)};background:#30d158"></i>`:""}${done>0?`<i style="flex:${done.toFixed(0)};background:#0a84ff"></i>`:""}${pend>0?`<i class="pend" style="flex:${pend.toFixed(0)};background:#0a84ff"></i>`:""}</div>
       ${row("b","var(--vz-n2)","Basal","",bas)}
