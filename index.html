@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T15:59:53.200Z">
+<meta name="sustrato-version" content="2026-10-09T19:50:28.300Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3096,7 +3096,7 @@ const SPORT={Walk:"walk",Hike:"hike",Run:"run",TrailRun:"trail",MountainBikeRide
 const SPORT_L={run:"Running",trail:"Trail",mtb:"MTB",str:"Fuerza",walk:"Caminata",hike:"Senderismo",oth:"Otro"};
 const SPORT_S={run:"Running",trail:"Trail",mtb:"MTB",str:"Fuerza",walk:"Paseo",hike:"Sendero",oth:"Otro"};
 /* Curva de sustrato: fracción de energía de hidratos según % de FC de reserva */
-const SUB_MID=0.60, SUB_K=0.09;
+const SUB_MID=0.52, SUB_K=0.20; /* v229: curva más suave, ajustada al punto de cruce (Brooks) y FatMax (Achten y Jeukendrup) */
 const BANDS=[
   {id:"b1",name:"Lipolítica",lo:0,hi:.35,col:"#3b82f6",desc:"Grasas dominantes"},
   {id:"b2",name:"Mixta lipídica",lo:.35,hi:.5,col:"#79a8f5",desc:"Más grasa que hidratos"},
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="227";
+const APP_VER="229";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3177,11 +3177,11 @@ function basal(p){
 const LEVELS={beg:{l:"Principiante",s:-0.05},mid:{l:"Intermedio",s:0},trained:{l:"Entrenado",s:0.04},elite:{l:"Muy entrenado",s:0.07}};
 function hrParams(p){
   const a=num(p.age);let max=num(p.hrmax);if(!max&&a)max=208-0.7*a;const rest=num(p.hrrest)||60;
-  const lthr=num(p.lthr);
+  const lthrP=num(p.lthr),lthr=lthrP||autoLthr();
   const fem=p.sex==="f",vl=vo2Level();let lv=vl!=null?vl:(LEVELS[p.level]||LEVELS.mid).s;
   const wh=num(p.waist)&&num(p.height)?num(p.waist)/num(p.height):0;const whs=wh>.5?Math.min(.03,(wh-.5)*.3):0;
-  if(lthr){ /* x = FC / umbral de lactato; cruce al ~86 % del umbral, 90 % hidratos en el umbral */
-    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,mid:0.86+lv*sc+(fem?0.015:0)-whs*sc,k:0.0637,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
+  if(lthr){ /* x = FC / umbral; v229: 50 % hidratos al ~78 % del umbral, ~71 % al 90 %, ~83 % en el umbral */
+    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,lthrSrc:lthrP?"perfil":"auto",mid:0.775+lv*sc+(fem?0.015:0)-whs*sc,k:0.14,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
   }
   if(!max)return null;
   return{mode:"hrr",max,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
@@ -4431,11 +4431,13 @@ function fitCard(){
   return`<section class="glass pad fade pfit"><span class="pkk">Forma y fatiga</span>
     <div class="vhead" data-vzread><b>${r0(now.ctl)}</b><span>forma · fatiga ${r0(now.atl)} · frescura ${sg(now.tsb)}</span></div>
     <p class="vplan-t"><span class="fdot" style="background:${tcol(now.tsb)}"></span><b>${st[0]}</b> · ${st[1]}</p>
+    ${(()=>{if(hist<28||!(now.ctl>0))return"";const r=now.atl/now.ctl,f=r.toFixed(1).replace(".",","),[c,l,d]=r>1.5?["#ff453a","Subida de carga",`${f}× lo habitual: demasiado rápido, es cuando más sube el riesgo de lesión. Mete un par de días suaves.`]:r>1.3?["#ff9f0a","Subida de carga",`${f}× lo habitual: rápida. Vigila cómo llegas los próximos días.`]:r>=.8?["var(--faint)","Subida de carga",`${f}× lo habitual: ritmo seguro.`]:["var(--faint)","Carga bajando",`${f}× lo habitual: estás descargando.`];
+      return`<p class="vplan-t"><span class="fdot" style="background:${c}"></span><b>${l}</b> · ${d}</p>`})()}
     ${hist<42?`<p class="note" style="margin-top:4px">Calibrando: hay ${hist} ${hist===1?"día":"días"} de historial. Hasta tener 6 semanas, la forma es aproximada y pesa menos en "Cómo llegas hoy".</p>`:""}
     ${svg}
     <div class="legend"><span><i style="background:#3b82f6"></i>Forma</span><span><i style="background:#ff7a52"></i>Fatiga</span><span><i style="background:#30d158"></i>Fresco</span><span><i style="background:#ff9f0a"></i>Cargado</span><span><i style="background:#ff453a"></i>Muy cargado</span></div>
     ${rp&&hist>=21?`<div class="frace-box"><b>${esc(race.n)} · ${esc(dateLabel(race.d))}</b><span>Con lo que tienes planificado llegarías con forma ${r0(rp.ctl)} y frescura ${rp.tsb>0?"+":""}${r0(rp.tsb)}: ${tsbState(rp.tsb)[0].toLowerCase()}.${rp.tsb<-10?" Conviene reducir carga la última semana.":rp.tsb>20?" Quizá te sobre descanso: mete algo de ritmo los días previos.":""}</span></div>`:""}
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan.</p></details></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Carga diaria estimada a partir de la energía de cada entreno. La forma es la media de 6 semanas; la fatiga, la de 7 días; la frescura, su diferencia. Lo discontinuo es la proyección con tu plan. La subida de carga compara tu fatiga de 7 días con tu forma de 6 semanas: entre 0,8 y 1,3 veces es un ritmo seguro; por encima de 1,5, el riesgo de lesión sube.</p></details></section>`;
 }
 function riegel(t,d1,d2){return t*Math.pow(d2/d1,1.06)}
 function bestPred(runs,dist){let b=null;runs.forEach(a=>{if(!a.mov||a.dist<3000)return;const t=riegel(a.mov,a.dist,dist);if(!b||t<b.t)b={t,a}});return b}
@@ -4697,7 +4699,7 @@ async function loadActs(force){
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
-function subKey(id){const hp=hrParams(S.profile||{});return hp?["v3",hp.mode,r0(hp.max),hp.rest,hp.lthr||0,hp.mid.toFixed(3),S.fasted[id]?"f":"n"].join("_"):"none"}
+function subKey(id){const hp=hrParams(S.profile||{}),su=hrSuspect(id);return hp?["v4",hp.mode,r0(hp.max),hp.rest,hp.lthr||0,hp.mid.toFixed(3),S.fasted[id]?"f":"n",su?"s"+su.ratio.toFixed(2):""].join("_"):"none"}
 async function ensureSub(a){
   if(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id))return S.subs[a.id];
   const hp=hrParams(S.profile||{});
@@ -4705,7 +4707,8 @@ async function ensureSub(a){
   if(!hp){return null}
   try{
     const st=await call("get_activity_streams",{activity_id:a.id,streams:["time","heart_rate"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
-    let sub=(st&&st.heart_rate&&st.time)?computeSub(st.heart_rate,st.time,a.kcal,hp,!!S.fasted[a.id]):null;
+    const su=hrSuspect(a.id),hrs=st&&st.heart_rate&&su?st.heart_rate.map(x=>x/su.ratio):st&&st.heart_rate;
+    let sub=(hrs&&st.time)?computeSub(hrs,st.time,a.kcal,hp,!!S.fasted[a.id]):null;if(sub&&su)sub.hrFix=+su.ratio.toFixed(2);
     if(!sub)sub=flatSub(a.kcal,a.sport==="str"?0.7:(S.fasted[a.id]?0.5:0.6));
     sub.key=subKey(a.id);S.subs[a.id]=sub;persistSub(a.id,sub);return sub;
   }catch(e){return null}
@@ -5484,7 +5487,7 @@ function weightHistory(){
    Carrera: en tramos estables, el coste de oxígeno del ritmo (Daniels) dividido por el % de pulso de reserva (Swain).
    Bici sin potenciómetro: física de tus subidas (peso, bici, pendiente, velocidad); con potenciómetro, tu mejor 20′.
    Cada salida se calcula una vez y se guarda; el valor que se muestra es la mediana de las últimas semanas. */
-const PERF_V=3;
+const PERF_V=4;
 function vo2Cost(vmin){return -4.6+0.182258*vmin+0.000104*vmin*vmin}
 function runVo2(st,hp){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v)return null;const n=Math.min(t.length,h.length,v.length),est=[];
   for(let i=1;i<n;i++){if(t[i]<480)continue;let a=i,sum=0,c=0;while(a>0&&t[i]-t[a]<=60){sum+=v[a];c++;a--}const vs=sum/c;if(vs<1.8||vs>6.5)continue;
@@ -5530,7 +5533,7 @@ function durab(st,run,kg,road){const P=driftPrep(st,run,kg,road);if(!P)return nu
 /* Hidratos por hora que tomaste en una sesión: lo apuntado en «¿Qué tomaste?» o el avituallamiento marcado */
 function cphOf(a){const f=(S.fuel||[]).find(x=>x.id===a.id);if(f&&f.cph!=null)return f.cph;const l=(S.log[a.day]||{})["fuel_a"+a.id];return l&&a.mov?Math.round((l.C||0)/(a.mov/3600)):null}
 const drC=v=>v==null?"var(--muted)":v<5?"#30d158":v<10?"#ff9f0a":"#ff453a",drL=v=>v<5?"Estable":v<10?"Moderada":"Alta";
-function driftCard(){const L=S.acts.filter(a=>a.mov>=4500&&(S.pmx||{})[a.id]&&S.pmx[a.id].dr!=null&&!S.pmx[a.id].err).slice(0,10);if(L.length<1)return"";
+function driftCard(){const L=S.acts.filter(a=>a.mov>=4500&&(S.pmx||{})[a.id]&&S.pmx[a.id].dr!=null&&!S.pmx[a.id].err&&!hrSuspect(a.id)).slice(0,10);if(L.length<1)return"";
   const rows=L.map(a=>({a,dr:S.pmx[a.id].dr,c:cphOf(a),du:S.pmx[a.id].du}));
   const D=rows.filter(r=>r.du),cut=D.filter(r=>r.du.at!=null).map(r=>r.du.at).sort((x,y)=>x-y),med=cut.length?Math.round(cut.reduce((x,y)=>x+y,0)/cut.length/5)*5:null,full=D.length-cut.length;
   const aguante=D.length>=2?(cut.length?`Aguante: a igual esfuerzo, tu pulso se mantiene estable hasta ${fmtDur(med*60)} de media${full?` (en ${full===1?"una salida":full+" salidas"} aguantaste hasta el final)`:""}.`:`Aguante: en tus ${D.length} últimas salidas largas el pulso se mantiene estable de principio a fin.`):"";const hi=rows.filter(r=>r.c!=null&&r.c>=45),lo=rows.filter(r=>r.c!=null&&r.c<45),avg=x=>x.reduce((s,r)=>s+r.dr,0)/x.length;
@@ -5549,19 +5552,20 @@ async function ensurePerf(){
   const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&p.hk!==hk)||(p.sp==="bike"&&p.kg!==kg)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,40);
   if(!todo.length)return;S.pmxBusy=true;let n=0;
   for(const a of todo){const run=perfRun(a),sid=a.sid||a.id;
-    try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
+    try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
       const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;const du=a.mov>=4500?durab(st,run,kg,a.type==="Ride"):null;
-      if(run)S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,vo2:hp?runVo2(st,hp):null,dr,du};
-      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du}}
+      const q=hrQual(st),l30=bestAvg(st&&st.time,st&&st.heart_rate,1800,300);
+      if(run)S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,vo2:hp?runVo2b(st,hp,a.sport==="trail"):null,dr,du,q,l30};
+      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du,q,l30}}
     }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
     S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render()}
   S.pmxBusy=false;savePerf();render()}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
-function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{hot:x.sp==="run"&&hot(id)})),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&x.d<=end&&x.d>shiftKey(end,-days));
+function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{id,hot:x.sp==="run"&&hot(id)})),sus=hrSuspects(),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&!sus[x.id]&&x.d<=end&&x.d>shiftKey(end,-days));
   let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);{const cool=r.filter(x=>!x.hot);if(cool.length>=2)r=cool}
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
   const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
-  const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=top(r,"vo2"),vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
+  const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=r.length?med(r.map(x=>x.vo2)):null,vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
   return{vo2:vr!=null||vb!=null?Math.max(vr||0,vb||0):null,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
 function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
   const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,ftp:x.ftp})}
@@ -6779,7 +6783,7 @@ function vDetail(){
       return`${faces?`<p class="dt-fq">${rv?"¿Cambiar cómo fue?":"¿Cómo fue?"}</p>`+faces:""}<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
-    ${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
+    ${(()=>{const su=hrSuspect(a.id);return su?`<p class="note hr-sus"><b>Pulso dudoso.</b> Para tu ${a.sport==="mtb"?"velocidad":"potencia o ritmo"} te correspondían unas ${r0(su.exp)} ppm y el sensor marcó ${r0(su.exp*su.ratio)}: el reparto se ha calculado con el pulso esperado, y esta sesión no cuenta para tu umbral, tu VO2máx ni la deriva.</p>`:""})()}${hp?`<p class="note">Modelo anclado a ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm"+(hp.lthrSrc==="auto"?", estimado con tus esfuerzos":"")+")":"tu FC de reserva"}, ajustado por nivel${S.profile&&S.profile.sex==="f"?", sexo":""}, duración${S.fasted[a.id]?" y ayuno":""}.</p>`:""}
     ${fuelBlock(a)}
     ${sweatBlock(a)}
   </div></div>`;
@@ -6849,7 +6853,7 @@ function vPerfil(){
   const DI={omni:"Omnívora",pesce:"Pescetariana",veggie:"Vegetariana",vegan:"Vegana"};
   const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
     med:[p.waist&&"Cintura "+p.waist+" cm",p.neck&&"cuello "+p.neck+" cm"].filter(Boolean).join(" · ")||"Sin medidas",
-    fc:p.lthr?"Umbral "+p.lthr+" ppm"+(p.hrmax?" · máx. "+p.hrmax:""):p.hrmax?"Máx. "+p.hrmax+(p.hrrest?" · reposo "+p.hrrest:"")+" ppm":"Sin datos de pulso",
+    fc:p.lthr?"Umbral "+p.lthr+" ppm"+(p.hrmax?" · máx. "+p.hrmax:""):autoLthr()?"Umbral estimado "+autoLthr()+" ppm":p.hrmax?"Máx. "+p.hrmax+(p.hrrest?" · reposo "+p.hrrest:"")+" ppm":"Sin datos de pulso",
     ali:(DI[p.diet||"omni"])+(EX.length?" · sin "+EX.join(", "):""),
     hor:MEALS.length+" comidas · de "+MT[0]+" a "+MT[MT.length-1],
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
@@ -6868,9 +6872,9 @@ function vPerfil(){
     </div></fieldset></details>
     <details class="psec" data-ps="fc" ${psOpen("fc")}><summary><span class="ps-t"><b>Frecuencia cardiaca</b><small>${psSum.fc}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Frecuencia cardiaca</legend><div class="fields">
       ${f("hrmax","FC máxima","186","ppm")}${f("hrrest","FC en reposo","55","ppm")}
-      ${f("lthr","Umbral de lactato (Coros, EvoLab)","165","ppm")}
+      ${f("lthr","Umbral de lactato (Coros, EvoLab)",autoLthr()?String(autoLthr()):"165","ppm")}
       <label class="f" for="p_level">Nivel de entrenamiento<select id="p_level">${Object.entries(LEVELS).map(([k,v])=>`<option value="${k}" ${(p.level||"mid")===k?"selected":""}>${v.l}</option>`).join("")}</select></label>
-    </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.</p></fieldset></details>
+    </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.${!p.lthr&&autoLthr()?` Si lo dejas vacío, uso el estimado con tus esfuerzos sostenidos de los últimos 4 meses: <b>${autoLthr()} ppm</b>.`:""}</p></fieldset></details>
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
       <label class="f" for="p_store">Dónde haces la compra<select id="p_store">${[["","En cualquier súper"],["merc","Mercadona"]].map(([k,l])=>`<option value="${k}" ${(p.store||"")===k?"selected":""}>${l}</option>`).join("")}</select></label>
       <label class="f" for="p_diet">Tipo de dieta<select id="p_diet">${[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]].map(([k,l])=>`<option value="${k}" ${(p.diet||"omni")===k?"selected":""}>${l}</option>`).join("")}</select></label>
@@ -7460,6 +7464,46 @@ function hrvChart(k,s){const H=S.hrv||{},pts=[],line=[];for(let i=29;i>=0;i--){c
   if(pts.length<2||line.length<2)return"";
   return`<div class="hv-ch">${VZ.line({id:"hv",color:"#ff375f",label:"VFC de las últimas 30 noches con tu rango normal",pts,line,band:{lo:s.lo,hi:s.hi,label:"rango"},fmt:v=>fmtInt(v),tip:p=>fmtInt(p.v)+" ms",h:150})}<p class="hv-lg"><span><i class="hv-d"></i>cada noche</span><span><i class="hv-l"></i>media de 7 días</span><span><i class="hv-b"></i>tu rango normal</span></p></div>`}
 function hrvN(k){const H=S.hrv||{};let n=0;for(let i=1;i<=60;i++)if(H[shiftKey(k,-i)]>0)n++;return n}
+
+/* Pulso fiable, umbral automático y VO2máx por tramos estables (v229).
+   - Pulso dudoso: tu relación personal entre potencia de carrera (o ritmo) y pulso. Si una carrera queda muy por debajo
+     de lo que te corresponde (−10 % con potencia, −15 % con ritmo), el sensor falló: no cuenta para umbral, VO2máx ni deriva,
+     y su reparto de sustratos se calcula con el pulso que te tocaba.
+   - Umbral automático: el mejor pulso medio de 30 min en sesiones fiables de los últimos 120 días (mín. 3 sesiones).
+   - VO2máx: solo tramos estables (≥5 min con pulso asentado, sin los 3 min tras un cambio de ritmo), entre el 80 y el 92 %
+     de la reserva; trail con un 5 % más de coste; mediana por sesión. */
+function hrQual(st){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth,w=st&&st.watts;if(!t||!h)return null;const n=Math.min(t.length,h.length);
+  let sh=0,sv=0,sw=0,c=0,cw=0;for(let i=1;i<n;i++){const dt=Math.min(10,t[i]-t[i-1]);if(dt<=0||t[i]<300)continue;if(v&&!(v[i]>1.5))continue;sh+=h[i]*dt;c+=dt;if(v)sv+=v[i]*dt;if(w&&w[i]>0){sw+=w[i]*dt;cw+=dt}}
+  return c>=600?{h:sh/c,v:v?sv/c:null,w:cw>c*.6?sw/cw:null}:null}
+function bestAvg(t,h,win,from){/* mejor media de `h` en una ventana de `win` segundos (empezando después de `from`) */
+  if(!t||!h)return null;const n=Math.min(t.length,h.length);let best=null,j=0,s=0;const area=[0];for(let i=1;i<n;i++)area.push(area[i-1]+(h[i]+h[i-1])/2*Math.max(0,t[i]-t[i-1]));
+  for(let i=0;i<n;i++){if(t[i]<from)continue;while(j<n-1&&t[j]-t[i]<win)j++;if(t[j]-t[i]<win*.95)break;const a=(area[j]-area[i])/(t[j]-t[i]);if(best==null||a>best)best=a}
+  return best}
+function hrSuspects(){const P=S.pmx||{},k=(S.pmxRev||0)+"|"+Object.keys(P).length;if(hrSuspects.k===k)return hrSuspects.v;
+  const from=shiftKey(today(),-180),R=Object.entries(P).filter(([id,x])=>x.sp==="run"&&!x.err&&x.q&&x.q.h&&x.d>=from).map(([id,x])=>({id,...x.q}));
+  const fit=(L,f)=>{let use=L.slice();let a=0,b=0;for(let it=0;it<5;it++){if(use.length<6)return null;const mx=use.reduce((s,p)=>s+p[f],0)/use.length,my=use.reduce((s,p)=>s+p.h,0)/use.length;
+      let sxy=0,sxx=0;use.forEach(p=>{sxy+=(p[f]-mx)*(p.h-my);sxx+=(p[f]-mx)**2});if(!sxx)return null;b=sxy/sxx;a=my-b*mx;use=L.filter(p=>p.h>=(a+b*p[f])*.9)}return{a,b}};
+  const out={},W=R.filter(p=>p.w),V=R.filter(p=>p.v&&!p.w);
+  const fw=W.length>=8?fit(W,"w"):null;if(fw&&fw.b>0)W.forEach(p=>{const e=fw.a+fw.b*p.w;if(p.h<e*.9)out[p.id]={exp:e,ratio:p.h/e}});
+  const AV=R.filter(p=>p.v),fv=AV.length>=8?fit(AV,"v"):null;if(fv&&fv.b>0)V.forEach(p=>{const e=fv.a+fv.b*p.v;if(p.h<e*.85)out[p.id]={exp:e,ratio:p.h/e}});
+  hrSuspects.k=k;hrSuspects.v=out;return out}
+function hrSuspect(id){return hrSuspects()[id]||null}
+function autoLthr(){const P=S.pmx||{},k=(S.pmxRev||0)+"|"+Object.keys(P).length+"|"+today();if(autoLthr.k===k)return autoLthr.v;
+  const from=shiftKey(today(),-120),sus=hrSuspects(),L=Object.entries(P).filter(([id,x])=>!x.err&&x.l30&&x.d>=from&&!sus[id]).map(([id,x])=>x.l30);
+  autoLthr.k=k;autoLthr.v=L.length>=3?Math.round(Math.max(...L)):null;return autoLthr.v}
+/* VO2máx de una carrera con tramos estables */
+function runVo2b(st,hp,trail){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v||!hp)return null;const n=Math.min(t.length,h.length,v.length),out=[];
+  const sv=[];for(let i=0;i<n;i++){let a=i,s=0,c=0;while(a>=0&&t[i]-t[a]<=30){s+=v[a];c++;a--}sv.push(s/c)}
+  let i=0;while(i<n){if(t[i]<480){i++;continue}let j=i;while(j<n-1&&t[j]-t[i]<300)j++;if(t[j]-t[i]<285)break;
+    let p=i;while(p>0&&t[i]-t[p]<180)p--;let vmin=99,vmax=0,hmin=999,hmax=0,vs=0,hs=0,c=0;
+    for(let q=p;q<=j;q++){vmin=Math.min(vmin,sv[q]);vmax=Math.max(vmax,sv[q])}
+    for(let q=i;q<=j;q++){hmin=Math.min(hmin,h[q]);hmax=Math.max(hmax,h[q]);vs+=sv[q];hs+=h[q];c++}
+    const vm=vs/c,hm=hs/c;
+    if(vm>=1.8&&vm<=6.5&&(vmax-vmin)/vm<.1&&(hmax-hmin)/hm<.03){const r=(hm-hp.rest)/(hp.max-hp.rest);
+      if(r>=.8&&r<=.92){const cost=vo2Cost(vm*60)*(trail?1.05:1),vo=3.5+(cost-3.5)/r;if(vo>20&&vo<85)out.push(vo)}
+      i=j;continue}
+    i++}
+  return out.length?med(out):null}
 
 })();
 </script>
