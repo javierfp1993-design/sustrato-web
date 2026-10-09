@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T15:05:24.885Z">
+<meta name="sustrato-version" content="2026-10-09T15:31:23.802Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3044,6 +3044,10 @@ html[data-theme="dark"] .en-q.ok{color:#30d158}html[data-theme="dark"] .en-q.lo{
 .hv-lg span{display:inline-flex;align-items:center;gap:6px}
 .hv-lg i{display:inline-block;flex:none}.hv-d{width:8px;height:8px;border-radius:50%;background:#ff375f;opacity:.35}.hv-l{width:14px;height:2px;border-radius:1px;background:#ff375f}.hv-b{width:14px;height:8px;border-radius:2px;background:var(--vz-n1)}
 
+/* Proteína por comida (v226): aviso solo cuando una comida principal no llega */
+.mprot{display:block;margin-top:6px;font-size:13px;font-weight:600;color:#c46a00}
+html[data-theme="dark"] .mprot{color:#ff9f0a}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3115,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="225";
+const APP_VER="226";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3322,8 +3326,14 @@ function mealPlan(t,k){
   const wc=meals.map(m=>m.post?1.8:m.pre?1.4:1),wf=meals.map(m=>m.post?.7:m.pre?.5:1.15),wp=meals.map(m=>m.post?1.2:1);
   const sum=a=>a.reduce((s,v)=>s+v,0),sc=sum(wc),sf=sum(wf),sp=sum(wp),baseC=t.C-t.bonus;
   meals.forEach((m,i)=>{m.P=t.P*wp[i]/sp;m.C=baseC*wc[i]/sc+(m.id==="dinner"?t.bonus:0);m.F=t.F*wf[i]/sf;m.kcal=4*m.P+4*m.C+9*m.F});
+  /* Proteína por comida (v226): cada comida principal (y la de después de entrenar) llega a 0,3 g/kg, tomando de la merienda */
+  {const thr=protThr();if(thr){const sn=meals.find(m=>m.id==="snack"),need=meals.filter(m=>protMain(m)&&m.P<thr);let short=need.reduce((a,m)=>a+thr-m.P,0);
+    if(sn&&!protMain(sn)&&short>0){const take=Math.min(short,Math.max(0,sn.P-.15*num((S.profile||{}).weight)));let left=take;need.forEach(m=>{const g=Math.min(thr-m.P,left);m.P+=g;left-=g;m.kcal=4*m.P+4*m.C+9*m.F});sn.P-=take-left;sn.kcal=4*sn.P+4*sn.C+9*sn.F}}}
   return{meals,blocks};
 }
+
+function protThr(){const w=num((S.profile||{}).weight);return w?.3*w:null}
+function protMain(m){return m.id!=="snack"||!!m.post}
 
 /* ---------- Iconos ---------- */
 const IC={
@@ -6152,14 +6162,15 @@ function mealsCard(t){
     else if(st==="chg"){line=esc(lg.n||"Otra cosa");kc=kcOf(lg);src=lg;lab=lg.photo?"por foto":"otra cosa"}
     else if(st==="skip"){line="Me la salté";kc=0;lab="saltada"}
     const bar=st==="skip"?"":`<span class="mbar"><i style="width:${w(4*(src.P||0))}%;background:var(--prot)"></i><i style="width:${w(4*(src.C||0))}%;background:var(--carb)"></i><i style="width:${w(9*(src.F||0))}%;background:var(--fat)"></i></span>`;
-    const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small>${lab}</small>`:""}</span>`;
+    const thr=protThr(),pv=src.P||0,pLow=thr&&st!=="skip"&&protMain(m)&&pv<thr*.95;
+    const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}${pLow?`<span class="mprot">Poca proteína · ${fmtInt(pv)} de ${fmtInt(thr)} g</span>`:""}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small>${lab}</small>`:""}</span>`;
     return`<div class="meal mr2${st?" st-"+st:""}"><div class="mline">${chk}${canL?`<button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}: registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}<button class="mb-go" data-mopen="${m.id}" tabindex="-1" aria-hidden="true">›</button>`:`<div class="mbody">${body}</div>`}</div>${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
   const blocks=mp.blocks.length?mp.blocks.map(b=>`${esc(b.label)} ${fromMin(b.st)}–${fromMin(b.en)}`).join(" · "):"Sin entreno";
   return`<section class="glass pad fade hue-gly"><div class="row"><h2>Reparto por comidas</h2><span class="note" style="margin:0">${blocks}</span></div>
     ${logSummary(t,S.day)}
     <div class="meals">${rows}</div>
     ${xLine(t)}
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></details></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida: cada comida principal, y la de después de entrenar, con al menos ${fmtInt(protThr()||0)} g (0,3 g/kg), lo que activa la síntesis muscular.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></details></section>`;
 }
 /* Micros y suplementos: detalle secundario, en una hoja desde el pie de Comidas */
 const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c3.7 4.4 6.6 7.9 6.6 11.8a6.6 6.6 0 0 1-13.2 0c0-3.9 2.9-7.4 6.6-11.8z"/></svg>';
