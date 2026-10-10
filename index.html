@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T18:29:54.766Z">
+<meta name="sustrato-version" content="2026-10-10T19:03:55.532Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="230";
+const APP_VER="231";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4704,11 +4704,20 @@ async function loadActs(force){
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
 function subKey(id){const hp=hrParams(S.profile||{}),su=hrSuspect(id);return hp?["v5",hp.mode,r0(hp.max),hp.rest,hp.lthr||0,hp.mid.toFixed(3),S.fasted[id]?"f":"n",su?"s"+su.ratio.toFixed(2):""].join("_"):"none"}
+/* v231: rehace el reparto con la curva por minutos ya guardada (120 tramos de la salida) cuando solo cambian los parámetros;
+   no vuelve a pedir el pulso a Strava, que tiene un límite de peticiones */
+function reSub(o,a,hp){if(!o||!o.hasHr||!o.series||!o.series.length||!o.dur||!(o.cho+o.fat>0))return null;
+  const NB=o.series.length,bs=o.dur/NB,sc=a.kcal/(o.cho+o.fat),su=hrSuspect(a.id),hf=(o.hrFix||1)/(su?su.ratio:1),fasted=!!S.fasted[a.id];
+  const lt=hp.lthr||0.89*hp.max,zt={e:0,m:0,h:0},bands={};BANDS.forEach(b=>bands[b.id]=0);let cho=0,fat=0;
+  const series=o.series.map((b,i)=>{if(b.h==null)return b;const h=b.h*hf,k=(b.c+b.f)*bs/60*sc,f=choFrac(h,hp,{t:(i+.5)*bs,fasted});cho+=k*f;fat+=k*(1-f);
+    bands[bandOf(f).id]+=bs;zt[h<0.85*lt?"e":h<lt?"m":"h"]+=bs;const m=bs/60;return{c:+(k*f/m).toFixed(2),f:+(k*(1-f)/m).toFixed(2),h:+h.toFixed(1)}});
+  const r={cho:+cho.toFixed(1),fat:+fat.toFixed(1),bands,zt,series,dur:o.dur,hasHr:true};if(su)r.hrFix=+su.ratio.toFixed(2);return r}
 async function ensureSub(a){
   if(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id))return S.subs[a.id];
   const hp=hrParams(S.profile||{});
   if(!a.kcal)return null;
   if(!hp){return null}
+  {const rs=reSub(S.subs[a.id],a,hp);if(rs){rs.key=subKey(a.id);S.subs[a.id]=rs;persistSub(a.id,rs);return rs}}
   try{
     const st=await call("get_activity_streams",{activity_id:a.id,streams:["time","heart_rate"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
     const su=hrSuspect(a.id),hrs=st&&st.heart_rate&&su?st.heart_rate.map(x=>x/su.ratio):st&&st.heart_rate;
@@ -5488,11 +5497,14 @@ function weightHistory(){
   return`<section class="glass pad fade"><div class="row"><h2>Pesajes</h2><button class="chip sm" data-act="wtedit">＋ Pesarme</button></div><div class="whl">${rows}</div>${W.length>6?`<button class="chip sm" data-act="wtall" style="margin-top:10px">${S.wtAll?"Ver menos":"Ver los "+W.length}</button>`:""}</section>`;
 }
 /* ---------- Rendimiento: VO2máx, umbral, FTP y cadencia con tus propios entrenos ----------
-   Carrera: en tramos estables, el coste de oxígeno del ritmo (Daniels) dividido por el % de pulso de reserva (Swain).
+   Carrera: en tramos estables, el coste de oxígeno del ritmo (ACSM, desde v231) dividido por el % de pulso de reserva (Swain).
    Bici sin potenciómetro: física de tus subidas (peso, bici, pendiente, velocidad); con potenciómetro, tu mejor 20′.
    Cada salida se calcula una vez y se guarda; el valor que se muestra es la mediana de las últimas semanas. */
 const PERF_V=4;
-function vo2Cost(vmin){return -4.6+0.182258*vmin+0.000104*vmin*vmin}
+/* v231: coste de correr del ACSM (validado con 41 pruebas de laboratorio con escalones estables; el de Daniels lo infravaloraba un 20–25 %) */
+function vo2Cost(vmin){return 0.2*vmin+3.5}
+/* Ritmos de entrenamiento: siguen el método de Daniels (sus % de VO2max están definidos con su propio coste) */
+function danCost(vmin){return -4.6+0.182258*vmin+0.000104*vmin*vmin}
 function runVo2(st,hp){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v)return null;const n=Math.min(t.length,h.length,v.length),est=[];
   for(let i=1;i<n;i++){if(t[i]<480)continue;let a=i,sum=0,c=0;while(a>0&&t[i]-t[a]<=60){sum+=v[a];c++;a--}const vs=sum/c;if(vs<1.8||vs>6.5)continue;
     /* pulso incoherente con el minuto anterior (lecturas de muñeca que se caen): fuera */
@@ -5553,20 +5565,23 @@ const perfRun=a=>(a.sport==="run"||a.sport==="trail")&&a.dist>=3000&&a.mov>=900&
 const perfBike=a=>a.sport==="mtb"&&a.mov>=1200;
 async function ensurePerf(){
   if(S.pmxBusy||S.actsState!=="ok")return;S.pmx=S.pmx||{};const from=shiftKey(today(),-120),hk=perfHk(),kg=num((S.profile||{}).weight)||75,hp=hrParams(S.profile||{});
-  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&p.hk!==hk)||(p.sp==="bike"&&p.kg!==kg)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,40);
+  /* v231: con los tramos guardados, el VO2máx se recalcula aquí mismo (sin pedir nada a Strava) */
+  let loc=0;S.acts.forEach(a=>{const p=S.pmx[a.id];if(p&&p.sp==="run"&&p.sg&&p.hk!==hk&&hp){p.vo2=vo2Segs(p.sg,hp,a.sport==="trail");p.hk=hk;loc++}});if(loc){S.pmxRev=(S.pmxRev||0)+1;savePerf()}
+  /* Lo que sí necesita datos de Strava va en tandas de 12, con pausa, para no agotar su límite de peticiones (la lista de actividades va primero) */
+  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&!p.err&&!p.sg)||(p.sp==="bike"&&Math.abs((p.kg||0)-kg)>1.5)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,12);
   if(!todo.length)return;S.pmxBusy=true;let n=0;
   for(const a of todo){const run=perfRun(a),sid=a.sid||a.id;
     try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
       const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;const du=a.mov>=4500?durab(st,run,kg,a.type==="Ride"):null;
       const q=hrQual(st),l30=bestAvg(st&&st.time,st&&st.heart_rate,1800,300);
-      if(run)S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,vo2:hp?runVo2b(st,hp,a.sport==="trail"):null,dr,du,q,l30};
+      if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,sg,vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
       else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du,q,l30}}
     }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
-    S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render()}
+    S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
   S.pmxBusy=false;savePerf();render()}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
 function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{id,hot:x.sp==="run"&&hot(id)})),sus=hrSuspects(),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&!sus[x.id]&&x.d<=end&&x.d>shiftKey(end,-days));
-  let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);{const cool=r.filter(x=>!x.hot);if(cool.length>=2)r=cool}
+  let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);if(r.length<2)r=win("run","vo2",112);{const cool=r.filter(x=>!x.hot);if(cool.length>=2)r=cool}
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
   const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
   const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=r.length?med(r.map(x=>x.vo2)):null,vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
@@ -5574,9 +5589,9 @@ function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id
 function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
   const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,ftp:x.ftp})}
   const cadR=med(S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.cad).slice(0,12).map(a=>a.cad*2)),cadB=med(S.acts.filter(a=>a.sport==="mtb"&&a.cad).slice(0,12).map(a=>a.cad));
-  const thr=now.vo2?(()=>{const tg=.88*now.vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(vo2Cost(m)<tg)lo=m;else hi=m}return 60000/lo})():null;
+  const thr=now.vo2?(()=>{const tg=.88*now.vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(danCost(m)<tg)lo=m;else hi=m}return 60000/lo})():null;
   perfAgg.k=k;perfAgg.v={...now,prev,trend,cadR,cadB,thr};return perfAgg.v}
-function paceAt(fr,vo2){const tg=fr*vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(vo2Cost(m)<tg)lo=m;else hi=m}return 60000/lo}
+function paceAt(fr,vo2){const tg=fr*vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(danCost(m)<tg)lo=m;else hi=m}return 60000/lo}
 /* Tablas de referencia del Cooper Institute (ml/kg/min): Bajo, Regular, Bueno, Excelente, Superior */
 const VO2N={m:[[29,33,36.5,42.5,46.5,52.5],[39,31.5,35.5,41,45,49.5],[49,30.2,33.6,39,43.8,48.1],[59,26.1,31,35.8,41,45.4],[200,20.5,26.1,32.3,36.5,44.3]],
   f:[[29,23.6,29,33,37,41.1],[39,22.8,27,31.5,35.7,40.1],[49,21,24.5,29,32.9,37],[59,20.2,22.8,27,31.5,35.8],[200,17.5,20.3,24.5,30.3,31.5]]};
@@ -5609,7 +5624,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
       <div class="kv pf-kv"><div><span>Ritmo umbral</span><b>${fmtClock(a.thr)} <small>/km</small></b></div>${a.cadR?`<div><span>Cadencia</span><b>${Math.round(a.cadR)} <small>pasos/min</small></b></div>`:""}</div>
       <h3 class="pf-zh">Tus ritmos por zonas <small>min/km</small></h3>
       <div class="pf-zl">${zrow(1,"Recuperación","más de "+P(.6))}${zrow(2,"Base aeróbica",P(.74)+" – "+P(.6))}${zrow(3,"Tempo",P(.83)+" – "+P(.75))}${zrow(4,"Umbral",P(.92)+" – "+P(.84))}${zrow(5,"VO2max","menos de "+P(.93))}</div>
-      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de tus carreras de las últimas 6 semanas (las 3 mejores, sin las de calor), y con tu FTP de bici si da un valor más alto. Nivel según las tablas del Cooper Institute para tu edad y sexo. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
+      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM, que es el que coincide con las pruebas de laboratorio, y con tu FTP de bici si da un valor más alto. Nivel según las tablas del Cooper Institute para tu edad y sexo. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
   else{const ftp=a.ftp,wk=kg?ftp/kg:null,df=a.prev.ftp?Math.round(ftp-a.prev.ftp):null;
     const bands=[[0,2,"Inicio","<2"],[2,2.8,"Aficionado","2–2,8"],[2.8,3.5,"Bueno","2,8–3,5"],[3.5,4.2,"Muy bueno","3,5–4,2"],[4.2,5,"Excelente","4,2+"]];
     const W=x=>Math.round(ftp*x);
@@ -7474,8 +7489,8 @@ function hrvN(k){const H=S.hrv||{};let n=0;for(let i=1;i<=60;i++)if(H[shiftKey(k
      de lo que te corresponde (−10 % con potencia, −15 % con ritmo), el sensor falló: no cuenta para umbral, VO2máx ni deriva,
      y su reparto de sustratos se calcula con el pulso que te tocaba.
    - Umbral automático: el mejor pulso medio de 30 min en sesiones fiables de los últimos 120 días (mín. 3 sesiones).
-   - VO2máx: solo tramos estables (≥5 min con pulso asentado, sin los 3 min tras un cambio de ritmo), entre el 80 y el 92 %
-     de la reserva; trail con un 5 % más de coste; mediana por sesión. */
+   - VO2máx: solo tramos estables (≥5 min con pulso asentado, sin los 3 min tras un cambio de ritmo), entre el 70 y el 92 %
+     de la reserva (v231; antes 80); trail con un 5 % más de coste; mediana por sesión. */
 function hrQual(st){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth,w=st&&st.watts;if(!t||!h)return null;const n=Math.min(t.length,h.length);
   let sh=0,sv=0,sw=0,c=0,cw=0;for(let i=1;i<n;i++){const dt=Math.min(10,t[i]-t[i-1]);if(dt<=0||t[i]<300)continue;if(v&&!(v[i]>1.5))continue;sh+=h[i]*dt;c+=dt;if(v)sv+=v[i]*dt;if(w&&w[i]>0){sw+=w[i]*dt;cw+=dt}}
   return c>=600?{h:sh/c,v:v?sv/c:null,w:cw>c*.6?sw/cw:null}:null}
@@ -7496,18 +7511,22 @@ function autoLthr(){const P=S.pmx||{},k=(S.pmxRev||0)+"|"+Object.keys(P).length+
   const from=shiftKey(today(),-120),sus=hrSuspects(),L=Object.entries(P).filter(([id,x])=>!x.err&&x.l30&&x.d>=from&&!sus[id]).map(([id,x])=>x.l30);
   autoLthr.k=k;autoLthr.v=L.length>=3?Math.round(Math.max(...L)):null;return autoLthr.v}
 /* VO2máx de una carrera con tramos estables */
-function runVo2b(st,hp,trail){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v||!hp)return null;const n=Math.min(t.length,h.length,v.length),out=[];
+/* v231: los tramos estables (velocidad m/s, pulso) se guardan por salida; así un cambio de fórmula o de pulso máx/reposo se recalcula sin volver a pedir datos a Strava */
+function runSegs(st){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v)return null;const n=Math.min(t.length,h.length,v.length),out=[];
   const sv=[];for(let i=0;i<n;i++){let a=i,s=0,c=0;while(a>=0&&t[i]-t[a]<=30){s+=v[a];c++;a--}sv.push(s/c)}
   let i=0;while(i<n){if(t[i]<480){i++;continue}let j=i;while(j<n-1&&t[j]-t[i]<300)j++;if(t[j]-t[i]<285)break;
     let p=i;while(p>0&&t[i]-t[p]<180)p--;let vmin=99,vmax=0,hmin=999,hmax=0,vs=0,hs=0,c=0;
     for(let q=p;q<=j;q++){vmin=Math.min(vmin,sv[q]);vmax=Math.max(vmax,sv[q])}
     for(let q=i;q<=j;q++){hmin=Math.min(hmin,h[q]);hmax=Math.max(hmax,h[q]);vs+=sv[q];hs+=h[q];c++}
     const vm=vs/c,hm=hs/c;
-    if(vm>=1.8&&vm<=6.5&&(vmax-vmin)/vm<.1&&(hmax-hmin)/hm<.03){const r=(hm-hp.rest)/(hp.max-hp.rest);
-      if(r>=.8&&r<=.92){const cost=vo2Cost(vm*60)*(trail?1.05:1),vo=3.5+(cost-3.5)/r;if(vo>20&&vo<85)out.push(vo)}
-      i=j;continue}
+    if(vm>=1.8&&vm<=6.5&&(vmax-vmin)/vm<.15&&(hmax-hmin)/hm<.04){out.push([+vm.toFixed(3),+hm.toFixed(1)]);i=j;continue}
     i++}
+  return out}
+/* VO2máx de los tramos: desde el 70 % de reserva (la relación pulso–oxígeno se cumple desde el 50 % en laboratorio) */
+function vo2Segs(sg,hp,trail){if(!sg||!hp)return null;const out=[];
+  sg.forEach(([vm,hm])=>{const r=(hm-hp.rest)/(hp.max-hp.rest);if(r>=.7&&r<=.92){const cost=vo2Cost(vm*60)*(trail?1.05:1),vo=3.5+(cost-3.5)/r;if(vo>20&&vo<85)out.push(vo)}});
   return out.length?med(out):null}
+function runVo2b(st,hp,trail){return vo2Segs(runSegs(st),hp,trail)}
 
 })();
 </script>
