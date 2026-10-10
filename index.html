@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T19:35:15.087Z">
+<meta name="sustrato-version" content="2026-10-10T20:15:46.459Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="233";
+const APP_VER="234";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4692,22 +4692,43 @@ async function call(tool,input,opts){
   try{return(await S.mcp.callTool(SERVER,tool,input,o)).payload}
   catch(e){if(e&&e.retryable){await new Promise(r=>setTimeout(r,(e.retryAfterMs||800)+Math.random()*600));return(await S.mcp.callTool(SERVER,tool,input,o)).payload}throw e}
 }
+/* v234: las actividades se guardan en el dispositivo. Al abrir se enseñan al momento y, en segundo plano, solo se piden las de los
+   últimos días; la lista completa de 370 días se repasa una vez al día (o con «Actualizar»), sin bloquear nada. */
+const ACTS_LS="sustrato-acts-v1";
+function mapAct(a){const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
+  start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
+  speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,
+  poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}
+function actsCacheRead(){try{const v=JSON.parse(localStorage.getItem(ACTS_LS)||"null");return v&&Array.isArray(v.list)&&v.list.length&&v.uid===(S.uid||"")?v:null}catch(e){return null}}
+function actsCacheWrite(full){const prev=actsCacheRead(),v={uid:S.uid||"",at:Date.now(),full:full?Date.now():(prev&&prev.full)||0,list:S.acts};
+  try{localStorage.setItem(ACTS_LS,JSON.stringify(v))}catch(e){try{v.list=S.acts.map(a=>Object.assign({},a,{poly:null}));localStorage.setItem(ACTS_LS,JSON.stringify(v))}catch(e2){}}}
+async function fetchActs(start,force){let after=null,all=[];
+  for(let page=0;page<6;page++){
+    const inp={first:100,range_start:start};if(after)inp.after=after;
+    const res=await call("list_activities",inp,force?{cache:{staleTime:0,gcTime:86400000,refresh:true}}:undefined);
+    const list=(res&&res.activities)||[];all=all.concat(list);
+    if(!res||!res.has_next_page||!res.end_cursor)break;after=res.end_cursor;
+  }
+  return all.map(mapAct)}
+const actsSig=L=>L.map(a=>a.id+":"+a.kcal+":"+a.mov+":"+a.name).join("|");
 async function loadActs(force){
+  const d=new Date();d.setDate(d.getDate()-370);const start370=keyOf(d)+"T00:00:00";
+  const cached=!force&&!S.acts.length?actsCacheRead():null;
+  if(cached){
+    /* Al momento, lo guardado; luego se pone al día en silencio */
+    S.acts=cached.list.filter(a=>a.day>=start370.slice(0,10));S.actsState="ok";$("#status").textContent="Reloj conectado";
+    render();ensureDaySubs();setTimeout(ensurePerf,4000);
+    const full=Date.now()-(cached.full||0)>864e5,newest=S.acts.length?S.acts[0].day:start370.slice(0,10),from=full?start370:shiftKey(newest,-3)+"T00:00:00";
+    S.actsSync=true;
+    try{const got=await fetchActs(from,false),cut=from.slice(0,10),sig0=actsSig(S.acts);
+      const ids=new Set(got.map(a=>a.id));S.acts=(full?got:got.concat(S.acts.filter(a=>a.day<cut&&!ids.has(a.id)))).sort((x,y)=>x.start<y.start?1:-1);
+      actsCacheWrite(full);if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}}
+    catch(e){/* sin conexión: se queda lo guardado */}
+    S.actsSync=false;return}
   S.actsState="loading";S.actsErr=null;render();
   try{
-    const d=new Date();d.setDate(d.getDate()-370);
-    const start=keyOf(d)+"T00:00:00";let after=null,all=[];
-    for(let page=0;page<6;page++){
-      const inp={first:100,range_start:start};if(after)inp.after=after;
-      const res=await call("list_activities",inp,force?{cache:{staleTime:0,gcTime:86400000,refresh:true}}:undefined);
-      const list=(res&&res.activities)||[];all=all.concat(list);
-      if(!res||!res.has_next_page||!res.end_cursor)break;after=res.end_cursor;
-    }
-    S.acts=all.map(a=>{const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
-      start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
-      speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,
-      poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}).sort((x,y)=>x.start<y.start?1:-1);
-    S.actsState="ok";$("#status").textContent="Reloj conectado";
+    S.acts=(await fetchActs(start370,force)).sort((x,y)=>x.start<y.start?1:-1);
+    S.actsState="ok";$("#status").textContent="Strava conectado";actsCacheWrite(true);
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
