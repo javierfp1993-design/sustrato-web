@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T19:23:35.777Z">
+<meta name="sustrato-version" content="2026-10-10T19:35:15.087Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="232";
+const APP_VER="233";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5505,12 +5505,13 @@ function weightHistory(){
   return`<section class="glass pad fade"><div class="row"><h2>Pesajes</h2><button class="chip sm" data-act="wtedit">＋ Pesarme</button></div><div class="whl">${rows}</div>${W.length>6?`<button class="chip sm" data-act="wtall" style="margin-top:10px">${S.wtAll?"Ver menos":"Ver los "+W.length}</button>`:""}</section>`;
 }
 /* ---------- Rendimiento: VO2máx, umbral, FTP y cadencia con tus propios entrenos ----------
-   Carrera: en tramos estables, el coste de oxígeno del ritmo (ACSM, desde v231) dividido por el % de pulso de reserva (Swain).
+   Carrera: en tramos estables, el coste de oxígeno del ritmo (ACSM desde v231; corregido a ritmo lento desde v233) dividido por el % de pulso de reserva (Swain).
    Bici sin potenciómetro: física de tus subidas (peso, bici, pendiente, velocidad); con potenciómetro, tu mejor 20′.
    Cada salida se calcula una vez y se guarda; el valor que se muestra es la mediana de las últimas semanas. */
 const PERF_V=4;
 /* v231: coste de correr del ACSM (validado con 41 pruebas de laboratorio con escalones estables; el de Daniels lo infravaloraba un 20–25 %) */
-function vo2Cost(vmin){return 0.2*vmin+3.5}
+/* v233: a ritmo lento (< ~10 km/h) correr cuesta más de lo que dice el ACSM; corrección ajustada con las mismas 41 pruebas (validación cruzada por persona). Por encima, ACSM sin tocar. */
+const COST_V=2;function vo2Cost(vmin){return Math.max(0.2*vmin+3.5,12.61+0.1462*vmin)}
 /* Ritmos de entrenamiento: siguen el método de Daniels (sus % de VO2max están definidos con su propio coste) */
 function danCost(vmin){return -4.6+0.182258*vmin+0.000104*vmin*vmin}
 function runVo2(st,hp){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v)return null;const n=Math.min(t.length,h.length,v.length),est=[];
@@ -5574,7 +5575,7 @@ const perfBike=a=>a.sport==="mtb"&&a.mov>=1200;
 async function ensurePerf(){
   if(S.pmxBusy||S.actsState!=="ok")return;S.pmx=S.pmx||{};const from=shiftKey(today(),-120),hk=perfHk(),kg=num((S.profile||{}).weight)||75,hp=hrParams(S.profile||{});
   /* v231: con los tramos guardados, el VO2máx se recalcula aquí mismo (sin pedir nada a Strava) */
-  let loc=0;S.acts.forEach(a=>{const p=S.pmx[a.id];if(p&&p.sp==="run"&&p.sg&&p.hk!==hk&&hp){p.vo2=vo2Segs(p.sg,hp,a.sport==="trail");p.hk=hk;loc++}});if(loc){S.pmxRev=(S.pmxRev||0)+1;savePerf()}
+  let loc=0;S.acts.forEach(a=>{const p=S.pmx[a.id];if(p&&p.sp==="run"&&p.sg&&(p.hk!==hk||p.cv!==COST_V)&&hp){p.vo2=vo2Segs(p.sg,hp,a.sport==="trail");p.hk=hk;p.cv=COST_V;loc++}});if(loc){S.pmxRev=(S.pmxRev||0)+1;savePerf()}
   /* Lo que sí necesita datos de Strava va en tandas de 12, con pausa, para no agotar su límite de peticiones (la lista de actividades va primero) */
   const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&!p.err&&!p.sg)||(p.sp==="bike"&&Math.abs((p.kg||0)-kg)>1.5)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,12);
   if(!todo.length)return;S.pmxBusy=true;let n=0;
@@ -5582,7 +5583,7 @@ async function ensurePerf(){
     try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
       const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;const du=a.mov>=4500?durab(st,run,kg,a.type==="Ride"):null;
       const q=hrQual(st),l30=bestAvg(st&&st.time,st&&st.heart_rate,1800,300);
-      if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,sg,vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
+      if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,cv:COST_V,sg,vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
       else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du,q,l30}}
     }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
     S.pmxRev=(S.pmxRev||0)+1;savePerf(); /* v232: se guarda cada salida, para que cerrar la app a medias no obligue a repetir la tanda */
@@ -5633,7 +5634,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
       <div class="kv pf-kv"><div><span>Ritmo umbral</span><b>${fmtClock(a.thr)} <small>/km</small></b></div>${a.cadR?`<div><span>Cadencia</span><b>${Math.round(a.cadR)} <small>pasos/min</small></b></div>`:""}</div>
       <h3 class="pf-zh">Tus ritmos por zonas <small>min/km</small></h3>
       <div class="pf-zl">${zrow(1,"Recuperación","más de "+P(.6))}${zrow(2,"Base aeróbica",P(.74)+" – "+P(.6))}${zrow(3,"Tempo",P(.83)+" – "+P(.75))}${zrow(4,"Umbral",P(.92)+" – "+P(.84))}${zrow(5,"VO2max","menos de "+P(.93))}</div>
-      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM, que es el que coincide con las pruebas de laboratorio, y con tu FTP de bici si da un valor más alto. Nivel según las tablas del Cooper Institute para tu edad y sexo. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
+      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM (corregido a ritmo lento), que es el que coincide con las pruebas de laboratorio, y con tu FTP de bici si da un valor más alto. Nivel según las tablas del Cooper Institute para tu edad y sexo. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
   else{const ftp=a.ftp,wk=kg?ftp/kg:null,df=a.prev.ftp?Math.round(ftp-a.prev.ftp):null;
     const bands=[[0,2,"Inicio","<2"],[2,2.8,"Aficionado","2–2,8"],[2.8,3.5,"Bueno","2,8–3,5"],[3.5,4.2,"Muy bueno","3,5–4,2"],[4.2,5,"Excelente","4,2+"]];
     const W=x=>Math.round(ftp*x);
