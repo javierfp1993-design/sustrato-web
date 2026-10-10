@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T20:15:46.459Z">
+<meta name="sustrato-version" content="2026-10-10T20:30:59.121Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="234";
+const APP_VER="235";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4711,6 +4711,12 @@ async function fetchActs(start,force){let after=null,all=[];
   }
   return all.map(mapAct)}
 const actsSig=L=>L.map(a=>a.id+":"+a.kcal+":"+a.mov+":"+a.name).join("|");
+/* v235: si Strava no ha respondido (límite de peticiones, sin red) la lista llega solo con lo del reloj. Nunca se pierde nada por eso:
+   se suman las nuevas a las guardadas, y solo se quitan las borradas cuando la respuesta trae Strava de verdad. */
+function mergeActs(got,prev,cut,full){const stravaOk=got.some(a=>a.sid)||!prev.some(a=>a.sid),ids=new Set(got.map(a=>a.id)),sids=new Set(got.filter(a=>a.sid).map(a=>a.sid));
+  const keep=prev.filter(a=>!ids.has(a.id)&&!(a.sid&&sids.has(a.sid))&&(!(full&&stravaOk)&&(!stravaOk||a.day<cut)));
+  const pb={};prev.forEach(a=>pb[a.id]=a);const g2=stravaOk?got:got.map(a=>pb[a.id]&&pb[a.id].sid?pb[a.id]:a); /* sin Strava, se conserva la versión completa (nombre, ruta) */
+  return{list:g2.concat(keep).sort((x,y)=>x.start<y.start?1:-1),stravaOk}}
 async function loadActs(force){
   const d=new Date();d.setDate(d.getDate()-370);const start370=keyOf(d)+"T00:00:00";
   const cached=!force&&!S.acts.length?actsCacheRead():null;
@@ -4720,15 +4726,14 @@ async function loadActs(force){
     render();ensureDaySubs();setTimeout(ensurePerf,4000);
     const full=Date.now()-(cached.full||0)>864e5,newest=S.acts.length?S.acts[0].day:start370.slice(0,10),from=full?start370:shiftKey(newest,-3)+"T00:00:00";
     S.actsSync=true;
-    try{const got=await fetchActs(from,false),cut=from.slice(0,10),sig0=actsSig(S.acts);
-      const ids=new Set(got.map(a=>a.id));S.acts=(full?got:got.concat(S.acts.filter(a=>a.day<cut&&!ids.has(a.id)))).sort((x,y)=>x.start<y.start?1:-1);
-      actsCacheWrite(full);if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}}
+    try{const got=await fetchActs(from,false),sig0=actsSig(S.acts),m=mergeActs(got,S.acts,from.slice(0,10),full);
+      S.acts=m.list;actsCacheWrite(full&&m.stravaOk);if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}}
     catch(e){/* sin conexión: se queda lo guardado */}
     S.actsSync=false;return}
   S.actsState="loading";S.actsErr=null;render();
   try{
-    S.acts=(await fetchActs(start370,force)).sort((x,y)=>x.start<y.start?1:-1);
-    S.actsState="ok";$("#status").textContent="Strava conectado";actsCacheWrite(true);
+    const got=await fetchActs(start370,force),prev=S.acts.length?S.acts:((actsCacheRead()||{}).list||[]),m=mergeActs(got,prev,"0000",true);
+    S.acts=m.list;S.actsState="ok";$("#status").textContent="Strava conectado";actsCacheWrite(m.stravaOk);
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
