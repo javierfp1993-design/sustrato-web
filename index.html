@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-09T19:50:28.300Z">
+<meta name="sustrato-version" content="2026-10-10T18:29:54.766Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="229";
+const APP_VER="230";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3180,8 +3180,8 @@ function hrParams(p){
   const lthrP=num(p.lthr),lthr=lthrP||autoLthr();
   const fem=p.sex==="f",vl=vo2Level();let lv=vl!=null?vl:(LEVELS[p.level]||LEVELS.mid).s;
   const wh=num(p.waist)&&num(p.height)?num(p.waist)/num(p.height):0;const whs=wh>.5?Math.min(.03,(wh-.5)*.3):0;
-  if(lthr){ /* x = FC / umbral; v229: 50 % hidratos al ~78 % del umbral, ~71 % al 90 %, ~83 % en el umbral */
-    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,lthrSrc:lthrP?"perfil":"auto",mid:0.775+lv*sc+(fem?0.015:0)-whs*sc,k:0.14,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
+  if(lthr){ /* x = FC / umbral; v230: calibrada con 390 pruebas de laboratorio (Málaga): cruce al ~74 % del umbral, sin ajuste por forma (el umbral ya la recoge) */
+    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,lthrSrc:lthrP?"perfil":"auto",mid:0.74+(fem?0.015:0)-whs*sc,k:0.17,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
   }
   if(!max)return null;
   return{mode:"hrr",max,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
@@ -3211,14 +3211,16 @@ function computeSub(hr,time,kcal,hp,fasted){
   if(!wsum)return null;
   let cho=0,fat=0;const bands={};BANDS.forEach(b=>bands[b.id]=0);
   const total=time[n-1]-time[0]||1,NB=120,bins=Array.from({length:NB},()=>({c:0,f:0,s:0,h:0}));
+  /* zonas por umbral (v230): suave < 0,85 × umbral (primer umbral en laboratorio), intenso ≥ umbral */
+  const lt=hp.lthr||0.89*hp.max,zt={e:0,m:0,h:0};
   for(let i=1;i<n;i++){
     const f=choFrac(hr[i],hp,{t:time[i]-time[0],fasted}),k=kcal*w[i]/wsum;cho+=k*f;fat+=k*(1-f);
-    bands[bandOf(f).id]+=dt[i];
+    bands[bandOf(f).id]+=dt[i];zt[hr[i]<0.85*lt?"e":hr[i]<lt?"m":"h"]+=dt[i];
     const bi=Math.min(NB-1,Math.floor((time[i]-time[0])/total*NB));
     bins[bi].c+=k*f;bins[bi].f+=k*(1-f);bins[bi].s+=dt[i];bins[bi].h+=hr[i]*dt[i];
   }
   const series=bins.map(b=>{const m=Math.max(b.s,1)/60;return{c:+(b.c/m).toFixed(2),f:+(b.f/m).toFixed(2),h:b.s?+(b.h/b.s).toFixed(1):null}});
-  return{cho:+cho.toFixed(1),fat:+fat.toFixed(1),bands,series,dur:total,hasHr:true};
+  return{cho:+cho.toFixed(1),fat:+fat.toFixed(1),bands,zt,series,dur:total,hasHr:true};
 }
 function flatSub(kcal,frac){return{cho:+(kcal*frac).toFixed(1),fat:+(kcal*(1-frac)).toFixed(1),bands:null,series:null,hasHr:false}}
 
@@ -4468,8 +4470,10 @@ function bandsCard(){
   const rows=months.map(m=>{const b={};let n=0;S.acts.forEach(a=>{if(a.day.slice(0,7)!==m)return;const x=S.subs[a.id];if(x&&x.bands){n++;Object.entries(x.bands).forEach(([k,v])=>b[k]=(b[k]||0)+v)}});const t=Object.values(b).reduce((s,v)=>s+v,0);return{m,b,t,n}});
   if(rows.filter(r=>r.t).length<2)return S.progSubBusy?`<section class="glass pad fade"><span class="pkk">Reparto de intensidad</span><p class="empty">Analizando tus actividades…</p></section>`:"";
   const tot={};rows.forEach(r=>Object.entries(r.b).forEach(([k,v])=>tot[k]=(tot[k]||0)+v));const T=Object.values(tot).reduce((s,v)=>s+v,0)||1;
-  const easy=((tot.b1||0)+(tot.b2||0))/T,mid=(tot.b3||0)/T,hard=((tot.b4||0)+(tot.b5||0))/T;
-  const verdict=easy>=.7&&mid<=.2?"Bien polarizado: mucho suave y lo intenso, intenso.":mid>.3?"Mucho tiempo en la zona media. Suele cansar sin dar tanto: prueba a hacer lo suave más suave.":easy<.6?"Poco volumen suave. La base aeróbica se construye sobre todo en la zona lipolítica.":"Reparto razonable.";
+  /* suave / medio / intenso por zonas de umbral (v230); si aún no hay zonas, por bandas de sustrato */
+  const Z={e:0,m:0,h:0};S.acts.forEach(a=>{if(!months.includes(a.day.slice(0,7)))return;const x=S.subs[a.id];if(x&&x.zt){Z.e+=x.zt.e;Z.m+=x.zt.m;Z.h+=x.zt.h}});const ZT=Z.e+Z.m+Z.h;
+  const easy=ZT?Z.e/ZT:((tot.b1||0)+(tot.b2||0))/T,mid=ZT?Z.m/ZT:(tot.b3||0)/T,hard=ZT?Z.h/ZT:((tot.b4||0)+(tot.b5||0))/T;
+  const verdict=easy>=.7&&mid<=.2?"Bien polarizado: mucho suave y lo intenso, intenso.":mid>.3?"Mucho tiempo en la zona media. Suele cansar sin dar tanto: prueba a hacer lo suave más suave.":easy<.6?"Poco volumen suave. La base aeróbica se construye sobre todo en la zona suave.":"Reparto razonable.";
   const bar=r=>r.t?BANDS.map(B=>{const v=(r.b[B.id]||0)/r.t;return v>0?`<i style="width:${(v*100).toFixed(2)}%;background:${B.col}" data-tip="${esc(B.name)}|${r0(v*100)} % · ${fmtH((r.b[B.id]||0)/3600)}"></i>`:""}).join(""):'<i class="nil" style="width:100%"></i>';
   return`<section class="glass pad fade"><span class="pkk">Reparto de intensidad · 6 meses</span>
     <div class="bsum"><div><b>${r0(easy*100)} %</b><span><i style="background:#3b82f6"></i>suave</span></div><div><b>${r0(mid*100)} %</b><span><i style="background:#c9d35a"></i>medio</span></div><div><b>${r0(hard*100)} %</b><span><i style="background:#ffd21e"></i>intenso</span></div></div>
@@ -4699,7 +4703,7 @@ async function loadActs(force){
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
-function subKey(id){const hp=hrParams(S.profile||{}),su=hrSuspect(id);return hp?["v4",hp.mode,r0(hp.max),hp.rest,hp.lthr||0,hp.mid.toFixed(3),S.fasted[id]?"f":"n",su?"s"+su.ratio.toFixed(2):""].join("_"):"none"}
+function subKey(id){const hp=hrParams(S.profile||{}),su=hrSuspect(id);return hp?["v5",hp.mode,r0(hp.max),hp.rest,hp.lthr||0,hp.mid.toFixed(3),S.fasted[id]?"f":"n",su?"s"+su.ratio.toFixed(2):""].join("_"):"none"}
 async function ensureSub(a){
   if(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id))return S.subs[a.id];
   const hp=hrParams(S.profile||{});
