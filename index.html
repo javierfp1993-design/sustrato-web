@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T19:03:55.532Z">
+<meta name="sustrato-version" content="2026-10-10T19:23:35.777Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -875,9 +875,9 @@ html[data-theme="light"] .hero .donut{filter:drop-shadow(0 8px 20px rgba(0,0,0,.
 .bsum div{display:flex;flex-direction:column}.bsum b{font:700 26px/1.1 var(--round,var(--font));font-variant-numeric:tabular-nums}.bsum span{font-size:12px;color:var(--muted)}
 .brows{display:flex;flex-direction:column;gap:8px;margin:14px 0 10px}
 .brow{display:grid;grid-template-columns:34px 1fr 56px;gap:10px;align-items:center}
-.brow>span{font-size:12px;color:var(--muted);text-transform:capitalize}
-.brow small{font-size:12px;color:var(--faint);text-align:right;font-variant-numeric:tabular-nums}
-.bbar{display:flex;height:14px;border-radius:6px;overflow:hidden;background:var(--card2);gap:1px}
+.brow>span{font-size:11px;color:var(--faint);text-transform:capitalize}
+.brow small{font-size:11px;color:var(--faint);text-align:right;font-variant-numeric:tabular-nums}
+.bbar{display:flex;height:14px;border-radius:4px;overflow:hidden;background:var(--card2);gap:1px}
 .bbar i{display:block;height:100%;cursor:pointer}.bbar i.nil{background:transparent}
 .bbar i.tip-on{filter:brightness(1.2)}
 .bcomp{display:flex;flex-direction:column;gap:12px;margin-top:12px}
@@ -3119,7 +3119,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="231";
+const APP_VER="232";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4473,20 +4473,28 @@ function bandsCard(){
   /* suave / medio / intenso por zonas de umbral (v230); si aún no hay zonas, por bandas de sustrato */
   const Z={e:0,m:0,h:0};S.acts.forEach(a=>{if(!months.includes(a.day.slice(0,7)))return;const x=S.subs[a.id];if(x&&x.zt){Z.e+=x.zt.e;Z.m+=x.zt.m;Z.h+=x.zt.h}});const ZT=Z.e+Z.m+Z.h;
   const easy=ZT?Z.e/ZT:((tot.b1||0)+(tot.b2||0))/T,mid=ZT?Z.m/ZT:(tot.b3||0)/T,hard=ZT?Z.h/ZT:((tot.b4||0)+(tot.b5||0))/T;
-  const verdict=easy>=.7&&mid<=.2?"Bien polarizado: mucho suave y lo intenso, intenso.":mid>.3?"Mucho tiempo en la zona media. Suele cansar sin dar tanto: prueba a hacer lo suave más suave.":easy<.6?"Poco volumen suave. La base aeróbica se construye sobre todo en la zona suave.":"Reparto razonable.";
-  const bar=r=>r.t?BANDS.map(B=>{const v=(r.b[B.id]||0)/r.t;return v>0?`<i style="width:${(v*100).toFixed(2)}%;background:${B.col}" data-tip="${esc(B.name)}|${r0(v*100)} % · ${fmtH((r.b[B.id]||0)/3600)}"></i>`:""}).join(""):'<i class="nil" style="width:100%"></i>';
+  const verdict=easy>=.7&&mid<=.2?"Bien polarizado: mucho suave y lo intenso, intenso.":mid>.3?"Mucho tiempo en la zona moderada. Suele cansar sin dar tanto: prueba a hacer lo suave más suave.":easy<.6?"Poco volumen suave. La base aeróbica se construye sobre todo en la zona suave.":"Reparto razonable.";
+  /* v232: barras por mes en las mismas tres zonas de pulso que el resumen (antes, bandas de combustible) */
+  const ZB=[{id:"e",name:"Suave",col:Z_C[2]},{id:"m",name:"Moderado",col:Z_C[3]},{id:"h",name:"Intenso",col:Z_C[5]}]; /* guía: la intensidad usa Z2, Z3 y Z5 */
+  rows.forEach(r=>{r.z={e:0,m:0,h:0};S.acts.forEach(a=>{if(a.day.slice(0,7)!==r.m)return;const x=S.subs[a.id];if(x&&x.zt){r.z.e+=x.zt.e;r.z.m+=x.zt.m;r.z.h+=x.zt.h}});r.zt=r.z.e+r.z.m+r.z.h});
+  const hpz=hrParams(S.profile||{}),ltz=hpz?(hpz.lthr||0.89*hpz.max):null,lo=ltz?Math.round(0.85*ltz):null,hi=ltz?Math.round(ltz):null;
+  const bar=r=>r.zt?ZB.map(B=>{const v=r.z[B.id]/r.zt;return v>0?`<i style="width:${(v*100).toFixed(2)}%;background:${B.col}" data-tip="${esc(B.name)}|${r0(v*100)} % · ${fmtH(r.z[B.id]/3600)}"></i>`:""}).join(""):'<i class="nil" style="width:100%"></i>';
   return`<section class="glass pad fade"><span class="pkk">Reparto de intensidad · 6 meses</span>
-    <div class="bsum"><div><b>${r0(easy*100)} %</b><span><i style="background:#3b82f6"></i>suave</span></div><div><b>${r0(mid*100)} %</b><span><i style="background:#c9d35a"></i>medio</span></div><div><b>${r0(hard*100)} %</b><span><i style="background:#ffd21e"></i>intenso</span></div></div>
+    <div class="bsum"><div><b>${r0(easy*100)} %</b><span><i style="background:${Z_C[2]}"></i>suave</span></div><div><b>${r0(mid*100)} %</b><span><i style="background:${Z_C[3]}"></i>moderado</span></div><div><b>${r0(hard*100)} %</b><span><i style="background:${Z_C[5]}"></i>intenso</span></div></div>
     <p class="fdesc">${verdict}</p>
     <div class="brows">${rows.map(r=>`<div class="brow"><span>${MON[+r.m.slice(5)-1].slice(0,3).toLowerCase()}</span><div class="bbar">${bar(r)}</div><small>${r.t?fmtH(r.t/3600):"—"}</small></div>`).join("")}</div>
-    <div class="legend">${BANDS.map(B=>`<span><i style="background:${B.col}"></i>${B.name}</span>`).join("")}</div>
+    <div class="legend">${ZB.map(B=>`<span><i style="background:${B.col}"></i>${B.name}</span>`).join("")}</div>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${hi?`Tiempo en cada zona según tu pulso y tu umbral (${hi} ppm): suave por debajo de ${lo} ppm (0,85 × umbral, donde está tu primer umbral), moderado de ${lo} a ${hi-1} e intenso desde ${hi}.`:"Tiempo en cada zona según tu pulso y tu umbral: suave por debajo del 85 % del umbral, intenso desde el umbral."} Lo recomendable es pasar en suave el 80 % del tiempo.</p></details>
     ${S.progSubBusy?'<p class="note">Analizando más actividades…</p>':""}</section>`;
 }
 async function ensureProgSubs(){
   if(S.progSubBusy||S.actsState!=="ok"||!hrParams(S.profile||{}))return;const from=shiftKey(today(),-185);
-  const todo=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&!(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id))).slice(0,40);
-  if(!todo.length)return;S.progSubBusy=true;let i=0;
-  for(const a of todo){await ensureSub(a);i++;if(i%6===0&&S.tab==="prog")render()}
+  /* v232: las que ya tienen su curva guardada se rehacen todas aquí mismo; solo las que necesitan a Strava van en tandas de 12 con pausa */
+  const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&!(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id)));
+  const loc=pend.filter(a=>{const o=S.subs[a.id];return o&&o.hasHr&&o.series&&o.series.length}),net=pend.filter(a=>!loc.includes(a)).slice(0,12);
+  if(!pend.length)return;S.progSubBusy=true;let i=0;
+  for(const a of loc)await ensureSub(a);if(loc.length&&S.tab==="prog")render();
+  for(const a of net){await ensureSub(a);i++;if(i%4===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
   S.progSubBusy=false;if(S.tab==="prog")render();
 }
 function bodyCard(){
@@ -5577,7 +5585,8 @@ async function ensurePerf(){
       if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,sg,vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
       else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du,q,l30}}
     }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
-    S.pmxRev=(S.pmxRev||0)+1;if(++n%5===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
+    S.pmxRev=(S.pmxRev||0)+1;savePerf(); /* v232: se guarda cada salida, para que cerrar la app a medias no obligue a repetir la tanda */
+    if(++n%5===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
   S.pmxBusy=false;savePerf();render()}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
 function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{id,hot:x.sp==="run"&&hot(id)})),sus=hrSuspects(),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&!sus[x.id]&&x.d<=end&&x.d>shiftKey(end,-days));
