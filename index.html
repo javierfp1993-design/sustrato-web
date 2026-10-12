@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T19:31:34.980Z">
+<meta name="sustrato-version" content="2026-10-12T19:51:47.005Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2375,8 +2375,9 @@ html[data-theme] .act .badge{min-width:100px!important}
 .rpe-t{color:var(--fg)!important;font-weight:600}
 .rpe-fly{position:fixed;z-index:200;pointer-events:none;display:grid;place-items:center;transform-origin:center}
 .rpe-fly svg{width:100%;height:100%}
-.rpe-in{display:inline-grid;vertical-align:-3px;margin-left:6px;color:var(--fg)}
-.rpe-in svg{width:17px;height:17px;stroke-width:2}
+/* v253: la cara de «¿Cómo fue?» va dentro de la etiqueta de deporte, a la derecha: así no la tapa un nombre largo. Icono con su color (tinte de icono) */
+.rpe-in{display:inline-grid;margin-left:auto;margin-right:7px;color:var(--rc)}
+.rpe-in svg{width:16px;height:16px;stroke-width:2}
 .rpe-dt{margin-top:12px}.rpe-dt .rpe{margin:0}
 @media (prefers-reduced-motion:reduce){.rpe-badge.pop{animation:none}}
 .tc-row.done .tc-tx small{white-space:normal;overflow:visible;text-overflow:clip}
@@ -2914,7 +2915,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="252";
+const APP_VER="253";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6351,7 +6352,7 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
 function actRow(a){
   const main=a.sport==="str"?fmtDur(a.mov):(a.dist/1000).toFixed(1).replace(".",",")+" km";
   const sec=a.sport==="run"||a.sport==="trail"?fmtPace(a.speed):a.sport==="mtb"?fmtSpeed(a.speed):a.sport==="str"?(a.kcal?fmtInt(a.kcal)+"\u00a0kcal":""):fmtDur(a.mov);
-  return `<button class="act" data-open="${a.id}"><span class="badge b-${a.sport}">${SPORT_S[a.sport]}</span><span style="min-width:0"><span class="t">${esc(a.name)}${(()=>{const v=rpeOf(a.id);return v?`<span class="rpe-in" style="--rc:var(--rpe${v})" title="Fue ${RPE_L[v-1].toLowerCase()}">${RPE_FACE[v-1]}</span>`:""})()}</span><span class="s">${esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
+  return `<button class="act" data-open="${a.id}"><span class="badge b-${a.sport}">${SPORT_S[a.sport]}${(()=>{const v=rpeOf(a.id);return v?`<span class="rpe-in" style="--rc:var(--rpe${v})" role="img" aria-label="Fue ${RPE_L[v-1].toLowerCase()}" title="Fue ${RPE_L[v-1].toLowerCase()}">${RPE_FACE[v-1]}</span>`:""})()}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
 }
 function vActs(){
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["mtb","MTB"],["walk","Caminata"],["hike","Senderismo"],["str","Fuerza"]];
