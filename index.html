@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-10T20:30:59.121Z">
+<meta name="sustrato-version" content="2026-10-12T07:29:36.103Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3048,6 +3048,12 @@ html[data-theme="dark"] .en-q.ok{color:#30d158}html[data-theme="dark"] .en-q.lo{
 .mprot{display:block;margin-top:6px;font-size:13px;font-weight:600;color:#c46a00}
 html[data-theme="dark"] .mprot{color:#ff9f0a}
 
+/* Arrastrar para actualizar: botón de icono redondo de 38 px, neutro (guía, pág. 12) */
+.ptr-i{position:fixed;left:50%;top:0;z-index:39;width:38px;height:38px;border-radius:50%;background:var(--card);color:var(--fg);display:grid;place-items:center;opacity:0;pointer-events:none;transform:translate(-50%,-60px)}
+.ptr-i.ptr-spin svg{animation:ptrSp .9s linear infinite}
+@keyframes ptrSp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ptr-i.ptr-spin svg{animation:none}}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3119,7 +3125,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="235";
+const APP_VER="236";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4717,6 +4723,10 @@ function mergeActs(got,prev,cut,full){const stravaOk=got.some(a=>a.sid)||!prev.s
   const keep=prev.filter(a=>!ids.has(a.id)&&!(a.sid&&sids.has(a.sid))&&(!(full&&stravaOk)&&(!stravaOk||a.day<cut)));
   const pb={};prev.forEach(a=>pb[a.id]=a);const g2=stravaOk?got:got.map(a=>pb[a.id]&&pb[a.id].sid?pb[a.id]:a); /* sin Strava, se conserva la versión completa (nombre, ruta) */
   return{list:g2.concat(keep).sort((x,y)=>x.start<y.start?1:-1),stravaOk}}
+/* v236: puesta al día completa en silencio (arrastrar para actualizar): sin estado de carga ni esqueletos */
+async function syncActs(){const d=new Date();d.setDate(d.getDate()-370);const sig0=actsSig(S.acts);
+  try{const got=await fetchActs(keyOf(d)+"T00:00:00",true),m=mergeActs(got,S.acts,"0000",true);S.acts=m.list;S.actsState="ok";S.actsErr=null;actsCacheWrite(m.stravaOk);
+    if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}return true}catch(e){return false}}
 async function loadActs(force){
   const d=new Date();d.setDate(d.getDate()-370);const start370=keyOf(d)+"T00:00:00";
   const cached=!force&&!S.acts.length?actsCacheRead():null;
@@ -6759,7 +6769,7 @@ function vActs(){
       return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts">${g.a.map(actRow).join("")}</div></div>`}).join("")}
   const sum=list.reduce((s,a)=>({d:s.d+a.dist,t:s.t+a.mov,k:s.k+a.kcal}),{d:0,t:0,k:0});
   return `<section class="glass pad fade">
-    <div class="row"><h2>Historial</h2><button class="chip${S.actsState==="loading"?" busy":""}" data-act="reload" ${S.actsState==="loading"?'aria-busy="true" disabled':""}>${S.actsState==="loading"?'<span class="spin" aria-hidden="true"></span>Actualizando':"Actualizar"}</button></div>
+    <div class="row"><h2>Historial</h2></div>
     <div class="afbar"><button type="button" class="dd" data-optopen="afs"><span>Deporte</span><b class="dv">${S.filter&&S.filter!=="all"?`<i class="dd-ic" style="--c:${SPC[S.filter]}">${spSvg(S.filter)}</i>`:""}${(F.find(x=>x[0]===S.filter)||F[0])[1]}</b></button><button type="button" class="dd" data-optopen="afr"><span>Periodo</span><b class="dv">${(R.find(x=>x[0]===rg)||R[4])[1]}</b></button></div>
     ${rg==="custom"?`<div class="fields daterow"><label class="f" for="af">Desde<input type="date" id="af" value="${S.actFrom||""}"></label><label class="f" for="at">Hasta<input type="date" id="at" value="${S.actTo||""}"></label></div>`:""}
     ${list.length?`<div class="kv akv" style="margin:0 0 18px"><div><span>Actividades</span><b>${list.length}</b></div><div><span>Distancia</span><b>${fmtInt(sum.d/1000)}<small> km</small></b></div><div><span>Tiempo</span><b>${fmtInt(sum.t/3600)}<small> h</small></b></div></div>`:""}
@@ -7563,6 +7573,28 @@ function vo2Segs(sg,hp,trail){if(!sg||!hp)return null;const out=[];
   sg.forEach(([vm,hm])=>{const r=(hm-hp.rest)/(hp.max-hp.rest);if(r>=.7&&r<=.92){const cost=vo2Cost(vm*60)*(trail?1.05:1),vo=3.5+(cost-3.5)/r;if(vo>20&&vo<85)out.push(vo)}});
   return out.length?med(out):null}
 function runVo2b(st,hp,trail){return vo2Segs(runSegs(st),hp,trail)}
+
+/* ---------- Arrastrar para actualizar (v236) ----------
+   En lo alto de cualquier pestaña: tirar hacia abajo y soltar pone al día actividades, reloj y tiempo.
+   No actúa con hojas abiertas, en la bienvenida ni si el gesto empieza sobre algo que se desliza en horizontal. */
+(function(){const TH=70,MAX=110;let y0=null,x0=0,d=0,on=false,busy=false,el=null;
+  const ind=()=>{if(el&&el.isConnected)return el;el=document.createElement("div");el.className="ptr-i";el.setAttribute("aria-hidden","true");
+    el.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></svg>';document.body.appendChild(el);return el};
+  const movers=()=>document.querySelectorAll(".wrap > header.top ~ *"); /* título, avisos y contenido bajan juntos; la cabecera no */
+  const set=(v,anim)=>{d=v;const i=ind(),k=Math.min(1,v/TH),h=document.querySelector("header.top"),top=h?h.getBoundingClientRect().bottom:56,tr=anim?"transform .25s ease, opacity .25s ease":"none";
+    i.style.transition=tr;i.style.transform=`translate(-50%,${top-44+v*.8}px) rotate(${k*300}deg)`;i.style.opacity=String(k);
+    movers().forEach(m=>{m.style.transition=tr;m.style.transform=v?`translateY(${v}px)`:""})};
+  const blocked=t=>document.querySelector(".overlay")||document.body.classList.contains("onb-on")||(t.closest&&t.closest(".hcar-track,.scroll-x,.dsec,.tt,.chips,input,textarea,.overlay,#drawer"));
+  document.addEventListener("touchstart",e=>{if(busy||window.scrollY>0||blocked(e.target)){y0=null;return}const t=e.touches[0];y0=t.clientY;x0=t.clientX;on=false},{passive:true});
+  document.addEventListener("touchmove",e=>{if(y0==null)return;const t=e.touches[0],dy=t.clientY-y0,dx=Math.abs(t.clientX-x0);
+    if(!on){if(dy>8&&dy>dx*1.5&&window.scrollY<=0)on=true;else if(dx>10||dy<0){y0=null;return}else return}
+    if(e.cancelable)e.preventDefault();set(Math.min(MAX,dy*.5),false)},{passive:false});
+  const end=async()=>{if(y0==null)return;y0=null;if(!on){return}on=false;
+    if(d<TH){set(0,true);return}
+    busy=true;buzz&&buzz(8);set(56,true);const i=ind();i.classList.add("ptr-spin");
+    try{await Promise.allSettled([syncActs(),window.__hcRefresh?window.__hcRefresh():null,typeof loadWeather==="function"?loadWeather():null])}catch(e){}
+    i.classList.remove("ptr-spin");set(0,true);busy=false};
+  document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})})();
 
 })();
 </script>
