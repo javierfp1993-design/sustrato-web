@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T08:11:20.931Z">
+<meta name="sustrato-version" content="2026-10-12T08:23:39.311Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3164,7 +3164,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="238";
+const APP_VER="239";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3221,15 +3221,16 @@ function basal(p){
 }
 const LEVELS={beg:{l:"Principiante",s:-0.05},mid:{l:"Intermedio",s:0},trained:{l:"Entrenado",s:0.04},elite:{l:"Muy entrenado",s:0.07}};
 function hrParams(p){
-  const a=num(p.age);let max=num(p.hrmax);if(!max&&a)max=208-0.7*a;const rest=num(p.hrrest)||60;
+  const a=num(p.age);let max=num(p.hrmax),maxSrc=max?"perfil":null;if(!max&&a){max=208-0.7*a;maxSrc="edad"}
+  if(!num(p.hrmax)){const d=autoHrmax();if(d&&(!max||d.v>max)){max=d.v;maxSrc="auto"}}const rest=num(p.hrrest)||60;
   const lthrP=num(p.lthr),lthr=lthrP||autoLthr();
   const fem=p.sex==="f",vl=vo2Level();let lv=vl!=null?vl:(LEVELS[p.level]||LEVELS.mid).s;
   const wh=num(p.waist)&&num(p.height)?num(p.waist)/num(p.height):0;const whs=wh>.5?Math.min(.03,(wh-.5)*.3):0;
   if(lthr){ /* x = FC / umbral; v230: calibrada con 390 pruebas de laboratorio (Málaga): cruce al ~74 % del umbral, sin ajuste por forma (el umbral ya la recoge) */
-    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,rest,lthr,lthrSrc:lthrP?"perfil":"auto",mid:0.74+(fem?0.015:0)-whs*sc,k:0.17,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
+    const sc=0.4;return{mode:"lt",max:max||lthr/0.9,maxSrc,rest,lthr,lthrSrc:lthrP?"perfil":"auto",mid:0.74+(fem?0.015:0)-whs*sc,k:0.17,sc,lvSrc:vl!=null?"vo2":"perfil",whs};
   }
   if(!max)return null;
-  return{mode:"hrr",max,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
+  return{mode:"hrr",max,maxSrc,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
 }
 /* Nivel aeróbico desde el VO2max estimado de tus actividades (por categorías, para que no cambie con cada sesión) */
 const VO2_LV=[-0.05,-0.03,0,0.03,0.05,0.07];
@@ -4786,7 +4787,7 @@ async function call(tool,input,opts){
 const ACTS_LS="sustrato-acts-v1";
 function mapAct(a){const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
   start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
-  speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,
+  speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,hrx:(a.raw&&a.raw.max_heartrate)||s.max_heartrate||null,
   poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}
 function actsCacheRead(){try{const v=JSON.parse(localStorage.getItem(ACTS_LS)||"null");return v&&Array.isArray(v.list)&&v.list.length&&v.uid===(S.uid||"")?v:null}catch(e){return null}}
 function actsCacheWrite(full){const prev=actsCacheRead(),v={uid:S.uid||"",at:Date.now(),full:full?Date.now():(prev&&prev.full)||0,list:S.acts};
@@ -7004,7 +7005,7 @@ function vPerfil(){
   const DI={omni:"Omnívora",pesce:"Pescetariana",veggie:"Vegetariana",vegan:"Vegana"};
   const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
     med:[p.waist&&"Cintura "+p.waist+" cm",p.neck&&"cuello "+p.neck+" cm"].filter(Boolean).join(" · ")||"Sin medidas",
-    fc:p.lthr?"Umbral "+p.lthr+" ppm"+(p.hrmax?" · máx. "+p.hrmax:""):autoLthr()?"Umbral estimado "+autoLthr()+" ppm (±8)"+(p.hrmax?" · máx. "+p.hrmax:num(p.age)?" · máx. estimada "+Math.round(208-0.7*num(p.age))+" (±6)":""):p.hrmax?"Máx. "+p.hrmax+(p.hrrest?" · reposo "+p.hrrest:"")+" ppm":"Sin datos de pulso",
+    fc:p.lthr?"Umbral "+p.lthr+" ppm"+(p.hrmax?" · máx. "+p.hrmax:""):autoLthr()?"Umbral estimado "+autoLthr()+" ppm (±8)"+(p.hrmax?" · máx. "+p.hrmax:(()=>{const d=autoHrmax(),e=num(p.age)?Math.round(208-0.7*num(p.age)):null;return d&&(!e||d.v>e)?" · máx. detectada "+d.v:e?" · máx. estimada "+e+" (±6)":""})()):p.hrmax?"Máx. "+p.hrmax+(p.hrrest?" · reposo "+p.hrrest:"")+" ppm":(()=>{const h=hrParams(p);return h&&h.maxSrc==="auto"?"Máx. detectada "+Math.round(h.max)+" ppm":h&&h.maxSrc==="edad"?"Máx. estimada "+Math.round(h.max)+" ppm (±6)":"Sin datos de pulso"})(),
     ali:(DI[p.diet||"omni"])+(EX.length?" · sin "+EX.join(", "):""),
     hor:MEALS.length+" comidas · de "+MT[0]+" a "+MT[MT.length-1],
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
@@ -7022,10 +7023,10 @@ function vPerfil(){
       ${f("neck","Cuello","38","cm")}${f("waist","Cintura a la altura del ombligo","88","cm")}${f("hip","Cadera (necesaria en mujeres)","98","cm")}
     </div></fieldset></details>
     <details class="psec" data-ps="fc" ${psOpen("fc")}><summary><span class="ps-t"><b>Frecuencia cardiaca</b><small>${psSum.fc}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Frecuencia cardiaca</legend><div class="fields">
-      ${f("hrmax","FC máxima",num(p.age)?String(Math.round(208-0.7*num(p.age))):"186","ppm")}${f("hrrest","FC en reposo","55","ppm")}
+      ${f("hrmax","FC máxima",(()=>{const h=hrParams(p);return h&&h.max?String(Math.round(h.max)):"186"})(),"ppm")}${f("hrrest","FC en reposo","55","ppm")}
       ${f("lthr","Umbral de lactato (Coros, EvoLab)",autoLthr()?String(autoLthr()):"165","ppm")}
       <label class="f" for="p_level">Nivel de entrenamiento<select id="p_level">${Object.entries(LEVELS).map(([k,v])=>`<option value="${k}" ${(p.level||"mid")===k?"selected":""}>${v.l}</option>`).join("")}</select></label>
-    </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.${!p.hrmax&&num(p.age)?` Si dejas vacía la FC máxima, uso la estimada por tu edad: <b>${Math.round(208-0.7*num(p.age))} ppm, ±6</b>.`:""}${!p.lthr&&autoLthr()?` Si dejas vacío el umbral, uso el estimado con tus esfuerzos sostenidos de los últimos 4 meses: <b>${autoLthr()} ppm, ±8</b>.`:""}${(!p.hrmax||!p.lthr)?" Si conoces tus valores reales, escríbelos: afinan el VO2max, las zonas y los sustratos.":""}</p></fieldset></details>
+    </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.${!p.hrmax?(()=>{const d=autoHrmax(),e=num(p.age)?Math.round(208-0.7*num(p.age)):null;return d&&(!e||d.v>e)?` Si dejas vacía la FC máxima, uso la que has alcanzado en tus actividades: <b>${d.v} ppm</b> (${esc(dateLabel(d.d))}), más alta que la estimada por tu edad.`:e?` Si dejas vacía la FC máxima, uso la estimada por tu edad: <b>${e} ppm, ±6</b>${d?` (lo más alto en tus actividades es ${d.v}, y entrenando casi nunca se llega al máximo)`:""}.`:""})():""}${!p.lthr&&autoLthr()?` Si dejas vacío el umbral, uso el estimado con tus esfuerzos sostenidos de los últimos 4 meses: <b>${autoLthr()} ppm, ±8</b>.`:""}${(!p.hrmax||!p.lthr)?" Si conoces tus valores reales, escríbelos: afinan el VO2max, las zonas y los sustratos.":""}</p></fieldset></details>
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
       <label class="f" for="p_store">Dónde haces la compra<select id="p_store">${[["","En cualquier súper"],["merc","Mercadona"]].map(([k,l])=>`<option value="${k}" ${(p.store||"")===k?"selected":""}>${l}</option>`).join("")}</select></label>
       <label class="f" for="p_diet">Tipo de dieta<select id="p_diet">${[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]].map(([k,l])=>`<option value="${k}" ${(p.diet||"omni")===k?"selected":""}>${l}</option>`).join("")}</select></label>
@@ -7662,6 +7663,12 @@ function vo2Segs(sg,hp,trail){if(!sg||!hp)return null;const out=[];
   return out.length?med(out):null}
 function runVo2b(st,hp,trail){return vo2Segs(runSegs(st),hp,trail)}
 
+/* v239: FC máxima detectada en tus actividades de los últimos 12 meses. Se toma la segunda más alta (un pico suelto del
+   sensor no cuenta), solo de salidas de 15 min o más con pulso fiable, y solo se usa si supera la estimada por edad:
+   entrenando casi nunca se llega al máximo, así que un valor más bajo no prueba que tu máximo sea menor. */
+function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+today()+"|"+(S.pmxRev||0);if(autoHrmax.k===k)return autoHrmax.v;
+  const from=shiftKey(today(),-365),sus=hrSuspects(),L=S.acts.filter(a=>a.hrx&&a.day>=from&&a.mov>=900&&a.sport!=="str"&&!sus[a.id]&&a.hrx>=120&&a.hrx<=215).map(a=>({v:a.hrx,d:a.day,n:a.name})).sort((x,y)=>y.v-x.v);
+  autoHrmax.k=k;autoHrmax.v=L.length>=6?{v:L[1].v,d:L[1].d,n:L[1].n,top:L[0].v}:null;return autoHrmax.v}
 /* ---------- Arrastrar para actualizar (v236) ----------
    En lo alto de cualquier pestaña: tirar hacia abajo y soltar pone al día actividades, reloj y tiempo.
    No actúa con hojas abiertas, en la bienvenida ni si el gesto empieza sobre algo que se desliza en horizontal. */
