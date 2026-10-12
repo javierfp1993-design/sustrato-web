@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T20:31:40.606Z">
+<meta name="sustrato-version" content="2026-10-12T20:55:44.005Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -961,7 +961,7 @@ html[data-theme="light"] .stp .stp-ring{filter:drop-shadow(0 8px 20px rgba(0,0,0
 button.tc-row,.tc-row.go{cursor:pointer}
 button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,var(--card2))}
 .tc-row:active{transform:scale(.99)}
-.tc-row.off{opacity:.65}
+.tc-row.off>*{opacity:.65}
 .tc-ic{flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c-v,var(--c)) 16%,transparent)}
 html[data-theme="light"] .tc-ic{color:color-mix(in srgb,var(--c) 80%,#000)}
 .tc-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
@@ -969,8 +969,6 @@ html[data-theme="light"] .tc-ic{color:color-mix(in srgb,var(--c) 80%,#000)}
 .tc-tx small{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tc-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tc-meta b{font-size:15px;font-weight:600}.tc-meta small{font-size:12px;color:var(--muted)}
-.tc-x{appearance:none;border:0;flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--card);color:var(--muted);font-size:12px;cursor:pointer;display:grid;place-items:center}
-.tc-x:hover{color:var(--fg)}
 .tc-go{font-size:20px;color:var(--faint);margin-left:-2px}
 .tc-meta small.ok{color:var(--fg);font-weight:600;--pc:var(--verde)}
 .tc-foot .chip{white-space:nowrap}
@@ -2376,7 +2374,6 @@ html[data-theme] .act .badge{min-width:100px!important}
 .inote[open] summary{color:var(--fg)}
 .inote>p{margin:6px 0 0!important}
 .pst-row[data-paedit]{cursor:pointer}
-.pst-row .mb-go{align-self:center;margin-left:auto}
 .pa-ex{display:flex;justify-content:space-between;margin-top:2px}
 /* cifras de resumen: siempre en recuadros (como Resumen semanal, Rendimiento o Avituallamiento) */
 .kv{gap:8px!important;border-top:0!important;padding-top:0!important}
@@ -2386,8 +2383,6 @@ html[data-theme] .act .badge{min-width:100px!important}
 /* deportes: todas las etiquetas del mismo ancho */
 html[data-theme] .badge{width:104px!important;min-width:104px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 html[data-theme] .act .badge{min-width:104px!important}
-.pst-row[data-paedit]{position:relative;padding-right:30px!important}
-.pst-row .mb-go{position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0}
 /* v190 · Calor en el avituallamiento */
 .fu2-t{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 11px 5px 9px;border-radius:999px;background:var(--fill2);color:var(--fg)}
 .fu2-t.hot{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 20%,transparent)}
@@ -2854,6 +2849,12 @@ html[data-theme="light"]{--amarillo:#b19007;--naranja:#e86518;--rojo:#d70015;--v
 @media (prefers-reduced-motion:no-preference){
   .mw-ok.chkpop svg{animation:chkpop .42s cubic-bezier(.3,1.6,.5,1)}
   .mw-ok.chkpop svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:chkdraw .3s ease .08s forwards}}
+/* v255 · entrenos previstos de Hoy: la fila es una tesela, el gesto no sangra hasta el borde */
+.tc-mw{margin:0;border-radius:14px}
+.tc-mw .mw-fg{padding:12px;background:var(--card2);border-radius:0}
+/* con teclado, el botón de saltar se descubre al llegar a él */
+.mw-in:has(.mw-r button:focus-visible) .mw-r{display:flex}
+.mw-in:has(.mw-r button:focus-visible) .mw-fg{transform:translateX(-112px)}
 
 </style>
 
@@ -2926,7 +2927,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="254";
+const APP_VER="255";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3968,9 +3969,9 @@ function trainCard(t){
     G.push({t:hh||"99",h})});
   pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go,es=estSession(s,kg);
     const meta=`<b>${fmtDur((s.dur||0)*60)}</b><small>≈ ${fmtInt(es.kcal)} kcal</small>`;
-    const act=x.st==="pend"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="No voy a hacer este entreno" title="Saltar">✕</button>`:x.st==="skip"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="Recuperar" title="Recuperar">↺</button>`:x.st==="miss"?`<button class="tc-x" data-plskip="${x.i}" data-k="${k}" aria-label="Marcar saltado" title="Marcar saltado">✕</button>`:"";
+    const sw=x.st==="pend"||x.st==="skip"||x.st==="miss"; /* v255: sin ✕; se desliza ← (070-deslizar-comidas.js) */
     const tap=go?` data-strgo="${esc(s.routine||"")}" data-k="${k}" role="button" tabindex="0"`:ed?` data-paedit="${k}|${x.i}" role="button" tabindex="0" aria-label="Editar ${esc(sessName(s))}"`:"";
-    G.push({t:s.time||"99",h:[`<div class="tc-row${x.st==="pend"?" pend":" off"}${go||ed?" go":""}" title="${go?"Abrir en Fuerza para registrar":ed?"Toca para editar":""}"${tap}>${tm(s.time)}${spIcon(s.sport)}<span class="tc-tx"><b>${esc(sessName(s))}</b><small>${x.st==="pend"?(s.steps?Z_L[{s:2,m:3,i:4}[s.int]]+" · estructurado":INT_L[s.int])+(s.race?" · carrera":""):pst(x.st)}</small>${s.steps&&x.st==="pend"?stProfile(s.steps,16):""}</span><span class="tc-meta">${meta}</span>${act}</div>`]})});
+    G.push({t:s.time||"99",h:[`${sw?`<div class="mw-in tc-mw" data-mwt="${x.i}|${k}"><div class="mw-r"><button type="button" data-mwq="t:${x.i}|${k}" aria-label="${x.st==="skip"?"Recuperar":"Saltar"} ${esc(sessName(s))}">${x.st==="skip"?"Recuperar":"Saltar"}</button></div>`:""}<div class="tc-row${x.st==="pend"?" pend":" off"}${go||ed?" go":""}${sw?" mw-fg":""}" title="${go?"Abrir en Fuerza para registrar":ed?"Toca para editar":""}"${tap}>${tm(s.time)}${spIcon(s.sport)}<span class="tc-tx"><b>${esc(sessName(s))}</b><small>${x.st==="pend"?(s.steps?Z_L[{s:2,m:3,i:4}[s.int]]+" · estructurado":INT_L[s.int])+(s.race?" · carrera":""):pst(x.st)}</small>${s.steps&&x.st==="pend"?stProfile(s.steps,16):""}</span><span class="tc-meta">${meta}</span></div>${sw?"</div>":""}`]})});
   G.sort((x,y)=>x.t<y.t?-1:x.t>y.t?1:0);const rows=[].concat(...G.map(g=>g.h));
   const tot=t.acts.reduce((s,a)=>s+(a.kcal||0),0)+t.plan.reduce((s,x)=>s+(x.kcal||0),0);
   return`<section class="glass pad fade tcard"><div class="row"><h2>Entreno · ${esc(dateLabel(k))}</h2>${fut?wxPill(k):""}</div>
@@ -6085,7 +6086,7 @@ function vPlanTrain(wk){
     if(k>=tk){
       edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
         const es=estSession(s,kg),meta=[fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
-        return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div><span class="mb-go" aria-hidden="true">›</span></div>`}).join("");
+        return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div></div>`}).join("");
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}${k>=tk?wxPill(k):""}</div>
@@ -7321,7 +7322,8 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
    → (pasada la mitad): hecha según lo planeado; si ya lo estaba, vuelve a pendiente.
    ← corto: descubre «Me la salté» (o «Quitar» si ya hay registro); ← largo: lo hace directamente.
    Siempre con «Deshacer». La primera vez, la primera fila pendiente hace un amago y enseña una frase.
-   Clases: .mw .mw-in .mw-l(.back) .mw-r(.del) .mw-fg .mw-hint(.on) .mw-ok .mw-chg */
+   v255 · Entrenos previstos de Hoy (sin la ✕): solo ←. Pendiente o no hecho: «Saltar»; saltado: «Recuperar». Borrar sigue en el configurador.
+   Clases: .mw .mw-in(.tc-mw) .mw-l(.back) .mw-r(.del) .mw-fg .mw-hint(.on) .mw-ok .mw-chg */
 const MW_CK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 function mwAct(mid,dir){const k=S.day,tt=dayTargets(k),m=tt&&mealPlan(tt,k).meals.find(x=>x.id===mid);if(!m)return;
   const cur=(S.log[k]||{})[mid],prev=cur?JSON.parse(JSON.stringify(cur)):null,undo=()=>{setLog(k,mid,prev);render()};
@@ -7330,6 +7332,9 @@ function mwAct(mid,dir){const k=S.day,tt=dayTargets(k),m=tt&&mealPlan(tt,k).meal
     else{setLog(k,mid,logEntryFor(k,m,"done"));S.pop=mid;buzz(10);render();undoToast(m.n+": hecha",undo)}}
   else{if(cur){setLog(k,mid,null);S.pop=null;render();undoToast("Registro quitado",undo)}
     else{setLog(k,mid,{st:"skip",P:0,C:0,F:0});S.pop=null;buzz(10);render();undoToast(m.n+": saltada",undo)}}}
+function mwTr(v){const[i,k]=v.split("|"),x=(S.plan[k]||[])[+i];if(!x)return;
+  const tog=()=>{x.skip=!x.skip;if(!x.skip)delete x.skip;savePlan();render()};tog();if(x.skip)buzz(10);
+  undoToast(x.skip?"Entreno saltado · calorías ajustadas":"Entreno recuperado",tog)}
 function mwSeen(){if(S._mwSeen)return;S._mwSeen=1;try{localStorage.setItem("sustrato-mwhint","1")}catch(e){}}
 /* pista: una vez por sesión hasta que se use el gesto */
 function mwHint(){if(S._mwSeen||S._mwHinted||S.tab!=="hoy")return;try{if(localStorage.getItem("sustrato-mwhint")){S._mwSeen=1;return}}catch(e){}
@@ -7352,9 +7357,10 @@ addEventListener("scroll",()=>{if(!S._mwSeen&&!S._mwHinted){clearTimeout(mwHint.
     if(!f||e.target.closest(".mcam"))return;row=f.parentNode;fg=f;x0=e.clientX;y0=e.clientY;dx=0;mode=null;moved=false;buzzed=false});
   document.addEventListener("pointermove",e=>{if(!row)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
     if(!mode){if(Math.abs(ddx)>8&&Math.abs(ddx)>Math.abs(ddy)*1.3){mode="h";try{fg.setPointerCapture(e.pointerId)}catch(_){}}else if(Math.abs(ddy)>8){row=null;return}else return}
-    moved=true;dx=(openRow===row?-QW:0)+ddx;const w=W();dx=Math.max(-w,Math.min(dx,w*.85));set(row,dx,false);
+    moved=true;dx=(openRow===row?-QW:0)+ddx;const w=W();dx=Math.max(-w,Math.min(dx,row.querySelector(".mw-l")?w*.85:0));set(row,dx,false);
     const pass=dx>w*.45||dx<-w*.6;if(pass&&!buzzed){buzzed=true;buzz(8)}if(!pass)buzzed=false});
-  const up=()=>{if(!row)return;const r=row,id=r.dataset.mw,w=W();row=null;if(!moved)return;
+  const up=()=>{if(!row)return;const r=row,id=r.dataset.mw,tr=r.dataset.mwt,w=W();row=null;if(!moved)return;
+    if(tr){if(dx<-w*.6){set(r,-w,true);openRow=null;setTimeout(()=>mwTr(tr),190);return}if(dx<-40){set(r,-QW,true);openRow=r;return}if(openRow===r)openRow=null;close(r);return}
     if(dx>w*.45){set(r,w,true);openRow=null;setTimeout(()=>mwAct(id,1),190);return}
     if(dx<-w*.6){set(r,-w,true);openRow=null;setTimeout(()=>mwAct(id,-1),190);return}
     if(dx<-40){set(r,-QW,true);openRow=r;mwSeen();return}
@@ -7362,7 +7368,7 @@ addEventListener("scroll",()=>{if(!S._mwSeen&&!S._mwHinted){clearTimeout(mwHint.
   document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
   /* tras arrastrar, el clic no abre la hoja; con la fila abierta, tocarla la cierra */
   document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest(".mw-fg");
-    const q=e.target.closest&&e.target.closest("[data-mwq]");if(q){e.preventDefault();e.stopPropagation();openRow=null;mwAct(q.dataset.mwq,-1);return}
+    const q=e.target.closest&&e.target.closest("[data-mwq]");if(q){e.preventDefault();e.stopPropagation();openRow=null;const v=q.dataset.mwq;if(v.startsWith("t:"))mwTr(v.slice(2));else mwAct(v,-1);return}
     if(!f)return;if(moved){moved=false;e.preventDefault();e.stopPropagation();return}
     if(openRow===f.parentNode){e.preventDefault();e.stopPropagation();close(openRow);openRow=null}},true);
 })();
