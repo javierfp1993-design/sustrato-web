@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T08:23:39.311Z">
+<meta name="sustrato-version" content="2026-10-12T09:39:59.445Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3093,6 +3093,33 @@ html[data-theme="light"] .ob2-sum{background:#fff}
 .vhead>span.pf-pm{font-size:20px;font-weight:600;color:var(--muted);letter-spacing:-.01em;flex:none}
 .mg-ap{font-style:normal;color:var(--muted);font-weight:500;margin-right:1px}
 
+/* Curva de ritmo y de potencia (v240). Prefijo cv-. Color del deporte: Running oscurecido en claro (3:1 sobre blanco), MTB en bici. */
+.cv-card{--cv:#ffd21e}
+html[data-theme="light"] .cv-card{--cv:#a88400}
+.cv-card[data-cvsp-cur="bike"]{--cv:#3b82f6}
+html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:#0a84c6}
+.cv-hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cv-seg{display:flex}
+.cv-k{font-size:13px;color:var(--muted);margin:14px 0 2px}
+.cv-big{display:flex;align-items:baseline;gap:6px}.cv-big b{font-size:28px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.cv-big span{color:var(--muted);font-size:15px}
+.cv-big .cv-pm{font-size:17px;font-weight:600}
+.cv-ap{font-style:normal;color:var(--muted);font-weight:500;margin-right:1px}
+.cv-ctx{font-size:13px;color:var(--muted);margin:4px 0 0}
+.cv-rd{font-size:13px;color:var(--muted);min-height:20px;margin:14px 0 0}.cv-rd b{color:var(--fg);font-weight:600}
+.cv-ch{display:block;touch-action:pan-y}
+.cv-ch text{font-size:11px;fill:var(--faint)}
+.cv-grid{stroke:var(--sep)}
+.cv-ref{stroke:var(--muted);stroke-dasharray:4 4;stroke-width:1}
+.cv-ch .cv-reft{fill:var(--muted)}
+.cv-line{fill:none;stroke:var(--cv);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cv-dot{fill:var(--cv);stroke:var(--card);stroke-width:2}
+.cv-x{stroke:var(--muted);stroke-width:1;opacity:0}.cv-x.on{opacity:.4}
+.cv-cd{fill:var(--cv);stroke:var(--card);stroke-width:2;opacity:0}.cv-cd.on{opacity:1}
+.cv-cells{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.cv-cells div{background:var(--fill2,rgba(120,120,128,.10));border-radius:14px;padding:10px 12px}
+.cv-cells span{display:block;font-size:12px;color:var(--muted)}.cv-cells b{font-size:20px;font-weight:600;white-space:nowrap}.cv-cells b small{font-size:13px;color:var(--muted);font-weight:500;margin-left:2px}
+.cv-tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.cv-tb td{padding:6px 0;border-top:.5px solid var(--sep);color:var(--muted)}.cv-tb td:last-child{text-align:right;color:var(--fg)}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3164,7 +3191,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="239";
+const APP_VER="240";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -5699,14 +5726,14 @@ async function ensurePerf(){
   /* v231: con los tramos guardados, el VO2máx se recalcula aquí mismo (sin pedir nada a Strava) */
   let loc=0;S.acts.forEach(a=>{const p=S.pmx[a.id];if(p&&p.sp==="run"&&p.sg&&(p.hk!==hk||p.cv!==COST_V)&&hp){p.vo2=vo2Segs(p.sg,hp,a.sport==="trail");p.hk=hk;p.cv=COST_V;loc++}});if(loc){S.pmxRev=(S.pmxRev||0)+1;savePerf()}
   /* Lo que sí necesita datos de Strava va en tandas de 12, con pausa, para no agotar su límite de peticiones (la lista de actividades va primero) */
-  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&!p.err&&!p.sg)||(p.sp==="bike"&&Math.abs((p.kg||0)-kg)>1.5)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,12);
+  const todo=S.acts.filter(a=>a.day>=from&&(perfRun(a)||perfBike(a))).filter(a=>{const p=S.pmx[a.id];return!p||p.v!==PERF_V||(p.sp==="run"&&!p.err&&(!p.sg||!("mm" in p)))||(p.sp==="bike"&&!p.err&&!("mp" in p))||(p.sp==="bike"&&Math.abs((p.kg||0)-kg)>1.5)||(a.mov>=4500&&!p.err&&!("du" in p))}).slice(0,12);
   if(!todo.length)return;S.pmxBusy=true;let n=0;
   for(const a of todo){const run=perfRun(a),sid=a.sid||a.id;
     try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
       const dr=a.mov>=4500?drift(st,run,kg,a.type==="Ride"):null;const du=a.mov>=4500?durab(st,run,kg,a.type==="Ride"):null;
       const q=hrQual(st),l30=bestAvg(st&&st.time,st&&st.heart_rate,1800,300);
-      if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,cv:COST_V,sg,vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
-      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,dr,du,q,l30}}
+      if(run){const sg=runSegs(st)||[];S.pmx[a.id]={v:PERF_V,sp:"run",d:a.day,hk,cv:COST_V,sg,mm:mmRun(st),vo2:hp?vo2Segs(sg,hp,a.sport==="trail"):null,dr,du,q,l30}}
+      else{const r=bikeFtp(st,kg,a.type==="Ride");S.pmx[a.id]={v:PERF_V,sp:"bike",d:a.day,kg,ftp:r?r.ftp:null,src:r?r.src:null,mp:mmBike(st,kg,a.type==="Ride"),dr,du,q,l30}}
     }catch(e){const prev=S.pmx[a.id];S.pmx[a.id]=prev&&prev.v===PERF_V&&!prev.err?Object.assign({},prev,{du:null}):{v:PERF_V,sp:run?"run":"bike",d:a.day,hk,kg,err:true}}
     S.pmxRev=(S.pmxRev||0)+1;savePerf(); /* v232: se guarda cada salida, para que cerrar la app a medias no obligue a repetir la tanda */
     if(++n%5===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
@@ -5825,7 +5852,7 @@ function progSection(sec){
     res:()=>[weekCard(),weightHero(),computeAdapt().ok?adaptTile():""],
     ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard()),ea=eatCard();
       return[gastoCard(),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días"),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
-    for:()=>{const pr=predCard(),ef=effCard();return[perfCard(),fitCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
+    for:()=>{const pr=predCard(),ef=effCard();return[perfCard(),curveCard(),fitCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
     ent:()=>{const st=strengthCard();return[volCard(),bandsCard(),heatCard(),st.includes("Aquí verás cómo crece tu fuerza")?E("Evolución de la fuerza","Registra una sesión con peso y repeticiones",st):st,recordsCard()]},
     cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil",bo):bo,stepsChart(),weightHistory()]}
   }[sec]();
@@ -7690,6 +7717,73 @@ function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+tod
     try{await Promise.allSettled([syncActs(),window.__hcRefresh?window.__hcRefresh():null,typeof loadWeather==="function"?loadWeather():null])}catch(e){}
     i.classList.remove("ptr-spin");set(0,true);busy=false};
   document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})})();
+
+/* ---------- Curva de ritmo y de potencia (v240) ----------
+   Mejores medias por duración de cada salida (se guardan en su registro de rendimiento, así no hay que volver a pedir datos)
+   y, con las de 3 a 20 min, el ritmo o la potencia crítica (modelo distancia–tiempo / trabajo–tiempo). */
+const CV_D=[60,180,300,600,1200,1800,3600];
+/* Carrera: mejor velocidad media (m/s) para cada duración, sobre una rejilla de 1 s */
+function mmRun(st){const t=st&&st.time,v=st&&st.velocity_smooth;if(!t||!v||t.length<20)return null;const n=Math.min(t.length,v.length),end=t[n-1];if(end<60)return null;
+  const c=new Float64Array(Math.floor(end)+2);let j=0;for(let s=1;s<=end;s++){while(j<n-2&&t[j+1]<s)j++;const a=t[j],b=t[j+1]??a,va=v[j]||0,vb=v[j+1]??va,f=b>a?(s-a)/(b-a):0;c[s]=c[s-1]+Math.max(0,Math.min(7,va+(vb-va)*Math.max(0,Math.min(1,f))))}
+  const o={};CV_D.forEach(d=>{if(end<d)return;let m=0;for(let s=d;s<=end;s++){const x=c[s]-c[s-d];if(x>m)m=x}o[d]=+(m/d).toFixed(3)});return o}
+/* Bici: con potenciómetro, mejores vatios medios; sin él, los de la física de las subidas (como el FTP estimado) */
+function mmBike(st,kg,road){const t=st&&st.time,w=st&&st.watts;if(!t||t.length<20)return null;const o={};
+  if(w&&w.some(x=>x>0)){const n=Math.min(t.length,w.length),end=t[n-1],c=new Float64Array(Math.floor(end)+2);let j=0;
+    for(let s=1;s<=end;s++){while(j<n-2&&t[j+1]<s)j++;c[s]=c[s-1]+(w[j]||0)}
+    CV_D.forEach(d=>{if(end<d)return;let m=0;for(let s=d;s<=end;s++){const x=c[s]-c[s-d];if(x>m)m=x}o[d]=Math.round(m/d)});return{pm:true,v:o}}
+  const d=st.distance,z=st.altitude,v=st.velocity_smooth;if(!d||!z)return null;const n=Math.min(t.length,d.length,z.length),m=kg+(road?9:13),g=9.81,crr=road?.005:.012,cda=road?.32:.45,rho=1.12;
+  CV_D.forEach(D=>{let best=0;for(let i=0;i<n;i++){let k=i;while(k<n&&t[k]-t[i]<D)k++;if(k>=n)break;const dt=t[k]-t[i];if(dt>D*1.3)continue;
+    const dist=d[k]-d[i],gain=z[k]-z[i];if(dist<D*1.2)continue;const gr=gain/dist;if(gr<.035||gr>.2)continue;const vm=dist/dt,vz=gain/dt;if(vm<1.5||vm>12||vz>.6)continue;
+    if(v){let mn=99;for(let q=i;q<=k;q++)mn=Math.min(mn,v[q]);if(mn<.8)continue}
+    const P=(m*g*vz+crr*m*g*vm+.5*rho*cda*vm*vm*vm)/.97;if(P>best)best=P}if(best)o[D]=Math.round(best)});
+  return Object.keys(o).length?{pm:false,v:o}:null}
+/* Lo mejor de los últimos 90 días y el modelo crítico */
+function cvAgg(sp){const from=shiftKey(today(),-90),P=S.pmx||{},sus=hrSuspects(),best={},src={};let pm=false,n=0;
+  Object.entries(P).forEach(([id,x])=>{if(x.sp!==sp||x.err||x.d<from||sus[id])return;const m=sp==="run"?x.mm:(x.mp&&x.mp.v);if(!m)return;n++;if(sp==="bike"&&x.mp.pm)pm=true;
+    Object.entries(m).forEach(([d,v])=>{if(v>(best[d]||0)){best[d]=v;src[d]=x.d}})});
+  const pts=CV_D.filter(d=>best[d]).map(d=>({d,v:best[d],day:src[d]}));
+  /* Ritmo/potencia crítica: recta trabajo (o distancia) = reserva + crítica × tiempo, con 3–20 min */
+  const fit=pts.filter(p=>p.d>=180&&p.d<=1200);let crit=null,res=null;
+  if(fit.length>=3){const X=fit.map(p=>p.d),Y=fit.map(p=>p.v*p.d),mx=X.reduce((a,b)=>a+b)/X.length,my=Y.reduce((a,b)=>a+b)/Y.length;
+    let sxy=0,sxx=0;X.forEach((x,i)=>{sxy+=(x-mx)*(Y[i]-my);sxx+=(x-mx)*(x-mx)});const b=sxy/sxx,a=my-b*mx;
+    if(sp==="run"?(b>1.5&&b<7&&a>=0&&a<800):(b>60&&b<600&&a>=0&&a<60000)){crit=b;res=a}}
+  return{pts,crit,res,pm,n}}
+const cvPace=v=>fmtClock(1000/v);
+function curveCard(){if(!S.acts.length)return"";const R=cvAgg("run"),B=cvAgg("bike"),has=x=>x.pts.length>=3;
+  if(!has(R)&&!has(B))return"";const sp=has(R)&&has(B)?(S.cvSp||"run"):has(R)?"run":"bike",A=sp==="run"?R:B,run=sp==="run",ap=!run&&!A.pm?'<em class="cv-ap">≈</em>':"";
+  const fmt=v=>run?cvPace(v):Math.round(v)+"",unit=run?"/km":"W";
+  const sw=has(R)&&has(B)?`<div class="seg cv-seg" role="group" aria-label="Deporte">${[["run","Carrera"],["bike","Bici"]].map(([k,l])=>`<button type="button" data-cvsp="${k}" aria-pressed="${sp===k}">${l}</button>`).join("")}</div>`:"";
+  const head=A.crit?`<p class="cv-k">${run?"Ritmo crítico":"Potencia crítica"} · últimos 90 días</p><div class="cv-big"><b>${ap}${fmt(A.crit)}</b><span>${unit}</span><span class="cv-pm">${run?"±10 s":"±"+(A.pm?4:8)+" %"}</span></div>
+      <p class="cv-ctx">${run?`El ritmo más rápido que aguantarías sin ir cargándote: unos 30–40 minutos. Por encima tiras de tu reserva, unos ${Math.round(A.res/10)*10} m.`:`Los vatios que aguantarías sin ir cargándote: unos 30–40 minutos. Por encima tiras de tu reserva, unos ${f1k(A.res/1000)} kJ.`}</p>`
+    :`<p class="cv-ctx">Para calcular tu ${run?"ritmo":"potencia"} crítica hacen falta esfuerzos a tope de 3 a 20 minutos (series o un test) en los últimos 90 días.</p>`;
+  /* Gráfica: duración en escala logarítmica; en carrera, más rápido arriba */
+  const W=354,H=170,L=34,Rr=8,T=10,B2=22,P=A.pts,lx=d=>L+Math.log(d/60)/Math.log(60)*(W-L-Rr),vals=P.map(p=>run?1000/p.v:p.v).concat(A.crit?[run?1000/A.crit:A.crit]:[]);
+  let lo=Math.min(...vals),hi=Math.max(...vals);const pad=(hi-lo)*.12||10;lo-=pad;hi+=pad;
+  const y=v=>{const q=run?1000/v:v;return run?T+(q-lo)/(hi-lo)*(H-T-B2):H-B2-(q-lo)/(hi-lo)*(H-T-B2)};
+  /* Rótulos redondos: cada 15, 30 o 60 s en carrera; cada 25, 50 o 100 W en bici */
+  const steps=run?[15,30,60,120]:[25,50,100,200],st=steps.find(s=>(hi-lo)/s<=4)||steps[steps.length-1],ticks=[];for(let q=Math.ceil(lo/st)*st;q<=hi;q+=st)ticks.push(q);
+  let g=ticks.map(q=>{const yy=run?T+(q-lo)/(hi-lo)*(H-T-B2):H-B2-(q-lo)/(hi-lo)*(H-T-B2);return`<line x1="${L}" x2="${W-Rr}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}" class="cv-grid"/><text x="${L-6}" y="${(yy+4).toFixed(1)}" text-anchor="end">${run?fmtClock(q):Math.round(q)}</text>`}).join("");
+  g+=[[60,"1′"],[300,"5′"],[1200,"20′"],[3600,"60′"]].map(([d,l])=>`<text x="${lx(d).toFixed(1)}" y="${H-6}" text-anchor="middle">${l}</text>`).join("");
+  if(A.crit)g+=`<line x1="${L}" x2="${W-Rr}" y1="${y(A.crit).toFixed(1)}" y2="${y(A.crit).toFixed(1)}" class="cv-ref"/><text x="${L+4}" y="${(y(A.crit)+(run?14:-6)).toFixed(1)}" class="cv-reft">${run?"ritmo crítico":"potencia crítica"}</text>`;
+  g+=`<path d="${P.map((p,i)=>(i?"L":"M")+lx(p.d).toFixed(1)+" "+y(p.v).toFixed(1)).join(" ")}" class="cv-line"/>`+P.map(p=>`<circle cx="${lx(p.d).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4" class="cv-dot"/>`).join("");
+  g+=`<line class="cv-x" x1="0" x2="0" y1="${T}" y2="${H-B2}"/><circle class="cv-cd" r="6"/>`;
+  const lab=d=>d<3600?d/60+" min":"60 min",desc=P.map(p=>lab(p.d)+" "+fmt(p.v)+(run?" por km":" vatios")).join(", ");
+  const cells=[60,300,1200].map(d=>P.find(p=>p.d===d)).filter(Boolean).map(p=>`<div><span>${lab(p.d)}</span><b>${ap}${fmt(p.v)}<small>${unit}</small></b></div>`).join("");
+  const rows=P.map(p=>`<tr><td>${lab(p.d)}</td><td>${fmt(p.v)} ${unit} · ${esc(dateLabel(p.day))}</td></tr>`).join("");
+  return`<section class="glass pad fade cv-card" data-cvsp-cur="${sp}"><div class="cv-hd"><span class="pkk">Curva de ${run?"ritmo":"potencia"}</span>${sw}</div>${head}
+    <p class="cv-rd" aria-live="polite">Tu curva: más corto, ${run?"más rápido":"más vatios"}.</p>
+    <svg class="cv-ch" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Mejores ${run?"ritmos":"potencias"} por duración: ${esc(desc)}" data-cvp='${JSON.stringify(P.map(p=>[+lx(p.d).toFixed(1),+y(p.v).toFixed(1),lab(p.d),fmt(p.v)+" "+unit+(run?" · "+(p.v*3.6).toFixed(1).replace(".",",")+" km/h":"")]))}'>${g}</svg>
+    ${cells?`<div class="cv-cells">${cells}</div>`:""}
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${run?"Para cada duración, la media más rápida que has sostenido en tus carreras de los últimos 90 días (las de trail cuentan sin corregir el desnivel). El ritmo crítico sale de tus mejores esfuerzos de 3 a 20 minutos: la distancia crece en línea recta con el tiempo, y la pendiente de esa recta es el ritmo que aguantarías sin acumular fatiga. Margen orientativo: unos 10 s/km; afina cuanto más a tope hayas ido en esos esfuerzos.":(A.pm?"Para cada duración, los mejores vatios medios de tu potenciómetro en los últimos 90 días.":"Sin potenciómetro, los vatios salen de la física de tus subidas (peso, bici, pendiente y velocidad), así que son una estimación (margen de un 8 %).")+" La potencia crítica sale de tus mejores esfuerzos de 3 a 20 minutos: el trabajo crece en línea recta con el tiempo, y la pendiente es la potencia que aguantarías sin acumular fatiga."}</p>
+      <table class="cv-tb">${rows}</table></details></section>`}
+function f1k(v){return v.toFixed(1).replace(".",",")}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-cvsp]");if(!b||b.getAttribute("aria-pressed")==="true")return;S.cvSp=b.dataset.cvsp;buzz(8);render()});
+/* Lectura al tocar o pasar por la curva */
+(function(){const mv=e=>{const svg=e.target.closest&&e.target.closest(".cv-ch");if(!svg)return;let P;try{P=JSON.parse(svg.dataset.cvp)}catch(x){return}
+  const r=svg.getBoundingClientRect(),X=(e.touches?e.touches[0]:e).clientX,vx=(X-r.left)/r.width*354;let b=P[0],bd=1e9;P.forEach(p=>{const d=Math.abs(p[0]-vx);if(d<bd){bd=d;b=p}});
+  const x=svg.querySelector(".cv-x"),c=svg.querySelector(".cv-cd"),rd=svg.parentElement.querySelector(".cv-rd");
+  x.setAttribute("x1",b[0]);x.setAttribute("x2",b[0]);x.classList.add("on");c.setAttribute("cx",b[0]);c.setAttribute("cy",b[1]);c.classList.add("on");if(rd)rd.innerHTML=`<b>${b[2]}</b> · ${b[3]}`};
+  document.addEventListener("mousemove",mv);document.addEventListener("touchstart",mv,{passive:true});document.addEventListener("touchmove",mv,{passive:true})})();
 
 })();
 </script>
