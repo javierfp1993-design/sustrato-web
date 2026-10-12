@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T11:07:38.534Z">
+<meta name="sustrato-version" content="2026-10-12T11:45:11.889Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2841,6 +2841,23 @@ html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:#0a84c6}
 .cv-cells span{display:block;font-size:12px;color:var(--muted)}.cv-cells b{font-size:20px;font-weight:600;white-space:nowrap}.cv-cells b small{font-size:13px;color:var(--muted);font-weight:500;margin-left:2px}
 .cv-tb{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.cv-tb td{padding:6px 0;border-top:.5px solid var(--sep);color:var(--muted)}.cv-tb td:last-child{text-align:right;color:var(--fg)}
 
+/* Selector que abre una hoja (v243). Campo con el mismo aspecto que los de texto del formulario; opciones de la hoja en relleno suave, la elegida rellena en negro (blanco en oscuro). */
+.pk-f{appearance:none;border:0;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);text-align:left;cursor:pointer}
+.pk-f span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk-f i{font-style:normal;font-size:20px;line-height:1;color:var(--faint)}
+.pk-os{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.pk-o{appearance:none;border:0;width:100%;min-height:48px;padding:12px 14px;border-radius:14px;background:var(--fill2);color:var(--fg);font:500 17px var(--font);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.pk-o small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.pk-o[aria-checked="true"]{background:var(--fg);color:var(--bg)}
+.pk-o[aria-checked="true"] small{color:inherit;opacity:.7}
+.pk-o[aria-checked="true"]::after{content:"✓";font-weight:600}
+.pk-f:active,.pk-o:active,.pk-c:active{transform:scale(.97)}
+/* Chips de «Excluir»: la casilla del sistema queda oculta (sigue ahí para el formulario y la accesibilidad); el chip elegido se rellena */
+.pk-c{cursor:pointer}
+.pk-c:has(input:checked){background:var(--fg);color:var(--bg)}
+.pk-c:has(input:checked)::before{content:"✓";font-weight:600}
+.pk-c:has(input:focus-visible){outline:2px solid var(--fat);outline-offset:2px}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2912,7 +2929,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="242";
+const APP_VER="243";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6526,9 +6543,9 @@ function vPerfil(){
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
-      <label class="f" for="p_sex">Sexo<select id="p_sex"><option value="">Sin indicar</option><option value="m" ${p.sex==="m"?"selected":""}>Hombre</option><option value="f" ${p.sex==="f"?"selected":""}>Mujer</option></select></label>
+      ${pkField("sex","Sexo",[["","Sin indicar"],["m","Hombre"],["f","Mujer"]],p.sex||"")}
       ${f("age","Edad","33","años")}${f("height","Altura","178","cm")}${f("weight","Peso","78","kg")}
-      <label class="f" for="p_neat">Actividad fuera del deporte<select id="p_neat">${NEAT.map(o=>`<option value="${o.v}" ${(num(p.neat)||1.3)===o.v?"selected":""}>${o.l}</option>`).join("")}</select></label>
+      ${pkField("neat","Actividad fuera del deporte",NEAT.map(o=>{const m=o.l.match(/^(.*?) \((.*)\)$/);return m?[o.v,m[1],m[2][0].toUpperCase()+m[2].slice(1)]:[o.v,o.l]}),num(p.neat)||1.3)}
     </div></fieldset></details>
     <details class="psec" data-ps="med" ${psOpen("med")}><summary><span class="ps-t"><b>Medidas</b><small>${psSum.med}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Medidas (opcional)</legend><div class="fields">
       ${f("neck","Cuello","38","cm")}${f("waist","Cintura a la altura del ombligo","88","cm")}${f("hip","Cadera (necesaria en mujeres)","98","cm")}
@@ -6536,17 +6553,17 @@ function vPerfil(){
     <details class="psec" data-ps="fc" ${psOpen("fc")}><summary><span class="ps-t"><b>Frecuencia cardiaca</b><small>${psSum.fc}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Frecuencia cardiaca</legend><div class="fields">
       ${f("hrmax","FC máxima",(()=>{const h=hrParams(p);return h&&h.max?String(Math.round(h.max)):"186"})(),"ppm")}${f("hrrest","FC en reposo","55","ppm")}
       ${f("lthr","Umbral de lactato (Coros, EvoLab)",autoLthr()?String(autoLthr()):"165","ppm")}
-      <label class="f" for="p_level">Nivel de entrenamiento<select id="p_level">${Object.entries(LEVELS).map(([k,v])=>`<option value="${k}" ${(p.level||"mid")===k?"selected":""}>${v.l}</option>`).join("")}</select></label>
+      ${pkField("level","Nivel de entrenamiento",Object.entries(LEVELS).map(([k,v])=>[k,v.l]),p.level||"mid")}
     </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.${!p.hrmax?(()=>{const d=autoHrmax(),e=num(p.age)?Math.round(208-0.7*num(p.age)):null;return d&&(!e||d.v>e)?` Si dejas vacía la FC máxima, uso la que has alcanzado en tus actividades: <b>${d.v} ppm</b> (${esc(dateLabel(d.d))}), más alta que la estimada por tu edad.`:e?` Si dejas vacía la FC máxima, uso la estimada por tu edad: <b>${e} ppm, ±6</b>${d?` (lo más alto en tus actividades es ${d.v}, y entrenando casi nunca se llega al máximo)`:""}.`:""})():""}${!p.lthr&&autoLthr()?` Si dejas vacío el umbral, uso el estimado con tus esfuerzos sostenidos de los últimos 4 meses: <b>${autoLthr()} ppm, ±8</b>.`:""}${(!p.hrmax||!p.lthr)?" Si conoces tus valores reales, escríbelos: afinan el VO2max, las zonas y los sustratos.":""}</p></fieldset></details>
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
-      <label class="f" for="p_store">Dónde haces la compra<select id="p_store">${[["","En cualquier súper"],["merc","Mercadona"]].map(([k,l])=>`<option value="${k}" ${(p.store||"")===k?"selected":""}>${l}</option>`).join("")}</select></label>
-      <label class="f" for="p_diet">Tipo de dieta<select id="p_diet">${[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]].map(([k,l])=>`<option value="${k}" ${(p.diet||"omni")===k?"selected":""}>${l}</option>`).join("")}</select></label>
-      <div class="f"><span>Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<label class="chip"><input type="checkbox" id="p_${k}" ${p[k]?"checked":""} style="width:auto;min-height:0"> ${l}</label>`).join("")}</div></div>
+      ${pkField("store","Dónde haces la compra",[["","En cualquier súper"],["merc","Mercadona"]],p.store||"")}
+      ${pkField("diet","Tipo de dieta",[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]],p.diet||"omni")}
+      <div class="f"><span>Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<label class="chip pk-c"><input type="checkbox" class="vh" id="p_${k}" ${p[k]?"checked":""}>${l}</label>`).join("")}</div></div>
     </div><p class="note">La asignación automática solo usa platos compatibles. En Plan › Mis platos puedes marcar los que no te gustan.</p></fieldset></details>
     <details class="psec" data-ps="hor" ${psOpen("hor")}><summary><span class="ps-t"><b>Horario de comidas</b><small>${psSum.hor}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Horario de comidas</legend><div class="fields">
       ${MEALS.map(([id,n,def])=>`<label class="f" for="p_meal_${id}">${n}<input id="p_meal_${id}" type="time" value="${esc(p["meal_"+id]||def)}"></label>`).join("")}
     </div></fieldset></details>
-    <details class="psec" data-ps="obj" ${psOpen("obj")}><summary><span class="ps-t"><b>Objetivo</b><small>${psSum.obj}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Objetivo</legend><div class="fields"><label class="f" for="p_goal">Objetivo<select id="p_goal">${Object.entries(GOALS).map(([k,g])=>`<option value="${k}" ${(p.goal||"recomp")===k?"selected":""}>${g.label}</option>`).join("")}</select></label></div></fieldset></details>
+    <details class="psec" data-ps="obj" ${psOpen("obj")}><summary><span class="ps-t"><b>Objetivo</b><small>${psSum.obj}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Objetivo</legend><div class="fields">${pkField("goal","Objetivo",Object.entries(GOALS).map(([k,g])=>[k,g.label,g.adj?`Comer un ${Math.round(Math.abs(g.adj)*100)} % ${g.adj<0?"menos":"más"} de lo que gastas${g.p>2?", con más proteína":""}`:"Comer lo que gastas"]),p.goal||"recomp")}</div></fieldset></details>
     <div class="row"><span class="note" style="margin:0">${S.db&&S.uid?"Tu perfil es privado: cada persona que abra la app ve solo el suyo.":"Esta vista no puede guardar el perfil."}</span><button class="btn primary pf-save${S.pfJust?" done":""}" type="submit" ${S.pfDirty?"":"disabled"}>${S.pfJust?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Guardado':"Guardar cambios"}</button></div>
   </form></section>
   <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
@@ -6572,7 +6589,10 @@ function render(){setTimeout(dropKick,0);
   $("#banner").innerHTML=stravaBanner();
   const v=S.tab==="hoy"?vHoy():S.tab==="plan"?vPlan():S.tab==="acts"?vActs():S.tab==="prog"?vProg():(S.lastTab=S.tab,0)||S.tab==="fuerza"?vFuerza():vPerfil();
   {const keep=[...document.querySelectorAll("#view .hcar-track")].map(e=>e.scrollLeft);
+  /* v243: un repintado en segundo plano (p. ej. al acabar el cálculo de rendimiento) no borra lo que se está editando en Perfil sin guardar */
+  const pfKeep=S.pfDirty&&$("#pform")?[...$("#pform").querySelectorAll("input[id]")].map(e=>[e.id,e.type==="checkbox"?e.checked:e.value]):null;
   $("#view").innerHTML=v;
+  if(pfKeep)pfKeep.forEach(([id,x])=>{const e=document.getElementById(id);if(!e)return;if(e.type==="checkbox")e.checked=x;else{e.value=x;const b=document.querySelector(`.pk-f[data-pk="${id.slice(2)}"] span`),o=b&&PK&&PK[id.slice(2)]&&PK[id.slice(2)].opts.find(q=>String(q[0])===x);if(o)b.textContent=o[1]}});
   /* conserva la tarjeta visible del carrusel al redibujar (p. ej. pasos tras Cambiar objetivo) */
   if(keep.some(x=>x>0))document.querySelectorAll("#view .hcar-track").forEach((e,i)=>{if(keep[i]){e.style.scrollBehavior="auto";e.scrollLeft=keep[i];e.style.scrollBehavior=""}})}
   $("#view").style.display="flex";$("#view").style.flexDirection="column";$("#view").style.gap="18px";
@@ -7267,6 +7287,30 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   const x=svg.querySelector(".cv-x"),c=svg.querySelector(".cv-cd"),rd=svg.parentElement.querySelector(".cv-rd");
   x.setAttribute("x1",b[0]);x.setAttribute("x2",b[0]);x.classList.add("on");c.setAttribute("cx",b[0]);c.setAttribute("cy",b[1]);c.classList.add("on");if(rd)rd.innerHTML=`<b>${b[2]}</b> · ${b[3]}`};
   document.addEventListener("mousemove",mv);document.addEventListener("touchstart",mv,{passive:true});document.addEventListener("touchmove",mv,{passive:true})})();
+
+// Selector que abre una hoja (guía, pág. 12: «Listas: un selector compacto que abre una hoja, nunca el selector nativo»). v243.
+// pkField(id, rótulo, opciones [[valor, nombre, explicación?]], valor) -> campo con <input type="hidden" id="p_<id>"> que lee el formulario.
+// La hoja se monta aparte del render para no perder lo que haya sin guardar en el formulario.
+function pkField(id,label,opts,val){(PK=PK||{})[id]={label,opts};const cur=opts.find(o=>String(o[0])===String(val))||opts[0];
+  return`<label class="f" for="pk_${id}">${label}<button type="button" class="pk-f" id="pk_${id}" data-pk="${id}" aria-haspopup="dialog"><span>${esc(cur[1])}</span><i aria-hidden="true">›</i></button><input type="hidden" id="p_${id}" value="${esc(String(cur[0]))}"></label>`}
+var PK;  // opciones y rótulo de cada campo (se rellena al pintar; sin valor inicial para no borrarlo si se pinta antes de llegar aquí)
+function pkOpen(id,from){const d=PK&&PK[id];let inp=document.getElementById("p_"+id);if(!d||!inp)return;
+  const ov=document.createElement("div");ov.className="overlay pk-ov";
+  ov.innerHTML=`<div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-labelledby="pk_t"><div class="row"><h3 id="pk_t">${esc(d.label)}</h3><button type="button" class="hbtn xclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="pk-os" role="radiogroup" aria-labelledby="pk_t">${d.opts.map(o=>`<button type="button" class="pk-o" role="radio" aria-checked="${String(o[0])===inp.value}" data-v="${esc(String(o[0]))}"><span>${esc(o[1])}${o[2]?`<small>${esc(o[2])}</small>`:""}</span></button>`).join("")}</div></div>`;
+  const close=()=>{ov.remove();from&&from.focus()};
+  // la hoja se gestiona sola: el clic no llega al manejador general de hojas
+  ov.addEventListener("click",e=>{e.stopPropagation();if(e.target===ov||e.target.closest(".xclose")){close();return}
+    const o=e.target.closest(".pk-o");if(!o)return;
+    // por si la pantalla se repintó con la hoja abierta: se buscan de nuevo el campo y su botón
+    inp=document.getElementById("p_"+id)||inp;from=document.getElementById("pk_"+id)||from;inp.value=o.dataset.v;
+    ov.querySelectorAll(".pk-o").forEach(x=>x.setAttribute("aria-checked",x===o));
+    const op=d.opts.find(x=>String(x[0])===o.dataset.v);if(from&&op)from.querySelector("span").textContent=op[1];
+    inp.dispatchEvent(new Event("change",{bubbles:true}));setTimeout(close,120)});
+  ov.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+  document.body.appendChild(ov);const sel=ov.querySelector('[aria-checked="true"]')||ov.querySelector(".pk-o");sel&&sel.focus()}
+// en captura y sin propagar: el manejador general de botones repintaría la pantalla y se perdería lo no guardado
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".pk-f");if(b){e.preventDefault();e.stopPropagation();pkOpen(b.dataset.pk,b)}},true);
 
 })();
 </script>
