@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T19:51:47.005Z">
+<meta name="sustrato-version" content="2026-10-12T20:31:40.606Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1008,11 +1008,6 @@ h2{font-size:var(--fs-h2)!important;font-weight:600!important;letter-spacing:-.0
 .chip.sm{min-height:30px;border-radius:10px!important;font-size:13px;padding:5px 10px}
 button:active:not(:disabled){transform:scale(.98)}
 .btn,.chip,.tc-row,.qa-it,.rec{transition:transform .12s ease,background .2s,color .2s}
-.mchk{appearance:none;flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:2px solid var(--faint);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;transition:background .2s,border-color .2s}
-.mchk:hover{border-color:var(--verde)}
-.mchk.done{background:var(--verde);border-color:var(--verde)}
-.mchk.skip{background:var(--faint);border-color:var(--faint)}
-.mchk.chg{background:var(--amarillo);border-color:var(--amarillo);color:#141414}
 .meal.st-skip .mbar,.meal.st-skip .mnums,.meal.st-skip .mdish{opacity:.4}
 /* avituallamiento */
 .fu2{border-radius:14px;background:var(--card2)}
@@ -1156,10 +1151,6 @@ html[data-theme="light"] .tskip{background:rgba(0,0,0,.06)}
 .yr-b i{display:block;height:8px;border-radius:4px}
 .yr-b b{text-align:right;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .yr-b.old b{font-weight:500;color:var(--faint)}
-/* casilla de comidas más discreta */
-.mchk{width:22px!important;height:22px!important;border-width:1.5px!important;position:relative}
-.mchk::after{content:"";position:absolute;inset:-11px}
-.mchk svg{width:12px;height:12px}
 
 /* logo gota */
 .dsvg .dout{display:none}
@@ -1203,8 +1194,6 @@ html.is-loading header.top .logo .dcover{animation:dloop 2s cubic-bezier(.5,0,.3
 
 /* microinteracciones */
 @media (prefers-reduced-motion:no-preference){
-  .mchk.chkpop{animation:chkpop .42s cubic-bezier(.3,1.6,.5,1)}
-  .mchk.chkpop svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:chkdraw .3s ease .08s forwards}
   @keyframes chkpop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
   @keyframes chkdraw{to{stroke-dashoffset:0}}
   details.dop>*:not(summary){animation:dop .28s cubic-bezier(.2,.8,.3,1)}
@@ -2119,7 +2108,7 @@ html[data-theme="dark"] .ac-g{background:#fff!important;color:#1f1f1f!important;
 .mline{display:flex;align-items:center;gap:12px}
 .mbody{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 div.mbody{cursor:default}
-.mbody:active{opacity:.6}
+.mw-in:not(.mw-sr):not(.mw-sl) .mbody:active{opacity:.6}
 .mb-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .mb-t b{font-size:17px;font-weight:600;letter-spacing:-.01em}
 .mb-d{font-size:14px;color:var(--fg);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2205,7 +2194,6 @@ html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 .ls-go{appearance:none;border:0;flex:none;background:var(--fg);color:var(--bg);font:600 15px var(--font);border-radius:999px;padding:11px 18px;cursor:pointer}
 .ls-go:active{transform:scale(.97)}
 .mline .mcam2{background:var(--card2);width:36px;height:36px}
-.mline .mb-go{appearance:none;border:0;background:none;padding:0 0 0 2px;cursor:pointer;line-height:1}
 .xgrp{margin-top:12px;border-radius:14px;background:var(--card2);overflow:hidden}
 .xgrp .xline{margin:0;border-radius:0;background:none}
 .xgrp .xline+.xline{border-top:1px solid var(--edge-soft,rgba(127,127,127,.18))}
@@ -2839,10 +2827,33 @@ html[data-theme="light"]{--amarillo:#b19007;--naranja:#e86518;--rojo:#d70015;--v
 /* Texto sin color (guía 2.2): el estado lo marca un punto de 8 px delante, del color que pone --pc en cada pieza.
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
-   pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.ob-err:not(:empty)::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+   pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok); v254: comida con otra cosa (.mw-chg). */
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.mw-chg::before,.ob-err:not(:empty)::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
+
+/* v254 · Comidas con gestos (070-deslizar-comidas.js). Clases mw-. */
+.mw-in{position:relative;overflow:hidden;margin:0 -18px}
+.mw-fg{position:relative;background:var(--card);padding:0 18px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.mw-l,.mw-r{position:absolute;inset:0;display:none;align-items:center;font-weight:600;font-size:15px;color:#fff}
+.mw-sr .mw-l,.mw-sl .mw-r{display:flex}
+.mw-l{background:var(--verde-v,var(--verde));padding-left:24px;gap:8px}
+.mw-l.back{background:var(--k)}
+.mw-l svg{width:20px;height:20px}
+.mw-r{background:var(--k);justify-content:flex-end}
+.mw-r.del{background:var(--rojo-v,var(--rojo))}
+.mw-r button{appearance:none;border:0;background:none;color:#fff;font:600 15px var(--font);height:100%;width:112px;cursor:pointer}
+/* pendiente: barras tenues (lo previsto); registrada: llenas */
+.mw:not(.st-done):not(.st-chg) .mbar{opacity:.35}
+.mw .mbar{transition:opacity .25s}
+.mw-ok{display:inline-flex;align-items:center;gap:5px}
+.mw-ok svg{width:10px;height:10px;box-sizing:content-box;padding:3px;border-radius:50%;background:var(--verde);color:#fff}
+.mw-chg{--pc:var(--amarillo)}
+.mw-hint{height:0;overflow:hidden;opacity:0;font-size:12px;color:var(--muted);transition:height .3s,opacity .3s}
+.mw-hint.on{height:22px;opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  .mw-ok.chkpop svg{animation:chkpop .42s cubic-bezier(.3,1.6,.5,1)}
+  .mw-ok.chkpop svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:chkdraw .3s ease .08s forwards}}
 
 </style>
 
@@ -2915,7 +2926,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="253";
+const APP_VER="254";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4450,7 +4461,7 @@ document.addEventListener("scroll",e=>{const t=e.target;if(!t.classList||!t.clas
 document.addEventListener("click",e=>{const d=e.target.closest(".hcar-dots i");if(!d)return;const c=d.closest(".hcar"),t=c.querySelector(".hcar-track"),i=[...d.parentNode.children].indexOf(d);t.scrollTo({left:i*t.clientWidth,behavior:"smooth"})});
 /* ---------- Gestos ---------- */
 (function(){let sx=0,sy=0,st=0,tgt=null,on=false;
-  const ignore=el=>el.closest(".seg,input,select,textarea,.scroll-x,.sheet,.full,.hcar,#radial,.wizard,svg.chart,.chartwrap");
+  const ignore=el=>el.closest(".seg,input,select,textarea,.scroll-x,.sheet,.full,.hcar,#radial,.wizard,svg.chart,.chartwrap,.mw-in");
   document.addEventListener("touchstart",e=>{if(e.touches.length!==1){on=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();tgt=e.target;on=!ignore(e.target)&&!!(e.target.closest&&e.target.closest(".dsec"))},{passive:true});
   document.addEventListener("touchend",e=>{if(!on)return;on=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
     if(Math.abs(dx)<60||Math.abs(dx)<2*Math.abs(dy)||Date.now()-st>700)return;
@@ -5387,7 +5398,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-psec]");if
 function logEntryFor(k,m,st,extra){
   if(st==="skip")return{st,P:0,C:0,F:0};
   const a=(S.menu[k]||{})[m.id],ds=a&&dishById(a.d);
-  if(st==="done"){const r=(extra&&extra.r)||1;return ds?{st,r,P:ds.P*a.s*r,C:ds.C*a.s*r,F:ds.F*a.s*r,n:ds.n}:{st,r,P:m.P*r,C:m.C*r,F:m.F*r,n:"Según objetivo"}}
+  if(st==="done"){const r=(extra&&extra.r)||1;const at=Date.now();return ds?{st,r,at,P:ds.P*a.s*r,C:ds.C*a.s*r,F:ds.F*a.s*r,n:ds.n}:{st,r,at,P:m.P*r,C:m.C*r,F:m.F*r,n:"Según objetivo"}}
   return Object.assign({st:"chg"},extra||{});
 }
 async function saveLog(){const c=userCol();if(!c)return;try{await c.doc("log").set({kind:"log",days:S.log})}catch(e){toast("No se ha podido guardar el registro")}}
@@ -5847,23 +5858,24 @@ function stravaAlert(){
 }
 function mealsCard(t){
   const mp=mealPlan(t,S.day),mx=Math.max(...mp.meals.map(m=>m.kcal));
+  const mwFirst=(mp.meals.find(m=>!((S.log[S.day]||{})[m.id]))||{}).id;
   const rows=mp.meals.map(m=>{
     const tags=(m.pre?`<span class="pill tag-pre">Antes · ${esc(m.pre)}</span>`:"")+(m.post?`<span class="pill tag-post">Después · ${esc(m.post)}</span>`:"")+(m.id==="dinner"&&t.bonus?`<span class="pill tag-load">Carga para mañana</span>`:"");
     const w=v=>(v/mx*100).toFixed(1);
     const lg=(S.log[S.day]||{})[m.id],st=lg&&lg.st,canL=S.day<=today();
-    const chk=canL?`<button class="mchk ${st||""}${S.pop===m.id?" chkpop":""}" data-log="${m.id}" data-st="done" aria-pressed="${st==="done"}" aria-label="${st==="done"?"Desmarcar":"Marcar como comida según lo planeado"}">${st==="done"?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':st==="skip"?'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"/></svg>':st==="chg"?'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>':""}</button>`:"";
+    /* v254: sin casilla ni flecha; la fila se desliza (070-deslizar-comidas.js) y al tocarla abre la hoja */
     /* Para qué es esta comida: una frase, sin etiquetas */
     const why=[m.pre?["var(--faint)",`Combustible para ${esc(m.pre)}`]:null,m.post?["var(--faint)",`Recuperación tras ${esc(m.post)}`]:null,m.id==="dinner"&&t.bonus?["var(--faint)",m.post?"carga para mañana":"Carga para mañana"]:null].filter(Boolean);
     const tagRow=why.length?`<span class="mwhy"><i style="background:${why[0][0]}"></i><span>${why.map(w=>w[1]).join(" y ")}</span></span>`:"";
     const a=(S.menu[S.day]||{})[m.id],ds=a&&dishById(a.d),RL={.5:"½",.75:"¾",1.25:"1¼",1.5:"1½"};
     let line=ds?esc(ds.n)+` <span class="mb-s">${fmtS(a.s)}</span>`:"",kc=m.kcal,lab="",src=m;
-    if(st==="done"){line=ds?esc(ds.n):"";kc=kcOf(lg);src=lg;lab="lo planeado"+(lg.r&&lg.r!==1?" · "+(RL[lg.r]||lg.r):"")}
+    if(st==="done"){line=ds?esc(ds.n):"";kc=kcOf(lg);src=lg;lab="Hecha"+(lg.at&&keyOf(new Date(lg.at))===S.day?" · "+fromMin(new Date(lg.at).getHours()*60+new Date(lg.at).getMinutes()):"")+(lg.r&&lg.r!==1?" · "+(RL[lg.r]||lg.r):"")}
     else if(st==="chg"){line=esc(lg.n||"Otra cosa");kc=kcOf(lg);src=lg;lab=lg.photo?"por foto":"otra cosa"}
     else if(st==="skip"){line="Me la salté";kc=0;lab="saltada"}
     const bar=st==="skip"?"":`<span class="mbar"><i style="width:${w(4*(src.P||0))}%;background:var(--prot)"></i><i style="width:${w(4*(src.C||0))}%;background:var(--carb)"></i><i style="width:${w(9*(src.F||0))}%;background:var(--fat)"></i></span>`;
     const thr=protThr(),pv=src.P||0,pLow=thr&&st!=="skip"&&protMain(m)&&pv<thr*.95;
-    const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}${pLow?`<span class="mprot">Poca proteína · ${fmtInt(pv)} de ${fmtInt(thr)} g</span>`:""}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small>${lab}</small>`:""}</span>`;
-    return`<div class="meal mr2${st?" st-"+st:""}"><div class="mline">${chk}${canL?`<button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}: registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}<button class="mb-go" data-mopen="${m.id}" tabindex="-1" aria-hidden="true">›</button>`:`<div class="mbody">${body}</div>`}</div>${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
+    const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}${pLow?`<span class="mprot">Poca proteína · ${fmtInt(pv)} de ${fmtInt(thr)} g</span>`:""}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small class="${st==="done"?"mw-ok"+(S.pop===m.id?" chkpop":""):st==="chg"?"mw-chg":""}">${st==="done"?MW_CK:""}${lab}</small>`:canL?`<small>lo planeado</small>`:""}</span>`;
+    return`<div class="meal mr2${st?" st-"+st:""}${canL?" mw":""}">${canL?`<div class="mw-in" data-mw="${m.id}"><div class="mw-l${st==="done"?" back":""}" aria-hidden="true">${st==="done"?"":MW_CK}<span>${st==="done"?"Pendiente":"Hecha"}</span></div><div class="mw-r${st?" del":""}"><button type="button" data-mwq="${m.id}" tabindex="-1" aria-hidden="true">${st?"Quitar":"Me la salté"}</button></div><div class="mline mw-fg"><button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}, ${st==="done"?"hecha":st==="skip"?"saltada":st==="chg"?"otra cosa":"pendiente"}: toca para registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}</div></div>${!st&&m.id===mwFirst?`<div class="mw-hint" aria-hidden="true">Desliza → si la has comido · ← si te la saltaste</div>`:""}`:`<div class="mline"><div class="mbody">${body}</div></div>`}${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
   const blocks=mp.blocks.length?mp.blocks.map(b=>`${esc(b.label)} ${fromMin(b.st)}–${fromMin(b.en)}`).join(" · "):"Sin entreno";
   return`<section class="glass pad fade hue-gly"><div class="row"><h2>Reparto por comidas</h2><span class="note" style="margin:0">${blocks}</span></div>
     ${logSummary(t,S.day)}
@@ -6571,7 +6583,7 @@ function vPerfil(){
     </section>
   </div></div>`;
 }
-function render(){setTimeout(dropKick,0);try{render0()}finally{unitize()}}
+function render(){setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize()}}
 function render0(){
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
@@ -6648,8 +6660,6 @@ document.addEventListener("click",e=>{
   if(t.dataset.stph!=null){if(t.dataset.stph){S.stpH=!S.stpH;render()}return}
   if(t.dataset.gomenu){S.tab="plan";S.planView="week";S.planWeek=mondayOf(S.day);render();window.scrollTo(0,0);return}
   if(t.dataset.qtip){S.qTip=(S.qTip||0)?0:1;render();return}
-  if(t.dataset.log){const mid=t.dataset.log,st=t.dataset.st,cur=(S.log[S.day]||{})[mid];const tt=dayTargets(S.day);const m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);
-    if(cur&&cur.st===st){const k=S.day,c=JSON.parse(JSON.stringify(cur));setLog(k,mid,null);undoToast("Registro quitado",()=>{setLog(k,mid,c);render()})}else if(m){setLog(S.day,mid,logEntryFor(S.day,m,st));if(st==="done"){S.pop=mid;buzz(10)}}render();return}
   if(t.dataset.act==="savewt"){const k=today(),rv=num(($("#rhrin")||{}).value),v=num(($("#wt")||{}).value),sp=S.slDraft;
     if(($("#wt")||{}).value&&(!v||v<30||v>250)){toast("Revisa el peso");return}if(($("#rhrin")||{}).value&&(!rv||rv<30||rv>110)){toast("Revisa el pulso (30–110)");return}
     if(!v&&!rv&&!sp&&!todayWeight()){toast("Apunta al menos un dato");return}
@@ -7305,6 +7315,57 @@ function pkOpen(id,from){const d=PK&&PK[id],inp=document.getElementById("p_"+id)
     i2.value=v;if(b2&&op)b2.querySelector("span").textContent=op[1];i2.dispatchEvent(new Event("change",{bubbles:true}))},from)}
 // en captura y sin propagar: el manejador general de botones repintaría la pantalla y se perdería lo no guardado
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".pk-f");if(b){e.preventDefault();e.stopPropagation();pkOpen(b.dataset.pk,b)}},true);
+
+/* ---------- Comidas con gestos (v254) ----------
+   Hoy · Reparto por comidas. Sin casilla ni flecha: la fila entera se toca para abrir su hoja.
+   → (pasada la mitad): hecha según lo planeado; si ya lo estaba, vuelve a pendiente.
+   ← corto: descubre «Me la salté» (o «Quitar» si ya hay registro); ← largo: lo hace directamente.
+   Siempre con «Deshacer». La primera vez, la primera fila pendiente hace un amago y enseña una frase.
+   Clases: .mw .mw-in .mw-l(.back) .mw-r(.del) .mw-fg .mw-hint(.on) .mw-ok .mw-chg */
+const MW_CK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function mwAct(mid,dir){const k=S.day,tt=dayTargets(k),m=tt&&mealPlan(tt,k).meals.find(x=>x.id===mid);if(!m)return;
+  const cur=(S.log[k]||{})[mid],prev=cur?JSON.parse(JSON.stringify(cur)):null,undo=()=>{setLog(k,mid,prev);render()};
+  mwSeen();
+  if(dir>0){if(cur&&cur.st==="done"){setLog(k,mid,null);S.pop=null;render();undoToast(m.n+": vuelve a pendiente",undo)}
+    else{setLog(k,mid,logEntryFor(k,m,"done"));S.pop=mid;buzz(10);render();undoToast(m.n+": hecha",undo)}}
+  else{if(cur){setLog(k,mid,null);S.pop=null;render();undoToast("Registro quitado",undo)}
+    else{setLog(k,mid,{st:"skip",P:0,C:0,F:0});S.pop=null;buzz(10);render();undoToast(m.n+": saltada",undo)}}}
+function mwSeen(){if(S._mwSeen)return;S._mwSeen=1;try{localStorage.setItem("sustrato-mwhint","1")}catch(e){}}
+/* pista: una vez por sesión hasta que se use el gesto */
+function mwHint(){if(S._mwSeen||S._mwHinted||S.tab!=="hoy")return;try{if(localStorage.getItem("sustrato-mwhint")){S._mwSeen=1;return}}catch(e){}
+  const h=document.querySelector(".mw-hint");if(!h)return;const r=h.previousElementSibling,fg=r&&r.querySelector(".mw-fg");if(!fg)return;
+  const b=fg.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)return; /* solo si está a la vista */
+  S._mwHinted=1;const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;h.classList.add("on");
+  if(!reduce){r.classList.add("mw-sl");fg.style.transition="transform .3s cubic-bezier(.2,.8,.2,1)";fg.style.transform="translateX(56px)";
+    setTimeout(()=>{fg.style.transform="";setTimeout(()=>{r.classList.remove("mw-sl");fg.style.transition=""},320)},700)}
+  setTimeout(()=>{if(h.isConnected)h.classList.remove("on")},4000)}
+/* también al llegar a ella desplazando la pantalla */
+addEventListener("scroll",()=>{if(!S._mwSeen&&!S._mwHinted){clearTimeout(mwHint.t);mwHint.t=setTimeout(mwHint,250)}},{passive:true});
+(function(){let row=null,fg=null,x0=0,y0=0,dx=0,mode=null,moved=false,buzzed=false,openRow=null;
+  const W=()=>row.offsetWidth,QW=112;
+  const set=(r,v,anim)=>{const f=r.querySelector(".mw-fg");f.style.transition=anim?"transform .25s cubic-bezier(.2,.8,.2,1)":"none";f.style.transform=v?`translateX(${v}px)`:"";
+    r.classList.toggle("mw-sr",v>0);r.classList.toggle("mw-sl",v<0)};
+  const close=(r)=>{if(!r||!r.isConnected)return;set(r,0,true);setTimeout(()=>{if(!r.querySelector(".mw-fg").style.transform)r.classList.remove("mw-sl","mw-sr")},260)};
+  document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;
+    const f=e.target.closest&&e.target.closest(".mw-fg");
+    if(openRow&&(!f||f.parentNode!==openRow)&&!(e.target.closest&&e.target.closest("[data-mwq]"))){close(openRow);openRow=null}
+    if(!f||e.target.closest(".mcam"))return;row=f.parentNode;fg=f;x0=e.clientX;y0=e.clientY;dx=0;mode=null;moved=false;buzzed=false});
+  document.addEventListener("pointermove",e=>{if(!row)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
+    if(!mode){if(Math.abs(ddx)>8&&Math.abs(ddx)>Math.abs(ddy)*1.3){mode="h";try{fg.setPointerCapture(e.pointerId)}catch(_){}}else if(Math.abs(ddy)>8){row=null;return}else return}
+    moved=true;dx=(openRow===row?-QW:0)+ddx;const w=W();dx=Math.max(-w,Math.min(dx,w*.85));set(row,dx,false);
+    const pass=dx>w*.45||dx<-w*.6;if(pass&&!buzzed){buzzed=true;buzz(8)}if(!pass)buzzed=false});
+  const up=()=>{if(!row)return;const r=row,id=r.dataset.mw,w=W();row=null;if(!moved)return;
+    if(dx>w*.45){set(r,w,true);openRow=null;setTimeout(()=>mwAct(id,1),190);return}
+    if(dx<-w*.6){set(r,-w,true);openRow=null;setTimeout(()=>mwAct(id,-1),190);return}
+    if(dx<-40){set(r,-QW,true);openRow=r;mwSeen();return}
+    if(openRow===r)openRow=null;close(r)};
+  document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
+  /* tras arrastrar, el clic no abre la hoja; con la fila abierta, tocarla la cierra */
+  document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest(".mw-fg");
+    const q=e.target.closest&&e.target.closest("[data-mwq]");if(q){e.preventDefault();e.stopPropagation();openRow=null;mwAct(q.dataset.mwq,-1);return}
+    if(!f)return;if(moved){moved=false;e.preventDefault();e.stopPropagation();return}
+    if(openRow===f.parentNode){e.preventDefault();e.stopPropagation();close(openRow);openRow=null}},true);
+})();
 
 })();
 </script>
