@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T20:55:44.005Z">
+<meta name="sustrato-version" content="2026-10-12T21:19:58.984Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2817,7 +2817,7 @@ html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:var(--azul);--cv-v:
    --k: marca neutra para lo que no tiene color propio (series únicas, fatiga). */
 :root{--amarillo-v:#ffd21e;--naranja-v:#ff9500;--rojo-v:#ff3b30;--verde-v:#30d158;--cian-v:#5ac8fa;--azul-v:#3b82f6;--morado-v:#bf5af2;--k-v:#8e8e93;
   --amarillo:#ffd21e;--naranja:#ff9500;--rojo:#ff3b30;--verde:#30d158;--cian:#5ac8fa;--azul:#3b82f6;--morado:#bf5af2;--k:#8e8e93}
-html[data-theme="light"]{--amarillo:#b19007;--naranja:#e86518;--rojo:#d70015;--verde:#11ab40;--cian:#3ba0c0;--azul:#3478fb}
+html[data-theme="light"]{--amarillo:#f0a800;--naranja:#e86518;--rojo:#d70015;--verde:#11ab40;--cian:#3ba0c0;--azul:#3478fb}
 
 /* Texto sin color (guía 2.2): el estado lo marca un punto de 8 px delante, del color que pone --pc en cada pieza.
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
@@ -2927,7 +2927,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="255";
+const APP_VER="256";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6211,7 +6211,7 @@ function shData(p){const tk=today(),tol=shTol(),st=r=>r>1+tol?"over":r<1-tol?"un
 async function shRender(p){const d=shData(p);if(!d)return null;
   const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,H=1920,P=96;
   const K=dark?{bg:"#141414",fg:"#f4f5f7",mu:"#8e8e93",ln:"rgba(255,255,255,.1)",card:"#1c1c1e",ok:"#30d158",ov:"#ff9500",un:"#5f5f64",band:"rgba(255,255,255,.06)",c:"#ffd21e",p:"#ff3b30",f:"#3b82f6",de:"#2c2c2e"}
-    :{bg:"#f4f5f7",fg:"#1c1c1e",mu:"#636366",ln:"rgba(0,0,0,.09)",card:"#ffffff",ok:"#11ab40",ov:"#e86518",un:"#aeaeb2",band:"rgba(0,0,0,.05)",c:"#b19007",p:"#d70015",f:"#3478fb",de:"#e5e5ea"};
+    :{bg:"#f4f5f7",fg:"#1c1c1e",mu:"#636366",ln:"rgba(0,0,0,.09)",card:"#ffffff",ok:"#11ab40",ov:"#e86518",un:"#aeaeb2",band:"rgba(0,0,0,.05)",c:"#f0a800",p:"#d70015",f:"#3478fb",de:"#e5e5ea"};
   try{await document.fonts.ready}catch(e){}
   const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
   const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
