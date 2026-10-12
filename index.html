@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T09:39:59.445Z">
+<meta name="sustrato-version" content="2026-10-12T10:38:24.160Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3191,7 +3191,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="240";
+const APP_VER="241";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -4032,11 +4032,6 @@ const XBR={what:["Para qué sirve",'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12
   warn:["Ten en cuenta",'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/>']};
 function xbRow(k,t){const v=XBR[k];return`<div class="xbr xbr-${k}"><span class="xbr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${v[1]}</svg></span><div><span class="xbr-l">${v[0]}</span><p>${esc(t)}</p></div></div>`}
 
-/* ---------- Strava (solo en el móvil) ---------- */
-function stravaCard(){const st=S.stravaSt;if(!window.__native||!window.__native.strava||!st||!st.available)return"";
-  return`<section class="glass pad fade sv-card"><div class="row"><h2>Strava</h2>${st.connected?'<span class="sv-ok">Conectado</span>':""}</div>
-    <p class="note" style="margin:4px 0 14px">${st.connected?`${st.name?esc(st.name)+". ":""}Completa el desnivel y la distancia de tus salidas, y los entrenos que no lleguen por Health Connect.`:"Conecta Strava para tener el desnivel y la distancia de tus salidas, aunque tu reloj no los mande a Health Connect."} Sus datos solo los ves tú y no se usan con la IA.</p>
-    ${st.connected?'<button class="btn" data-act="svoff">Desconectar</button>':`<button class="btn primary" data-act="svon"${S.svBusy?" disabled":""}>${S.svBusy?"Abriendo Strava…":"Conectar con Strava"}</button>`}</section>`}
 async function stravaRefresh(){if(!window.__native||!window.__native.strava)return;try{S.stravaSt=await window.__native.strava()}catch(e){S.stravaSt=null}if(S.tab==="perfil")render()}
 window.__stravaDone=ok=>{S.svBusy=false;if(!S.onb)toast(ok?"Strava conectado":"No se ha podido conectar con Strava");else if(!ok)toast("No se ha podido conectar con Strava");
   stravaRefresh();if(S.onb)obConnRefresh();if(ok){S.imp=null;impRun();syncActs()}}; /* v237: ya no se recarga la página al volver de Strava */
@@ -4262,31 +4257,6 @@ async function hcMerge(){if(!window.__native||!window.__native.health)return;try
   S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d)),from=S.resetAt||"";(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!from||x.d>from))(S.weights=S.weights||[]).push(x)})}catch(e){}}
 /* Relectura ligera desde el móvil (al volver a la app): mezcla lo nuevo de Health Connect y repinta */
 window.__hcRefresh=async()=>{const b=stateSig();await hcMerge();if(stateSig()!==b)quietRender()};
-function stepsCard(k){
-  const st=stepsOf(k),g=stepGoal(),v=st.total,pc=Math.min(1,v/g),R=46,C=2*Math.PI*R,km=v*0.00075,kg=num((S.profile||{}).weight)||70,kcal=Math.max(0,v-st.est)*0.0005*kg;
-  const ring=`<svg class="stp-ring" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="${R}" class="stp-tr"/>${pc>0?`<circle cx="55" cy="55" r="${R}" class="stp-v" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pc)).toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}${v>=g?`<circle cx="55" cy="55" r="${R}" class="stp-glow" stroke-dasharray="${C.toFixed(1)}" transform="rotate(-90 55 55)"/>`:""}</svg>`;
-  const ed=S.stepEdit===k,left=Math.max(0,g-v),H=(S.stepsH||{})[k],showH=!!H;
-  const upd=(()=>{if(!H)return{html:""};let last=-1;H.forEach((x,i)=>{if(x>0)last=i});if(last<0)return{html:""};const stale=k===today()&&new Date().getHours()-(last+1)>=3&&v<g;
-    return stale?{stale:true,html:`<p class="stp-left">Tu reloj no ha enviado pasos desde las ${last+1}:00. Se actualizará en su próxima sincronización.</p>`}:{html:`<p class="stp-upd">Datos de tu reloj hasta las ${Math.min(24,last+1)}:00</p>`}})();
-  /* Franja líquida hasta el objetivo (mismo compás que la gota); al tocarla, los pasos por horas */
-  const band=`<button class="stb" data-stph="" tabindex="-1"><svg viewBox="0 0 340 44" preserveAspectRatio="none" id="stpband" data-f="${pc.toFixed(4)}" aria-hidden="true"><defs><clipPath id="stbc"><rect width="340" height="44" rx="22"/></clipPath></defs><g clip-path="url(#stbc)"><rect width="340" height="44" class="stb-bg"/><path class="stb-l" d=""/></g></svg></button>`;
-  const hrs=showH?(()=>{const mx=Math.max(1,...H),now=k===today()?new Date().getHours():24,best=H.reduce((b,x,i)=>x>H[b]?i:b,0);
-    return`<div class="sth">${VZ.bars({id:"sh"+k,label:"Pasos por horas",h:250,cols:H.slice(6).map((x,j)=>{const i=j+6,fut=i>now;return{x:i+"h",cur:k===today()&&i===now,segs:fut?[]:[{v:x,c:"#30d158"}],read:`<b>${fmtInt(x)}</b><span>pasos de ${i} a ${i+1} h${i===best&&x?" · tu mejor rato":""}</span>`}})})}<p class="note" style="margin:6px 0 0">Tu mejor rato: de ${best} a ${best+1} h · ${fmtInt(H[best])} pasos</p></div>`})():"";
-  return`<section class="glass pad fade stp"><h2>Pasos · ${esc(dateLabel(k))}</h2>
-    <div class="stp-hd" data-vzread><b>${fmtInt(v)}</b><span>de ${fmtInt(g)}</span></div>
-    ${upd.html}
-    ${upd.stale?"":`<p class="stp-left">${v>=g?"Objetivo cumplido"+(v>g?" · "+fmtInt(v-g)+" de más":""):`Te faltan ${fmtInt(left)} · unos ${Math.max(1,Math.round(left/100))} min caminando`}</p>`}
-    ${band}${hrs}
-    <div class="stp-in"><div class="stp-r">
-      <div class="stp-kv"><div><b>${km.toFixed(1).replace(".",",")} km</b><span>recorridos</span></div><div><b>${fmtInt(kcal)} kcal</b><span>${st.est?"pasos fuera de entrenos":"por caminar"}</span></div></div>
-      <p class="stp-src">${window.__native?(st.manual!=null?"De tu reloj, se actualiza solo":"Tu reloj aún no ha enviado pasos de este día"):st.low?`Tus actividades suman ${fmtInt(st.est)} pasos, más de los ${fmtInt(st.manual)} apuntados: uso la cifra mayor.`:st.manual!=null?`Apuntados por ti${st.est?" · "+fmtInt(st.est)+" en entrenos":""}`:st.est?`Estimados de tus actividades de Strava. Apunta el total de tu móvil para afinar.`:"Apunta los pasos que marca tu móvil o tu reloj."}</p>
-      ${ed&&window.__native?`<div class="stp-ed"><span class="note" style="margin:0">Objetivo diario</span><input id="stp_goal" inputmode="numeric" value="${g}" aria-label="Objetivo diario de pasos" style="width:96px"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>`
-      :!ed&&window.__native?`<button class="chip sm" data-act="stpedit" data-k="${k}">Cambiar objetivo</button>`
-      :ed?`<div class="stp-ed"><input id="stp_in" inputmode="numeric" placeholder="Pasos" value="${st.manual!=null?st.manual:""}" aria-label="Pasos del día"><button class="btn primary sm" data-act="stpsave" data-k="${k}">Guardar</button><button class="chip sm" data-act="stpcancel">Cancelar</button></div>
-        <div class="stp-ed"><span class="note" style="margin:0">Objetivo diario</span><input id="stp_goal" inputmode="numeric" value="${g}" aria-label="Objetivo diario de pasos" style="width:96px"></div>`
-      :`<button class="chip sm" data-act="stpedit" data-k="${k}">${st.manual!=null?"Corregir pasos":"＋ Apuntar pasos"}</button>`}
-    </div></div></section>`;
-}
 function stepsChart(){
   const tk=today(),N=30,days=[];for(let i=N-1;i>=0;i--){const k=shiftKey(tk,-i);days.push({k,...stepsOf(k)})}
   const has=days.filter(d=>d.total>0);if(has.length<2)return"";
@@ -4383,20 +4353,6 @@ function weightVerdict(){const W=(S.weights||[]).filter(x=>x.d>=shiftKey(today()
   if(g==="loss")return wk<=-1.2?["mid",t+" · rápido"]:wk<=-0.2?["ok",t+" · bien"]:wk<0.2?["mid",t+" · estable"]:["mid",t+" · sube"];
   if(g==="hyper")return wk>=0.6?["mid",t+" · rápido"]:wk>=0.1?["ok",t+" · bien"]:["mid",t+(wk>-0.1?" · estable":" · baja")];
   return Math.abs(wk)<=0.3?["ok",t+" · estable"]:["mid",t+(wk>0?" · sube":" · baja")]}
-function readyCard(){if(S.day!==today())return"";const r=readiness();if(!r.n&&!(S.rhr&&Object.keys(S.rhr).length))return"";
-  const R=46,C=Math.PI*R,pc=r.sc/100,ang=Math.PI*(1-pc),cx=60+R*Math.cos(ang),cy=58-R*Math.sin(ang);
-  const pend=pendingPlanned(today()).filter(x=>x.sport!=="str"&&(x.int==="i"||(x.steps&&stInt(x.steps)!=="s")));
-  const clash=pend.length&&r.sc<58;
-  const sleepSeg=`<div class="rd-sl"><span>¿Cómo has dormido?</span><div class="seg sm" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button data-sleep="${k}" aria-pressed="${r.sl===k}">${l}</button>`).join("")}</div></div>`;
-  return`<section class="glass pad fade rd-card" style="--rc:${r.vd[2]}"><div class="rd-top">
-    <div class="rd-g" role="img" aria-label="Disposición ${r.sc} de 100"><svg viewBox="0 0 120 66"><defs><linearGradient id="rdg" x1="0" x2="1"><stop offset="0" stop-color="#ff453a"/><stop offset=".45" stop-color="#ff9f0a"/><stop offset=".75" stop-color="#5ac8fa"/><stop offset="1" stop-color="#30d158"/></linearGradient></defs>
-      <path d="M14 58 A46 46 0 0 1 106 58" fill="none" stroke="var(--card2,rgba(127,127,127,.18))" stroke-width="9" stroke-linecap="round"/>
-      <path d="M14 58 A46 46 0 0 1 106 58" fill="none" stroke="url(#rdg)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(C*pc).toFixed(1)} 999"/>
-      <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="6.5" fill="var(--rd-bg,#fff)" stroke="var(--rc)" stroke-width="3"/></svg><b>${r.sc}</b></div>
-    <div class="rd-tx"><span class="pkk">Cómo llegas hoy</span><h3>${r.vd[0]}</h3><p>${r.vd[1]}</p></div></div>
-    <div class="rd-f">${r.f.map(x=>`<span class="rd-c ${x.s}"${x.tip?` data-tip="${esc(x.l)}|${esc(x.tip)}"`:""}><small>${x.l}</small><b>${esc(x.v)}</b></span>`).join("")}</div>
-    ${clash?`<div class="rd-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="chip sm" data-rdsoft="${pendingPlanned(today()).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
-    ${r.sl?"":sleepSeg}</section>`}
 
 /* ---------- Tasa de sudor ---------- */
 function sweatBlock(a){if(a.sport==="str"||a.mov<1800)return"";const ex=(S.sweat||[]).find(x=>x.id===a.id);
@@ -4568,14 +4524,7 @@ function predCard(){
   const fmtT=sec=>{sec=Math.round(sec);const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),x=sec%60;return(h?h+":"+pad(m):m)+":"+pad(x)},pace=(t,d)=>fmtClock(t/(d/1000));
   let chart="";if(trend.length>=3){const T={};trend.forEach(x=>T[x.k]=x.t);chart=VZ.line({id:"pr",color:"#ffd21e",inv:true,label:"Evolución de la marca estimada en 10 km",pts:trend.map(x=>({d:x.k,v:x.t})),refs:[{v:goal,label:"meta"}],minPad:15,fmt:fmtT,
       read:p=>`<div><span>10 km · semana del ${VZ.sd(shiftKey(p.d,-6))}</span><b>${fmtT(p.v)}</b><small>${pace(p.v,10000)} /km</small></div>`})}
-  if(false){const w=400,h=110,PL=36,PR=6,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,ys=trend.map(x=>x.t).concat([goal]);const lo=Math.min(...ys)-30,hi=Math.max(...ys)+30;
-    const X=i=>PL+i/(trend.length-1)*iw,Y=v=>PT+(v-lo)/(hi-lo)*ih; /* más rápido arriba */
-    const ln=trend.map((x,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(x.t).toFixed(1)).join(" ");
-    chart=`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución de la marca estimada en 10 km"><line x1="${PL}" x2="${w-PR}" y1="${Y(goal).toFixed(1)}" y2="${Y(goal).toFixed(1)}" class="pgoal"/><text class="ax" x="${PL-4}" y="${(Y(goal)+4).toFixed(1)}" text-anchor="end">${fmtT(goal)}</text>
-      <path d="${ln}" fill="none" stroke="#ffd21e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" class="draw"/>
-      ${trend.map((x,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(x.t).toFixed(1)}" r="${i===trend.length-1?4.5:3}" fill="#ffd21e" class="tipdot" data-tip="Semana del ${esc(dateLabel(shiftKey(x.k,-6)))}|10 km en ${fmtT(x.t)} · ${pace(x.t,10000)} /km"/>`).join("")}
-      <text class="ax" x="${PL}" y="${h-4}">hace 4 meses</text><text class="ax" x="${w-PR}" y="${h-4}" text-anchor="end">hoy</text></svg>`}
-  const gap=p10.t-goal,first=trend.length?trend[0].t:p10.t,pc=first>goal?Math.max(0,Math.min(1,(first-p10.t)/(first-goal))):1;
+    const gap=p10.t-goal,first=trend.length?trend[0].t:p10.t,pc=first>goal?Math.max(0,Math.min(1,(first-p10.t)/(first-goal))):1;
   return`<section class="glass pad fade hue-gly"><span class="pkk">Marca estimada</span>
     <div class="preds" data-vzread>${p6?`<div><span>6 km</span><b>${fmtT(p6.t)}</b><small>${pace(p6.t,6000)} /km</small></div>`:""}<div><span>10 km</span><b>${fmtT(p10.t)}</b><small>${pace(p10.t,10000)} /km</small></div></div>
     <div class="pgbar"><div class="pgbar-h"><span>Meta 10 km · ${fmtT(goal)} (${pace(goal,10000)} /km)</span><b>${gap<=0?"¡Ya la alcanzas!":"Faltan "+fmtT(gap)}</b></div><div class="pgtrack"><i style="width:${(pc*100).toFixed(0)}%"></i></div></div>
@@ -4621,13 +4570,7 @@ function bodyCard(){
   const hist=M.map(m=>{const q=Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip});const e=bfEst(Object.assign(q,{weight:m.kg||kg})),b=e&&e.src==="med"?e.bf:null,w=m.kg||kg;return b?{d:m.d,bf:b,lean:w*(1-b/100),fat:w*b/100}:null}).filter(Boolean);
   let chart="";if(hist.length>=2){const H={};hist.forEach(x=>H[x.d]=x);chart=`<p class="vplan-t">Tu % de grasa, medida a medida</p>`+VZ.line({id:"bf",color:"#bf5af2",label:"Evolución del porcentaje de grasa",pts:hist.map(x=>({d:x.d,v:x.bf})),minPad:.6,fmt:v=>v.toFixed(1).replace(".",",")+" %",tfmt:v=>r0(v)+" %",
       read:p=>{const x=H[p.d];return`<div><b>${x.lean.toFixed(1).replace(".",",")} kg</b><span>masa magra · ${esc(dateLabel(x.d))}</span></div><div><b>${x.bf.toFixed(1).replace(".",",")} %</b><span>grasa · ${x.fat.toFixed(1).replace(".",",")} kg</span></div>`}})}
-  if(false){const w=400,h=120,PL=30,PR=30,PT=10,PB=18,iw=w-PL-PR,ih=h-PT-PB,d0=hist[0].d,span=Math.max(1,daysBetween(d0,hist[hist.length-1].d));
-    const X=d=>PL+daysBetween(d0,d)/span*iw,ls=hist.map(x=>x.lean),bs=hist.map(x=>x.bf),l0=Math.min(...ls)-1,l1=Math.max(...ls)+1,b0=Math.min(...bs)-1,b1=Math.max(...bs)+1,YL=v=>PT+ih-(v-l0)/(l1-l0)*ih,YB=v=>PT+ih-(v-b0)/(b1-b0)*ih;
-    chart=`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución de masa magra y grasa"><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YL(x.lean).toFixed(1)).join(" ")}" fill="none" stroke="#bf5af2" stroke-width="2.4"/><path d="${hist.map((x,i)=>(i?"L":"M")+X(x.d).toFixed(1)+" "+YB(x.bf).toFixed(1)).join(" ")}" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="4 3"/>
-      ${hist.map(x=>`<circle cx="${X(x.d).toFixed(1)}" cy="${YL(x.lean).toFixed(1)}" r="4" fill="#bf5af2" class="tipdot" data-tip="${esc(dateLabel(x.d))}|Magra ${x.lean.toFixed(1).replace(".",",")} kg · grasa ${x.bf.toFixed(1).replace(".",",")} %"/>`).join("")}
-      <text class="ax" x="${PL-4}" y="${PT+8}" text-anchor="end">${l1.toFixed(0)}</text><text class="ax" x="${w-PR+4}" y="${PT+8}">${b1.toFixed(0)}%</text><text class="ax" x="${PL}" y="${h-4}">${esc(dateLabel(d0))}</text><text class="ax" x="${w-PR}" y="${h-4}" text-anchor="end">${esc(dateLabel(hist[hist.length-1].d))}</text></svg>
-      <div class="legend"><span><i style="background:#bf5af2"></i>Masa magra (kg)</span><span><i class="vavg-i"></i>% grasa</span></div>`}
-  const f1=v=>v.toFixed(1).replace(".",",");
+    const f1=v=>v.toFixed(1).replace(".",",");
   return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span>
     <div class="bcomp"><div class="bstack" role="img" aria-label="Masa magra ${f1(lean)} kg y grasa ${f1(fat)} kg"><i class="bl" style="width:${(lean/kg*100).toFixed(1)}%" data-tip="Masa magra|${f1(lean)} kg"></i><i class="bf" style="width:${(fat/kg*100).toFixed(1)}%" data-tip="Grasa|${f1(fat)} kg · ${f1(bf)} %"></i></div>
       <div class="bkv" data-vzread><div><b>${f1(lean)} kg</b><span>masa magra</span></div><div><b>${f1(bf)} %</b><span>grasa · ${f1(fat)} kg</span></div></div></div>
@@ -4647,11 +4590,7 @@ function yoyCard(){
     ${row("Sesiones",c.n,o.n,v=>fmtInt(v))}${row("Horas",c.h,o.h,v=>fmtH(v))}${row("Distancia",c.km,o.km,v=>fmtInt(v)+" km")}${row("Desnivel",c.el,o.el,v=>fmtInt(v)+" m")}
     ${wn&&wo?row("Peso",wn.kg,wo.kg,v=>String(v).replace(".",",")+" kg",(wn.kg-wo.kg>0?"+":"")+(wn.kg-wo.kg).toFixed(1).replace(".",",")+" kg"):""}</section>`;
 }
-function strLine(){
-  const pts=strengthSeries("all").filter(x=>x.d>=shiftKey(today(),-90));if(pts.length<2)return"";
-  const d=(pts[pts.length-1].v-pts[0].v)/pts[0].v*100,w=120,h=34,mn=Math.min(...pts.map(x=>x.v)),mx=Math.max(...pts.map(x=>x.v)),X=i=>i/(pts.length-1)*w,Y=v=>h-3-(v-mn)/((mx-mn)||1)*(h-6);
-  return`<button class="glass strl fade" data-goto="prog" aria-label="Ver la evolución de la fuerza en Progreso"><span class="strl-t"><span class="pkk">Evolución · 3 meses</span><b>${d>=0?"+":""}${r0(d)} %</b></span><svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><path d="${pts.map((x,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(x.v).toFixed(1)).join(" ")}" fill="none" stroke="#ff5b2e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="strl-go" aria-hidden="true">›</span></button>`;
-}
+
 /* ---------- Gráficos de progreso ---------- */
 const SCRUB={};
 const SPC={run:"#ffd21e",trail:"#ff9f0a",mtb:"#3b82f6",str:"#ff5b2e",walk:"#30d158",hike:"#5ac8fa"};
@@ -4941,24 +4880,6 @@ async function prefillFromStrava(){
   }catch(e){}
 }
 
-/* ---------- Gráficas ---------- */
-/* Qué comer: el día como línea de tiempo. Cada comida es una columna (alto = kcal, capas = macros) en su hora, con el entreno marcado. */
-function dayTimeline(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";
-  const W=340,H=176,top=30,base=128,bw=28,lg=(S.log||{})[S.day]||{};
-  let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));
-  a=Math.floor((a-50)/60)*60;z=Math.ceil((z+50)/60)*60;
-  const X=v=>bw/2+4+(v-a)/(z-a)*(W-bw-8),mx=Math.max(...ms.map(m=>m.kcal)),hh=base-top-16;
-  const band=bl.map(b=>{const x0=X(b.st),x1=Math.max(X(b.en),x0+6);return`<rect x="${x0.toFixed(1)}" y="${top-8}" width="${(x1-x0).toFixed(1)}" height="${base-top+8}" rx="5" class="dt-band"/><line x1="${x0.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${top-8}" y2="${top-8}" class="dt-bt"/><text x="${((x0+x1)/2).toFixed(1)}" y="${top-14}" text-anchor="middle" class="dt-bl">${esc(b.label)} · ${fromMin(b.st)}</text>`}).join("");
-  let lastNameX=-99;
-  const bars=ms.map((m,i)=>{const cx=X(m.min),x=cx-bw/2,h=Math.max(22,m.kcal/mx*hh),y=base-h,e=lg[m.id],st=e&&e.st;
-    const parts=[[4*m.P,"var(--prot)"],[4*m.C,"var(--carb)"],[9*m.F,"var(--fat)"]],tot=parts.reduce((s,p)=>s+p[0],0)||1;let yy=base,seg="";
-    parts.forEach(([v,c])=>{const sh=v/tot*h;yy-=sh;seg+=`<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${bw}" height="${Math.max(0,sh-1.5).toFixed(1)}" fill="${c}"/>`});
-    const nameDy=cx-lastNameX<54?13:0;if(!nameDy)lastNameX=cx;
-    return`<g class="dt-m${st==="skip"?" dt-skip":""}"><clipPath id="dtc${i}"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${h.toFixed(1)}" rx="7"/></clipPath><g clip-path="url(#dtc${i})">${seg}</g>
-      ${st==="done"||st==="chg"?`<circle cx="${cx.toFixed(1)}" cy="${(y-12).toFixed(1)}" r="7" class="dt-ok"/><path d="M${(cx-3).toFixed(1)} ${(y-12).toFixed(1)} l2 2 l4 -4.5" class="dt-okc"/>`:`<text x="${cx.toFixed(1)}" y="${(y-7).toFixed(1)}" text-anchor="middle" class="dt-kc">${fmtInt(m.kcal)}</text>`}
-      <text x="${cx.toFixed(1)}" y="${base+16}" text-anchor="middle" class="dt-t">${fromMin(m.min)}</text><text x="${cx.toFixed(1)}" y="${base+30+nameDy}" text-anchor="middle" class="dt-n">${esc(m.n)}</text></g>`}).join("");
-  let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z){const nx=X(nm);now=`<circle cx="${nx.toFixed(1)}" cy="${base}" r="4" class="dt-nowd"/>`}}
-  return`<svg class="dtl" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tus comidas del día y el entreno">${band}<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="dt-base"/>${now}${bars}</svg>`}
 /* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
    cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
 /* Hidratos del avituallamiento de un día (geles, bebida…): el registro tras la sesión manda; si no, lo marcado como tomado en el plan */
@@ -4968,9 +4889,6 @@ function eatenToday(){const l=(S.log||{})[S.day]||{};const r=Object.entries(l).f
 /* La gota del logo (mismo trazo, ápice apenas suavizado), plana y sin borde */
 const DROP_D="M46.8 9 Q50 3.6 53.2 9 Q69.2 29.4 84.56 58.2 A40.8 40.8 0 1 1 15.44 58.2 Q30.8 29.4 46.8 9Z",DROP_TOP=4,DROP_BOT=120.6;
 let DROP_W=null;
-function dropWidths(){if(DROP_W)return DROP_W;const p=document.createElementNS("http://www.w3.org/2000/svg","path");p.setAttribute("d",DROP_D);const sv=document.createElementNS("http://www.w3.org/2000/svg","svg");sv.style.cssText="position:absolute;width:0;height:0";sv.appendChild(p);document.body.appendChild(sv);
-  const L=p.getTotalLength(),lo={},hi={};for(let i=0;i<=1000;i++){const q=p.getPointAtLength(i/1000*L),k=Math.round(q.y*2);lo[k]=Math.min(lo[k]??99,q.x);hi[k]=Math.max(hi[k]??0,q.x)}sv.remove();
-  const W=[];for(let k=0;k<=250;k++)W[k]=hi[k]!=null?hi[k]-lo[k]:0;for(let k=1;k<250;k++)if(!W[k]&&k>DROP_TOP*2&&k<DROP_BOT*2)W[k]=(W[k-1]+(W[k+1]||W[k-1]))/2;DROP_W=W;return W}
 /* Altura a la que llega una fracción del volumen de la gota (desde abajo) */
 /* Nivel por altura, como una jarra medidora: con poca comida las capas tienen cuerpo en vez de quedar en hilos sobre el fondo ancho */
 function dropY(fa){return DROP_BOT-Math.max(0,Math.min(1,fa))*(DROP_BOT-DROP_TOP)}
@@ -5008,13 +4926,6 @@ document.addEventListener("scroll",()=>dropKick(),{passive:true});
 /* Guiño: al tocar la gota, el líquido se agita un momento hacia el lado contrario y vuelve a su vaivén */
 document.addEventListener("pointerdown",e=>{const el=e.target.closest&&e.target.closest("#dropsvg");if(!el)return;const r=el.getBoundingClientRect();DROP.sp={t:performance.now()/1000,dir:(e.clientX-r.left)<r.width/2?1:-1};dropKick()},{passive:true});
 /* Franja del día: la hora de cada comida y el entreno */
-function dayStrip(t){const mp=mealPlan(t,S.day),ms=mp.meals||[],bl=mp.blocks||[];if(!ms.length)return"";const lg=(S.log||{})[S.day]||{};
-  const W=340,H=44,y=16;let a=Math.min(...ms.map(m=>m.min),...bl.map(b=>b.st)),z=Math.max(...ms.map(m=>m.min),...bl.map(b=>b.en));a-=30;z+=30;
-  const X=v=>10+(v-a)/(z-a)*(W-20);
-  const tr=bl.map(b=>{const x0=X(b.st),x1=Math.max(X(b.en),x0+8);return`<line x1="${x0.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${y}" y2="${y}" class="ds-tr"/><text x="${((x0+x1)/2).toFixed(1)}" y="${y-9}" text-anchor="middle" class="ds-tl">${esc(b.label)}</text>`}).join("");
-  const dots=ms.map(m=>{const x=X(m.min),st=(lg[m.id]||{}).st;return`<circle cx="${x.toFixed(1)}" cy="${y}" r="5" class="ds-d${st==="done"||st==="chg"?" on":st==="skip"?" sk":""}"/><text x="${x.toFixed(1)}" y="${y+22}" text-anchor="middle" class="ds-t">${fromMin(m.min)}</text>`}).join("");
-  let now="";if(S.day===today()){const d=new Date(),nm=d.getHours()*60+d.getMinutes();if(nm>a&&nm<z)now=`<line x1="${X(nm).toFixed(1)}" x2="${X(nm).toFixed(1)}" y1="${y-7}" y2="${y+7}" class="ds-now"/>`}
-  return`<svg class="dstrip" viewBox="0 0 ${W} ${H}" role="img" aria-label="Horario de comidas y entreno"><line x1="10" x2="${W-10}" y1="${y}" y2="${y}" class="ds-ax"/>${tr}${now}${dots}</svg>`}
 function donut(t){
   /* Armonizado con la gota: mismo orden (hidratos, proteína, grasas), mismos tonos suavizados, anillo fino */
   const parts=[{v:4*t.C,m:"C"},{v:4*t.P,m:"P"},{v:9*t.F,m:"F"}];
@@ -5203,40 +5114,6 @@ const MUSC_N={lats:"Espalda (anchos)",biceps:"Bíceps",delt_p:"Hombro (detrás)"
 const ZONE={lats:"espalda",traps:"espalda",lower_back:"espalda",delt_p:"hombros",delt_a:"hombros",delt_l:"hombros",chest:"pecho",biceps:"brazos",triceps:"brazos",forearm:"brazos",quads:"piernas",hams:"piernas",glutes:"glúteos",calves:"piernas",abs:"abdomen",oblique:"abdomen"};
 function zonesOf(id,cm){const mm=cm||MUSC[id];if(!mm)return[];return[...new Set(mm[0].map(k=>ZONE[k]).filter(Boolean))]}
 function joinY(a){a=a.slice();if(a.length<2)return a.join("");const l=a.pop();return a.join(", ")+" y "+l}
-function musclePills(id,cm){const mm=cm||MUSC[id];if(!mm)return"";return`<div class="mpills">${mm[0].map(k=>`<span class="mp on">${MUSC_N[k]||k}</span>`).join("")}${mm[1].map(k=>`<span class="mp">${MUSC_N[k]||k}</span>`).join("")}</div>`}
-function mannequin(id){
-  const mm=MUSC[id]||[[],[]],P=new Set(mm[0]),Sx=new Set(mm[1]);
-  const st=keys=>{const ks=keys.split(" ");if(ks.some(x=>P.has(x)))return'class="mu on"';if(ks.some(x=>Sx.has(x)))return'class="mu sec"';return'class="mu"'};
-  const L=(k,d)=>`<path ${st(k)} d="${d}"/>`;
-  /* lado izquierdo; el derecho se refleja */
-  const frontSide=
-    L("traps","M43 30 L35 36 L44 35.5 Z")+
-    L("delt_a delt_l","M34.5 35.5 C27 35.5 22.5 41 22.3 49.5 C25.5 46.5 29.5 44.8 33.4 44.6 C34.3 41.5 35 38.5 34.5 35.5 Z")+
-    L("chest","M49.2 37.2 L36 37.2 C34 41 33.7 45.2 34.6 49 C39.5 53.2 45.2 53.6 49.2 51.4 Z")+
-    L("biceps","M22.4 51.5 C20.6 57.5 20.7 64 22.6 69.6 C25.3 69.8 27.3 67.6 28.1 63.8 C29 58.4 28.4 53.4 26.6 49.4 Z")+
-    L("forearm","M21.6 72 C18.8 79.8 17.9 89.5 18.6 97.5 L22 97.8 C24.8 89.8 26.8 80.6 27 71.6 Z")+
-    L("oblique","M42.3 53.8 C38.5 58.6 37.3 66.2 37.4 73.8 C38.2 79.6 40.2 84 43 87.2 L43 54.4 Z")+
-    L("quads","M37.4 89 C33.4 98.6 32.4 112.4 34.2 125.6 C36.2 131.6 40.2 133.6 44 133 C47 120.4 48.2 104.6 48.2 92.6 C45 90.6 41.2 89.6 37.4 89 Z")+
-    L("adductors","M48.6 93.6 C49.4 104 49.4 114 48.6 121.6 L49.9 121.6 L49.9 92.4 Z")+
-    L("tib","M36.4 141.6 C34.6 151.8 35.2 164.6 37.4 174.6 L42 174.6 C43.8 164.6 44.6 151.8 43.8 141.6 Z");
-  const abs=[54.5,62.5,70.5].map(y=>`<rect ${st("abs")} x="43.8" y="${y}" width="5.3" height="7" rx="1.6"/><rect ${st("abs")} x="50.9" y="${y}" width="5.3" height="7" rx="1.6"/>`).join("")+
-    L("abs","M43.8 78.6 L49.1 78.6 L49.1 90.4 C47 90.2 45.2 87.6 43.8 84.4 Z")+L("abs","M56.2 78.6 L50.9 78.6 L50.9 90.4 C53 90.2 54.8 87.6 56.2 84.4 Z");
-  const backSide=
-    L("delt_p delt_l","M34.5 35.5 C27 35.5 22.5 41 22.3 49.5 C25.5 46.5 29.5 44.8 33.4 44.6 C34.3 41.5 35 38.5 34.5 35.5 Z")+
-    L("lats","M35.8 46.4 C33.8 55.6 35.6 67.6 40.8 77.8 L48.8 81.6 L48.8 57.8 C44.8 53 40.4 49.2 35.8 46.4 Z")+
-    L("triceps","M22.4 51.5 C20.6 57.5 20.7 64 22.6 69.6 C25.3 69.8 27.3 67.6 28.1 63.8 C29 58.4 28.4 53.4 26.6 49.4 Z")+
-    L("forearm","M21.6 72 C18.8 79.8 17.9 89.5 18.6 97.5 L22 97.8 C24.8 89.8 26.8 80.6 27 71.6 Z")+
-    L("lower_back","M43.4 80.6 L48.8 83.4 L48.8 91.6 L43.2 91.6 C42.6 87.8 42.6 84 43.4 80.6 Z")+
-    L("glutes","M38.2 92.6 C35.8 99.4 36.8 106.4 41.6 109.2 C45.6 110.4 48.8 108.4 48.8 104.2 L48.8 93.4 C45.2 92.4 41.6 92.2 38.2 92.6 Z")+
-    L("hams","M37 112.4 C35 120.4 35 128.4 37 134.4 C40.8 136.2 44.8 135.4 47.2 133.4 C48.2 125.4 48.2 117.4 47.2 111.4 C44.2 110.4 40.2 110.4 37 112.4 Z")+
-    L("calves","M36.2 141.6 C33.4 149.6 34 159.6 37 165.8 C39.8 168 43 166.4 44 160.4 C45 152.4 44.4 146 43.4 141.6 Z");
-  const base=`<ellipse class="sk" cx="50" cy="15" rx="8.6" ry="10.6"/><path class="sk" d="M45.4 24.6 L54.6 24.6 L56.4 32.6 L43.6 32.6 Z"/>`;
-  const handsFeet=`<ellipse class="sk" cx="20.2" cy="103" rx="2.8" ry="4.6"/><ellipse class="sk" cx="79.8" cy="103" rx="2.8" ry="4.6"/><ellipse class="sk" cx="40" cy="137.6" rx="3.6" ry="2.8"/><ellipse class="sk" cx="60" cy="137.6" rx="3.6" ry="2.8"/><ellipse class="sk" cx="39.6" cy="179" rx="4.6" ry="2.2"/><ellipse class="sk" cx="60.4" cy="179" rx="4.6" ry="2.2"/>`;
-  const mir=x=>`<g>${x}</g><g transform="matrix(-1 0 0 1 100 0)">${x}</g>`;
-  const front=base+mir(frontSide)+abs+handsFeet;
-  const back=base+`<path ${st("traps")} d="M50 25.6 L41 33 C37.4 35 35.6 36 34.8 37.2 L50 57 L65.2 37.2 C64.4 36 62.6 35 59 33 Z"/>`+mir(backSide)+handsFeet;
-  return`<svg class="mani" viewBox="0 0 210 186" width="104" height="92" aria-hidden="true"><g transform="translate(2 2)">${front}</g><g transform="translate(108 2)">${back}</g></svg>`;
-}
 
 /* ---------- Alimentos ---------- */
 /* d = gramos del macro por 100 g de alimento (en crudo salvo indicación); u = gramos por unidad */
@@ -5422,18 +5299,6 @@ async function ensureEff(){
   S.effBusy=false;saveEff();if(S.tab==="prog")render();
 }
 const fmtPaceS=s=>Math.floor(s/60)+":"+pad(Math.round(s%60));
-function weightChart(W){
-  if(W.length<2)return"";const w=640,h=170,PL=40,PB=22,PT=10,iw=w-PL-8,ih=h-PB-PT;
-  const d0=W[0].d,span=Math.max(1,daysBetween(d0,W[W.length-1].d)),ys=W.map(x=>x.kg),lo=Math.floor(Math.min(...ys)-.5),hi=Math.ceil(Math.max(...ys)+.5);
-  const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>PT+ih-(v-lo)/(hi-lo)*ih;
-  const ma=W.map((x,i)=>{const win=W.filter(y=>daysBetween(y.d,x.d)>=0&&daysBetween(y.d,x.d)<7);return[x.d,win.reduce((s,y)=>s+y.kg,0)/win.length]});
-  const path=ma.map(([d,v],i)=>(i?"L":"M")+X(d).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
-  return`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución del peso">${[lo,(lo+hi)/2,hi].map(v=>`<line x1="${PL}" x2="${w-8}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,.06)"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${String(+v.toFixed(1)).replace(".",",")}</text>`).join("")}
-    ${W.map(x=>`<circle cx="${X(x.d).toFixed(1)}" cy="${Y(x.kg).toFixed(1)}" r="3" fill="rgba(255,255,255,.35)"/>`).join("")}
-    <path d="${path}" fill="none" stroke="#bf5af2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <text class="ax" x="${PL}" y="${h-5}">${esc(dateLabel(d0))}</text><text class="ax" x="${w-8}" y="${h-5}" text-anchor="end">${esc(dateLabel(W[W.length-1].d))}</text></svg>
-    <div class="legend"><span><i style="background:rgba(255,255,255,.4);border-radius:50%"></i>Pesaje</span><span><i style="background:#bf5af2"></i>Media de 7 días</span></div>`;
-}
 function effChart(pts){
   if(pts.length<2)return"";const w=640,h=190,PL=48,PB=22,PT=12,iw=w-PL-8,ih=h-PB-PT;
   const d0=pts[0].d,span=Math.max(1,daysBetween(d0,pts[pts.length-1].d)),ys=pts.map(p=>p.pace),lo=Math.floor((Math.min(...ys)-10)/15)*15,hi=Math.ceil((Math.max(...ys)+10)/15)*15;
@@ -5490,27 +5355,6 @@ function weightBar(){
     </div>
     <div class="wc-slrow"><span class="wc-l"><span class="wc-ic wc-ics" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span>Sueño</span><div class="wc-sl" role="radiogroup" aria-label="Cómo has dormido">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button type="button" role="radio" data-slpick="${k}" aria-checked="${(S.slDraft||sl)===k}">${l}</button>`).join("")}</div></div>
     <div class="wc-a"><button class="btn wc-save" data-act="savewt">Guardar</button>${logged?'<button class="wc-skip" data-act="wtcancel">Cancelar</button>':'<button class="wc-skip" data-act="wtskip">Hoy no</button>'}</div>
-  </section>`;
-}
-function progCard(){
-  const W=(S.weights||[]).slice().sort((a,b)=>a.d<b.d?-1:1),last=W[W.length-1],ad=computeAdapt(),p=S.profile||{};
-  const wk=W.length>=2?linreg(W.filter(x=>x.d>=shiftKey(today(),-28)).map(x=>[daysBetween(W[0].d,x.d),x.kg])):null;
-  const hr=effHr(),pts=Object.values(S.eff).filter(e=>e.hr===hr&&e.pace).sort((a,b)=>a.d<b.d?-1:1);
-  const pending=S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.day>=shiftKey(today(),-180)).slice(0,30).filter(a=>!S.eff[a.id]||S.eff[a.id].hr!==hr).length;
-  return`<div class="grid2">
-  <section class="glass pad fade hue-body"><h2>Peso</h2>
-    ${W.length?`<div class="kv"><div><span>Último</span><b>${String(last.kg).replace(".",",")} kg</b></div><div><span>Tendencia</span><b>${wk?(wk.m*7>0?"+":"")+(wk.m*7).toFixed(2).replace(".",",")+" kg/sem":"—"}</b></div><div><span>Pesajes</span><b>${W.length}</b></div></div>${weightChart(W.slice(-60))}`:'<p class="empty">Apunta tu peso en Hoy. Pésate 3 o 4 veces por semana, en ayunas y a la misma hora; con dos semanas de datos ajusto tu gasto real.</p>'}
-  </section>
-  <section class="glass pad fade acc" style="--ac:#bf5af2"><h2>Gasto real</h2>
-    ${ad.ok?`<div class="big" style="font-size:40px;margin-top:8px">${ad.f>1?"+":""}${fmtInt((ad.f-1)*100)} %</div>
-      <p class="note">Según tu evolución, gastas unas ${fmtInt(ad.implied)} kcal al día frente a las ${fmtInt(ad.model)} estimadas. ${ad.logged?"Uso tus comidas registradas en "+ad.logged+" de "+ad.days+" días; el resto asume que cumpliste el objetivo.":"Asumo que cumpliste el objetivo cada día; registra tus comidas para afinarlo."}</p>
-      <div style="height:10px"></div><button class="chip" data-act="adapt" aria-pressed="${!!p.adaptOn}">${p.adaptOn?"Ajuste aplicado":"Aplicar ajuste a mis calorías"}</button>`
-    :`<p class="note">${esc(ad.msg)}</p><p class="note">Cuando haya datos, compararé tu peso real con lo que predecían los cálculos y corregiré tu gasto basal y de actividad.</p>`}
-  </section></div>
-  <section class="glass pad fade acc" style="--ac:#3b82f6"><div class="row"><h2>Eficiencia aeróbica · ritmo a ${hr} ppm</h2><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso de referencia</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:80px"></label></div>
-    ${pts.length>=2?effChart(pts):`<p class="empty">${pending?"Analizando tus carreras…":"Hacen falta al menos dos carreras con 3 minutos o más en "+(hr-5)+"–"+(hr+5)+" ppm."}</p>`}
-    ${pending&&pts.length>=2?`<p class="note">Analizando ${pending} carrera${pending>1?"s":""} más…</p>`:""}
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Ritmo medio de los tramos corridos a ${hr-5}–${hr+5} ppm en cada salida. Cuanto más arriba, más rápido vas al mismo pulso. El trail sale más lento por el terreno.</p></details>
   </section>`;
 }
 
@@ -5631,14 +5475,6 @@ function adaptTile(){
   return`<section class="glass pad fade ptile acc" style="--ac:#bf5af2"><span class="pkk">Gasto real</span><div class="ptr">${ring(v,"currentColor","rgba(127,127,127,.2)",86,9,r0(v*100)+"%")}</div>
     <p class="pt-s">${Math.min(n,6)}/6 pesajes · ${Math.min(span,14)}/14 días para calcularlo</p></section>`;
 }
-function complianceTile(){
-  const w0=mondayOf(today()),weeks=[];for(let i=7;i>=0;i--){const wk=shiftKey(w0,-7*i);weeks.push(Object.assign({wk},weekCompliance(wk)))}
-  const has=weeks.filter(w=>w.n),tot=has.reduce((a,w)=>({n:a.n+w.n,ok:a.ok+w.ok}),{n:0,ok:0}),pc=tot.n?tot.ok/tot.n:null;
-  const bars=weeks.map(w=>{const v=w.n?w.ok/w.n:null;return`<i class="${v==null?"nil":""}" style="height:${v==null?14:Math.max(8,v*100).toFixed(0)}%" title="${esc(periodLabel("week",w.wk))}: ${w.n?w.ok+"/"+w.n:"sin plan"}"></i>`}).join("");
-  return`<section class="glass pad fade ptile acc" style="--ac:#30d158"><span class="pkk">Cumplimiento</span>
-    ${pc==null?`<div class="ptr">${ring(0,"currentColor","rgba(127,127,127,.2)",86,9,"—")}</div><p class="pt-s">Planifica entrenos en Plan para medirlo.</p>`
-    :`<div class="ptr">${ring(pc,"currentColor","rgba(127,127,127,.2)",86,9,r0(pc*100)+"%")}</div><div class="mbars" role="img" aria-label="Cumplimiento por semana, últimas 8 semanas">${bars}</div><p class="pt-s">${tot.ok}/${tot.n} sesiones · 8 semanas</p>`}</section>`;
-}
 function effCard(){
   const hr=effHr(),pts=Object.values(S.eff).filter(e=>e.hr===hr&&e.pace).sort((a,b)=>a.d<b.d?-1:1);
   const pending=S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.day>=shiftKey(today(),-180)).slice(0,30).filter(a=>!S.eff[a.id]||S.eff[a.id].hr!==hr).length;
@@ -5663,12 +5499,6 @@ const PERF_V=4;
 const COST_V=2;function vo2Cost(vmin){return Math.max(0.2*vmin+3.5,12.61+0.1462*vmin)}
 /* Ritmos de entrenamiento: siguen el método de Daniels (sus % de VO2max están definidos con su propio coste) */
 function danCost(vmin){return -4.6+0.182258*vmin+0.000104*vmin*vmin}
-function runVo2(st,hp){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_smooth;if(!t||!h||!v)return null;const n=Math.min(t.length,h.length,v.length),est=[];
-  for(let i=1;i<n;i++){if(t[i]<480)continue;let a=i,sum=0,c=0;while(a>0&&t[i]-t[a]<=60){sum+=v[a];c++;a--}const vs=sum/c;if(vs<1.8||vs>6.5)continue;
-    /* pulso incoherente con el minuto anterior (lecturas de muñeca que se caen): fuera */
-    if(Math.abs(h[i]-h[a])>12)continue;const r=(h[i]-hp.rest)/(hp.max-hp.rest);if(r<.6||r>.95)continue;
-    const vo=3.5+(vo2Cost(vs*60)-3.5)/r;if(vo>20&&vo<85)est.push(vo)}
-  return est.length>=6?med(est):null}
 function bikeFtp(st,kg,road){const t=st&&st.time,d=st&&st.distance,z=st&&st.altitude,v=st&&st.velocity_smooth,w=st&&st.watts;if(!t)return null;
   if(w&&w.length>20&&w.some(x=>x>0)){let b=0;for(let i=0;i<t.length;i++){let j=i,s=0,c=0;while(j<t.length-1&&t[j]-t[i]<1200){const dt=t[j+1]-t[j];s+=(w[j]||0)*dt;c+=dt;j++}if(t[j]-t[i]>=1140&&c)b=Math.max(b,s/c)}return b?{ftp:.95*b,src:"pm"}:null}
   if(!d||!z)return null;const n=Math.min(t.length,d.length,z.length),m=kg+(road?9:13),g=9.81,crr=road?.005:.012,cda=road?.32:.45,rho=1.12;let best=0;
@@ -5757,7 +5587,6 @@ const VO2N={m:[[29,33,36.5,42.5,46.5,52.5],[39,31.5,35.5,41,45,49.5],[49,30.2,33
 function vo2Norm(v){const p=S.profile||{},age=num(p.age);if(!age||!v)return null;const row=(VO2N[p.sex==="f"?"f":"m"]).find(r=>age<=r[0]);
   let i=0;for(let j=1;j<=5;j++)if(v>=row[j])i=j;return VO2L[i]}
 const VO2L=["Bajo","Bajo la media","En la media","Bueno","Excelente","Superior"],VO2C=["#ff453a","#ff9f0a","#ffd21e","#30d158","#00c7be","#0a84ff"];
-function vo2Row(){const p=S.profile||{},age=num(p.age);return age?(VO2N[p.sex==="f"?"f":"m"]).find(r=>age<=r[0]):null}
 const PW_PCT={1:.5,2:.65,3:.83,4:.98,5:1.12};
 function pwZone(w,ftp){const f=w/ftp;return f<.56?1:f<.76?2:f<.91?3:f<1.06?4:5}
 function perfFtp(){const a=perfAgg();return a.ftp?Math.round(a.ftp):null}
@@ -5798,42 +5627,6 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   return`<section class="glass pad fade pf-card2" id="pfcard" style="scroll-margin-top:72px"><span class="pkk">Rendimiento</span>${sw}${body}</section>`}
 const IC_LUNG=`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8v8.4M12 11.2c-.8.8-1.6 1.3-2.6 1.5M12 11.2c.8.8 1.6 1.3 2.6 1.5"/><path d="M9.2 6C5.8 7 3 11.8 3 16.8c0 2.6 1.6 4 3.6 3.6 1.8-.3 2.8-1.6 2.8-3.6V8.3c0-1.4 0-2.1-.2-2.3zM14.8 6c3.4 1 6.2 5.8 6.2 10.8 0 2.6-1.6 4-3.6 3.6-1.8-.3-2.8-1.6-2.8-3.6V8.3c0-1.4 0-2.1.2-2.3z"/></svg>`,VO2_C="#30d158";
 const SP_ICS={run:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.run}</svg>`,mtb:`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${SP_IC.mtb}</svg>`};
-function perfLine(pts,f,fmt){const P=pts.filter(x=>x[f]!=null);if(P.length<2)return"";const w=340,h=96,PT=12,PB=18,ys=P.map(x=>x[f]),lo=Math.min(...ys),hi=Math.max(...ys),pad=(hi-lo)*.25||1,Y=v=>PT+(1-(v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-PT-PB),X=i=>8+i/(pts.length-1)*(w-16);
-  const ix=pts.map((x,i)=>x[f]!=null?i:-1).filter(i=>i>=0),d=ix.map((i,j)=>(j?"L":"M")+X(i).toFixed(1)+" "+Y(pts[i][f]).toFixed(1)).join(" "),li=ix[ix.length-1];
-  return`<svg class="chart pf-ch" viewBox="0 0 ${w} ${h}" role="img" aria-label="Evolución"><path d="${d}" fill="none" stroke="var(--fg)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${X(li).toFixed(1)}" cy="${Y(pts[li][f]).toFixed(1)}" r="4" fill="var(--fg)"/><text class="ax" x="8" y="${h-3}">hace 4 meses</text><text class="ax" x="${w-8}" y="${h-3}" text-anchor="end">hoy</text></svg>`}
-function pfGauge(lo,hi,bands,val,lab){const X=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
-  return`<div class="pf-g"><div class="pf-gb">${bands.map(([a,b,c])=>`<i style="left:${X(a)}%;width:${X(b)-X(a)}%;background:${c}"></i>`).join("")}</div><span class="pf-gm" style="left:${X(val)}%"></span><div class="pf-gl">${lab.map(([v,t])=>`<span style="left:${X(v)}%">${t}</span>`).join("")}</div></div>`}
-function perfSheetHtml(){const a=perfAgg(),sp=S.perfSp==="bike"?"bike":"run",kg=num((S.profile||{}).weight)||null,zr=(c,l,v)=>`<div class="pf-zr"><i style="background:${c}"></i><span>${l}</span><b>${v}</b></div>`;
-  const card=(t,body)=>`<section class="pf-cd"><span class="pf-ct">${t}</span>${body}</section>`,cards=[];
-  const cad=(c,run)=>{if(!c)return"";
-    const lo=run?150:55,hi=run?195:110,ok=run?[165,185]:[80,95],inb=c>=ok[0]&&c<=ok[1],col=inb?"#30d158":"#ff9f0a";
-    return card("Cadencia",`<div class="pf-big">${Math.round(c)}<small> ${run?"pasos/min":"rpm"}</small></div><span class="pf-chip" style="--k:${col}">${inb?"En el rango eficiente":c<ok[0]?"Algo baja":"Alta"}</span>
-      ${pfGauge(lo,hi,[[lo,ok[0],"var(--fill)"],[ok[0],ok[1],"#30d158"],[ok[1],hi,"var(--fill)"]],c,[[ok[0],ok[0]],[ok[1],ok[1]]])}
-      <p class="note">${run?"Media de tus últimas salidas. Entre 165 y 185 pasos por minuto la zancada cae más cerca del cuerpo y castiga menos; subirla un 5 % suele bastar.":"Media de tus últimas salidas con sensor. En llano, entre 80 y 95 rpm cansa menos las piernas; en subidas técnicas es normal bajar."}</p>`)};
-  if(sp==="run"){const v=a.vo2,row=vo2Row();
-    if(v){const i=row?VO2L.indexOf(vo2Norm(v)):-1,lo=row?row[1]-6:25,hi=row?row[5]+6:60;
-      cards.push(card(`<span class="pf-cti" style="--c:${VO2_C}">${IC_LUNG}</span>VO2máx`,`<div class="pf-big">${Math.round(v)}<small> ml/kg/min</small></div>${i>=0?`<span class="pf-chip" style="--k:${VO2C[i]}">${VO2L[i]} para tu edad</span>`:""}
-        ${row?pfGauge(lo,hi,VO2C.map((c,j)=>[j?row[j]:lo,j<5?row[j+1]:hi,c]),v,[[row[2],Math.round(row[2])],[row[4],Math.round(row[4])]]):""}
-        ${perfLine(a.trend,"vo2")}
-        <p class="note">${a.vb&&(!a.vr||a.vb>a.vr)?"Con tu FTP de bici, que en tu caso da el valor más alto.":"Con el ritmo y el pulso de tus mejores rodajes recientes."} El calor, el terreno o el cansancio solo lo bajan, por eso cuentan tus mejores salidas y no las de más de 27 °C. Es el mejor indicador de salud cardiovascular que hay. Referencia: Cooper Institute.</p>`));
-      cards.push(card("Umbral",`<div class="pf-big">${fmtClock(a.thr)}<small> /km</small></div><span class="pf-chip" style="--k:${Z_C[4]}">El ritmo que aguantarías ~1 hora</span>
-        <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
-        <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","> "+fmtClock(paceAt(.65,v)))}${zr(Z_C[2],"Z2 Suave",fmtClock(paceAt(.79,v))+" – "+fmtClock(paceAt(.65,v)))}${zr(Z_C[3],"Z3 Ritmo maratón",fmtClock(paceAt(.86,v))+" – "+fmtClock(paceAt(.8,v)))}${zr(Z_C[4],"Z4 Umbral",fmtClock(paceAt(.92,v))+" – "+fmtClock(paceAt(.87,v)))}${zr(Z_C[5],"Z5 VO2máx","< "+fmtClock(paceAt(.95,v)))}</div>
-        <p class="note">Ritmos por kilómetro en llano (método de Daniels). Con calor o en subida, guíate por el pulso.</p>`))}
-    const cr=cad(a.cadR,true);if(cr)cards.push(cr)}
-  else{const f=a.ftp;
-    if(f)cards.push(card("FTP",`<div class="pf-big">${Math.round(f)}<small> W${kg?" · "+(f/kg).toFixed(1).replace(".",",")+" W/kg":""}</small></div><span class="pf-chip" style="--k:${SPC.mtb}">${a.pm?"Con tu potenciómetro":"Aproximado"} · ${a.nb} salida${a.nb===1?"":"s"} en 6 semanas</span>
-      <div class="pf-zb">${[1,2,3,4,5].map(z=>`<i style="background:${Z_C[z]}"></i>`).join("")}</div>
-      <div class="pf-zl">${zr(Z_C[1],"Z1 Recuperación","< "+Math.round(f*.55)+" W")}${zr(Z_C[2],"Z2 Fondo",Math.round(f*.56)+"–"+Math.round(f*.75)+" W")}${zr(Z_C[3],"Z3 Tempo",Math.round(f*.76)+"–"+Math.round(f*.9)+" W")}${zr(Z_C[4],"Z4 Umbral",Math.round(f*.91)+"–"+Math.round(f*1.05)+" W")}${zr(Z_C[5],"Z5 VO2máx","> "+Math.round(f*1.05)+" W")}</div>
-      ${perfLine(a.trend,"ftp")}
-      <p class="note">${a.pm?"Tu mejor potencia de 20 minutos × 0,95.":"Sin potenciómetro: con la física de tus subidas (tu peso, la bici, la pendiente y la velocidad). Fiable en puertos; con viento o barro, menos."}</p>`));
-    const cb=cad(a.cadB,false);if(cb)cards.push(cb)}
-  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade pf-sheet" role="dialog" aria-modal="true" aria-label="Rendimiento">
-    <div class="row"><h3>Rendimiento</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <div class="pf-sw">${[["run","Carrera"],["mtb","Bici"]].map(([k,l])=>`<button class="sp-pick" style="--c:${SPC[k]};--on:${k==="run"?"#1c1c1e":"#fff"}" data-perfsp="${k==="mtb"?"bike":"run"}" aria-pressed="${(sp==="bike")===(k==="mtb")}">${SP_ICS[k]}<span>${l}</span></button>`).join("")}</div>
-    <div class="pf-car" id="pfcar">${cards.join("")}</div>
-    ${cards.length>1?`<div class="pf-dots" aria-hidden="true">${cards.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}
-  </div></div>`}
 /* En Hoy, solo cuando cambia de verdad: unos días, dentro de la tarjeta de la mañana */
 function perfNews(){const a=perfAgg(),tk=today();let s=LS("sustrato-perfseen")||{};const cur={vo2:a.vo2?Math.round(a.vo2):null,ftp:a.ftp?Math.round(a.ftp/5)*5:null};
   if(s.vo2==null&&cur.vo2!=null)s.vo2=cur.vo2;if(s.ftp==null&&cur.ftp!=null)s.ftp=cur.ftp;
@@ -6136,24 +5929,6 @@ const QA=[["weigh","Pesarme","Peso de hoy","#bf5af2"],["log","Registrar comida",
 function quickHtml(){return`<div class="qa-ov" data-radclose="1"><div class="qa" role="dialog" aria-modal="true" aria-label="Acciones rápidas"><div class="qa-grab" aria-hidden="true"></div>
   <div class="qa-h"><b>Acciones rápidas</b><button class="hbtn qa-x" data-radclose="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <div class="qa-grid">${QA.map(([k,l,sub,c],i)=>`<button class="qa-it" data-rad="${k}" style="--c:${c};--i:${i}"><span class="qa-ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${RAD_IC[k]}</svg></span><b>${l}</b><small>${sub}</small></button>`).join("")}</div></div></div>`}
-function radialHtml(){
-  const opts=[["weigh","Pesarme","#a94de0","#fff"],["log","Registrar comida","#28a745","#fff"],["train","Planificar entreno","#e0a100","#fff"],["menu","Crear menú","#f0501f","#fff"],["dish","Crear plato","#2f6df6","#fff"]];
-  const n=opts.length,R=148,r=64,G=0,step=360/n,toR=d=>(d-90)*Math.PI/180,P=(rr,d)=>[+(rr*Math.cos(toR(d))).toFixed(2),+(rr*Math.sin(toR(d))).toFixed(2)],dg=(px,rr)=>px/rr*180/Math.PI;
-  const seg=opts.map(([k,l,c,tc],i)=>{
-    const mid=i*step,s0=mid-step/2,s1=mid+step/2;
-    const o0=s0+dg(G,R),o1=s1-dg(G,R),i0=s0+dg(G,r),i1=s1-dg(G,r);
-    const [x0,y0]=P(R,o0),[x1,y1]=P(R,o1),[x2,y2]=P(r,i1),[x3,y3]=P(r,i0);
-    const d=`M${x0} ${y0} A${R} ${R} 0 0 1 ${x1} ${y1} L${x2} ${y2} A${r} ${r} 0 0 0 ${x3} ${y3} Z`;
-    const [cx,cy]=P((R+r)/2,mid),[dx,dy]=P(6,mid);
-    return`<g class="rs" data-rad="${k}" role="button" tabindex="0" aria-label="${l}" style="--c:${c};--t:${tc};--i:${i};--dx:${dx}px;--dy:${dy}px"><title>${l}</title>
-      <path class="rs-p" d="${d}"/>
-      <g transform="translate(${cx} ${cy})"><g class="rs-tile"><circle class="tb" r="28"/><g class="rs-i" transform="translate(-16.8 -16.8) scale(1.4)" fill="none" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${RAD_IC[k]}</g></g></g></g>`}).join("");
-  return`<div class="rad-ov" data-radclose="1"><div class="rad" role="dialog" aria-modal="true" aria-label="¿Qué quieres hacer?">
-    <svg class="rad-svg" viewBox="-170 -170 340 340">
-      <circle class="rad-halo" r="${R+12}"/>${seg}
-      <g class="rad-x" role="button" tabindex="0" aria-label="Cerrar"><title>Cerrar</title><circle class="rad-hub" r="${r}"/><circle class="rad-hub-ring" r="${r}"/><path class="rad-xl" d="M-11 -11L11 11M11 -11L-11 11"/></g>
-    </svg><p class="rad-cap" id="radcap">Pesarme · Registrar comida · Planificar entreno · Crear menú · Crear plato</p></div></div>`;
-}
 document.addEventListener("pointerover",e=>{const g=e.target.closest&&e.target.closest(".rs");const cap=$("#radcap");if(!cap)return;cap.textContent=g?g.getAttribute("aria-label"):"Pesarme · Registrar comida · Planificar entreno · Crear menú · Crear plato"});
 document.addEventListener("focusin",e=>{const g=e.target.closest&&e.target.closest(".rs");const cap=$("#radcap");if(cap&&g)cap.textContent=g.getAttribute("aria-label")});
 function openRadial(on){const el=$("#radial"),fab=$("#fab");if(on){el.innerHTML=quickHtml();el.hidden=false;fab.setAttribute("aria-expanded","true");fab.classList.add("open");const b=el.querySelector(".qa-it");if(b)b.focus({preventScroll:true})}else{el.hidden=true;el.innerHTML="";fab.setAttribute("aria-expanded","false");fab.classList.remove("open")}}
@@ -6582,18 +6357,6 @@ function vPlanTrain(wk){
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan.</p></details>`;
-}
-function planEditor(k){
-  const list=plannedFor(k);
-  const rows=list.map((s,i)=>`<div class="prow">
-    <select id="pl_${k}_${i}_sport" aria-label="Deporte">${["run","trail","mtb","str","walk","hike"].map(x=>`<option value="${x}" ${s.sport===x?"selected":""}>${SPORT_L[x]}</option>`).join("")}</select>
-    <input id="pl_${k}_${i}_dur" inputmode="numeric" value="${s.dur||""}" aria-label="Minutos" placeholder="min">
-    <select id="pl_${k}_${i}_int" aria-label="Intensidad">${Object.entries(INT_L).map(([x,l])=>`<option value="${x}" ${s.int===x?"selected":""}>${l}</option>`).join("")}</select>
-        ${s.sport==="str"?`<select id="pl_${k}_${i}_rt" aria-label="Rutina"><option value="">Rutina…</option>${allRoutines().map(r=>`<option value="${esc(r.id)}" ${s.routine===r.id?"selected":""}>${esc(routineShort(r))}</option>`).join("")}</select>`:""}
-    <input id="pl_${k}_${i}_time" type="time" value="${s.time||"18:00"}" aria-label="Hora">
-    <label class="chip sm"><input type="checkbox" id="pl_${k}_${i}_race" ${s.race?"checked":""} style="width:auto;min-height:0"> Carrera</label>
-    <button class="chip sm" data-pldel="${i}" data-k="${k}" aria-label="Quitar entreno">Quitar</button></div>`).join("");
-  return`<div class="pent"><div class="row"><b class="pent-t">Entrenos</b><button class="chip sm" data-pladd="${k}">Añadir entreno</button></div>${rows?`<div class="plist">${rows}</div>`:'<p class="empty" style="padding:4px 0 0">Descanso. Añade un entreno si lo tienes previsto.</p>'}</div>`;
 }
 function vHoy(){
   const days=[];for(let i=6;i>=-7;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
@@ -7104,7 +6867,7 @@ function render(){setTimeout(dropKick,0);
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="perf"){m.innerHTML=perfSheetHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;whInit();
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7688,7 +7451,6 @@ function runSegs(st){const t=st&&st.time,h=st&&st.heart_rate,v=st&&st.velocity_s
 function vo2Segs(sg,hp,trail){if(!sg||!hp)return null;const out=[];
   sg.forEach(([vm,hm])=>{const r=(hm-hp.rest)/(hp.max-hp.rest);if(r>=.7&&r<=.92){const cost=vo2Cost(vm*60)*(trail?1.05:1),vo=3.5+(cost-3.5)/r;if(vo>20&&vo<85)out.push(vo)}});
   return out.length?med(out):null}
-function runVo2b(st,hp,trail){return vo2Segs(runSegs(st),hp,trail)}
 
 /* v239: FC máxima detectada en tus actividades de los últimos 12 meses. Se toma la segunda más alta (un pico suelto del
    sensor no cuenta), solo de salidas de 15 min o más con pulso fiable, y solo se usa si supera la estimada por edad:
