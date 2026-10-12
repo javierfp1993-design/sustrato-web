@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T07:29:36.103Z">
+<meta name="sustrato-version" content="2026-10-12T07:46:17.217Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1396,7 +1396,7 @@ body.onb-on{overflow:hidden}
 .ob-skip{appearance:none;border:0;background:none;color:var(--muted);font:500 15px var(--font);padding:10px 4px;cursor:pointer;min-height:44px}
 .ob-body{flex:1;overflow-y:auto;padding:24px 2px 12px}
 .ob-h{font-size:28px;font-weight:700;letter-spacing:-.025em;line-height:1.15;margin:0 0 8px}
-.ob-p{font-size:17px;color:var(--muted);line-height:1.45;margin:0 0 24px}
+.ob-p{font-size:15px;color:var(--muted);line-height:1.45;margin:0 0 20px}
 .ob-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:20px}
 .ob-drop{width:92px;height:92px;margin-bottom:28px}
 #onb .dgap{stroke:var(--bg)}#onb .dcover{fill:var(--bg);transform:translateY(-70px)}
@@ -1404,7 +1404,7 @@ body.onb-on{overflow:hidden}
 .ob-feat{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:18px}
 .ob-feat li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center}
 .ob-feat b{display:block;font-size:17px;font-weight:600}
-.ob-feat small{display:block;font-size:14px;color:var(--muted);line-height:1.4;margin-top:2px}
+.ob-feat small{display:block;font-size:13px;color:var(--muted);line-height:1.4;margin-top:2px}
 .ob-ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
 html[data-theme="light"] .ob-ic{color:color-mix(in srgb,var(--c) 75%,#000)}
 .ob-form{display:flex;flex-direction:column;gap:16px}
@@ -1412,23 +1412,25 @@ html[data-theme="light"] .ob-ic{color:color-mix(in srgb,var(--c) 75%,#000)}
 .ob-f em{font-style:normal;color:var(--faint);font-weight:400}
 .ob-in{position:relative;display:block}
 .ob-in input{font-size:17px;min-height:50px;padding-right:48px}
-.ob-in i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-size:14px;color:var(--faint);pointer-events:none}
+.ob-in i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--faint);pointer-events:none}
 .ob-row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .ob-row3 .ob-in input{padding-right:40px;padding-left:12px}
 .ob-row3 .ob-in i{right:10px;font-size:13px}
 .ob-row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .ob-seg{display:flex;width:100%}
-.ob-seg button{flex:1;min-height:40px;font-size:14px}
-.ob-seg button[aria-checked="true"]{background:var(--fg);color:var(--bg)}
+.ob-seg button{flex:1;min-height:40px;font-size:15px}
+#onb .ob-seg button[aria-checked="true"]{background:#636366;color:#fff;font-weight:600} /* como el segmentado del resto de la app */
+html[data-theme="light"] #onb .ob-seg button[aria-checked="true"]{background:#fff;color:#1c1c1e}
 .ob-goals{display:flex;flex-direction:column;gap:10px}
-.ob-goal{appearance:none;display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:center;text-align:left;padding:14px 16px;border-radius:14px;border:1.5px solid transparent;background:var(--card2,rgba(127,127,127,.12));color:var(--fg);font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
+.ob-goal{appearance:none;border:0;display:grid;grid-template-columns:1fr 22px;gap:14px;align-items:center;text-align:left;padding:14px 16px;border-radius:14px;background:var(--card2,rgba(127,127,127,.12));color:var(--fg);font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
 .ob-goal b{display:block;font-size:17px;font-weight:600}
-.ob-goal small{display:block;font-size:14px;color:var(--muted);margin-top:2px}
-.ob-goal[aria-checked="true"]{border-color:var(--fg)}
-.ob-rad{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--faint);box-sizing:border-box;transition:border .2s}
-.ob-goal[aria-checked="true"] .ob-rad{border:6px solid var(--fg)}
+.ob-goal small{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+#onb .ob-goal[aria-checked="true"]{background:var(--fg)!important;color:var(--bg)}#onb .ob-goal[aria-checked="true"] small{color:color-mix(in srgb,var(--bg) 75%,transparent)}
+.ob-rad{width:22px;height:22px;display:grid;place-items:center;opacity:0}
+.ob-goal[aria-checked="true"] .ob-rad{opacity:1}
 .ob-foot{padding-top:10px}
-.ob-err{min-height:20px;margin:0 0 6px;font-size:14px;color:#ff6b5e;text-align:center}
+.ob-err{min-height:20px;margin:0 0 6px;font-size:13px;color:#ff9f0a;text-align:center}
+html[data-theme="light"] .ob-err{color:#c46a00}
 .ob-cta{width:100%;min-height:52px!important;font-size:17px;border-radius:14px!important}
 .ob-again{margin:0 0 -6px;align-self:flex-start}
 @media (prefers-reduced-motion:no-preference){.ob-body{animation:obin .35s cubic-bezier(.2,.8,.3,1)}@keyframes obin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}}
@@ -3054,6 +3056,39 @@ html[data-theme="dark"] .mprot{color:#ff9f0a}
 @keyframes ptrSp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.ptr-i.ptr-spin svg{animation:none}}
 
+/* Bienvenida nueva (v237): paso de conexiones, estado de la importación y «Todo listo». Prefijo ob2-. */
+.ob2-c{background:var(--card);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.ob2-c+.ob2-c{margin-top:14px}
+html[data-theme="light"] .ob2-c{background:#fff}
+.ob2-h{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+.ob2-h b{display:block;font-size:17px;font-weight:600}.ob2-h small{display:block;font-size:13px;color:var(--muted)}
+.ob2-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.ob2-sv{color:#fc5200;background:rgba(252,82,0,.15)}
+.ob2-hc{color:#3b82f6;background:rgba(59,130,246,.15)}
+html[data-theme="light"] .ob2-hc{color:#0a84c6}
+/* Botón oficial de Strava: su naranja es obligatorio para el acceso de producción (excepción de marca ajena) */
+.ob2-svb{appearance:none;border:0;min-height:48px;border-radius:14px;background:#fc5200;color:#fff;font:600 15px var(--font);cursor:pointer}
+.ob2-svb:active{transform:scale(.97)}.ob2-svb:disabled{opacity:.6}
+.ob2-b{min-height:44px}
+.ob2-why{margin:0;font-size:13px;color:var(--muted)}
+.ob2-st{display:flex;align-items:center;justify-content:center;gap:8px;margin:0;font-size:13px;color:var(--muted);min-height:20px}
+.ob2-c .ob2-st{justify-content:flex-start}
+.ob2-foot{margin-bottom:8px}
+.ob2-ok{display:inline-flex;color:#30d158}html[data-theme="light"] .ob2-ok{color:#248a3d}
+.ob2-spin{color:var(--muted);animation:ob2sp 1s linear infinite;flex:none}
+@keyframes ob2sp{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){.ob2-spin{animation:none}}
+.ob2-from{display:flex;align-items:center;gap:8px;margin:-6px 0 18px;padding:8px 12px;border-radius:10px;background:var(--fill2,rgba(120,120,128,.10));font-size:13px;color:var(--muted)}
+.ob2-from svg{color:#30d158;flex:none}html[data-theme="light"] .ob2-from svg{color:#248a3d}
+.ob2-diet{margin-top:18px}
+.ob2-done{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:20px}
+.ob2-big{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;color:#30d158;background:rgba(48,209,88,.15);margin-bottom:20px}
+html[data-theme="light"] .ob2-big{color:#248a3d}
+.ob2-sum{width:100%;background:var(--card);border-radius:16px;padding:4px 18px;text-align:left;margin:4px 0 14px}
+html[data-theme="light"] .ob2-sum{background:#fff}
+.ob2-sum div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:13px 0;font-size:15px}
+.ob2-sum div+div{border-top:.5px solid var(--sep)}
+.ob2-sum span{color:var(--muted)}.ob2-sum b{font-weight:600;white-space:nowrap}.ob2-sum b small{font-size:13px;color:var(--muted);font-weight:500;margin-left:2px}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3125,7 +3160,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="236";
+const APP_VER="237";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3756,12 +3791,38 @@ document.addEventListener("toggle",e=>{const d=e.target;if(d.tagName==="DETAILS"
 
 /* ---------- Onboarding ---------- */
 const OB_GOAL_D={loss:"Bajar grasa conservando el músculo.",maint:"Rendir bien y mantener el peso.",recomp:"Perder algo de grasa y ganar músculo a la vez.",hyper:"Ganar músculo con un ligero superávit."};
+/* v237: bienvenida nueva. Conexiones primero; mientras se rellena el perfil, el historial se importa en segundo plano. */
+const OBK=()=>window.__native&&window.__native.hcStatus?["hi","conn","you","goal","done"]:["hi","you","goal","done"]; /* el paso de conexiones necesita la app nativa nueva */
+const OB_LS="sustrato-onb-paso";
+function obSave(){try{if(S.onb)localStorage.setItem(OB_LS,JSON.stringify({step:S.onb.step,p:S.onbP}));else localStorage.removeItem(OB_LS)}catch(e){}}
 function obStart(){S.onb={step:0};S.onbP=Object.assign({level:"mid",diet:"omni",goal:"recomp"},S.profile||{});renderOnb()}
-function obField(id,l,ph,unit,req){const v=S.onbP[id];return`<label class="f ob-f" for="ob_${id}"><span>${l}${req?"":' <em>opcional</em>'}</span><span class="ob-in"><input id="ob_${id}" inputmode="${id==="name"?"text":"decimal"}" placeholder="${ph}" value="${v!=null&&v!==""?esc(v):""}" autocomplete="off">${unit?`<i>${unit}</i>`:""}</span></label>`}
+function obResume(){try{const v=JSON.parse(localStorage.getItem(OB_LS)||"null");if(v&&typeof v.step==="number"){S.onb={step:Math.min(v.step,OBK().length-1)};S.onbP=Object.assign({level:"mid",diet:"omni",goal:"recomp"},S.profile||{},v.p||{});renderOnb();return true}}catch(e){}return false}
+/* Estado de las conexiones, para el paso «Conecta tus datos» */
+async function obConnRefresh(){if(!window.__native)return;try{S.stravaSt=await window.__native.strava()}catch(e){}try{S.hcSt=await window.__native.hcStatus()}catch(e){S.hcSt=null}if(S.onb)renderOnb()}
+/* Importación del historial completo de Strava, por tandas, respetando su límite. Sigue sola aunque se cierre la bienvenida. */
+async function impRun(){if(S.impBusy||!window.__native||!window.__native.stravaImport)return;S.impBusy=true;
+  try{for(let i=0;i<300;i++){const r=await window.__native.stravaImport();if(!r||!r.connected)break;S.imp=r;obImpLine();
+      if(r.complete){await syncActs();break}
+      await new Promise(ok=>setTimeout(ok,r.rateLimited?90000:400))}}catch(e){}
+  S.impBusy=false;obImpLine()}
+function obImpHtml(){const r=S.imp,st=S.stravaSt;if(!st||!st.connected||!r||!r.count)return"";const n=fmtInt(r.count);
+  return r.complete?`<span class="ob2-ok">${OB_CK}</span>Historial importado · ${n} actividades`:`<svg class="ob2-spin" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="24 40" stroke-linecap="round"/></svg>Importando tu historial · ${n} actividades`}
+function obImpLine(){const el=document.getElementById("obimp");if(el)el.innerHTML=obImpHtml()}
+const OB_CK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const OB_SV='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M10 3 4 15h3.6L10 10.3 12.4 15H16zM16 15l-1.8 3.6L12.4 15H9.9l4.3 6 4.3-6z"/></svg>';
+const OB_HR='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
+/* Lo que ya sabe Strava: nombre, sexo y peso */
+async function obPrefill(){if(S.obPre||!window.__native||!window.__native.stravaGet||!(S.stravaSt&&S.stravaSt.connected))return;S.obPre=[];
+  try{const a=await window.__native.stravaGet("/athlete");if(!a||!S.onbP)return;
+    if(!S.onbP.name&&a.firstname){S.onbP.name=a.firstname;S.obPre.push("nombre")}
+    if(!S.onbP.sex&&(a.sex==="M"||a.sex==="F")){S.onbP.sex=a.sex==="F"?"f":"m";S.obPre.push("sexo")}
+    if(!S.onbP.weight&&a.weight>30){S.onbP.weight=+(+a.weight).toFixed(1);S.obPre.push("peso")}
+    if(S.onb&&OBK()[S.onb.step]==="you")renderOnb()}catch(e){}}
+function obField(id,l,ph,unit,req){const v=S.onbP[id],vs=v!=null&&v!==""&&typeof v==="number"?String(v).replace(".",","):v;return`<label class="f ob-f" for="ob_${id}"><span>${l}${req?"":' <em>opcional</em>'}</span><span class="ob-in"><input id="ob_${id}" inputmode="${id==="name"?"text":"decimal"}" placeholder="${ph}" value="${vs!=null&&vs!==""?esc(vs):""}" autocomplete="off">${unit?`<i>${unit}</i>`:""}</span></label>`}
 function obSeg(key,opts){return`<div class="seg ob-seg" role="radiogroup">${opts.map(([v,l])=>`<button type="button" role="radio" data-obset="${key}:${v}" aria-checked="${String(S.onbP[key]||"")===String(v)}">${l}</button>`).join("")}</div>`}
 function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;el.innerHTML="";document.body.classList.remove("onb-on");return}
-  const st=S.onb.step,p=S.onbP,N=3;let body="",cta="Continuar";
-  if(st===0){cta="Empezar";
+  const K=OBK(),st=S.onb.step,key=K[st],p=S.onbP,N=K.length;let body="",cta="Continuar",imp=false;obSave();
+  if(key==="hi"){cta="Empezar";
     body=`<div class="ob-hero"><svg class="dsvg ob-drop" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl3"><path d="DROP"/></clipPath></defs><g clip-path="url(#dcl3)"><rect width="64" height="64" fill="#ffd21e"/><path d="WAVE V64 H0Z" fill="#3b82f6"/><path class="dgap" d="WAVE" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg>
       <h2 class="ob-h">Come según cómo entrenas</h2><p class="ob-p">Sustrato lee tus entrenos y los datos de tu reloj y calcula cada día cuánta energía necesitas y qué te conviene comer.</p></div>
       <ul class="ob-feat">
@@ -3769,19 +3830,32 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
         <li><span class="ob-ic" style="--c:#3b82f6"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg></span><span><b>Sustrato por pulso</b><small>Qué parte de cada sesión sale de hidratos y cuál de grasas.</small></span></li>
         <li><span class="ob-ic" style="--c:#30d158"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16a8 8 0 0 1-16 0zM8 7c0-1.5 1-2 1-3.5M12 7c0-1.5 1-2 1-3.5M16 7c0-1.5 1-2 1-3.5"/></svg></span><span><b>Menú y avituallamiento</b><small>Qué comer antes, durante y después de cada sesión.</small></span></li>
       </ul>`.replace(/DROP/g,"M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z").replace(/WAVE/g,"M0 38 C10 33 22 43 32 38 S54 33 64 38")}
-  else if(st===1){body=`<h2 class="ob-h">Sobre ti</h2><p class="ob-p">Con esto calculamos tu gasto en reposo.</p>
+  else if(key==="conn"){const sv=S.stravaSt||{},hc=S.hcSt||{};
+    body=`<h2 class="ob-h">Conecta tus datos</h2><p class="ob-p">Sustrato calcula con tus entrenos y tu reloj. Solo lee, nunca publica ni cambia nada.</p>
+      ${sv.available!==false?`<div class="ob2-c"><div class="ob2-h"><span class="ob2-ic ob2-sv">${OB_SV}</span><span><b>Strava</b><small>${sv.connected?esc(sv.name||"Conectado"):"Tus entrenos, con ruta, desnivel y pulso."}</small></span></div>
+        ${sv.connected?`<p class="ob2-st" id="obimp">${obImpHtml()||`<span class="ob2-ok">${OB_CK}</span>Conectado`}</p>`:`<button type="button" class="ob2-svb" data-ob="sv"${S.svBusy?" disabled":""}>${S.svBusy?"Abriendo Strava…":"Conectar con Strava"}</button>`}</div>`:""}
+      <div class="ob2-c"><div class="ob2-h"><span class="ob2-ic ob2-hc">${OB_HR}</span><span><b>Tu reloj</b><small>${hc.granted?"Health Connect":"Sueño, pulso en reposo, VFC, pasos y peso, por Health Connect."}</small></span></div>
+        ${hc.available===false?`<p class="ob2-why">Instala Health Connect desde Google Play para leer los datos de tu reloj. Puedes hacerlo luego.</p>`:hc.granted?`<p class="ob2-st"><span class="ob2-ok">${OB_CK}</span>Permitido</p>`:`<button type="button" class="btn ob2-b" data-ob="hc">Permitir acceso</button><p class="ob2-why">Android te enseñará su ventana de permisos. Marca todo para que los cálculos salgan completos.</p>`}</div>`}
+  else if(key==="you"){imp=true;const pre=S.obPre&&S.obPre.length?S.obPre:null;body=`<h2 class="ob-h">Sobre ti</h2><p class="ob-p">Con esto calculamos tu gasto en reposo.</p>
+      ${pre?`<p class="ob2-from">${OB_CK}<span>${pre.join(", ").replace(/, ([^,]*)$/," y $1").replace(/^./,c=>c.toUpperCase())}, de tu perfil de Strava</span></p>`:""}
       <div class="ob-form">${obField("name","Nombre","Cómo te llamamos","",false)}
       <div class="f ob-f"><span>Sexo</span>${obSeg("sex",[["m","Hombre"],["f","Mujer"]])}</div>
       <div class="ob-row3">${obField("age","Edad","","años",true)}${obField("height","Altura","","cm",true)}${obField("weight","Peso","","kg",true)}</div></div>`}
-  else{cta="Empezar a usar Sustrato";const g=p.goal||"recomp";
+  else if(key==="goal"){imp=true;const g=p.goal||"recomp";
     body=`<h2 class="ob-h">Tu objetivo</h2><p class="ob-p">Lo puedes cambiar cuando quieras en el perfil.</p>
-      <div class="ob-goals" role="radiogroup">${Object.entries(GOALS).map(([k,v])=>`<button type="button" role="radio" class="ob-goal" data-obset="goal:${k}" aria-checked="${g===k}"><span class="ob-rad" aria-hidden="true"></span><span><b>${v.label}</b><small>${OB_GOAL_D[k]||""}</small></span></button>`).join("")}</div>
-      <div class="f ob-f" style="margin-top:18px"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>`}
+      <div class="ob-goals" role="radiogroup">${Object.entries(GOALS).map(([k,v])=>`<button type="button" role="radio" class="ob-goal" data-obset="goal:${k}" aria-checked="${g===k}"><span><b>${v.label}</b><small>${OB_GOAL_D[k]||""}</small></span><span class="ob-rad" aria-hidden="true">${OB_CK.replace('width="16" height="16"','width="18" height="18"')}</span></button>`).join("")}</div>
+      <div class="f ob-f ob2-diet"><span>Tipo de dieta</span>${obSeg("diet",[["omni","Omnívora"],["pesce","Pesce"],["veggie","Vegetariana"],["vegan","Vegana"]])}</div>`}
+  else{cta="Ver mi día";const t=(()=>{try{return dayTargets(today())}catch(e){return null}})(),last=(S.imp&&S.imp.oldest?String(S.imp.oldest).slice(0,10):null)||(S.acts.length?S.acts[S.acts.length-1].day:null),hc=S.hcSt||{},n=(S.imp&&S.imp.count)||S.acts.length;
+    body=`<div class="ob2-done"><span class="ob2-big">${OB_CK.replace('width="16" height="16"','width="34" height="34"')}</span><h2 class="ob-h">Todo listo${p.name?", "+esc(p.name):""}</h2><p class="ob-p">Ya tenemos lo necesario para calcular tu día.</p>
+      <div class="ob2-sum">${n?`<div><span>Actividades importadas</span><b>${fmtInt(n)}</b></div>`:""}${last?`<div><span>Desde</span><b>${MON[+last.slice(5,7)-1].slice(0,3).toLowerCase()} ${last.slice(0,4)}</b></div>`:""}
+      ${window.__native?`<div><span>Reloj</span><b>${hc.granted?"Conectado":"Sin conectar"}</b></div>`:""}${t&&t.kcal?`<div><span>Tu energía de hoy</span><b>${fmtInt(Math.round(t.kcal))}<small>kcal</small></b></div>`:""}</div>
+      ${S.impBusy?`<p class="ob2-st" id="obimp">${obImpHtml()}</p>`:""}</div>`}
   const prog=`<div class="ob-prog" aria-label="Paso ${st+1} de ${N}">${Array.from({length:N},(_,i)=>`<i class="${i<=st?"on":""}"></i>`).join("")}</div>`;
-  el.innerHTML=`<div class="ob-wrap" role="dialog" aria-modal="true" aria-label="Bienvenida a Sustrato"><div class="ob-top">${st?`<button class="hbtn" data-ob="back" aria-label="Atrás"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>`:"<span></span>"}${prog}<button class="ob-skip" data-ob="skip">${st?"Más tarde":"Saltar"}</button></div>
+  el.innerHTML=`<div class="ob-wrap" role="dialog" aria-modal="true" aria-label="Bienvenida a Sustrato"><div class="ob-top">${st&&key!=="done"?`<button class="hbtn" data-ob="back" aria-label="Atrás"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>`:"<span></span>"}${prog}${key==="done"?"<span></span>":`<button class="ob-skip" data-ob="skip">${st?"Más tarde":"Saltar"}</button>`}</div>
     <div class="ob-body ob-s${st}">${body}</div>
-    <div class="ob-foot"><p class="ob-err" id="oberr" role="alert"></p><button class="btn primary ob-cta" data-ob="next">${cta}</button></div></div>`;
+    <div class="ob-foot">${imp?`<p class="ob2-st ob2-foot" id="obimp" aria-live="polite">${obImpHtml()}</p>`:""}<p class="ob-err" id="oberr" role="alert"></p><button class="btn primary ob-cta" data-ob="next">${cta}</button></div></div>`;
   el.hidden=false;document.body.classList.add("onb-on");
+  if(key==="conn"&&!S.hcSt)obConnRefresh();if(key==="you")obPrefill();
   const f=el.querySelector("input");if(f&&st===1&&!p.age)setTimeout(()=>{},0)}
 function obRead(){document.querySelectorAll("#onb input").forEach(i=>{const k=i.id.slice(3),v=i.value.trim();if(k==="name")S.onbP.name=v||undefined;else S.onbP[k]=v===""?undefined:(num(v)||undefined)})}
 
@@ -3809,7 +3883,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(TOUR_I<0)return;if(!t){if(e.target.closest&&e.target.closest("#tour")){e.stopPropagation();e.preventDefault()}return}
   e.stopPropagation();if(t.dataset.tr==="skip")return tourEnd();TOUR_I++;if(TOUR_I>=TOUR.length)tourEnd();else tourShow()},true);
 addEventListener("resize",()=>{if(TOUR_I>=0)tourShow()});
-function obFinish(){obRead();S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});S.onb=null;S.onbP=null;try{localStorage.setItem("sustrato-onb","done")}catch(e){}renderOnb();setTimeout(()=>tourStart(),500);saveProfile(true);{const k=today(),w=num(S.profile.weight);if(w&&!(S.weights||[]).some(x=>x.d===k)){S.weights=(S.weights||[]).concat([{d:k,kg:w}]);saveWeights()}}buzz(12);render();toast("Todo listo. Este es tu día.")}
+function obFinish(){obRead();S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});S.onb=null;S.onbP=null;try{localStorage.setItem("sustrato-onb","done");localStorage.removeItem(OB_LS)}catch(e){}renderOnb();setTimeout(()=>tourStart(),500);saveProfile(true);{const k=today(),w=num(S.profile.weight);if(w&&!(S.weights||[]).some(x=>x.d===k)){S.weights=(S.weights||[]).concat([{d:k,kg:w}]);saveWeights()}}buzz(12);render()}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-obagain]")){obStart()}});
 document.addEventListener("input",e=>{const m=/^s_(\w+)_(\d+)_([wr])$/.exec(e.target.id||"");if(!m)return;const dk=(S.strDate||S.day)+"|"+S.strRoutine;S.strDraft=S.strDraft||{};const d=S.strDraft[dk]=S.strDraft[dk]||{};const ex=d[m[1]]=d[m[1]]||{};const st=ex[m[2]]=ex[m[2]]||{};st[m[3]]=e.target.value;
   const det=e.target.closest(".fz-ex");if(det){const ins=det.querySelectorAll('input[id$="_r"]');let f=0;ins.forEach(i=>{if(i.value!=="")f++});const sp=det.querySelector(".fz-st");if(sp)sp.textContent=f?f+"/"+ins.length:""}});
@@ -3819,11 +3893,15 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   /* Elegir una opción solo marca la opción: sin repintar la pantalla entera (evita el parpadeo y el salto de scroll) */
   if(t.dataset.obset){const [k,v]=t.dataset.obset.split(":");S.onbP[k]=v;document.querySelectorAll(`#onb [data-obset^="${k}:"]`).forEach(b=>b.setAttribute("aria-checked",String(b.dataset.obset===k+":"+v)));const er=$("#oberr");if(er)er.textContent="";return}
   const a=t.dataset.ob;
-  if(a==="skip"){S.onb=null;try{localStorage.setItem("sustrato-onb","skip")}catch(e){}renderOnb();if(S.onbP&&Object.keys(S.onbP).length){S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});render()}return}
+  if(a==="sv"){S.svBusy=true;renderOnb();window.__native.stravaConnect().catch(()=>{S.svBusy=false;renderOnb();toast("No se ha podido abrir Strava")});return}
+  if(a==="hc"){window.__native.hcConnect().then(async r=>{S.hcSt=r;renderOnb();if(r&&r.granted){try{await hcMerge()}catch(e){}syncActs()}}).catch(()=>toast("No se ha podido abrir Health Connect"));return}
+  if(a==="skip"){S.onb=null;try{localStorage.setItem("sustrato-onb","skip");localStorage.removeItem(OB_LS)}catch(e){}renderOnb();if(S.onbP&&Object.keys(S.onbP).length){S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});render()}return}
   if(a==="back"){S.onb.step=Math.max(0,S.onb.step-1);renderOnb();return}
-  if(a==="next"){const st=S.onb.step,p=S.onbP;
-    if(st===1){const bad=!(p.age>=12&&p.age<=99)?"edad":!(p.height>=120&&p.height<=230)?"altura":!(p.weight>=30&&p.weight<=250)?"peso":"";if(bad){$("#oberr").textContent="Revisa tu "+bad+" para continuar.";const i=$("#ob_"+(bad==="edad"?"age":bad==="altura"?"height":"weight"));if(i)i.focus();return}}
-    if(st>=2){obFinish();return}
+  if(a==="next"){const st=S.onb.step,p=S.onbP,key=OBK()[st];
+    if(key==="you"){const bad=!(p.age>=12&&p.age<=99)?"edad":!(p.height>=120&&p.height<=230)?"altura":!(p.weight>=30&&p.weight<=250)?"peso":"";if(bad){$("#oberr").textContent="Revisa tu "+bad+" para continuar.";const i=$("#ob_"+(bad==="edad"?"age":bad==="altura"?"height":"weight"));if(i)i.focus();return}}
+    if(key==="done"){obFinish();return}
+    /* Antes de «Todo listo», el perfil se aplica para poder enseñar la energía de hoy */
+    if(OBK()[st+1]==="done"){S.profile=Object.assign({},S.profile||{},p);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]})}
     S.onb.step++;renderOnb();const b=$("#onb .ob-body");if(b)b.scrollTop=0}
 },true);
 
@@ -3928,7 +4006,8 @@ function stravaCard(){const st=S.stravaSt;if(!window.__native||!window.__native.
     <p class="note" style="margin:4px 0 14px">${st.connected?`${st.name?esc(st.name)+". ":""}Completa el desnivel y la distancia de tus salidas, y los entrenos que no lleguen por Health Connect.`:"Conecta Strava para tener el desnivel y la distancia de tus salidas, aunque tu reloj no los mande a Health Connect."} Sus datos solo los ves tú y no se usan con la IA.</p>
     ${st.connected?'<button class="btn" data-act="svoff">Desconectar</button>':`<button class="btn primary" data-act="svon"${S.svBusy?" disabled":""}>${S.svBusy?"Abriendo Strava…":"Conectar con Strava"}</button>`}</section>`}
 async function stravaRefresh(){if(!window.__native||!window.__native.strava)return;try{S.stravaSt=await window.__native.strava()}catch(e){S.stravaSt=null}if(S.tab==="perfil")render()}
-window.__stravaDone=ok=>{S.svBusy=false;toast(ok?"Strava conectado":"No se ha podido conectar con Strava");stravaRefresh()};
+window.__stravaDone=ok=>{S.svBusy=false;if(!S.onb)toast(ok?"Strava conectado":"No se ha podido conectar con Strava");else if(!ok)toast("No se ha podido conectar con Strava");
+  stravaRefresh();if(S.onb)obConnRefresh();if(ok){S.imp=null;impRun();syncActs()}}; /* v237: ya no se recarga la página al volver de Strava */
 
 /* ---------- Copia de seguridad ---------- */
 function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup")}catch(e){}
@@ -4724,11 +4803,13 @@ function mergeActs(got,prev,cut,full){const stravaOk=got.some(a=>a.sid)||!prev.s
   const pb={};prev.forEach(a=>pb[a.id]=a);const g2=stravaOk?got:got.map(a=>pb[a.id]&&pb[a.id].sid?pb[a.id]:a); /* sin Strava, se conserva la versión completa (nombre, ruta) */
   return{list:g2.concat(keep).sort((x,y)=>x.start<y.start?1:-1),stravaOk}}
 /* v236: puesta al día completa en silencio (arrastrar para actualizar): sin estado de carga ni esqueletos */
-async function syncActs(){const d=new Date();d.setDate(d.getDate()-370);const sig0=actsSig(S.acts);
-  try{const got=await fetchActs(keyOf(d)+"T00:00:00",true),m=mergeActs(got,S.acts,"0000",true);S.acts=m.list;S.actsState="ok";S.actsErr=null;actsCacheWrite(m.stravaOk);
+/* En el móvil se trae todo el historial (la app nativa lo guarda); en la web, 370 días */
+function actsStart(){if(window.__native)return"2000-01-01T00:00:00";const d=new Date();d.setDate(d.getDate()-370);return keyOf(d)+"T00:00:00"}
+async function syncActs(){const sig0=actsSig(S.acts);
+  try{const got=await fetchActs(actsStart(),true),m=mergeActs(got,S.acts,"0000",true);S.acts=m.list;S.actsState="ok";S.actsErr=null;actsCacheWrite(m.stravaOk);
     if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}return true}catch(e){return false}}
 async function loadActs(force){
-  const d=new Date();d.setDate(d.getDate()-370);const start370=keyOf(d)+"T00:00:00";
+  const start370=actsStart();
   const cached=!force&&!S.acts.length?actsCacheRead():null;
   if(cached){
     /* Al momento, lo guardado; luego se pone al día en silencio */
@@ -7259,10 +7340,12 @@ setTimeout(hideSplash,4000);
   if(S.acct)setTimeout(async()=>{await syncFlush();await syncPull(false)},1200);
   /* El botón de Google solo aparece cuando el servidor tiene configurado el inicio de sesión */
   cloudCfg().then(c=>fetch(c.api.replace(/\/$/,"")+"/health")).then(r=>r.json()).then(j=>{S.authOn=!!(j&&j.google&&j.sync);if(S.tab==="perfil")render()}).catch(()=>{});
-  {let seen=null;try{seen=localStorage.getItem("sustrato-onb")}catch(e){}const p=S.profile||{};if(!seen&&!(S.profileSaved&&p.age&&p.weight&&p.height))obStart()}
+  {let seen=null;try{seen=localStorage.getItem("sustrato-onb")}catch(e){}const p=S.profile||{};if(!obResume()&&!seen&&!(S.profileSaved&&p.age&&p.weight&&p.height))obStart()}
   if(!mcp){S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin Strava";render();return}
   if(!S.profileSaved)prefillFromStrava();
   loadActs(false);loadWeather();
+  /* v237: si la importación del historial quedó a medias, sigue en segundo plano */
+  if(window.__native&&window.__native.stravaImport)setTimeout(async()=>{try{const st=await window.__native.strava();S.stravaSt=st;if(st&&st.connected)impRun()}catch(e){}},6000);
 })();
 /* Botón atrás de Android (lo gestiona la app nativa): cierra la hoja abierta, vuelve a la portada de la sección o a Hoy. */
 window.__back=function(){const c=document.querySelector('.overlay .xclose')||document.querySelector('.overlay[data-close]');if(c){c.click();return}
