@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T18:26:30.583Z">
+<meta name="sustrato-version" content="2026-10-12T18:56:43.464Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -731,7 +731,7 @@ html[data-theme="light"] .hero .donut{filter:drop-shadow(0 8px 20px rgba(0,0,0,.
 .frace-t{fill:var(--t-ffd21e,var(--amarillo))!important;font-weight:600}
 .fhit{fill:transparent;cursor:crosshair}
 .fhit.tip-on{fill:var(--fg);fill-opacity:.08}
-.frace-box{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;gap:3px;border-left:3px solid var(--amarillo)}
+.frace-box{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;gap:3px}
 .frace-box b{font-size:14px}.frace-box span{font-size:13px;color:var(--muted)}
 .preds{display:flex;gap:28px;margin-top:10px;flex-wrap:wrap}
 .preds div{display:flex;flex-direction:column}
@@ -856,7 +856,7 @@ html[data-theme="light"] .qa-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
 .itag{align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;color:var(--fg);background:color-mix(in srgb,var(--c-v,var(--c)) 18%,transparent)}
 .ihead h3{margin:0;font-size:24px;letter-spacing:-.02em}
 .ione{font-size:17px;line-height:1.45;margin:12px 0 4px;color:var(--fg)}
-.ime{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:12px 0 2px;padding:12px 14px;border-radius:14px;background:var(--card2);border-left:3px solid var(--c)}
+.ime{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:12px 0 2px;padding:12px 14px;border-radius:14px;background:var(--card2)}
 .ime span{font-size:13px;color:var(--muted)}.ime b{font-size:15px;text-align:right}
 .isec{margin-top:16px}
 .isec h4{margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
@@ -1025,7 +1025,7 @@ button:active:not(:disabled){transform:scale(.98)}
 .fu2-d{padding:0 14px 14px;display:flex;flex-direction:column;gap:12px}
 .fu2-d p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
 .fu2-k{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.fu2-k div{background:var(--card);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:2px;border-top:3px solid var(--c)}
+.fu2-k div{background:var(--card);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:2px}
 .fu2-k b{font-size:17px;font-variant-numeric:tabular-nums}.fu2-k span{font-size:12px;color:var(--muted)}
 .fu2-tl{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .fu2-tl span{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:10px;background:var(--card);font-variant-numeric:tabular-nums}
@@ -1616,7 +1616,6 @@ html[data-theme="light"] .acc .pbig{filter:brightness(.82)}
 /* sistema: sin bordes laterales de color; el color va en un punto junto al rótulo */
 .rec::before{display:none!important}
 .rec-l::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
-.ime{border-left:0!important}
 .rh-t.ok,.rh-t.mid,.rh-t.hi{box-shadow:none!important}
 .rh-t span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0;background:var(--faint)}
 .rh-t.ok span::before{background:var(--verde)}.rh-t.mid span::before{background:var(--naranja)}.rh-t.hi span::before{background:var(--rojo)}
@@ -1650,7 +1649,6 @@ html[data-theme] .pst{background:var(--card2,rgba(127,127,127,.14))!important;co
 
 /* sistema: variaciones como texto con flecha, sin píldora tintada */
 html[data-theme] .ppill{background:none!important;padding:0!important;font-weight:600!important;color:var(--fg)!important}
-.frace-box{border-left:0!important}
 .frace-box b::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amarillo);margin-right:7px;vertical-align:1px}
 /* antetítulo + título: el primero baja a rótulo */
 div:has(> .pkk + h2) > .pkk{font-size:13px!important;font-weight:500!important;color:var(--muted)!important}
@@ -2362,14 +2360,14 @@ html[data-theme="light"] .dd-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
 html[data-theme] .badge{width:auto!important;min-width:0!important;flex:0 0 auto!important;box-sizing:border-box}
 html[data-theme] .act .badge{min-width:100px!important}
 /* v188 · Sin bordes de color: cifras como en el resto de la app (punto de color + etiqueta, valor grande) */
-.fu2-k div{border-top:0!important;padding:10px 10px 11px;gap:3px}
+.fu2-k div{padding:10px 10px 11px;gap:3px}
 .fu2-k span{display:flex;align-items:center;gap:5px}
 .fu2-k b small{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:0}
 .fu2-k em{font-style:normal;font-size:11.5px;color:var(--muted)}
 .fu2-k span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
 .fu2-k b{font-size:20px;font-weight:700;letter-spacing:-.01em}
-.frace-box{border-left:0!important;background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 12%,var(--card2))}
-.ime{border-left:0!important;background:color-mix(in srgb,var(--c-v,var(--c)) 12%,var(--card2))}
+.frace-box{background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 12%,var(--card2))}
+.ime{background:color-mix(in srgb,var(--c-v,var(--c)) 12%,var(--card2))}
 /* v189 · La carita de «¿Cómo fue?» se queda en la actividad */
 .tc-icw{position:relative;flex:0 0 auto;display:grid}
 .rpe-badge{position:absolute;right:-6px;bottom:-6px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--card);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.18)}
@@ -2919,7 +2917,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="250";
+const APP_VER="251";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6575,7 +6573,8 @@ function vPerfil(){
     </section>
   </div></div>`;
 }
-function render(){setTimeout(dropKick,0);
+function render(){setTimeout(dropKick,0);try{render0()}finally{unitize()}}
+function render0(){
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
   {const a=computeAdapt();S.adaptF=a.ok?a.f:null}
@@ -6897,14 +6896,14 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(b
   document.addEventListener("touchend",e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<70||Math.abs(dy)>45)return;
     const L=S.tab==="prog"?PROG_SECS.map(x=>x[0]):["train","week","dishes"],cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train"),i=L.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<L.length)ttGo(L[i])},{passive:true})})();
 
-/* Cifra + unidad (v201): en cualquier cifra en negrita, la unidad final va pequeña y gris; nunca se separa de su número */
+/* Cifra + unidad (v201; v251: se repasa si el texto cambia, y también al final de cada repintado): en cualquier cifra en negrita, la unidad final va pequeña y gris; nunca se separa de su número */
 const UNIT_RE=/^([+\-−–↑↓≈~]?\s?\d[\d.,:]*)(\s?)(kcal|km|ppm|kg|min|h|sem|semanas|%|W|g|ml|L|L\/h|g\/h|\/km|km\/h|rpm|pasos\/min|W\/kg|m|días|día|sesiones|sesión|platos|productos|kcal\/día)(\b|$)(.*)$/;
 const DUR_RE=/^(\d+)[ \u00a0]h(?:[ \u00a0](\d+)(?:[ \u00a0]min)?)?$/;
-function unitize(root){(root||document).querySelectorAll("section b, .sheet b, .act .m, .kv b, .ws-g b, .rec b, .rh-t b, .pf-z em, .ls-c b").forEach(el=>{if(el.dataset.u)return;el.dataset.u="1";if(el.tagName==="B")el.querySelectorAll(":scope>small:not(.u)").forEach(x=>{x.classList.add("u");x.textContent=x.textContent.trim()});const n=el.firstChild;if(!n||n.nodeType!==3)return;const t=n.textContent;let m=t.match(DUR_RE),h;
+function unitize(root){(root||document).querySelectorAll("section b, .sheet b, .act .m, .kv b, .ws-g b, .rec b, .rh-t b, .pf-z em, .ls-c b").forEach(el=>{if(el.dataset.u!=null&&el.dataset.u===el.textContent)return;if(el.tagName==="B")el.querySelectorAll(":scope>small:not(.u)").forEach(x=>{x.classList.add("u");x.textContent=x.textContent.trim()});const n=el.firstChild;if(!n||n.nodeType!==3)return;const t=n.textContent;let m=t.match(DUR_RE),h;
     if(m&&!el.querySelector("small")){h=`${m[1]} <small class="u">h</small>`+(m[2]?` ${m[2]} <small class="u">min</small>`:"");}
     else if((m=t.trim().match(UNIT_RE))&&!m[5]){h=`${esc(m[1])} <small class="u">${m[3]}</small>`}
     if(h){const sp=document.createElement("span");sp.innerHTML=h;el.replaceChild(sp,n);sp.outerHTML=h}
-    if(el.tagName==="B")el.querySelectorAll(":scope>small.u").forEach(x=>{const p=x.previousSibling;if(p&&p.nodeType===3)p.textContent=p.textContent.replace(/[\s\u00a0]+$/,"")})})}
+    if(el.tagName==="B")el.querySelectorAll(":scope>small.u").forEach(x=>{const p=x.previousSibling;if(p&&p.nodeType===3)p.textContent=p.textContent.replace(/[\s\u00a0]+$/,"")});el.dataset.u=el.textContent})}
 
 /* Cómo llegas hoy (v203): anillos de equilibrio. Cada anillo es un factor; su color nace en la semilla de arriba
    (tu normal) y va a la derecha si suma o a la izquierda si resta. Nunca se "cierran": no son un objetivo. */
