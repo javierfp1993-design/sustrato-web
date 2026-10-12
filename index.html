@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-12T16:59:50.677Z">
+<meta name="sustrato-version" content="2026-10-12T17:40:26.158Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1270,8 +1270,7 @@ html[data-theme="light"] #onb .ob-seg button[aria-checked="true"]{background:#ff
 .ob-rad{width:22px;height:22px;display:grid;place-items:center;opacity:0}
 .ob-goal[aria-checked="true"] .ob-rad{opacity:1}
 .ob-foot{padding-top:10px}
-.ob-err{min-height:20px;margin:0 0 6px;font-size:13px;color:var(--naranja);text-align:center}
-html[data-theme="light"] .ob-err{color:var(--naranja)}
+.ob-err{min-height:20px;margin:0 0 6px;font-size:13px;color:var(--fg);text-align:center;--pc:var(--naranja)}
 .ob-cta{width:100%;min-height:52px!important;font-size:17px;border-radius:14px!important}
 @media (prefers-reduced-motion:no-preference){.ob-body{animation:obin .35s cubic-bezier(.2,.8,.3,1)}@keyframes obin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}}
 
@@ -1489,7 +1488,7 @@ html[data-theme="light"] .str-step{background:#fff}
 .wc-in i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;font-size:14px;font-weight:500;color:rgba(255,255,255,.7);pointer-events:none}
 .wc-f small{font-size:12px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wc-a{display:flex;align-items:center;gap:10px}
-.wc-save{flex:1;min-height:48px!important;background:#fff!important;color:var(--morado)!important;font-weight:700!important;border:0!important;border-radius:14px!important}
+.wc-save{flex:1;min-height:48px!important;background:#fff!important;color:var(--fg)!important;font-weight:700!important;border:0!important;border-radius:14px!important}
 .wc-skip{appearance:none;border:0;background:none;color:rgba(255,255,255,.88);font:600 15px var(--font);padding:0 14px;min-height:48px;cursor:pointer;border-radius:14px}
 .wc-skip:hover{background:rgba(0,0,0,.14)}
 
@@ -1589,10 +1588,10 @@ html[data-theme="light"] .sw-in input{background:#fff!important}
 .wc-done .rd-g{width:120px}
 .wc-done .rd-g b{color:#fff}
 .wc-clash{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:14px;background:rgba(0,0,0,.2);font-size:14px;line-height:1.4;color:#fff}
-.wc-btn{appearance:none;flex:0 0 auto;border:0;border-radius:10px;background:#fff;color:var(--morado);font:600 14px var(--font);padding:0 12px;min-height:36px;cursor:pointer}
+.wc-btn{appearance:none;flex:0 0 auto;border:0;border-radius:10px;background:#fff;color:var(--fg);font:600 14px var(--font);padding:0 12px;min-height:36px;cursor:pointer}
 .wc-sl{display:flex;gap:4px;padding:3px;border-radius:14px;background:rgba(0,0,0,.18)}
 .wc-sl button{appearance:none;border:0;background:none;color:rgba(255,255,255,.9);font:500 14px var(--font);padding:0 12px;min-height:32px;border-radius:10px;cursor:pointer}
-.wc-sl button[aria-checked="true"],.wc-sl button[aria-pressed="true"]{background:#fff;color:var(--morado);font-weight:600}
+.wc-sl button[aria-checked="true"],.wc-sl button[aria-pressed="true"]{background:#fff;color:var(--fg);font-weight:600}
 .wc-slrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.18)}
 .wc-slrow .wc-sl{background:rgba(0,0,0,.14)}
 .wc-ics{background:var(--azul)!important;color:#fff}
@@ -2646,7 +2645,7 @@ header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolati
 .cx-col{flex-direction:column;align-items:stretch}
 .cx-t{flex:1;min-width:0}.cx-t b{display:block;font-size:15px;font-weight:600}
 .cx-t span{display:block;font-size:13px;color:var(--muted)}.cx-t small{display:block;font-size:13px;color:var(--muted);line-height:1.35}
-.cx-ok{color:var(--verde)!important}html[data-theme="dark"] .cx-ok{color:var(--verde)!important}
+.cx-ok{color:var(--fg)!important;--pc:var(--verde)}
 .cx-pw{display:block;width:100px;margin-top:6px}.cx-pw img{display:block;width:100px;height:auto}
 .cx-sv{color:#fc5200;background:color-mix(in srgb,#fc5200 16%,transparent)}
 .cx-pw .br-w{display:none}html[data-theme="dark"] .cx-pw .br-k{display:none}html[data-theme="dark"] .cx-pw .br-w{display:block}
@@ -2854,7 +2853,7 @@ html[data-theme="light"]{--amarillo:#b19007;--naranja:#e86518;--rojo:#d70015;--v
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
    pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.ob-err:not(:empty)::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
@@ -2929,7 +2928,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="248";
+const APP_VER="249";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
