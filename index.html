@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T20:09:43.077Z">
+<meta name="sustrato-version" content="2026-10-13T20:23:18.641Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -7765,7 +7765,7 @@ function ssSave(g,v){const[k,a,b]=g.dataset.ssk.split("|");buzz(10);
 
 /* ---------- Incidencias y sugerencias (v272) ----------
    Perfil › «Ayuda y sugerencias»: dos filas abren la misma hoja (Incidencia | Sugerencia).
-   El envío va al servidor (/feedback), que abre un issue en un repositorio privado de GitHub; el token vive solo en el servidor.
+   El envío va al servidor (/feedback), que crea una incidencia en Linear; la clave vive solo en el servidor.
    Se envía solo lo que la persona escribe, la zona, la captura que elija y, si quiere, datos técnicos. Nada de Strava, salud ni comidas por su cuenta.
    Sin conexión: se guarda en una cola local y se envía al volver la red. Clases fb- */
 const fbLater=e=>!(e&&e.status)||e.status===404||e.status===503; /* sin red o servidor aún sin esta función: a la cola */
@@ -7786,7 +7786,7 @@ function fbHtml(){const f=S.fb,bug=f.k==="bug",acc=!!(S.acct&&S.acct.t);
     <div class="row"><h3 style="margin:0">${bug?"Algo no funciona":"Tengo una idea"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
     <div class="fb-done" role="status"><span class="fb-ok"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
     <b>${f.sent==="cola"?"Guardado":"Recibido, gracias"}</b><p>${f.sent==="cola"?"No se ha podido enviar ahora. Se enviará solo en cuanto sea posible.":bug?"Lo miro y, si necesito algo más, te escribo.":"La apunto. Las ideas que más se repiten van primero."}</p>
-    ${f.sent!=="cola"?`<code>#${esc(String(f.sent))}</code>`:""}<button type="button" class="btn" data-fbx="again">Enviar otra</button></div></div></div>`;
+    ${f.sent!=="cola"?`<code>${/^\d+$/.test(f.sent)?"#":""}${esc(String(f.sent))}</code>`:""}<button type="button" class="btn" data-fbx="again">Enviar otra</button></div></div></div>`;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade fb-sh" role="dialog" aria-modal="true" aria-label="${bug?"Algo no funciona":"Tengo una idea"}">
   <div class="row"><h3 style="margin:0">${bug?"Algo no funciona":"Tengo una idea"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
   <div class="seg fb-seg" role="radiogroup" aria-label="Tipo"><button type="button" role="radio" data-fbx="k:bug" aria-checked="${bug}">Incidencia</button><button type="button" role="radio" data-fbx="k:idea" aria-checked="${!bug}">Sugerencia</button></div>
@@ -7812,7 +7812,7 @@ async function fbPost(body){const c=await cloudCfg(),h={"Content-Type":"applicat
   const r=await fetch(c.api.replace(/\/$/,"")+"/feedback",{method:"POST",headers:h,body:JSON.stringify(body)});const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server",status:r.status,gh:j&&j.gh,msg:j&&j.msg};return j}
 /* el motivo del fallo se queda en la hoja (un aviso de 2 s se pierde) */
 function fbErr(e){if(e.code==="too_many")return"Espera unos segundos antes de enviar otra.";if(e.code==="unauthorized")return"El servidor no reconoce la app (401).";
-  if(e.code==="upstream")return`GitHub ha rechazado el envío${e.gh?" ("+e.gh+(e.msg?": "+e.msg:"")+")":""}.`;return`No se ha podido enviar (${e.status||"sin respuesta"}).`}
+  if(e.code==="upstream")return`El gestor de incidencias ha rechazado el envío${e.msg?" ("+(e.gh?e.gh+": ":"")+e.msg+")":""}.`;return`No se ha podido enviar (${e.status||"sin respuesta"}).`}
 async function fbSend(){const f=S.fb;if(!fbReady()||f.busy)return;f.busy=true;f.err="";renderModal();
   const body={k:f.k,text:f.text.trim().slice(0,FB_MAX),where:f.where||"",tech:f.k==="bug"&&f.tech?fbTech():"",reply:!!f.reply,mail:f.reply&&!(S.acct&&S.acct.t)?f.mail.trim():"",img:f.img||""};
   try{const j=await fbPost(body);Object.assign(S.fb,{busy:false,sent:(j&&j.n)||"ok",text:"",where:null,img:null})}
