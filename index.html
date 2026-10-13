@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T13:43:53.487Z">
+<meta name="sustrato-version" content="2026-10-13T14:43:35.040Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1255,23 +1255,15 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .fz-body{padding:0 18px 18px 60px}
 .fz-last{margin:0 0 10px;font-size:13px;color:var(--faint)}
 .fz-sets{display:flex;flex-direction:column;gap:8px}
-.fz-set{display:grid;grid-template-columns:20px minmax(0,1fr) 14px minmax(0,1fr);gap:8px;align-items:center}
+.fz-set{display:grid;grid-template-columns:20px minmax(0,1fr) 14px minmax(0,1fr) 40px;gap:8px;align-items:center} /* v269: columna del ✓ */
 .fz-n{font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums}
 .fz-x{color:var(--faint);text-align:center;font-size:13px}
 .fz-in{position:relative;display:block}
-.fz-in input{min-height:44px;font-size:17px;padding:0 40px 0 14px;border-radius:14px;font-variant-numeric:tabular-nums}
-.fz-in i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--faint);pointer-events:none}
+.fz-in input{min-height:44px;font-size:17px;padding:0 30px 0 10px;border-radius:14px;font-variant-numeric:tabular-nums}
+.fz-in i{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--faint);pointer-events:none}
 .fz-save{padding:18px;border-top:.5px solid var(--sep,var(--edge-soft));display:flex;flex-direction:column;gap:10px}
 .fz-save .btn{width:100%}
 .fz-save p{margin:0;font-size:13px;color:var(--faint);text-align:center;line-height:1.4}
-.fz-more h2{margin-bottom:8px!important}
-.fz-pr{display:grid;grid-template-columns:minmax(0,1fr) 110px 52px;gap:12px;align-items:center;padding:10px 0;border-top:.5px solid var(--sep,var(--edge-soft));font-size:14px}
-.fz-pr b{text-align:right;font-variant-numeric:tabular-nums}
-.fz-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:18px 12px 8px;color:var(--faint)}
-.fz-empty p{margin:0;font-size:14px;color:var(--muted);max-width:280px;line-height:1.45}
-.fz-sub{margin:20px 0 4px!important;font-size:13px!important;font-weight:600;color:var(--muted)!important}
-.fz-h{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0;border-top:.5px solid var(--sep,var(--edge-soft));font-size:14px}
-.fz-h small{grid-column:1/-1;color:var(--faint);font-size:13px}
 
 /* hoja planificar entreno */
 .pa-sheet{display:flex;flex-direction:column;gap:20px}
@@ -2867,6 +2859,41 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 /* v267 · Avatar en el botón de Perfil (080). Como el de la tarjeta de Perfil, en pequeño. Clase .hav */
 .hav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--morado);font:600 13px var(--font)}
 
+/* v269 · Fuerza que progresa (081): series propuestas con ✓, por qué, «¿Cómo fue?», la próxima vez, descanso, «···» de rutinas y Fuerza › Progreso */
+.fz-sug-r .fz-in input{color:var(--muted)}
+.fz-ok{appearance:none;border:0;width:40px;height:40px;border-radius:50%;background:var(--fill2);color:var(--muted);display:grid;place-items:center;cursor:pointer;flex:none}
+.fz-ok[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
+.fz-ok:active{transform:scale(.92)}
+.fz-why{display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:var(--card2);border-radius:14px;padding:10px 12px;margin:0 0 10px}
+.fz-why p{margin:0;font-size:14px;line-height:1.4}
+.fz-pg{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--fg);background:var(--fill2);border-radius:999px;padding:3px 10px;white-space:nowrap;flex:none}
+.fz-pg i{width:7px;height:7px;border-radius:50%}
+.fz-fq{margin:14px 0 6px;font-size:13px;color:var(--muted)}.fz-fq small{font-size:12px;color:var(--faint)}
+.fz-fe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.fz-fe button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 12px var(--font);border-radius:10px;min-height:34px;padding:0 4px;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;cursor:pointer;min-width:0}
+.fz-fe button i{width:8px;height:8px;border-radius:50%;flex:none}
+.fz-fe button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
+.fz-next{margin-top:12px;text-align:left;background:var(--card2);border-radius:14px;padding:10px 12px}
+.fz-next p{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--muted)}
+.fz-next ul{list-style:none;margin:0;padding:0}
+.fz-next li{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:4px 0}.fz-next li b{font-weight:600;white-space:nowrap}
+.fz-rtw .fz-mo{background:var(--fill2);color:var(--fg)}
+.fz-none-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fzp-r{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:52px;border-top:.5px solid var(--sep)}
+.fzp-r:first-of-type{border-top:0}
+.fzp-n{min-width:0}.fzp-n b{display:block;font-weight:500;font-size:15px}.fzp-n small{font-size:13px;color:var(--muted)}
+.rtm-l{display:flex;flex-direction:column;margin-top:8px}
+.rtm-r{appearance:none;border:0;background:none;color:var(--fg);font:400 17px var(--font);display:flex;align-items:center;gap:12px;min-height:50px;border-top:.5px solid var(--sep);text-align:left;cursor:pointer;padding:0}
+.rtm-r:first-child{border-top:0}.rtm-r svg{color:var(--muted);flex:none}
+.rtm-r.del,.rtm-r.del svg{color:var(--rojo)}
+/* descanso: barra flotante sobre la barra de pestañas */
+.rest-b{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:47;max-width:420px;margin:0 auto;display:flex;align-items:center;gap:12px;background:var(--card);border-radius:999px;padding:8px 8px 8px 10px;box-shadow:0 6px 24px rgba(0,0,0,.18),0 0 0 .5px var(--sep)}
+.rest-r{width:40px;height:40px;flex:none}
+.rest-r circle{fill:none;stroke-width:4}.rest-r0{stroke:var(--fill)}.rest-r1{stroke:var(--fg);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .25s linear}
+.rest-tx{flex:1;min-width:0}.rest-tx b{display:block;font-size:20px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}.rest-tx small{font-size:13px;color:var(--muted);white-space:nowrap}
+.rest-b button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:600 15px var(--font);min-height:36px;padding:0 12px;border-radius:999px;flex:none;cursor:pointer;white-space:nowrap}
+.fzs-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2946,7 +2973,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="268";
+const APP_VER="269";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3683,7 +3710,8 @@ addEventListener("resize",()=>{if(TOUR_I>=0)tourShow()});
 function obFinish(){obRead();S.profile=Object.assign({},S.profile||{},S.onbP);Object.keys(S.profile).forEach(k=>{if(S.profile[k]===undefined)delete S.profile[k]});S.onb=null;S.onbP=null;try{localStorage.setItem("sustrato-onb","done");localStorage.removeItem(OB_LS)}catch(e){}renderOnb();setTimeout(()=>tourStart(),500);saveProfile(true);{const k=today(),w=num(S.profile.weight);if(w&&!(S.weights||[]).some(x=>x.d===k)){S.weights=(S.weights||[]).concat([{d:k,kg:w}]);saveWeights()}}buzz(12);render()}
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-obagain]")){obStart()}});
 document.addEventListener("input",e=>{const m=/^s_(\w+)_(\d+)_([wr])$/.exec(e.target.id||"");if(!m)return;const dk=(S.strDate||S.day)+"|"+S.strRoutine;S.strDraft=S.strDraft||{};const d=S.strDraft[dk]=S.strDraft[dk]||{};const ex=d[m[1]]=d[m[1]]||{};const st=ex[m[2]]=ex[m[2]]||{};st[m[3]]=e.target.value;
-  const det=e.target.closest(".fz-ex");if(det){const ins=det.querySelectorAll('input[id$="_r"]');let f=0;ins.forEach(i=>{if(i.value!=="")f++});const sp=det.querySelector(".fz-st");if(sp)sp.textContent=f?f+"/"+ins.length:""}});
+  {const dn=fzDone(dk);dn[m[1]]=dn[m[1]]||{};dn[m[1]][m[2]]=true;const row=e.target.closest(".fz-set");if(row){row.classList.add("fz-on");row.classList.remove("fz-sug-r");const b=row.querySelector(".fz-ok");if(b)b.setAttribute("aria-pressed","true")}} /* v269: escribir en una serie la da por hecha */
+  const det=e.target.closest(".fz-ex");if(det){const n=det.querySelectorAll(".fz-set").length,f=det.querySelectorAll(".fz-set.fz-on").length;const sp=det.querySelector(".fz-st");if(sp)sp.textContent=f?f+"/"+n:""}});
 document.addEventListener("toggle",e=>{const k=e.target.dataset&&e.target.dataset.fzex;if(k){S.fzOpen=S.fzOpen||{};S.fzOpen[k]=e.target.open}},true);
 document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#onb")){obRead();const er=$("#oberr");if(er)er.textContent=""}});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("#onb [data-ob],#onb [data-obset]");if(!t)return;e.stopPropagation();obRead();
@@ -4609,7 +4637,7 @@ async function loadStore(){
       else if(d.id==="sleep"&&v.map)S.sleep=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="glyans"&&v.map)S.glyAns=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="measures"&&v.list)S.measures=JSON.parse(JSON.stringify(v.list));
-      else if(d.id==="routines"&&v.list)S.routines=JSON.parse(JSON.stringify(v.list));
+      else if(d.id==="routines"&&v.list){S.routines=JSON.parse(JSON.stringify(v.list));S.rtHidden=v.hidden||[]}
       else if(d.id==="foods"&&v.list){S.myFoods=JSON.parse(JSON.stringify(v.list));myFoodsApply()}
       else if(d.id==="cycle"&&v.kind==="cycle")S._cy={on:!!v.on,horm:!!v.horm,share:v.share!==false,starts:(v.starts||[]).slice()};
       else if(v.kind==="str")S.str.push(Object.assign({},v));
@@ -4735,10 +4763,10 @@ const EXLIB=[
   ["Core",[["plancha","Plancha",3,"30–60 s"],["lateralp","Plancha lateral",3,"30 s / lado"],["deadbug","Dead bug",3,"10 / lado"],["rueda","Rueda abdominal",3,"8–12"],["elev","Elevación de piernas colgado",3,"8–12"],["pall","Pallof press",3,"10 / lado"],["granjero","Paseo del granjero",3,"30–40 m"]]]
 ];
 const EXBY={};EXLIB.forEach(([g,l])=>l.forEach(([id,n,s,r])=>EXBY[id]={id,n,s,r,g}));
-function allRoutines(){return[Object.assign({id:"A",base:true},ROUTINES.A),Object.assign({id:"B",base:true},ROUTINES.B)].concat((S.routines||[]).map(r=>Object.assign({},r)))}
+function allRoutines(){const h=S.rtHidden||[];return[Object.assign({id:"A",base:true},ROUTINES.A),Object.assign({id:"B",base:true},ROUTINES.B)].filter(r=>!h.includes(r.id)).concat((S.routines||[]).map(r=>Object.assign({},r)))}
 function routineById(id){return allRoutines().find(r=>r.id===id)||allRoutines()[0]}
 function routineShort(r){return r.base?"Rutina "+r.id:r.name}
-async function saveRoutines(){const c=userCol();if(!c){toast("Rutina aplicada (sin guardar)");return}try{await c.doc("routines").set({kind:"routines",list:S.routines||[]})}catch(e){toast("No se ha podido guardar la rutina")}}
+async function saveRoutines(){const c=userCol();if(!c){toast("Rutina aplicada (sin guardar)");return}try{await c.doc("routines").set({kind:"routines",list:S.routines||[],hidden:S.rtHidden||[]})}catch(e){toast("No se ha podido guardar la rutina")}}
 const GRP_M={"Pierna":[["quads","glutes"],["hams"]],"Cadena posterior":[["hams","glutes"],["lower_back"]],"Empuje":[["chest","delt_a"],["triceps"]],"Tirón":[["lats"],["biceps","delt_p"]],"Hombro":[["delt_l","delt_p"],["traps"]],"Brazos":[["biceps","triceps"],["forearm"]],"Core":[["abs","oblique"],[]]};
 const musText=(m)=>m?joinY([...new Set(m[0].map(k=>(MUSC_N[k]||k).toLowerCase().replace(/\s*\(.*\)/,"")))]):"";
 const IC_UP='<path d="M6 14l6-6 6 6"/>',IC_DN='<path d="M6 10l6 6 6-6"/>',IC_X='<path d="M6 6l12 12M18 6L6 18"/>',IC_PLUS='<path d="M12 5v14M5 12h14"/>',IC_OK='<path d="M5 12.5l4.5 4.5L19 7.5"/>';
@@ -4759,7 +4787,7 @@ function routineEditorHtml(){
     <div class="re-tabs" role="tablist" aria-label="Grupo">${EXLIB.map(([gg])=>`<button type="button" role="tab" aria-selected="${g===gg}" data-regrp="${esc(gg)}">${esc(gg)}</button>`).join("")}</div>
     <ul class="re-lib">${lib.map(([id,n,ss,rr])=>{const on=used.has(id);return`<li><div class="re-n"><b>${esc(n)}</b><span>${ss} × ${esc(rr)} · ${esc(musText(MUSC[id]))}</span></div><button type="button" class="re-add${on?" on":""}" ${on?`data-redelid="${esc(id)}" aria-label="Quitar ${esc(n)}"`:`data-readd="${esc(id)}" aria-label="Añadir ${esc(n)}"`}>${ico(on?IC_OK:IC_PLUS,20)}</button></li>`}).join("")}</ul>
     <div class="re-custom"><input id="re_new" placeholder="Otro ejercicio de ${esc(g.toLowerCase())}" aria-label="Nombre de un ejercicio propio"><button type="button" class="chip" data-act="readdcustom">Añadir</button></div>
-    <div class="re-foot">${e.id?'<button type="button" class="chip" data-act="redelete">Eliminar</button>':""}<button type="button" class="btn primary" data-act="resave">Guardar rutina</button></div>
+    <div class="re-foot">${e.id?'<button type="button" class="chip danger" data-act="redelete">Eliminar</button>':""}<button type="button" class="btn primary" data-act="resave">Guardar rutina</button></div>
   </div></div>`;
 }
 /* ---------- Rutinas: asistente por objetivo (propuesta A) ---------- */
@@ -5369,7 +5397,7 @@ function progSection(sec){
     ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard()),ea=eatCard();
       return[gastoCard(),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días"),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
     for:()=>{const pr=predCard(),ef=effCard();return[perfCard(),curveCard(),fitCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
-    ent:()=>{const st=strengthCard();return[volCard(),bandsCard(),heatCard(),st.includes("Aquí verás cómo crece tu fuerza")?E("Evolución de la fuerza","Registra una sesión con peso y repeticiones",st):st,recordsCard()]},
+    ent:()=>[volCard(),bandsCard(),heatCard(),strSumCard()||E("Fuerza","Registra una sesión en Fuerza con peso y repeticiones"),recordsCard()], /* v269: el detalle de fuerza está en Fuerza › Progreso */
     cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil",bo):bo,stepsChart(),weightHistory()]}
   }[sec]();
   const ok=L.filter(x=>typeof x==="string"&&x),pend=L.filter(x=>x&&typeof x==="object");
@@ -6456,7 +6484,9 @@ async function openDetail(id,focusFuel){
       :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude","latlng"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
   if(!S.perf[id])call("get_activity_performance",{activity_id:id},{cache:{staleTime:300000,gcTime:86400000}}).then(p=>{S.perf[id]=p;renderModal()}).catch(()=>{});
 }
-function vFuerza(){setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),sc=sel&&sel.parentElement;if(sc){const l=sel.offsetLeft-sc.offsetLeft,r=l+sel.offsetWidth;if(l<sc.scrollLeft+18||r>sc.scrollLeft+sc.clientWidth-24)sc.scrollLeft=Math.max(0,l-18)}},0);
+function vFuerza(){if(!allRoutines().length)return`<section class="glass pad fade fz-none"><h2>Sin rutinas</h2><p class="fdesc">Crea una a tu medida o recupera las de ejemplo.</p><div class="fz-none-a"><button class="btn primary" data-act="rnew">Crear rutina</button><button class="chip" data-act="rtrestore">Recuperar las de ejemplo</button></div></section>`;
+  if((S.fzSec||"ent")==="pro")return fzProgHtml();
+setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),sc=sel&&sel.parentElement;if(sc){const l=sel.offsetLeft-sc.offsetLeft,r=l+sel.offsetWidth;if(l<sc.scrollLeft+18||r>sc.scrollLeft+sc.clientWidth-24)sc.scrollLeft=Math.max(0,l-18)}},0);
   const R=routineById(S.strRoutine),date=S.strDate||S.day,dk=date+"|"+S.strRoutine;
   const cur=S.str.find(x=>x.date===date&&x.routine===S.strRoutine);
   const prev=S.str.find(x=>x.routine===S.strRoutine&&x.date<date);
@@ -6464,30 +6494,25 @@ function vFuerza(){setTimeout(()=>{const sel=document.querySelector(".fz-rt [ari
   const zc={};R.ex.forEach(ex=>zonesOf(ex.id,ex.m).forEach(z=>zc[z]=(zc[z]||0)+1));
   const zs=Object.entries(zc).sort((a,b)=>b[1]-a[1]);
   const nSets=R.ex.reduce((x,e)=>x+(+e.s||0),0),mins=Math.round(nSets*2.6/5)*5;
-  let doneEx=0;
+  /* v269: la app propone lo de hoy (doble progresión) y cada serie se marca con ✓ */
+  const dkD=fzDone(dk),feD=(S.strFe||{})[dk]||{};let doneEx=0;
   const rows=R.ex.map((ex,ei)=>{
-    const c=cur&&cur.sets&&cur.sets[ex.id]||[],pv=prev&&prev.sets&&prev.sets[ex.id]||[],dr=draft[ex.id]||{};
-    const val=(i,f)=>{const d=dr[i]&&dr[i][f];if(d!=null)return d;const v=c[i]&&c[i][f];return v!=null?v:""};
-    let filled=0;for(let i=0;i<ex.s;i++)if(String(val(i,"r"))!=="")filled++;if(filled>=ex.s)doneEx++;
+    const c=cur&&cur.sets&&cur.sets[ex.id]||[],pv=prev&&prev.sets&&prev.sets[ex.id]||[],dr=draft[ex.id]||{},pl=cur?null:fzPlan(ex,date),dn=dkD[ex.id]||{},fv=feD[ex.id]!==undefined?feD[ex.id]:((cur&&cur.fe)||{})[ex.id];
+    const val=(i,f)=>{const d=dr[i]&&dr[i][f];if(d!=null)return d;const v=c[i]&&c[i][f];if(v!=null)return String(v).replace(".",",");const q=pl&&pl.sets[i];return q&&q[f]!=null?fzFmt(q[f]):""};
+    const isOn=i=>dn[i]!=null?dn[i]:!!(c[i]&&c[i].r!=null)||!!(dr[i]&&(dr[i].r||dr[i].w));
+    let filled=0;for(let i=0;i<ex.s;i++)if(isOn(i))filled++;if(filled>=ex.s)doneEx++;
     const last=pv.filter(x=>x.r).map(x=>(x.w?String(x.w).replace(".",",")+" kg × ":"")+x.r).join(" · ");
-    const sets=Array.from({length:ex.s},(_,i)=>{const pp=pv[i];return`<div class="fz-set"><span class="fz-n">${i+1}</span><label class="fz-in"><input id="s_${ex.id}_${i}_w" inputmode="decimal" placeholder="${pp&&pp.w?String(pp.w).replace(".",","):"–"}" aria-label="${esc(ex.n)}, serie ${i+1}, peso en kg" value="${val(i,"w")}"><i>kg</i></label><span class="fz-x" aria-hidden="true">×</span><label class="fz-in"><input id="s_${ex.id}_${i}_r" inputmode="numeric" placeholder="${pp&&pp.r?pp.r:"–"}" aria-label="${esc(ex.n)}, serie ${i+1}, repeticiones" value="${val(i,"r")}"><i>rep</i></label></div>`}).join("");
+    const sets=Array.from({length:ex.s},(_,i)=>{const on=isOn(i);return`<div class="fz-set${on?" fz-on":pl?" fz-sug-r":""}"><span class="fz-n">${i+1}</span><label class="fz-in"><input id="s_${ex.id}_${i}_w" inputmode="decimal" placeholder="–" aria-label="${esc(ex.n)}, serie ${i+1}, peso en kg" value="${val(i,"w")}"><i>kg</i></label><span class="fz-x" aria-hidden="true">×</span><label class="fz-in"><input id="s_${ex.id}_${i}_r" inputmode="numeric" placeholder="–" aria-label="${esc(ex.n)}, serie ${i+1}, repeticiones" value="${val(i,"r")}"><i>rep</i></label><button type="button" class="fz-ok" data-fzok="${ex.id}|${i}" aria-pressed="${on}" aria-label="Serie ${i+1} hecha"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div>`}).join("");
     const z=zonesOf(ex.id,ex.m),st=filled>=ex.s?"done":filled?"part":"";
     return`<details class="fz-ex ${st}" data-fzex="${ex.id}" ${(S.fzOpen||{})[ex.id]?"open":""}><summary>
       <span class="fz-num" aria-hidden="true">${st==="done"?'<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':ei+1}</span>
       <span class="fz-tx"><b>${esc(ex.n)}</b><small>${ex.s} series × ${esc(ex.r)}${z.length?" · "+esc(joinY(z)):""}</small></span>
       <span class="fz-st">${filled?filled+"/"+ex.s:""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
-      <div class="fz-body">${last?`<p class="fz-last">La última vez: ${esc(last)}</p>`:""}<div class="fz-sets">${sets}</div></div></details>`}).join("");
+      <div class="fz-body">${pl?`<div class="fz-why">${fzTag(pl.tag)}<p>${esc(pl.why)}</p></div>`:last&&!cur?`<p class="fz-last">La última vez: ${esc(last)}. Marca tú el punto de partida.</p>`:""}<div class="fz-sets">${sets}</div>
+        <p class="fz-fq">¿Cómo fue? <small>opcional</small></p><div class="fz-fe" role="group" aria-label="Cómo fue ${esc(ex.n)}">${RPE_L.map((l,j)=>`<button type="button" data-fzfe="${ex.id}|${j+1}" aria-pressed="${fv===j+1}"><i style="background:var(--rpe${j+1})"></i>${l}</button>`).join("")}</div></div></details>`}).join("");
   const can=S.db&&S.uid;
-  const prog=R.ex.map(ex=>{
-    const pts=S.str.filter(x=>x.routine===S.strRoutine&&x.sets&&x.sets[ex.id]).map(x=>({d:x.date,v:Math.max(0,...x.sets[ex.id].map(s=>(s.w||0)*(1+(s.r||0)/30)||(s.r||0)))})).filter(p=>p.v>0).sort((a,b)=>a.d<b.d?-1:1);
-    if(!pts.length)return"";
-    const W=110,H=28,mx=Math.max(...pts.map(p=>p.v)),mn=Math.min(...pts.map(p=>p.v)),rg=mx-mn||1;
-    const path=pts.map((p,i)=>(i?"L":"M")+(pts.length>1?i/(pts.length-1)*W:W/2).toFixed(1)+" "+(H-4-(p.v-mn)/rg*(H-8)).toFixed(1)).join(" ");
-    const f=pts[0].v,l=pts[pts.length-1].v,dp=f?Math.round((l-f)/f*100):0;
-    return`<div class="fz-pr"><span>${esc(ex.n)}</span><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${path}" fill="none" stroke="var(--rojo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>${pts.length>1?(dp>=0?"+":"")+dp+" %":"–"}</b></div>`}).join("");
-  const hist=S.str.slice(0,6).map(x=>`<div class="fz-h"><span>${esc(dateLabel(x.date))}</span><b>${esc(routineShort(routineById(x.routine)))}</b><small>${Object.keys(x.sets||{}).length} ejercicios</small></div>`).join("");
   return`<section class="glass pad fade fz-hero">
-    <div class="fz-rtw"><div class="fz-rt" role="tablist" aria-label="Rutina">${allRoutines().map(r=>`<button role="tab" data-routine="${esc(r.id)}" aria-selected="${S.strRoutine===r.id}" title="${esc(routineShort(r))}">${esc(routineShort(r))}</button>`).join("")}</div><button class="fz-add" data-act="rnew" aria-label="Crear rutina"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+    <div class="fz-rtw"><div class="fz-rt" role="tablist" aria-label="Rutina">${allRoutines().map(r=>`<button role="tab" data-routine="${esc(r.id)}" aria-selected="${S.strRoutine===r.id}" title="${esc(routineShort(r))}">${esc(routineShort(r))}</button>`).join("")}</div><button class="fz-add fz-mo" data-act="rtm" aria-label="Opciones de la rutina"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button><button class="fz-add" data-act="rnew" aria-label="Crear rutina"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
     <div class="fz-title"><div><h2>${esc(routineShort(R))}</h2><p>${zs.length?esc((zs.length>3?zs.slice(0,3).map(z=>z[0]).join(", ")+" y más":joinY(zs.map(z=>z[0]))).replace(/^./,c=>c.toUpperCase())):""}</p></div><button class="chip sm" data-act="${R.base?"rdup":"redit"}">${R.base?"Personalizar":"Editar"}</button></div>
     <div class="fz-meta"><span><b>${R.ex.length}</b> ejercicios</span><span><b>~${mins}</b> min</span><label class="fz-date"><span><b>${esc(dateLabel(date))}</b></span><input type="date" id="strdate" value="${date}" aria-label="Fecha de la sesión"></label></div>
     ${zs.length?`<div class="fz-zones" aria-label="Zonas que trabajas">${zs.map(([z,n])=>`<span><i style="width:${Math.round(n/zs[0][1]*100)}%"></i><em>${esc(z.replace(/^./,c=>c.toUpperCase()))}</em><small>${n}</small></span>`).join("")}</div>`:""}
@@ -6495,12 +6520,9 @@ function vFuerza(){setTimeout(()=>{const sel=document.querySelector(".fz-rt [ari
   <section class="glass fade fz-list" aria-label="Ejercicios">
     <div class="fz-lh"><h2>Ejercicios</h2><span>${doneEx}/${R.ex.length} completados</span></div>
     ${rows}
-    <div class="fz-save"><button class="btn primary" data-act="savestr" ${can?"":"disabled"}>${cur?"Guardar cambios":"Guardar sesión"}</button><p>${can?(cur?"Sesión guardada. Puedes corregirla cuando quieras.":"Toca un ejercicio para apuntar tus series. En gris, lo que hiciste la última vez."):"Esta vista no puede guardar datos."}</p></div>
+    <div class="fz-save"><button class="btn primary" data-act="savestr" ${can?"":"disabled"}>${cur?"Guardar cambios":"Guardar sesión"}</button><p>${can?(cur?"Sesión guardada. Puedes corregirla cuando quieras.":"Abre un ejercicio y marca cada serie con ✓. En gris, lo que toca hoy: cámbialo si haces otra cosa."):"Esta vista no puede guardar datos."}</p>${cur?fzNextHtml(R,date):""}</div>
   </section>
-  <section class="glass pad fade fz-more"><h2>Tu progreso con ${esc(routineShort(R))}</h2>
-    ${prog||`<div class="fz-empty"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-5 4 3 7-8M15 7h4v4"/></svg><p>Cuando guardes un par de sesiones, aquí verás cuánto mejoras en cada ejercicio.</p></div>`}
-    ${hist?`<h3 class="fz-sub">Últimas sesiones</h3>${hist}`:""}
-  </section>`;
+`;
 }
 function vPerfil(){
   const p=S.profile||{};const b=basal(p);const hp=hrParams(p);
@@ -6579,8 +6601,8 @@ function render0(){
   $("#view").style.display="flex";$("#view").style.flexDirection="column";$("#view").style.gap="18px";
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
-  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividad",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]]}[S.tab];
-  if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train"),old=$("#ltitle .tt");
+  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividad",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]],fuerza:allRoutines().length?[["ent","Entrenar"],["pro","Progreso"]]:null}[S.tab];
+  if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):S.tab==="fuerza"?(S.fzSec||"ent"):(S.planView||"train"),old=$("#ltitle .tt");
     /* Misma pantalla: no se rehace la fila; la palabra elegida se desliza hasta el margen izquierdo */
     if(old&&old.dataset.k===S.tab){old.querySelectorAll("[data-tt]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tt===cur)));ttAlign(old,true)}
     else{$("#ltitle").innerHTML=`<span class="tt" role="tablist" data-k="${S.tab}" aria-label="${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" role="tab" aria-selected="${k===cur}" data-tt="${k}">${l}</button>`).join("")}</span>`;ttAlign($("#ltitle .tt"),false)}}
@@ -6589,7 +6611,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -6675,7 +6697,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.rwuse!=null&&S.rw){const w=S.rw,r0=rwBuild(RW_TPL[w.goal][+t.dataset.rwuse],w.min,w.mat);
     S.routines=(S.routines||[]).slice();const r={id:"r"+Date.now().toString(36),name:r0.name,ex:r0.ex};S.routines.push(r);saveRoutines();
     S.strRoutine=r.id;S.rw=null;S.sheet=null;renderModal();render();toast("Rutina añadida · "+r.name);return}
-  if(t.dataset.act==="redit"||t.dataset.act==="rdup"){const r=routineById(S.strRoutine);S.rEd={id:t.dataset.act==="redit"?r.id:null,name:t.dataset.act==="redit"?r.name:(r.name.split("·").pop().trim()+" (copia)"),ex:r.ex.map(x=>Object.assign({},x)),pick:false,grp:EXLIB[0][0]};S.sheet="routine";renderRoutineEd();return}
+  if(t.dataset.act==="redit"||t.dataset.act==="rdup"){rtOpenEd(t.dataset.act==="rdup");return}
   if(S.rEd&&S.sheet==="routine"){
     if(t.dataset.act==="recancel"){S.rEd=null;S.sheet=null;renderModal();return}
     if(t.dataset.act==="repick"){readRoutineEd();S.rEd.pick=!S.rEd.pick;renderRoutineEd();return}
@@ -6819,12 +6841,14 @@ async function saveProfile(quiet){trackMeasures();
 async function saveStr(){
   const c=userCol();if(!c)return;
   const R=routineById(S.strRoutine),date=S.strDate||S.day,sets={};
-  R.ex.forEach(ex=>{const arr=[];for(let i=0;i<ex.s;i++){const w=num(($("#s_"+ex.id+"_"+i+"_w")||{}).value),r=num(($("#s_"+ex.id+"_"+i+"_r")||{}).value);if(w!=null||r!=null)arr.push({w,r})}if(arr.length)sets[ex.id]=arr});
-  if(!Object.keys(sets).length){toast("Apunta al menos una serie");return}
-  const doc={kind:"str",date,routine:S.strRoutine,sets,savedAt:new Date().toISOString()};
+  const dk=date+"|"+S.strRoutine,dn=fzDone(dk),fe={},feD=(S.strFe||{})[dk]||{},cur0=S.str.find(x=>x.date===date&&x.routine===S.strRoutine);
+  R.ex.forEach(ex=>{const arr=[],d=dn[ex.id]||{},c=cur0&&cur0.sets&&cur0.sets[ex.id]||[];for(let i=0;i<ex.s;i++){const on=d[i]!=null?d[i]:!!(c[i]&&c[i].r!=null);if(!on)continue;const w=num(($("#s_"+ex.id+"_"+i+"_w")||{}).value),r=num(($("#s_"+ex.id+"_"+i+"_r")||{}).value);if(w!=null||r!=null)arr.push({w,r})}if(arr.length)sets[ex.id]=arr;
+    const f=feD[ex.id]!==undefined?feD[ex.id]:((cur0&&cur0.fe)||{})[ex.id];if(f)fe[ex.id]=f}); /* v269: solo las series marcadas con ✓ (o escritas) */
+  if(!Object.keys(sets).length){toast("Marca al menos una serie con ✓");return}
+  const doc={kind:"str",date,routine:S.strRoutine,sets,fe,savedAt:new Date().toISOString()};
   try{await c.doc("str_"+date+"_"+S.strRoutine).set(doc);
     S.str=S.str.filter(x=>!(x.date===date&&x.routine===S.strRoutine));S.str.push(doc);S.str.sort((a,b)=>a.date<b.date?1:-1);
-    toast("Sesión guardada");render()}
+    if(S.fzDone)delete S.fzDone[dk];if(S.strFe)delete S.strFe[dk];if(S.strDraft)delete S.strDraft[dk];S.rest=null;restDraw();toast("Sesión guardada");render()}
   catch(e){toast(e&&e.code==="quota_exceeded"?"No queda espacio para guardar":"No se ha podido guardar la sesión")}
 }
 
@@ -6874,7 +6898,7 @@ function ttAlign(tt,anim){if(!tt)return;const on=tt.querySelector('[aria-selecte
   tt.style.paddingRight="16px";
   const c=window.innerWidth/2-tt.getBoundingClientRect().left,x=Math.max(0,Math.min(tt.scrollWidth-tt.clientWidth,on.offsetLeft-tt.firstElementChild.offsetLeft+on.offsetWidth/2-c));
   if(anim&&!matchMedia("(prefers-reduced-motion: reduce)").matches)tt.scrollTo({left:x,behavior:"smooth"});else{tt.style.scrollBehavior="auto";tt.scrollLeft=x;tt.style.scrollBehavior=""}}
-function ttGo(k){if(S.tab==="prog")S.progSec=k;else if(S.tab==="plan")S.planView=k;else return;render();window.scrollTo(0,0)}
+function ttGo(k){if(S.tab==="prog")S.progSec=k;else if(S.tab==="plan")S.planView=k;else if(S.tab==="fuerza")S.fzSec=k;else return;render();window.scrollTo(0,0)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(b)ttGo(b.dataset.tt)});
 (function(){let x0=null,y0=0,ok=false;
   document.addEventListener("touchstart",e=>{const t=e.touches[0];ok=(S.tab==="prog"||S.tab==="plan")&&!document.querySelector(".overlay")&&!e.target.closest(".seg,.pf-pick,svg,input,textarea,.scroll-x,.tt,.chips,.daystrip,.overlay");x0=ok?t.clientX:null;y0=t.clientY},{passive:true});
@@ -7621,6 +7645,106 @@ function havSvg(){return'<svg viewBox="0 0 24 24" width="22" height="22" fill="n
 function hdrAv(){const b=$("#menuBtn");if(!b)return;const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"",key=(p.avatar||"")+"|"+ini;
   if(b.dataset.av===key)return;b.dataset.av=key;const old=b.querySelector(":scope>svg,:scope>.hav");if(!old)return;
   old.insertAdjacentHTML("beforebegin",p.avatar?`<img class="hav" src="${p.avatar}" alt="">`:ini?`<span class="hav" aria-hidden="true">${esc(ini)}</span>`:havSvg());old.remove()}
+
+/* ---------- Fuerza que progresa (v269) ----------
+   Doble progresión, conservadora: primero suben las repeticiones dentro del rango; cuando llegas al máximo en todas las series,
+   sube el peso (+2,5 kg en los grandes con barra o máquina, +2 kg en el resto) y vuelves al mínimo. «Muy duro» → repite.
+   Dos sesiones seguidas sin llegar al mínimo → baja un 10 %. Sin peso → una repetición más. La primera vez no propone nada.
+   Nunca más de un paso por sesión. Se mira el ejercicio en cualquier rutina (el press es el mismo en la A que en otra).
+   Clases fz-sug, fz-ok, fz-pg, fz-why, fz-fe, fz-next y rest- (temporizador). */
+const FZ_BAR=new Set(["sent","pmc","pbb","remob","hip","prensa","pmr"]);
+const FZ_BIG=new Set(["sent","pmc","pbb","remob","hip","prensa","pmr","dom","chin","fond","pmil","bulg","pbm","pinc","jalon"]);
+const FZ_TAG={up:["Sube peso","var(--verde)"],rep:["+1 repetición","var(--azul)"],same:["Repite","var(--k)"],down:["Baja un poco","var(--naranja)"]};
+function fzRange(r){const s=String(r||"");if(/\d\s*(s|m)\b/.test(s.replace(/\/\s*lado/,"")))return null;const m=/(\d+)\s*[–-]\s*(\d+)/.exec(s);if(m)return[+m[1],+m[2]];const n=/(\d+)/.exec(s);return n?[+n[1],+n[1]]:null}
+const fzStep=(id,w)=>FZ_BAR.has(id)?2.5:w>=30?2.5:2;
+const fzRound=(w,st)=>Math.round(w/st)*st;
+const fzFmt=w=>String(+w.toFixed(1)).replace(".",",");
+/* sesiones anteriores con ese ejercicio, de la más reciente a la más antigua */
+function fzHist(id,before){return S.str.filter(x=>x.date<before&&x.sets&&x.sets[id]&&x.sets[id].some(s=>s.r)).sort((a,b)=>a.date<b.date?1:-1)}
+/* propuesta para hoy: {sets:[{w,r}], tag, why} o null */
+function fzPlan(ex,date){const H=fzHist(ex.id,date);if(!H.length)return null;const L=H[0],ls=L.sets[ex.id].filter(s=>s.r),rg=fzRange(ex.r);
+  const w0=Math.max(0,...ls.map(s=>s.w||0)),bw=!w0,fe=(L.fe||{})[ex.id],n=+ex.s||ls.length,lw=w0?fzFmt(w0)+" kg × ":"";
+  const mk=(w,rf)=>Array.from({length:n},(_,i)=>({w:bw?null:w,r:rf(i)}));
+  if(!rg)return{sets:mk(w0,i=>(ls[i]||ls[ls.length-1]).r),tag:"same",why:"Repite lo de la última vez."};
+  const[lo,hi]=rg,top=ls.length>=n&&ls.every(s=>s.r>=hi),under=s=>s.filter(x=>x.r).some(x=>x.r<lo);
+  if(fe===4)return{sets:mk(w0,i=>Math.max(lo,Math.min(hi,(ls[i]||{}).r||lo))),tag:"same",why:`La última vez lo marcaste como muy duro: repite ${w0?fzFmt(w0)+" kg":"lo mismo"} y afianza.`};
+  if(H[1]&&under(ls)&&under(H[1].sets[ex.id]||[])&&w0){const st=fzStep(ex.id,w0),w=Math.max(st,fzRound(w0*.9,st));return{sets:mk(w,()=>lo),tag:"down",why:`Dos sesiones sin llegar a ${lo} repeticiones: baja a ${fzFmt(w)} kg esta vez y vuelve a subir desde ahí.`}}
+  if(top){if(bw)return{sets:mk(0,()=>hi+1),tag:"rep",why:`Completaste ${hi} en todas las series: hoy una más. Si te sobra, añade lastre.`};
+    const st=fzStep(ex.id,w0),w=w0+st;return{sets:mk(w,()=>lo),tag:"up",why:`La última vez hiciste ${lw}${hi} en todas las series: completaste el rango. Hoy ${fzFmt(w)} kg, desde ${lo} repeticiones.`}}
+  if(under(ls))return{sets:mk(w0,()=>lo),tag:"same",why:`La última vez no llegaste a ${lo} en alguna serie: repite ${w0?fzFmt(w0)+" kg":"el ejercicio"} y busca el mínimo.`};
+  return{sets:mk(w0,i=>Math.min(hi,((ls[i]||ls[ls.length-1]).r||lo)+1)),tag:"rep",why:`Dentro del rango (${lo}–${hi}): mismo peso y una repetición más en cada serie hasta llegar a ${hi}.`}}
+function fzTag(t){const x=FZ_TAG[t];return x?`<span class="fz-pg"><i style="background:${x[1]}"></i>${x[0]}</span>`:""}
+/* series hechas en el borrador (✓) */
+function fzDone(dk){S.fzDone=S.fzDone||{};return S.fzDone[dk]=S.fzDone[dk]||{}}
+/* lo que toca la próxima vez, tras guardar */
+function fzNextHtml(R,date){const L=R.ex.map(ex=>{const p=fzPlan(ex,shiftKey(date,1));if(!p||!p.tag)return"";const d=p.tag==="up"?`sube a ${p.sets[0].w!=null?fzFmt(p.sets[0].w)+" kg":"más"}`:p.tag==="rep"?"suma repeticiones":p.tag==="down"?`baja a ${fzFmt(p.sets[0].w)} kg`:"repite";
+  return`<li><span>${esc(ex.n)}</span><b>${d}</b></li>`}).filter(Boolean);
+  return L.length?`<div class="fz-next"><p>La próxima vez</p><ul>${L.join("")}</ul></div>`:""}
+
+/* ---------- Descanso: arranca al marcar una serie, vibra al acabar. 2 min en los grandes, 90 s en el resto; recuerda lo que alargas ---------- */
+const REST_LS="sustrato-rest";
+function restPref(id){let p={};try{p=JSON.parse(localStorage.getItem(REST_LS)||"{}")}catch(e){}return p[id]||(FZ_BIG.has(id)?120:90)}
+function restSave(id,s){let p={};try{p=JSON.parse(localStorage.getItem(REST_LS)||"{}")}catch(e){}p[id]=s;try{localStorage.setItem(REST_LS,JSON.stringify(p))}catch(e){}}
+function restStart(id,next){const s=restPref(id);S.rest={id,end:Date.now()+s*1000,tot:s,next};restDraw();clearInterval(restStart.t);restStart.t=setInterval(restTick,250)}
+function restTick(){const r=S.rest;if(!r){clearInterval(restStart.t);return}const left=Math.max(0,Math.ceil((r.end-Date.now())/1000));
+  const b=$("#rest_t"),g=$("#rest_g");if(b)b.textContent=fmtClock(left);if(g)g.setAttribute("stroke-dashoffset",(100.5*(1-left/r.tot)).toFixed(1));
+  if(!left){clearInterval(restStart.t);buzz([200,100,200]);S.rest=null;setTimeout(restDraw,700)}}
+function restDraw(){let el=$("#rest");const r=S.rest;if(!r){if(el)el.remove();return}
+  if(!el){el=document.createElement("div");el.id="rest";el.className="rest-b";el.setAttribute("role","timer");document.body.appendChild(el)}
+  const left=Math.max(0,Math.ceil((r.end-Date.now())/1000));
+  el.innerHTML=`<svg class="rest-r" viewBox="0 0 40 40" aria-hidden="true"><circle class="rest-r0" cx="20" cy="20" r="16"/><circle class="rest-r1" id="rest_g" cx="20" cy="20" r="16" stroke-dasharray="100.5" stroke-dashoffset="${(100.5*(1-left/r.tot)).toFixed(1)}"/></svg>
+    <span class="rest-tx"><b id="rest_t">${fmtClock(left)}</b><small>Descanso${r.next?" · serie "+r.next:""}</small></span><button type="button" data-rest="add">+15 s</button><button type="button" data-rest="skip">Saltar</button>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rest]");if(!b||!S.rest)return;
+  if(b.dataset.rest==="add"){S.rest.end+=15000;S.rest.tot+=15;restSave(S.rest.id,S.rest.tot);restTick()}else{S.rest=null;clearInterval(restStart.t);restDraw()}buzz(8)});
+
+/* ✓ de una serie: la marca hecha (con lo propuesto o lo que hayas escrito) y arranca el descanso */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzok]");if(!b)return;const[id,i]=b.dataset.fzok.split("|"),dk=(S.strDate||S.day)+"|"+S.strRoutine,d=fzDone(dk);
+  d[id]=d[id]||{};const on=!d[id][i];d[id][i]=on;const row=b.closest(".fz-set");if(row){row.classList.toggle("fz-on",on);row.classList.remove("fz-sug-r")}b.setAttribute("aria-pressed",String(on));
+  const det=b.closest(".fz-ex");if(det){const n=det.querySelectorAll(".fz-set").length,f=det.querySelectorAll(".fz-set.fz-on").length;const st=det.querySelector(".fz-st");if(st)st.textContent=f?f+"/"+n:"";det.classList.toggle("done",f>=n);det.classList.toggle("part",f>0&&f<n)}
+  buzz(10);if(on){const ex=routineById(S.strRoutine).ex.find(x=>x.id===id),n=ex?+ex.s:0;if(+i+1<n)restStart(id,+i+2);else if(S.rest&&S.rest.id===id){S.rest=null;restDraw()}}});
+/* «¿Cómo fue?» de cada ejercicio */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzfe]");if(!b)return;const[id,v]=b.dataset.fzfe.split("|"),dk=(S.strDate||S.day)+"|"+S.strRoutine;
+  S.strFe=S.strFe||{};const f=S.strFe[dk]=S.strFe[dk]||{};f[id]=f[id]===+v?null:+v;b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.fzfe.split("|")[1]===f[id])));buzz(8)});
+
+/* ---------- Rutinas: «···» con editar, duplicar, mover y eliminar (también las de ejemplo, que se pueden recuperar) ---------- */
+function rtmHtml(){const r=routineById(S.strRoutine),own=!r.base,L=S.routines||[],i=L.findIndex(x=>x.id===r.id);
+  const row=(act,ic,t,cls)=>`<button type="button" class="rtm-r${cls?" "+cls:""}" data-rtm="${act}">${ic}<span>${t}</span></button>`;
+  const I=d=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade rtm" role="dialog" aria-modal="true" aria-label="${esc(routineShort(r))}">
+    <div class="row"><h3 style="margin:0">${esc(routineShort(r))}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
+    <div class="rtm-l">${row(own?"edit":"dup",I('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),own?"Editar":"Personalizar")}${own?row("dup",I('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>'),"Duplicar"):""}
+    ${own&&i>0?row("left",I('<path d="M15 6l-6 6 6 6"/>'),"Mover a la izquierda"):""}${own&&i>=0&&i<L.length-1?row("right",I('<path d="M9 6l6 6-6 6"/>'),"Mover a la derecha"):""}
+    ${row("del",I('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'),"Eliminar rutina","del")}</div></div></div>`}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act=\"rtm\"],[data-rtm],[data-act=\"rtrestore\"]");if(!t)return;
+  if(t.dataset.act==="rtm"){S.sheet="rtm";renderModal();return}
+  if(t.dataset.act==="rtrestore"){S.rtHidden=[];saveRoutines();S.strRoutine="A";render();toast("Rutinas de ejemplo recuperadas");return}
+  const a=t.dataset.rtm,r=routineById(S.strRoutine);S.sheet=null;renderModal();
+  if(a==="edit"||a==="dup"){rtOpenEd(a==="dup");return}
+  if(a==="left"||a==="right"){const L=S.routines=(S.routines||[]).slice(),i=L.findIndex(x=>x.id===r.id),j=a==="left"?i-1:i+1;if(i<0||j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]];saveRoutines();render();return}
+  if(a==="del"){const prevL=(S.routines||[]).slice(),prevH=(S.rtHidden||[]).slice();
+    if(r.base)S.rtHidden=prevH.concat([r.id]);else S.routines=prevL.filter(x=>x.id!==r.id);
+    saveRoutines();const rest=allRoutines();S.strRoutine=rest.length?rest[0].id:null;render();
+    undoToast("Rutina eliminada",()=>{S.routines=prevL;S.rtHidden=prevH;saveRoutines();S.strRoutine=r.id;render()})}});
+function rtOpenEd(dup){const r=routineById(S.strRoutine);if(!r)return;S.rEd={id:dup?null:r.id,name:dup?(r.name.split("·").pop().trim()+" (copia)"):r.name,ex:r.ex.map(x=>Object.assign({},x)),pick:false,grp:EXLIB[0][0]};S.sheet="routine";renderRoutineEd()}
+
+/* ---------- Fuerza › Progreso (v269): el detalle. En Progreso › Entreno queda solo el resumen ---------- */
+function fzRecords(){const best={};S.str.forEach(x=>Object.keys(x.sets||{}).forEach(id=>{const v=sessVal(x,id);if(!v)return;const b=best[id];if(!b||v>b.v)best[id]={v,d:x.date,s:x.sets[id].reduce((m,s)=>setVal(id,s)>setVal(id,m)?s:m,x.sets[id][0])}}));
+  return Object.entries(best).map(([id,b])=>Object.assign({id,n:(EXBY[id]||allRoutines().flatMap(r=>r.ex).find(e=>e.id===id)||{}).n||id},b)).sort((a,b)=>a.d<b.d?1:-1)}
+function fzProgHtml(){const R=routineById(S.strRoutine),nx=shiftKey(today(),1);
+  const next=R.ex.map(ex=>{const p=fzPlan(ex,nx);if(!p)return"";const q=p.sets[0]||{};return`<div class="fzp-r"><span class="fzp-n"><b>${esc(ex.n)}</b><small>${q.w!=null?fzFmt(q.w)+" kg × ":""}${q.r||""}</small></span>${fzTag(p.tag)}</div>`}).filter(Boolean).join("");
+  const rec=fzRecords().slice(0,6).map(r=>`<div class="fzp-r"><span class="fzp-n"><b>${esc(r.n)}</b><small>${r.s&&r.s.w?fzFmt(+r.s.w)+" kg × ":""}${r.s?r.s.r:""} · ${esc(dateLabel(r.d))}</small></span></div>`).join("");
+  const hist=S.str.slice(0,8).map(x=>`<div class="fzp-r"><span class="fzp-n"><b>${esc(routineShort(allRoutines().find(r=>r.id===x.routine)||{name:"Rutina",id:x.routine,base:x.routine==="A"||x.routine==="B"}))}</b><small>${esc(dateLabel(x.date))} · ${Object.keys(x.sets||{}).length} ejercicios</small></span></div>`).join("");
+  return`${strengthCard()}
+  <section class="glass pad fade"><h2>Lo que toca la próxima vez</h2><p class="fdesc" style="margin:2px 0 8px">${esc(routineShort(R))}, según tu última sesión de cada ejercicio.</p>${next||`<p class="note">Cuando guardes una sesión con peso y repeticiones, aquí verás la propuesta de cada ejercicio.</p>`}</section>
+  ${rec?`<section class="glass pad fade"><h2>Tus mejores series</h2>${rec}</section>`:""}
+  ${hist?`<section class="glass pad fade"><h2>Últimas sesiones</h2>${hist}</section>`:""}`}
+/* Progreso › Entreno: resumen y enlace al detalle */
+function strSumCard(){if(!S.str.length)return"";const tk=today(),n4=S.str.filter(x=>x.date>shiftKey(tk,-28)).length,pts=strengthSeries("all"),lastD=S.str.map(x=>x.date).sort().pop();
+  const g=pts.length>1?(pts[pts.length-1].v/pts[0].v-1)*100:null;
+  return`<section class="glass pad fade"><span class="pkk">Fuerza</span>
+    <div class="kv fzs-kv" style="margin-top:8px"><div><span>Sesiones en 4 semanas</span><b>${n4}</b></div><div><span>Fuerza desde el inicio</span><b>${g!=null?(g>=0?"+":"")+fmtInt(g)+" %":"—"}</b></div></div><p class="note" style="margin:8px 0 0">Última sesión: ${esc(dateLabel(lastD))}</p>
+    <button type="button" class="ms-link" data-fzgo="pro">Ver el detalle en Fuerza ›</button></section>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzgo]");if(!b)return;S.prevTab=S.tab;S.tab="fuerza";S.fzSec=b.dataset.fzgo;render();window.scrollTo(0,0)});
 
 })();
 </script>
