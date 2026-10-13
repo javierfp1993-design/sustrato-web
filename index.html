@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T13:25:14.468Z">
+<meta name="sustrato-version" content="2026-10-13T13:43:53.487Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -932,7 +932,7 @@ button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,v
 .tc-foot .chip{white-space:nowrap}
 .tc-row .pst{flex:0 0 auto}
 .tc-empty{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:14px;background:var(--card2)}
-.tc-empty span{display:flex;flex-direction:column;gap:2px}.tc-empty b{font-size:17px}.tc-empty small{font-size:13px;color:var(--muted)}
+.tc-empty>span:not(.tc-ic){display:flex;flex-direction:column;gap:2px} /* v268: sin tocar la tesela (también es un span): la luna quedaba arriba */.tc-empty b{font-size:17px}.tc-empty small{font-size:13px;color:var(--muted)}
 .tc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
 .tcard .wxa{margin-top:10px}
 .tcard .row .wxp{font-size:13px;padding:4px 10px 4px 7px}
@@ -2946,7 +2946,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="267";
+const APP_VER="268";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3018,7 +3018,7 @@ function hrParams(p){
   return{mode:"hrr",max,maxSrc,rest,mid:SUB_MID+lv+(fem?0.03:0)-whs,k:SUB_K,sc:1,lvSrc:vl!=null?"vo2":"perfil",whs};
 }
 /* Nivel aeróbico desde el VO2max estimado de tus actividades (por categorías, para que no cambie con cada sesión) */
-const VO2_LV=[-0.05,-0.03,0,0.03,0.05,0.07];
+const VO2_LV=[-0.04,0,0.03,0.05,0.07]; /* v268: Bajo, Regular, Bueno, Excelente, Superior */
 function vo2Level(){try{if(!S.pmx||!S.acts||!S.acts.length)return null;const g=perfAgg();if(!g||!g.vo2||(g.nr||0)+(g.nb||0)<2)return null;const n=vo2Norm(g.vo2);const i=VO2L.indexOf(n);return i<0?null:VO2_LV[i]}catch(e){return null}}
 function xOf(hr,hp){return hp.mode==="lt"?hr/hp.lthr:Math.max(0,(hr-hp.rest)/(hp.max-hp.rest))}
 function ctxShift(hp,ctx){
@@ -5295,19 +5295,21 @@ function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
   const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
   const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=r.length?med(r.map(x=>x.vo2)):null,vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
-  return{vo2:vr!=null||vb!=null?Math.max(vr||0,vb||0):null,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
+  /* v268: manda la carrera, como en los relojes. Antes se tomaba el mayor de carrera y bici, y el de bici (FTP estimado con la física de las subidas) lo inflaba */
+  return{vo2:vr!=null?vr:vb,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
 function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
   const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,ftp:x.ftp})}
   const cadR=med(S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.cad).slice(0,12).map(a=>a.cad*2)),cadB=med(S.acts.filter(a=>isBike(a.sport)&&a.cad).slice(0,12).map(a=>a.cad));
   const thr=now.vo2?(()=>{const tg=.88*now.vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(danCost(m)<tg)lo=m;else hi=m}return 60000/lo})():null;
   perfAgg.k=k;perfAgg.v={...now,prev,trend,cadR,cadB,thr};return perfAgg.v}
 function paceAt(fr,vo2){const tg=fr*vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(danCost(m)<tg)lo=m;else hi=m}return 60000/lo}
-/* Tablas de referencia del Cooper Institute (ml/kg/min): Bajo, Regular, Bueno, Excelente, Superior */
-const VO2N={m:[[29,33,36.5,42.5,46.5,52.5],[39,31.5,35.5,41,45,49.5],[49,30.2,33.6,39,43.8,48.1],[59,26.1,31,35.8,41,45.4],[200,20.5,26.1,32.3,36.5,44.3]],
-  f:[[29,23.6,29,33,37,41.1],[39,22.8,27,31.5,35.7,40.1],[49,21,24.5,29,32.9,37],[59,20.2,22.8,27,31.5,35.8],[200,17.5,20.3,24.5,30.3,31.5]]};
+/* v268 · Tablas del Cooper Institute por percentiles (las que usan Garmin y la mayoría de relojes): Regular p40, Bueno p60,
+   Excelente p80, Superior p95. Las de antes eran más generosas (Superior desde 49,5 a los 30–39 años; ahora desde 54). */
+const VO2N={m:[[29,41.7,45.4,51.1,55.4],[39,40.5,44,48.3,54],[49,38.5,42.4,46.4,52.5],[59,35.6,39.2,43.4,48.9],[69,32.3,35.5,39.5,45.7],[200,29.4,32.3,36.7,42.1]],
+  f:[[29,36.1,39.5,43.9,49.6],[39,34.4,37.8,42.4,47.4],[49,33,36.3,39.7,45.3],[59,30.1,33,36.7,41.1],[69,27.5,30,33,37.8],[200,25.9,28.1,30.9,36.7]]};
 function vo2Norm(v){const p=S.profile||{},age=num(p.age);if(!age||!v)return null;const row=(VO2N[p.sex==="f"?"f":"m"]).find(r=>age<=r[0]);
-  let i=0;for(let j=1;j<=5;j++)if(v>=row[j])i=j;return VO2L[i]}
-const VO2L=["Bajo","Bajo la media","En la media","Bueno","Excelente","Superior"];
+  let i=0;for(let j=1;j<=4;j++)if(v>=row[j])i=j;return VO2L[i]}
+const VO2L=["Bajo","Regular","Bueno","Excelente","Superior"];
 const PW_PCT={1:.5,2:.65,3:.83,4:.98,5:1.12};
 function pwZone(w,ftp){const f=w/ftp;return f<.56?1:f<.76?2:f<.91?3:f<1.06?4:5}
 function perfFtp(){const a=perfAgg();return a.ftp?Math.round(a.ftp):null}
@@ -5324,7 +5326,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const zrow=(z,l,r)=>`<div class="pf-z"><i style="background:${Z_C[z]}"></i><span><b>Z${z}</b> ${l}</span><em>${r}</em></div>`;
   let body="";
   if(sp==="run"){const v=a.vo2,dv=a.prev.vo2?Math.round(v)-Math.round(a.prev.vo2):null,age=num((S.profile||{}).age)||35,row=(VO2N[(S.profile||{}).sex==="f"?"f":"m"]).find(r=>age<=r[0]);
-    const bands=[[row[1]-12,row[2],"Bajo","<"+r0(row[2])],[row[2],row[3],"Media",r0(row[2])+"–"+r0(row[3]-.1)],[row[3],row[4],"Bueno",r0(row[3])+"–"+r0(row[4]-.1)],[row[4],row[5],"Excelente",r0(row[4])+"–"+r0(row[5]-.1)],[row[5],row[5]+10,"Superior",r0(row[5])+"+"]];
+    const bands=[[row[1]-12,row[1],"Bajo","<"+r0(row[1])],[row[1],row[2],"Regular",r0(row[1])+"–"+r0(row[2]-.1)],[row[2],row[3],"Bueno",r0(row[2])+"–"+r0(row[3]-.1)],[row[3],row[4],"Excelente",r0(row[3])+"–"+r0(row[4]-.1)],[row[4],row[4]+8,"Superior",r0(row[4])+"+"]];
     const P=fr=>fmtClock(paceAt(fr,v));
     body=`<div class="vhead" data-vzread><b class="pf-hero">${r0(v)}</b><span class="pf-pm" aria-label="más o menos 4">±4</span><span>ml/kg/min · VO2max</span></div>
       <p class="vplan-t">${dv!=null&&dv!==0?`<span class="rh-v ${dv>0?"up":"dn"}">${dv>0?"↑":"↓"} ${Math.abs(dv)}</span> en 6 semanas · `:"Estable en 6 semanas · "}${esc(vo2Norm(v)||"")} para tu edad</p>
@@ -5333,7 +5335,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
       <div class="kv pf-kv"><div><span>Ritmo umbral</span><b>${fmtClock(a.thr)} <small>/km</small></b></div>${a.cadR?`<div><span>Cadencia</span><b>${Math.round(a.cadR)} <small>pasos/min</small></b></div>`:""}</div>
       <h3 class="pf-zh">Tus ritmos por zonas <small>min/km</small></h3>
       <div class="pf-zl">${zrow(1,"Recuperación","más de "+P(.6))}${zrow(2,"Base aeróbica",P(.74)+" – "+P(.6))}${zrow(3,"Tempo",P(.83)+" – "+P(.75))}${zrow(4,"Umbral",P(.92)+" – "+P(.84))}${zrow(5,"VO2max","menos de "+P(.93))}</div>
-      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM (corregido a ritmo lento), que es el que coincide con las pruebas de laboratorio, y con tu FTP de bici si da un valor más alto. El margen (±4 ml/kg/min) es el error medio frente a 41 pruebas de esfuerzo con analizador de gases; si escribes tu FC máxima real en el perfil, afina. Nivel según las tablas del Cooper Institute para tu edad y sexo. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
+      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM (corregido a ritmo lento), que es el que coincide con las pruebas de laboratorio. La bici solo cuenta si no tienes carreras. El margen (±4 ml/kg/min) es el error medio frente a 41 pruebas de esfuerzo con analizador de gases; si escribes tu FC máxima real en el perfil, afina. Nivel según los percentiles del Cooper Institute para tu edad y sexo (los mismos que usan los relojes): Superior es el 5 % más en forma. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
   else{const ftp=a.ftp,wk=kg?ftp/kg:null,df=a.prev.ftp?Math.round(ftp-a.prev.ftp):null;
     const bands=[[0,2,"Inicio","<2"],[2,2.8,"Aficionado","2–2,8"],[2.8,3.5,"Bueno","2,8–3,5"],[3.5,4.2,"Muy bueno","3,5–4,2"],[4.2,5,"Excelente","4,2+"]];
     const W=x=>Math.round(ftp*x);
