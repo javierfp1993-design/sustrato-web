@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T19:52:17.712Z">
+<meta name="sustrato-version" content="2026-10-13T20:09:43.077Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2906,6 +2906,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .fb-ok{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--verde)}
 .fb-done b{font-size:20px}.fb-done p{margin:0;max-width:30ch;color:var(--muted)}
 .fb-done code{font:600 13px var(--font);font-variant-numeric:tabular-nums;padding:3px 8px;border-radius:8px;background:var(--fill2)}
+.fb-err{margin:0;padding:10px 12px;border-radius:10px;background:var(--fill2);font-size:14px;color:var(--fg)}
 
 </style>
 
@@ -7799,6 +7800,7 @@ function fbHtml(){const f=S.fb,bug=f.k==="bug",acc=!!(S.acct&&S.acct.t);
     <div class="tg-r"><span class="tg-t"><b>Quiero respuesta</b><small>${f.reply?(acc?"Te contestaré al correo de tu cuenta":"Escribe a qué correo te contesto"):"Se envía sin tu correo"}</small></span><button type="button" class="tg-sw" role="switch" data-fbx="reply" aria-checked="${!!f.reply}" aria-label="Quiero respuesta"></button></div>
     ${f.reply&&!acc?`<label class="fb-f" for="fbm"><span class="vh">Tu correo</span><input id="fbm" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" value="${esc(f.mail||"")}"></label>`:""}</div>
   <p class="fb-note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Solo se envía lo que escribas${bug&&f.tech?", los datos técnicos":""} y la captura que elijas. Nada de Strava, de tu salud ni de tus comidas va por su cuenta.</span></p>
+  ${f.err?`<p class="fb-err" role="alert">${esc(f.err)}</p>`:""}
   <button type="button" class="btn primary big fb-go" data-fbx="send" ${fbReady()&&!f.busy?"":"disabled"}>${f.busy?"Enviando…":"Enviar"}</button></div></div>`}
 function fbReady(){const f=S.fb;return(f.text||"").trim().length>=10&&(!f.reply||(S.acct&&S.acct.t)||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.mail||""))}
 function fbOpen(k){S.fb=Object.assign({k,where:null,tech:true,reply:false,text:"",mail:"",img:null},S.fb&&!S.fb.sent?{text:S.fb.text,where:S.fb.where,img:S.fb.img}:{},{k,sent:null,busy:false});S.sheet="fb";renderModal()}
@@ -7807,11 +7809,14 @@ function fbShrink(file){return new Promise((res,rej)=>{const r=new FileReader();
 function fbQueue(){try{return JSON.parse(localStorage.getItem(FB_Q)||"[]")}catch(e){return[]}}
 function fbSetQueue(q){try{q.length?localStorage.setItem(FB_Q,JSON.stringify(q)):localStorage.removeItem(FB_Q)}catch(e){}}
 async function fbPost(body){const c=await cloudCfg(),h={"Content-Type":"application/json","X-Sustrato-Key":c.key||""};if(S.acct&&S.acct.t)h.Authorization="Bearer "+S.acct.t;
-  const r=await fetch(c.api.replace(/\/$/,"")+"/feedback",{method:"POST",headers:h,body:JSON.stringify(body)});const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server",status:r.status};return j}
-async function fbSend(){const f=S.fb;if(!fbReady()||f.busy)return;f.busy=true;renderModal();
+  const r=await fetch(c.api.replace(/\/$/,"")+"/feedback",{method:"POST",headers:h,body:JSON.stringify(body)});const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server",status:r.status,gh:j&&j.gh,msg:j&&j.msg};return j}
+/* el motivo del fallo se queda en la hoja (un aviso de 2 s se pierde) */
+function fbErr(e){if(e.code==="too_many")return"Espera unos segundos antes de enviar otra.";if(e.code==="unauthorized")return"El servidor no reconoce la app (401).";
+  if(e.code==="upstream")return`GitHub ha rechazado el envío${e.gh?" ("+e.gh+(e.msg?": "+e.msg:"")+")":""}.`;return`No se ha podido enviar (${e.status||"sin respuesta"}).`}
+async function fbSend(){const f=S.fb;if(!fbReady()||f.busy)return;f.busy=true;f.err="";renderModal();
   const body={k:f.k,text:f.text.trim().slice(0,FB_MAX),where:f.where||"",tech:f.k==="bug"&&f.tech?fbTech():"",reply:!!f.reply,mail:f.reply&&!(S.acct&&S.acct.t)?f.mail.trim():"",img:f.img||""};
   try{const j=await fbPost(body);Object.assign(S.fb,{busy:false,sent:(j&&j.n)||"ok",text:"",where:null,img:null})}
-  catch(e){if(!fbLater(e)){S.fb.busy=false;renderModal();toast(e.code==="too_many"?"Espera un momento antes de enviar otra":"No se ha podido enviar. Inténtalo más tarde.");return}
+  catch(e){if(!fbLater(e)){Object.assign(S.fb,{busy:false,err:fbErr(e)});renderModal();return}
     const q=fbQueue();q.push(body);fbSetQueue(q);Object.assign(S.fb,{busy:false,sent:"cola",text:"",where:null,img:null})}
   buzz(10);renderModal();if(S.tab==="perfil")render()}
 async function fbFlush(){const q=fbQueue();if(!q.length||!navigator.onLine)return;const rest=[];
