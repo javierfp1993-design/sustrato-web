@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T19:16:54.420Z">
+<meta name="sustrato-version" content="2026-10-13T19:52:17.712Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2878,6 +2878,35 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .ss-st{appearance:none;border:0;display:inline-flex;align-items:center;background:var(--fill2);color:var(--fg);font:600 13px var(--font);border-radius:999px;padding:4px 10px;margin-left:8px;cursor:pointer;vertical-align:1px}
 .ss-st .ss-dot{margin-right:6px}
 
+/* v272 · Incidencias y sugerencias (083-incidencias.js). Clases fb- */
+.fb-sub{margin:4px 0 6px;font-size:14px;color:var(--muted)}
+.fb-row{appearance:none;border:0;background:none;color:var(--fg);font:inherit;width:100%;display:grid;grid-template-columns:40px 1fr 16px;gap:12px;align-items:center;text-align:left;padding:12px 0;min-height:64px;border-top:.5px solid var(--sep);cursor:pointer}
+.fb-sub+.fb-row{border-top:0}
+.fb-ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c-v,var(--c)) 16%,transparent);color:var(--c)}
+.fb-row b{display:block;font-size:17px;font-weight:600}.fb-row small{display:block;font-size:13px;color:var(--muted)}
+.fb-ch{color:var(--faint)}
+.fb-q{margin:8px 0 0;font-size:13px;color:var(--muted)}
+.fb-sh{display:flex;flex-direction:column;gap:16px}
+.fb-seg{display:flex}.fb-seg button{flex:1}
+.fb-f{display:flex;flex-direction:column;gap:8px}
+.fb-f>span{font-size:13px;font-weight:600;color:var(--muted)}.fb-f>span small{font-weight:400}
+.fb-f textarea{width:100%;min-height:120px;resize:vertical;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:17px/1.45 var(--font);padding:12px 14px}
+.fb-f input{width:100%;min-height:44px;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:17px var(--font);padding:0 14px}
+.fb-n{align-self:flex-end;margin-top:-10px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fb-add{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;border:1.5px dashed var(--sep);color:var(--fg);font:500 15px var(--font);cursor:pointer}
+.fb-add:focus-within{outline:2px solid var(--ac);outline-offset:2px}
+.fb-img{display:flex;align-items:center;gap:12px}
+.fb-img img{width:64px;height:96px;object-fit:cover;object-position:top;border-radius:10px;background:var(--fill2)}
+.fb-tgs{display:flex;flex-direction:column}
+.fb-tgs .tg-r+.tg-r,.fb-tgs .fb-tech+.tg-r,.fb-tgs .fb-more+.tg-r{border-top:.5px solid var(--sep)}
+.fb-more{appearance:none;border:0;background:none;color:var(--muted);font:500 13px var(--font);padding:0 0 10px;cursor:pointer;text-decoration:underline;text-underline-offset:2px;align-self:flex-start}
+.fb-tech{margin:0 0 12px;padding:10px 12px;border-radius:10px;background:var(--fill2);color:var(--muted);font:13px/1.55 var(--font);font-variant-numeric:tabular-nums;white-space:pre-wrap;overflow-wrap:anywhere}
+.fb-note{display:flex;gap:8px;margin:0;font-size:13px;color:var(--muted)}.fb-note svg{flex:none;margin-top:2px}
+.fb-done{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 8px 8px}
+.fb-ok{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--verde)}
+.fb-done b{font-size:20px}.fb-done p{margin:0;max-width:30ch;color:var(--muted)}
+.fb-done code{font:600 13px var(--font);font-variant-numeric:tabular-nums;padding:3px 8px;border-radius:8px;background:var(--fill2)}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2957,7 +2986,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="271";
+const APP_VER="272";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6507,7 +6536,7 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return meCard()+connCard()+knowCard()+`<div class="grid2">
+  return meCard()+connCard()+knowCard()+fbCard()+`<div class="grid2">
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
@@ -6578,7 +6607,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7732,6 +7761,73 @@ function ssSave(g,v){const[k,a,b]=g.dataset.ssk.split("|");buzz(10);
   const end=()=>{if(!g)return;const gg=g;g=null;ssSave(gg,last)};document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end);
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-ssv]");if(!b)return;const gg=b.closest(".ss");if(!gg)return;const v=+b.dataset.ssv;ssShow(gg,v);ssSave(gg,v)});
   document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".ss-t");if(!t||(e.key!=="ArrowRight"&&e.key!=="ArrowLeft"))return;e.preventDefault();const gg=t.parentNode,c=+(t.getAttribute("aria-valuenow")||0),v=Math.max(1,Math.min(4,(c||(e.key==="ArrowRight"?0:5))+(e.key==="ArrowRight"?1:-1)));ssShow(gg,v);ssSave(gg,v)})})();
+
+/* ---------- Incidencias y sugerencias (v272) ----------
+   Perfil › «Ayuda y sugerencias»: dos filas abren la misma hoja (Incidencia | Sugerencia).
+   El envío va al servidor (/feedback), que abre un issue en un repositorio privado de GitHub; el token vive solo en el servidor.
+   Se envía solo lo que la persona escribe, la zona, la captura que elija y, si quiere, datos técnicos. Nada de Strava, salud ni comidas por su cuenta.
+   Sin conexión: se guarda en una cola local y se envía al volver la red. Clases fb- */
+const fbLater=e=>!(e&&e.status)||e.status===404||e.status===503; /* sin red o servidor aún sin esta función: a la cola */
+const FB_W=["Hoy","Plan","Actividad","Progreso","Fuerza","Perfil","Otro"],FB_Q="sustrato-fb-cola",FB_MAX=2000;
+function fbTech(){const ua=navigator.userAgent,an=(ua.match(/Android [\d.]+/)||[""])[0],io=(ua.match(/(?:iPhone )?OS ([\d_]+)/)||[])[1],dev=(ua.match(/Android [\d.]+; ([^;)]+)/)||[])[1];
+  const d=new Date(),dk=document.documentElement.getAttribute("data-theme")==="light";
+  return[`Sustrato ${APP_VER} · ${an||(io?"iOS "+io.replace(/_/g,"."):"web")}${window.__native?"":" · navegador"}`,
+    `${dev?dev.trim()+" · ":""}${innerWidth}×${innerHeight} · ${dk?"modo claro":"modo oscuro"}`,
+    `${navigator.language||"es"} · ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`].join("\n")}
+function fbCard(){const I=(d,c)=>`<span class="fb-ic" style="--c:var(--${c});--c-v:var(--${c}-v,var(--${c}))"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg></span>`,
+  ch='<svg class="fb-ch" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',q=fbQueue().length;
+  return`<section class="glass pad fade fb-card"><span class="pkk">Ayuda y sugerencias</span><p class="fb-sub">Lo leo todo. Si algo falla, cuanto más concreto, antes lo arreglo.</p>
+  <button type="button" class="fb-row" data-fb="bug">${I('<path d="M12 3.5 21 19H3z"/><path d="M12 10v4M12 16.6v.1"/>',"naranja")}<span><b>Algo no funciona</b><small>Cuéntame qué ha pasado y dónde</small></span>${ch}</button>
+  <button type="button" class="fb-row" data-fb="idea">${I('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',"amarillo")}<span><b>Tengo una idea</b><small>Algo que añadirías o cambiarías</small></span>${ch}</button>
+  ${q?`<p class="fb-q">${q===1?"Un envío pendiente":q+" envíos pendientes"}: saldrá en cuanto sea posible.</p>`:""}</section>`}
+function fbHtml(){const f=S.fb,bug=f.k==="bug",acc=!!(S.acct&&S.acct.t);
+  if(f.sent)return`<div class="overlay" data-close="1"><div class="sheet glass pad fade fb-sh" role="dialog" aria-modal="true" aria-label="Enviado">
+    <div class="row"><h3 style="margin:0">${bug?"Algo no funciona":"Tengo una idea"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
+    <div class="fb-done" role="status"><span class="fb-ok"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    <b>${f.sent==="cola"?"Guardado":"Recibido, gracias"}</b><p>${f.sent==="cola"?"No se ha podido enviar ahora. Se enviará solo en cuanto sea posible.":bug?"Lo miro y, si necesito algo más, te escribo.":"La apunto. Las ideas que más se repiten van primero."}</p>
+    ${f.sent!=="cola"?`<code>#${esc(String(f.sent))}</code>`:""}<button type="button" class="btn" data-fbx="again">Enviar otra</button></div></div></div>`;
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade fb-sh" role="dialog" aria-modal="true" aria-label="${bug?"Algo no funciona":"Tengo una idea"}">
+  <div class="row"><h3 style="margin:0">${bug?"Algo no funciona":"Tengo una idea"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
+  <div class="seg fb-seg" role="radiogroup" aria-label="Tipo"><button type="button" role="radio" data-fbx="k:bug" aria-checked="${bug}">Incidencia</button><button type="button" role="radio" data-fbx="k:idea" aria-checked="${!bug}">Sugerencia</button></div>
+  <label class="fb-f" for="fbt"><span>${bug?"¿Qué ha pasado?":"¿Qué te gustaría?"}</span><textarea id="fbt" maxlength="${FB_MAX}" rows="5" placeholder="${bug?"Ej.: al guardar una rutina de fuerza, se cierra la hoja y no aparece en la lista.":"Ej.: poder duplicar una semana de menú entera."}">${esc(f.text||"")}</textarea></label>
+  <span class="fb-n" id="fbn">${(f.text||"").length} / ${FB_MAX}</span>
+  <div class="fb-f"><span id="fbwl">${bug?"¿Dónde?":"¿Sobre qué?"}</span><div class="chips" role="group" aria-labelledby="fbwl">${FB_W.map(w=>`<button type="button" class="chip" data-fbx="w:${w}" aria-pressed="${f.where===w}">${w}</button>`).join("")}</div></div>
+  <div class="fb-f"><span>Captura <small>opcional</small></span>${f.img?`<div class="fb-img"><img src="${f.img}" alt="Captura adjunta"><button type="button" class="chip danger" data-fbx="noimg">Quitar</button></div>`
+    :`<label class="fb-add"><input type="file" accept="image/*" id="fbimg" class="vh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m20.5 16-5-5-8 8"/></svg>Adjuntar captura</label>`}</div>
+  <div class="fb-tgs">${bug?`<div class="tg-r"><span class="tg-t"><b>Incluir datos técnicos</b><small>Versión, móvil y pantalla</small></span><button type="button" class="tg-sw" role="switch" data-fbx="tech" aria-checked="${!!f.tech}" aria-label="Incluir datos técnicos"></button></div>
+    ${f.tech?`<button type="button" class="fb-more" data-fbx="see" aria-expanded="${!!f.see}">${f.see?"Ocultar lo que se envía":"Ver lo que se envía"}</button>${f.see?`<pre class="fb-tech">${esc(fbTech())}</pre>`:""}`:""}`:""}
+    <div class="tg-r"><span class="tg-t"><b>Quiero respuesta</b><small>${f.reply?(acc?"Te contestaré al correo de tu cuenta":"Escribe a qué correo te contesto"):"Se envía sin tu correo"}</small></span><button type="button" class="tg-sw" role="switch" data-fbx="reply" aria-checked="${!!f.reply}" aria-label="Quiero respuesta"></button></div>
+    ${f.reply&&!acc?`<label class="fb-f" for="fbm"><span class="vh">Tu correo</span><input id="fbm" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" value="${esc(f.mail||"")}"></label>`:""}</div>
+  <p class="fb-note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Solo se envía lo que escribas${bug&&f.tech?", los datos técnicos":""} y la captura que elijas. Nada de Strava, de tu salud ni de tus comidas va por su cuenta.</span></p>
+  <button type="button" class="btn primary big fb-go" data-fbx="send" ${fbReady()&&!f.busy?"":"disabled"}>${f.busy?"Enviando…":"Enviar"}</button></div></div>`}
+function fbReady(){const f=S.fb;return(f.text||"").trim().length>=10&&(!f.reply||(S.acct&&S.acct.t)||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.mail||""))}
+function fbOpen(k){S.fb=Object.assign({k,where:null,tech:true,reply:false,text:"",mail:"",img:null},S.fb&&!S.fb.sent?{text:S.fb.text,where:S.fb.where,img:S.fb.img}:{},{k,sent:null,busy:false});S.sheet="fb";renderModal()}
+/* reduce la captura a 1280 px de alto como mucho, en JPEG */
+function fbShrink(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+function fbQueue(){try{return JSON.parse(localStorage.getItem(FB_Q)||"[]")}catch(e){return[]}}
+function fbSetQueue(q){try{q.length?localStorage.setItem(FB_Q,JSON.stringify(q)):localStorage.removeItem(FB_Q)}catch(e){}}
+async function fbPost(body){const c=await cloudCfg(),h={"Content-Type":"application/json","X-Sustrato-Key":c.key||""};if(S.acct&&S.acct.t)h.Authorization="Bearer "+S.acct.t;
+  const r=await fetch(c.api.replace(/\/$/,"")+"/feedback",{method:"POST",headers:h,body:JSON.stringify(body)});const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server",status:r.status};return j}
+async function fbSend(){const f=S.fb;if(!fbReady()||f.busy)return;f.busy=true;renderModal();
+  const body={k:f.k,text:f.text.trim().slice(0,FB_MAX),where:f.where||"",tech:f.k==="bug"&&f.tech?fbTech():"",reply:!!f.reply,mail:f.reply&&!(S.acct&&S.acct.t)?f.mail.trim():"",img:f.img||""};
+  try{const j=await fbPost(body);Object.assign(S.fb,{busy:false,sent:(j&&j.n)||"ok",text:"",where:null,img:null})}
+  catch(e){if(!fbLater(e)){S.fb.busy=false;renderModal();toast(e.code==="too_many"?"Espera un momento antes de enviar otra":"No se ha podido enviar. Inténtalo más tarde.");return}
+    const q=fbQueue();q.push(body);fbSetQueue(q);Object.assign(S.fb,{busy:false,sent:"cola",text:"",where:null,img:null})}
+  buzz(10);renderModal();if(S.tab==="perfil")render()}
+async function fbFlush(){const q=fbQueue();if(!q.length||!navigator.onLine)return;const rest=[];
+  for(const b of q){try{await fbPost(b)}catch(e){if(fbLater(e))rest.push(b)}}fbSetQueue(rest);if(rest.length<q.length&&S.tab==="perfil")render()}
+addEventListener("online",fbFlush);setTimeout(fbFlush,8000);
+document.addEventListener("click",e=>{const o=e.target.closest&&e.target.closest("[data-fb]");if(o){fbOpen(o.dataset.fb);return}
+  const t=e.target.closest&&e.target.closest("[data-fbx]");if(!t||!S.fb)return;const a=t.dataset.fbx,f=S.fb;
+  if(a.startsWith("k:"))f.k=a.slice(2);else if(a.startsWith("w:")){const w=a.slice(2);f.where=f.where===w?null:w}
+  else if(a==="tech"){f.tech=!f.tech;f.see=false}else if(a==="see")f.see=!f.see;else if(a==="reply")f.reply=!f.reply;else if(a==="noimg")f.img=null;
+  else if(a==="again"){S.fb=null;fbOpen(f.k);return}else if(a==="send"){fbSend();return}
+  renderModal()});
+document.addEventListener("input",e=>{if(!S.fb)return;const id=e.target.id;
+  if(id==="fbt"){S.fb.text=e.target.value;const n=$("#fbn");if(n)n.textContent=e.target.value.length+" / "+FB_MAX}else if(id==="fbm")S.fb.mail=e.target.value;else return;
+  const g=document.querySelector(".fb-go");if(g)g.disabled=!fbReady()});
+document.addEventListener("change",async e=>{if(e.target.id!=="fbimg"||!e.target.files||!e.target.files[0]||!S.fb)return;
+  try{S.fb.img=await fbShrink(e.target.files[0]);renderModal()}catch(err){toast("No se ha podido usar esa imagen")}});
 
 })();
 </script>
