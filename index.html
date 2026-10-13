@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T12:57:10.240Z">
+<meta name="sustrato-version" content="2026-10-13T13:25:14.468Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2385,8 +2385,8 @@ html body .pf-sw button{justify-content:center;background:transparent;border-rad
 .pf-pick button:active{transform:scale(.97)}
 .pf-pick button span{display:block;color:var(--muted);font-size:12px}
 .pf-pick button b{display:block;font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--muted);transition:color .2s}
-.pf-pick button[aria-pressed="true"]{background:color-mix(in srgb,var(--c-v,var(--c)) 16%,transparent)}
-.pf-pick button[aria-pressed="true"] span,.pf-pick button[aria-pressed="true"] b{color:var(--fg)}
+.pf-pick button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)} /* v267: acento, como el resto de lo seleccionado */
+.pf-pick button[aria-pressed="true"] span,.pf-pick button[aria-pressed="true"] b,.pf-pick button[aria-pressed="true"] small{color:var(--ac-on)}
 .rg{display:flex;align-items:center;gap:16px;margin-top:6px}
 .rg-g{position:relative;width:140px;height:140px;flex:none}
 .rg-g svg{display:block;width:100%;height:100%;overflow:visible}
@@ -2818,8 +2818,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .ms-ai span{min-width:0}
 .ph-txt{display:grid;place-items:center;color:var(--fg)}
 
-/* v264 · IA: revisión semanal (075). Clases wr-. v265: arriba del resumen y más visible */
-.wr{margin:12px 0 16px;padding:16px;border-radius:14px;background:var(--card2)}
+/* v264 · IA: revisión semanal (075). Clases wr-. v265: más visible; v267: debajo de las cifras del resumen */
+.wr{margin:16px 0 0;padding:16px;border-radius:14px;background:var(--card2)}
 .wr-h{display:flex;align-items:center;gap:8px;margin:0 0 8px;font-size:17px}
 .wr-h b{font-weight:600}
 .wr-t{margin:0;font-size:17px;line-height:1.45;color:var(--fg)}
@@ -2863,6 +2863,9 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .pd-rs{display:flex;align-items:center;gap:10px}
 .pd-rs button{appearance:none;border:0;width:34px;height:34px;flex:none;border-radius:10px;background:var(--card);color:var(--fg);font:400 20px/1 var(--font);cursor:pointer}
 .pd-rs button:active{transform:scale(.94)}
+
+/* v267 · Avatar en el botón de Perfil (080). Como el de la tarjeta de Perfil, en pequeño. Clase .hav */
+.hav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--morado);font:600 13px var(--font)}
 
 </style>
 
@@ -2943,7 +2946,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="266";
+const APP_VER="267";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3219,7 +3222,7 @@ function supplements(t){
   const out=[];
   out.push({ic:icon("scoop","var(--rojo)"),n:"Creatina monohidrato",ev:"Alta",why:goal==="hyper"||goal==="recomp"?"Fuerza, masa muscular y recuperación: encaja con tu objetivo.":"Fuerza y recuperación entre sesiones.",dose:"3–5 g al día, cualquier hora, mejor con comida. Todos los días, también los de descanso.",note:"Puede subir 1–2 kg de agua intramuscular la báscula."});
   if(intense||longest>=1.5)out.push({ic:icon("cup","var(--amarillo)"),n:"Cafeína",ev:"Alta",why:"Mejora el rendimiento en esfuerzos intensos y en sesiones largas.",dose:fmtInt(3*w)+"–"+fmtInt(5*w)+" mg (3–5 mg/kg) entre 45 y 60 min antes. Un café solo tiene unos 80–100 mg.",note:late?"Entrenas por la tarde: baja a 1–2 mg/kg o sáltatela si te quita el sueño.":"Evítala en las 6–8 h antes de dormir."});
-  if(longest>=1.25)out.push({ic:icon("gel","var(--amarillo)"),n:"Hidratos durante el ejercicio (gel, bebida, plátano)",ev:"Alta",why:"Tu sesión más larga dura "+fmtDur(longest*3600)+": sin aporte, el glucógeno se agota.",dose:"30–60 g de hidratos por hora a partir de los 60–75 min.",note:"Practícalo en entrenos antes de usarlo en carrera."});
+  if(longest>=1.5)out.push({ic:icon("gel","var(--amarillo)"),n:"Hidratos durante el ejercicio (gel, bebida, plátano)",ev:"Alta",why:"Tu sesión más larga dura "+fmtDur(longest*3600)+": sin aporte, el glucógeno se agota.",dose:"Para entrenar, 20–50 g de hidratos por hora a partir de hora y media, según intensidad; en carrera, 45–70 g/h.",note:"Practícalo en entrenos antes de usarlo en carrera."});
   if(longest>=1.5)out.push({ic:icon("bottle","var(--cian)"),n:"Electrolitos (sodio)",ev:"Alta",why:"Sesión larga: el sodio que pierdes sudando afecta al rendimiento.",dose:"300–600 mg de sodio por hora en la bebida.",note:"Más si hace calor o sudas mucho (manchas de sal en la ropa)."});
   if(intense&&ses.some(s=>s.sport==="run"||s.sport==="trail"))out.push({ic:icon("beet","var(--azul)"),n:"Nitratos (zumo de remolacha)",ev:"Moderada-alta",why:"Mejora la economía en esfuerzos de 5 a 30 min, como un test o una carrera corta.",dose:"6–8 mmol de nitrato (≈70 ml de concentrado o 500 ml de zumo) 2–3 h antes.",note:"No uses enjuague bucal antiséptico ese día: anula el efecto."});
   out.push({ic:icon("shaker","var(--rojo)"),n:"Proteína en polvo (whey)",ev:"Alta como alimento",why:"Útil si no llegas a tus "+fmtInt(t.P)+" g de proteína con comida.",dose:"20–40 g después de entrenar o en la merienda.",note:"Es comida práctica, no un extra mágico: si llegas con la dieta, no hace falta."});
@@ -3575,7 +3578,7 @@ const SP_IC={run:'<g transform="translate(0.8 -0.35)"><circle cx="13.5" cy="4" r
   walk:'<g transform="translate(0.1 -0.4)"><circle cx="13" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M7 21l3-4"/><path d="M16 21l-2-4-3-3 1-6"/><path d="M6 12l2-3 4-1 3 3 3 1"/></g>',
   hike:'<g transform="translate(-0.4 -0.8)"><circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M7 21l2-4"/><path d="M13 21v-4l-3-3 1-6 3 4 3 2"/><path d="M17 11v10"/></g>',
   oth:'<path d="M3 12h4l3 7 4-14 3 7h4"/>',
-  rest:'<g transform="translate(1 -0.5)"><path d="M12 3h.4a7.5 7.5 0 0 0 7.9 12.4A9 9 0 1 1 12 3z"/></g>'}; /* v262: descanso = luna (reposo, como en iOS) */
+  rest:'<g transform="translate(0.4 0)"><path d="M12 3h.4a7.5 7.5 0 0 0 7.9 12.4A9 9 0 1 1 12 3z"/></g>'}; /* v262: descanso = luna (reposo, como en iOS) */
 SP_IC.bike=SP_IC.road;SP_IC.foot=SP_IC.walk; /* v266: carretera, gravel, rodillo y natación; bike y foot para los filtros por familia */
 /* v263: cada icono lleva su corrección de centro óptico (la masa del dibujo, no su caja), medida a 480 px */
 /* tesela neutra (guía: «Deporte»): spIcon(deporte, "sm"|"xs"|"plan") */
@@ -3724,7 +3727,7 @@ function islSet(k){if(!S.pa||S.pa.int===k)return;S.pa.int=k;const r=$("#isl");if
   document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest("[data-isl]");if(!t||!S.pa)return;const i=INT_K.indexOf(S.pa.int||"s");
     if(e.key==="ArrowRight"||e.key==="ArrowUp"){e.preventDefault();islSet(INT_K[Math.min(2,i+1)])}if(e.key==="ArrowLeft"||e.key==="ArrowDown"){e.preventDefault();islSet(INT_K[Math.max(0,i-1)])}})})();
 function stBuilder(p){const st=p.steps||[],T=stTotal(st),kg=num((S.profile||{}).weight)||70,ftp=isBike(p.sport)?perfFtp():null,pw=!!(ftp&&p.pw),e=estSession({sport:p.sport,steps:st,pw},kg);
-  const fm=[];if(T>=75)for(let m=T<120?40:30;m<T-10;m+=20)fm.push(m);
+  const fm=[];if(fuelTarget(T,stInt(st),p.race)>0)for(let m=T<150?40:30;m<T-10;m+=20)fm.push(m);
   return`${ftp?`<div class="seg str-pwm" role="group" aria-label="Cómo marcar la intensidad"><button type="button" data-sx="pw|0|0" aria-pressed="${!pw}">Por zonas</button><button type="button" data-sx="pw|1|0" aria-pressed="${pw}">Por potencia</button></div>`:""}<div class="pa-f"><span class="pa-l">Plantilla</span><div class="chips">${Object.entries(ST_TPL).map(([k,[l]])=>`<button type="button" class="chip sm" data-sx="tpl|${k}|0" aria-pressed="${p.tpl===k}">${l}</button>`).join("")}</div></div>
   <div class="str-sum">${st.length?stProfile(st):""}<div class="str-kpi"><div><b>${fmtDur(T*60)}</b><span>total</span></div><div><b>${fmtInt(e.kcal)}</b><span>kcal</span></div><div><b>${fmtInt(e.cho/4)} g</b><span>hidratos</span></div></div>${pw&&e.kj?`<p class="str-fuel">Media ${fmtInt(e.avgW)} W · ${fmtInt(e.kj)} kJ de trabajo · con FTP ${ftp} W</p>`:""}
     ${fm.length?`<p class="str-fuel">Avisos de avituallamiento en el min ${fm.join("′, ")}′</p>`:""}</div>
@@ -4167,11 +4170,11 @@ function weekCard(){const lw=shiftKey(mondayOf(today()),-7),wk=S.wkSum||lw,st=we
     ["Sueño",st.sl.good+st.sl.ok+st.sl.bad?st.sl.good+"/"+(st.sl.good+st.sl.ok+st.sl.bad):"—",st.sl.good+st.sl.ok+st.sl.bad?"noches buenas":"sin registrar",""]];
   return`<section class="glass pad fade ws-card" id="wkcard"><div class="row"><span class="pkk">Resumen semanal</span><div class="pnav sm"><button class="chip sm" data-wks="-7" aria-label="Semana anterior">‹</button><button class="chip sm" data-wks="7" aria-label="Semana siguiente" ${wk>=lw?"disabled":""}>›</button></div></div>
     <p class="ws-p">${esc(periodLabel("week",wk))}${wk===lw?" · la semana pasada":""}</p>
-    ${wrBlock(wk)}
     ${bar?`<div class="ws-bar" role="img" aria-label="Tiempo por deporte">${bar}</div><div class="ws-lg">${lg}</div>`:`<p class="note">Sin entrenos esta semana.</p>`}
     <div class="ws-g">${tiles.map(([l,v,u,d])=>`<div><span>${l}</span>${(()=>{const phys=/^(km|kg|ppm)$/.test(u);return`<b>${v}${phys&&v!=="—"?` <small>${u}</small>`:""}</b>${u&&(!phys||v==="—")&&!(phys&&v==="—")?`<small class="ws-na">${u}</small>`:""}`})()}${d}</div>`).join("")}</div>
     ${st.longest?`<p class="ws-hl"><span class="ws-star" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Sesión más larga: ${esc(SPORT_L[st.longest.sport])} · ${fmtDur(st.longest.mov)}${st.longest.dist?" · "+f1(st.longest.dist/1000)+" km":""} el ${esc(dateLabel(st.longest.day))}</p>`:""}
-</section>`}
+
+    ${wrBlock(wk)}</section>`}
 function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!==2))return"";const lw=shiftKey(mondayOf(today()),-7);let hid=null;try{hid=localStorage.getItem("sustrato-wkseen")}catch(e){}if(hid===lw||S._wkSeen===lw)return"";
   const st=weekStats(lw);if(!st.n&&!st.logged)return"";
   return`<section class="glass pad fade ws-tease"><div><span class="pkk">Tu semana pasada</span><p>${st.n} entrenos · ${fmtDur(st.t)}${st.cmp.n?` · plan ${st.cmp.ok}/${st.cmp.n}`:""}</p></div><button class="btn sm primary" data-wkgo="${lw}">Ver resumen</button></section>`}
@@ -4182,7 +4185,6 @@ const PT_T={gel:["Gel","var(--amarillo)"],drink:["Bebida","var(--cian)"],bar:["B
 function pantry(){const own=S.pantry||[];return own.concat(PT_DEF.filter(d=>!own.some(o=>o.id===d.id)))}
 function ptById(id){return pantry().find(p=>p.id===id)}
 function ptSub(p){return[p.c+" g hidratos",p.caf?p.caf+" mg cafeína":null,p.na?p.na+" mg sodio":null].filter(Boolean).join(" · ")}
-function fuelTarget(min){return min<75?0:min<120?40:min<180?60:75}
 function fuelTol(){const L=(S.fuel||[]).filter(x=>x.gi==="good"&&x.cph>0);return L.length?Math.max(...L.map(x=>x.cph)):null}
 function flTotals(items){let c=0,caf=0,na=0;(items||[]).forEach(it=>{const p=ptById(it.pid);if(!p)return;c+=p.c*it.q;caf+=(p.caf||0)*it.q;na+=(p.na||0)*it.q});return{c,caf,na}}
 function flSummary(a,ex){const T=flTotals(ex.items),kg=num((S.profile||{}).weight)||70;
@@ -4194,7 +4196,7 @@ function flSummary(a,ex){const T=flTotals(ex.items),kg=num((S.profile||{}).weigh
 function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=(S.fuel||[]).find(x=>x.id===a.id);
   if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
-  const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelTarget(a.mov/60),kg=num((S.profile||{}).weight)||70;
+  const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelTarget(a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
   const used=new Set(dr.items.map(i=>i.pid)),uses={},last={};(S.fuel||[]).forEach(f=>(f.items||[]).forEach(it=>{uses[it.pid]=(uses[it.pid]||0)+1;if(!last[it.pid]||f.d>last[it.pid])last[it.pid]=f.d}));
   const own=new Set((S.pantry||[]).map(p=>p.id)),ranked=pantry().filter(p=>!used.has(p.id)).map((p,i)=>({p,i})).sort((x,y)=>(uses[y.p.id]||0)-(uses[x.p.id]||0)||(last[y.p.id]||"").localeCompare(last[x.p.id]||"")||(own.has(y.p.id)-own.has(x.p.id))||x.i-y.i).map(x=>x.p);
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
@@ -4218,10 +4220,10 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
   const dots=L.map((x,i)=>`<line x1="${X(i).toFixed(1)}" x2="${X(i).toFixed(1)}" y1="${Y(x.tg||0).toFixed(1)}" y2="${Y(x.cph).toFixed(1)}" stroke="rgba(127,127,127,.35)" stroke-width="2"/>${x.tg?`<rect x="${(X(i)-6).toFixed(1)}" y="${(Y(x.tg)-1).toFixed(1)}" width="12" height="2" fill="var(--fg)" opacity=".5"/>`:""}<circle cx="${X(i).toFixed(1)}" cy="${Y(x.cph).toFixed(1)}" r="6" fill="${gc[x.gi]||"#8e8e93"}" data-tip="${esc(dateLabel(x.d))} · ${esc(SPORT_L[x.sport])}|${x.cph} g/h${x.tg?" (objetivo "+x.tg+")":""} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}"/>`).join("");
   return`<section class="glass pad fade fl-card"><span class="pkk">Avituallamiento en carrera</span>
     <div class="vhead" data-vzread><b>${tol!=null?tol:"—"}</b><span>${tol!=null?"g/h de hidratos sin molestias":"aún sin una toma sin molestias"} · ${L.length} ${L.length===1?"sesión":"sesiones"}</span></div>
-    ${VZ.bars({id:"fl",label:"Hidratos por hora en tus sesiones largas",cols:L.map(x=>({x:VZ.sd(x.d),segs:[{v:x.cph,c:gc[x.gi]||"var(--vz-n2)"}],read:`<b>${x.cph}</b><span>g/h el ${esc(dateLabel(x.d))} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}</span>`})),refs:[{v:60,label:"60 g/h"}]})}
+    ${VZ.bars({id:"fl",label:"Hidratos por hora en tus sesiones largas",cols:L.map(x=>({x:VZ.sd(x.d),segs:[{v:x.cph,c:gc[x.gi]||"var(--vz-n2)"}],read:`<b>${x.cph}</b><span>g/h el ${esc(dateLabel(x.d))} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}</span>`})),refs:[]})}
     <svg class="fl-ch" style="display:none" viewBox="0 0 ${W} ${H}" role="img" aria-hidden="true">${[30,60,90].filter(v=>v<mx).map(v=>`<line x1="34" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(127,127,127,.18)" stroke-dasharray="2 4"/><text x="0" y="${(Y(v)+4).toFixed(1)}" class="ax" font-size="11" fill="currentColor" opacity=".55">${v} g/h</text>`).join("")}${dots}</svg>
     <div class="ws-lg"><span><i style="background:var(--verde)"></i>Bien</span><span><i style="background:color-mix(in srgb,var(--naranja) 55%,var(--card))"></i>Regular</span><span><i style="background:var(--naranja)"></i>Molestias</span></div>
-    <p class="note" style="margin:8px 0 0">${tol!=null&&tol<60?"Entrena el estómago: sube unos 10 g/h cada semana en tus sesiones largas hasta 60–90 g/h.":"El intestino se entrena: practica en las tiradas largas lo que tomarás en carrera."}</p></section>`}
+    <p class="note" style="margin:8px 0 0">Si preparas una carrera larga, el estómago se entrena: sube unos 10 g/h por semana en tus salidas largas y practica lo que tomarás ese día.</p></section>`}
 function fitCard(){
   if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
   const st=tsbState(now.tsb),w=400,h=230,PL=34,PR=4,PT=22,H1=128,G=14,H2=46,iw=w-PL-PR,n=pts.length;
@@ -5316,7 +5318,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const sp=a.vo2&&a.ftp?(S.pfSp||"run"):a.vo2?"run":"bike",f1=v=>v.toFixed(1).replace(".",",");
   const wkB=kg&&a.ftp?a.ftp/kg:null,lvB=wkB==null?"":wkB<2?"Inicio":wkB<2.8?"Aficionado":wkB<3.5?"Bueno":wkB<4.2?"Muy bueno":"Excelente",lvR=(vo2Norm(a.vo2)||"").replace(/^./,c=>c.toUpperCase());
   /* La elegida muestra su nivel (la cifra ya va grande debajo); la otra, su cifra, para verla sin cambiar */
-  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}" style="--c:${c};--c-v:${vivo(c)}"><span>${l}</span><b>${sp===k&&lv?esc(lv):`${v} <small>${u}</small>`}</b></button>`).join("")}</div>`:"";
+  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}"><span>${l}</span><b>${sp===k&&lv?esc(lv):`${v} <small>${u}</small>`}</b></button>`).join("")}</div>`:"";
   const scale=(bands,val,c)=>{const j=bands.findIndex(x=>val<x[1]),jj=j<0?bands.length-1:j,b=bands[jj],pos=(jj+Math.max(0,Math.min(1,(val-b[0])/(b[1]-b[0]))))/bands.length*100;
     return`<div class="rh-bar pf-bar">${bands.map((x,i)=>`<span class="${i===jj?"on":""}" style="flex:1;background:color-mix(in srgb,${c} ${[18,32,48,64,82,100][Math.round(i*5/(bands.length-1))]}%,var(--card))!important"><em>${x[2]}</em><u>${x[3]}</u></span>`).join("")}<i style="left:${Math.max(1,Math.min(99,pos)).toFixed(1)}%"></i></div>`};
   const zrow=(z,l,r)=>`<div class="pf-z"><i style="background:${Z_C[z]}"></i><span><b>Z${z}</b> ${l}</span><em>${r}</em></div>`;
@@ -5494,23 +5496,23 @@ function phCard(m){const p=S.ph;if(!p||p.mid!==m.id||p.k!==S.day)return"";
 
 /* ---------- Avituallamiento y carrera ---------- */
 function fuelCard(t){
-  const ses=t.acts.map(a=>({id:"a"+a.id,n:SPORT_L[a.sport],sport:a.sport,min:Math.round(a.mov/60),time:(a.start||"").slice(11,16)})).concat(t.plan.map((s,i)=>({id:"p"+i,n:sessName(s),sport:s.sport,min:s.dur,time:s.time})));
-  const long=ses.filter(s=>s.min>=75);if(!long.length)return"";
+  const ses=t.acts.map(a=>({id:"a"+a.id,n:SPORT_L[a.sport],sport:a.sport,min:Math.round(a.mov/60),time:(a.start||"").slice(11,16),it:actInt(a)})).concat(t.plan.map((s,i)=>({id:"p"+i,n:sessName(s),sport:s.sport,min:s.dur,time:s.time,it:s.int,race:!!s.race})));
+  const long=ses.filter(s=>fuelTarget(s.min,s.it,s.race)>0);if(!long.length)return"";
   const k=S.day,canLog=k<=today();
   const rows=long.map(s=>{
-    const h=s.min/60,cph=s.min<120?40:s.min<180?60:75,carbs=Math.round(cph*Math.max(0,h-(s.min<120?.5:0)));
+    const h=s.min/60,cph=fuelTarget(s.min,s.it,s.race),carbs=fuelCarbs(s.min,cph);
     const T=tempAt(k,s.time,s.min),hf=heatF(T),flu=Math.round(sweatRate(s.sport)*.75*hf*h*1000/50)*50,na=Math.round(450*hf*h/50)*50,gels=Math.ceil(carbs/25),bott=Math.max(1,Math.round(flu/500));
-    const steps=[];for(let m=s.min<120?40:30;m<s.min-10;m+=20)steps.push(m);const per=steps.length?Math.round(carbs/steps.length):0;
+    const gap=cph<=30?45:cph<=50?30:20,steps=[];for(let m=s.min<150?40:30;m<s.min-10;m+=gap)steps.push(m); /* v267: con poco por hora, tomas más espaciadas */const per=steps.length?Math.round(carbs/steps.length):0;
     const key="fuel_"+s.id,done=!!((S.log[k]||{})[key]);
     return`<details class="fu2${done?" done":""}"><summary>${spIcon(s.sport)}<span class="tc-tx"><b>${esc(s.n)}</b><small>${fmtDur(s.min*60)}${s.time?" · "+esc(s.time):""}</small></span><span class="tc-meta"><b>${carbs} g</b><small>hidratos</small></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="fu2-d">
         ${T!=null?`<span class="fu2-t${T>=27?" hot":""}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/></svg>${Math.round(T)} °C${T>=27?" · bebe antes de tener sed":" a esa hora"}</span>`:""}
         <div class="fu2-k"><div style="--c:var(--amarillo);--c-v:var(--amarillo-v,var(--amarillo))"><span>Hidratos</span><b>${carbs}<small> g</small></b><em>${cph} g/h</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Líquido</span><b>${(flu/1000).toFixed(1).replace(".",",")}<small> L</small></b><em>${T!=null?(hf>1.05?"+"+Math.round((hf-1)*100)+" % calor":hf<.95?"menos por el fresco":"con sales"):"con sales"}</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Sodio</span><b>${fmtInt(na)}<small> mg</small></b><em>en total</em></div></div>
         ${steps.length?`<div class="fu2-tl" aria-label="Cuándo tomarlo">${steps.map(m=>`<span><b>${m}′</b><small>${per} g</small></span>`).join("")}</div>`:""}
-        <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} bidón${bott>1?"es":""} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${T!=null&&T>=25&&cyActive()&&(cyAt(k)||{}).half===2?`<p class="cy-av">En la segunda mitad del ciclo empiezas a sudar algo más tarde: con este calor, bebe desde el principio, sin esperar a tener sed.</p>`:""}${(()=>{const tl=fuelTol();return tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
+        <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} ${bott>1?"bidones":"bidón"} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${T!=null&&T>=25&&cyActive()&&(cyAt(k)||{}).half===2?`<p class="cy-av">En la segunda mitad del ciclo empiezas a sudar algo más tarde: con este calor, bebe desde el principio, sin esperar a tener sed.</p>`:""}${(()=>{const tl=fuelTol();return tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
         ${canLog?`<button class="btn sm ${done?"":"primary"}" data-fuel="${key}" data-c="${carbs}" aria-pressed="${done}">${done?"✓ Tomado · deshacer":"Marcar como tomado"}</button>`:""}
       </div></details>`}).join("");
-  return`<section class="glass pad fade"><h2>Avituallamiento</h2><p class="fdesc" style="margin:2px 0 0">Para tus sesiones largas. ${canLog?"Al marcarlo, sus hidratos cuentan en lo que llevas comido.":""}</p><div class="tc-list">${rows}</div></section>`;
+  return`<section class="glass pad fade"><h2>Avituallamiento</h2><p class="fdesc" style="margin:2px 0 0">Para tus sesiones largas. ${canLog?"Al marcarlo, sus hidratos cuentan en lo que llevas comido.":""}</p><div class="tc-list">${rows}</div>${fuelWhy()}</section>`;
 }
 function nextRace(k){for(let i=0;i<=2;i++){const d=shiftKey(k,i),r=plannedFor(d).find(s=>s.race);if(r)return{d,s:r,inD:i}}return null}
 function raceCard(t){
@@ -5522,7 +5524,7 @@ function raceCard(t){
       [fromMin(Math.max(0,st-150)),"Remolacha (opcional)","Unos 70 ml de concentrado o 500 ml de zumo para mejorar la economía de carrera."],
       [fromMin(Math.max(0,st-60)),"Cafeína","Entre "+fmtInt(3*kg)+" y "+fmtInt(4*kg)+" mg si la toleras. Un espresso doble ronda los 150 mg."],
       [fromMin(Math.max(0,st-25)),"Calentamiento","15 minutos de trote suave y 3–4 progresivos."],
-      [fromMin(st),"Salida",dur>=60?"Toma 30–60 g de hidratos por hora a partir de los 30–40 minutos.":"Con menos de una hora no necesitas comer durante la carrera. Sale controlado el primer km."],
+      [fromMin(st),"Salida",dur>=60?"Toma unos "+fuelTarget(dur,"i",true)+" g de hidratos por hora a partir de los 30–40 minutos.":"Con menos de una hora no necesitas comer durante la carrera. Sale controlado el primer km."],
       [fromMin(st+dur+30),"Recuperación","En la hora siguiente: "+fmtInt(kg)+" g de hidratos y 25–30 g de proteína."]];
   }else if(r.inD===1){
     title="Mañana es la carrera";
@@ -6557,7 +6559,7 @@ function vPerfil(){
     </section>
   </div></div>`;
 }
-function render(){setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize()}}
+function render(){setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv()}}
 function render0(){
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
@@ -6706,7 +6708,7 @@ document.addEventListener("click",e=>{
     S.pantry=(S.pantry||[]).concat([p]);savePantry();if(S.flDraft)S.flDraft.items.push({pid:p.id,q:1});S.flNew=null;renderModal();toast("Añadido a tu despensa");return}
   if(t.dataset.flgi){if(S.flDraft)S.flDraft.gi=S.flDraft.gi===t.dataset.flgi?null:t.dataset.flgi;renderModal();return}
   if(t.dataset.flsave){const a=S.acts.find(x=>x.id===t.dataset.flsave),dr=S.flDraft;if(!a||!dr)return;const T=flTotals(dr.items);if(!T.c&&!dr.gi&&!dr.items.length){toast("Añade lo que tomaste");return}
-    const e={id:a.id,items:dr.items,gi:dr.gi,d:a.day,sport:a.sport,dur:a.mov,carbs:T.c,caf:T.caf,na:T.na,cph:Math.round(T.c/(a.mov/3600)),tg:fuelTarget(a.mov/60)};
+    const e={id:a.id,items:dr.items,gi:dr.gi,d:a.day,sport:a.sport,dur:a.mov,carbs:T.c,caf:T.caf,na:T.na,cph:Math.round(T.c/(a.mov/3600)),tg:fuelTarget(a.mov/60,actInt(a))};
     S.fuel=(S.fuel||[]).filter(x=>x.id!==a.id).concat([e]);saveFuel();buzz(12);S.flEditId=null;S.flDraft=null;renderModal();render();toast("Avituallamiento guardado · "+e.cph+" g/h");return}
   if(t.dataset.sweat){const a=S.acts.find(x=>x.id===t.dataset.sweat);const pre=num(($("#sw_pre")||{}).value),post=num(($("#sw_post")||{}).value),dr=num(($("#sw_drk")||{}).value)||0;
     if(!pre||!post||pre<30||post<30||pre-post>5||post-pre>2){toast("Revisa los pesos de antes y después");return}
@@ -7473,7 +7475,7 @@ Responde solo JSON: {"name":"nombre corto en español","portion":"la ración en 
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mstxt]");if(!b||!S.msh)return;e.stopPropagation();const q=S.msh.q;textEstimate(S.msh.mid,q,S.msh.k)},true);
 
 /* ---------- IA · Revisión semanal (v264) ----------
-   En Progreso › Resumen semanal, arriba del todo (v265), a petición: tres frases sobre la semana y un único ajuste para la siguiente.
+   En Progreso › Resumen semanal, debajo de sus cifras (v267), a petición: tres frases sobre la semana y un único ajuste para la siguiente.
    Solo con datos propios: comidas apuntadas, peso, sueño, pulso y VFC del reloj, el plan que tú hiciste y tus sensaciones.
    Nada de Strava (sus normas no permiten pasar sus datos a una IA): ni actividades, ni distancias, ni gasto del entreno.
    Se guarda en el dispositivo por semana. Clases: .wr */
@@ -7596,6 +7598,27 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   else if(a==="v"){const v=p.spd||pdSpeed(sp,p.int||"s").v,k=pdKind(sp);
     if(k==="bike")p.spd=Math.max(1,v+(+x)*.5/3.6);else{const per=k==="swim"?100:1000,s=Math.max(30,per/v-(+x)*5);p.spd=per/s}}
   buzz(6);pdSync(p);renderModal()},true);
+
+/* ---------- Hidratos durante el entreno: enfoque conservador según objetivo (v267) ----------
+   Antes: 40 / 60 / 75 g/h desde 75 min para todo el mundo, cifras de competición. Ahora (ACSM/IOC 2016; Jeukendrup 2014):
+   · Entreno: nada por debajo de 90 min. Con pérdida de grasa o recomposición, menos (una salida suave de 2 h se hace sin comer).
+   · Carrera marcada en el plan: 45 g/h hasta 2,5 h, 60 g/h hasta 4 h y 70 g/h más allá. Los 90 g/h solo los decide quien ya los tolera.
+   Se empieza a comer a partir de los 30 min. Lo tolerado sin molestias sigue avisando si la cifra lo supera. */
+const FUEL_TR={low:{b90:{s:0,m:20,i:30},b150:{s:30,m:30,i:40},b240:{s:40,m:40,i:40}},std:{b90:{s:20,m:30,i:40},b150:{s:30,m:40,i:50},b240:{s:50,m:50,i:50}}};
+function fuelTarget(min,it,race){if(race)return min<60?0:min<150?45:min<240?60:70;if(min<90)return 0;
+  const g=(S.profile||{}).goal,t=FUEL_TR[g==="loss"||g==="recomp"?"low":"std"],b=min<150?"b90":min<240?"b150":"b240";return t[b][it||"m"]||t[b].m}
+const fuelCarbs=(min,cph)=>Math.round(cph*Math.max(0,min/60-.5));
+/* intensidad de una actividad hecha: por el reparto de sustrato si lo hay; si no, moderada */
+function actInt(a){const u=S.subs[a.id];if(u&&u.cho+u.fat>0){const f=u.cho/(u.cho+u.fat);return f<.62?"s":f<.8?"m":"i"}return"m"}
+function fuelWhy(){const g=(S.profile||{}).goal,low=g==="loss"||g==="recomp";
+  return`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Para entrenar no hace falta comer como en una carrera. Por debajo de hora y media, nada: el glucógeno llega de sobra. A partir de ahí, según la intensidad y tu objetivo${low?" (con «"+esc((GOALS[g]||{}).label||"")+"», algo menos: una salida suave de 2 h se hace sin comer)":""}: de 20 a 50 g por hora. Si el entreno está marcado como carrera, 45 g/h hasta 2,5 h y 60–70 g/h en las más largas. Más de eso solo si ya lo toleras: el estómago se entrena poco a poco.</p></details>`}
+
+/* ---------- Avatar en el botón de Perfil de la cabecera (v267) ----------
+   La misma cara que en Perfil: tu foto si la has puesto; si no, tus iniciales; sin nombre, el icono de siempre. Clase .hav */
+function havSvg(){return'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M6.2 18.4a7 7 0 0 1 11.6 0"/></svg>'} /* función y no constante: render() puede llegar antes que este trozo */
+function hdrAv(){const b=$("#menuBtn");if(!b)return;const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"",key=(p.avatar||"")+"|"+ini;
+  if(b.dataset.av===key)return;b.dataset.av=key;const old=b.querySelector(":scope>svg,:scope>.hav");if(!old)return;
+  old.insertAdjacentHTML("beforebegin",p.avatar?`<img class="hav" src="${p.avatar}" alt="">`:ini?`<span class="hav" aria-hidden="true">${esc(ini)}</span>`:havSvg());old.remove()}
 
 })();
 </script>
