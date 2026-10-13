@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T18:39:48.747Z">
+<meta name="sustrato-version" content="2026-10-13T19:16:54.420Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1950,14 +1950,6 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
 /* v163 · ¿Cómo fue? con caritas que se iluminan */
 :root{--rpe1:var(--verde);--rpe1-v:var(--verde-v,var(--verde));--rpe2:var(--cian);--rpe2-v:var(--cian-v,var(--cian));--rpe3:var(--naranja);--rpe3-v:var(--naranja-v,var(--naranja));--rpe4:var(--rojo);--rpe4-v:var(--rojo-v,var(--rojo))}
 html[data-theme="light"]{--rpe1:var(--verde);--rpe1-v:var(--verde-v,var(--verde));--rpe2:var(--azul);--rpe2-v:var(--azul-v,var(--azul));--rpe3:var(--naranja);--rpe3-v:var(--naranja-v,var(--naranja));--rpe4:var(--rojo);--rpe4-v:var(--rojo-v,var(--rojo))}
-.rpe{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 6px;padding:10px 10px 10px 16px;border-radius:16px;background:var(--fill2,var(--card2))}
-.rpe-q{font:600 15px var(--font);color:var(--fg);white-space:nowrap;transition:color .2s}.rpe.on .rpe-q{color:var(--fg)}
-.rpe-f{display:flex;gap:6px}
-.rpe-b{appearance:none;border:0;background:transparent;color:var(--muted);width:46px;height:46px;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:color .2s,background .2s,transform .2s cubic-bezier(.3,1.6,.5,1),opacity .2s}
-.rpe.on .rpe-b{opacity:.45}
-.rpe-b[aria-pressed="true"]{opacity:1!important;color:var(--fg);background:color-mix(in srgb,var(--rc-v,var(--rc)) 18%,transparent);transform:scale(1.12)}
-.rpe-b:active{transform:scale(.9)}
-@media (prefers-reduced-motion:reduce){.rpe-b{transition:none}}
 
 /* v166 · mover entrenos arrastrando */
 [data-pmove]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab}
@@ -2169,15 +2161,14 @@ html:not([data-theme="light"]) .sp-pick[aria-pressed="true"]{background:color-mi
 html[data-theme="light"] .pf-cti{color:color-mix(in srgb,var(--c) 70%,#000)}
 /* v184 · Intensidad con deslizador de color */
 .isl-v{color:var(--fg);font-size:15px;font-weight:700}
-.isl{position:relative;height:44px;margin:2px 16px 0;touch-action:pan-y;cursor:pointer;outline:none}
-.isl::before{content:"";position:absolute;left:-16px;right:-16px;top:17px;height:10px;border-radius:999px;background:var(--fill)}
-.isl-f2{position:absolute;left:-16px;top:17px;height:10px;width:calc(var(--p) + 16px);min-width:10px;border-radius:999px;background:var(--c);transition:width .22s cubic-bezier(.3,.7,.2,1),background .2s}
+.isl{position:relative;height:44px;margin:2px 0 0;touch-action:pan-y;cursor:pointer;outline:none}
+.isl::before{content:"";position:absolute;left:calc(100% / 6 - 5px);right:calc(100% / 6 - 5px);top:17px;height:10px;border-radius:999px;background:var(--fill)}
+.isl-f2{position:absolute;left:calc(100% / 6 - 5px);top:17px;height:10px;width:calc(var(--p) * 2 / 3 + 10px);min-width:10px;border-radius:999px;background:var(--c);transition:width .22s cubic-bezier(.3,.7,.2,1),background .2s}
 .isl-st{position:absolute;top:18px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#fff;opacity:.85}
-.isl-th{position:absolute;top:6px;left:var(--p);width:32px;height:32px;margin-left:-16px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 0 0 6px var(--c);transition:left .22s cubic-bezier(.3,.7,.2,1),box-shadow .2s}
+.isl-th{position:absolute;top:6px;left:calc(100% / 6 + var(--p) * 2 / 3);width:32px;height:32px;margin-left:-16px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 0 0 6px var(--c);transition:left .22s cubic-bezier(.3,.7,.2,1),box-shadow .2s}
 .isl:focus-visible .isl-th{outline:2px solid var(--c);outline-offset:3px}
-.isl-lb{display:flex;justify-content:space-between;margin-top:2px}
-.isl-lb button{appearance:none;border:0;background:none;padding:6px 0;font:500 14px var(--font);color:var(--muted);cursor:pointer;min-width:72px}
-.isl-lb button:nth-child(2){text-align:center}.isl-lb button:first-child{text-align:left}.isl-lb button:last-child{text-align:right}
+.isl-lb{display:grid;grid-template-columns:repeat(3,1fr);margin-top:2px} /* v271: cada palabra bajo su parada */
+.isl-lb button{appearance:none;border:0;background:none;padding:6px 0;font:500 14px var(--font);color:var(--muted);cursor:pointer;text-align:center}
 .isl-lb button[aria-pressed="true"]{color:var(--fg);font-weight:600}
 .isl-d{display:flex;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;border-radius:14px;background:var(--fill2);font-size:14px}
 .isl-d i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;transition:background .2s}
@@ -2225,17 +2216,7 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .ime{background:color-mix(in srgb,var(--c-v,var(--c)) 12%,var(--card2))}
 /* v189 · La carita de «¿Cómo fue?» se queda en la actividad */
 .tc-icw{position:relative;flex:0 0 auto;display:grid}
-.rpe-badge{position:absolute;right:-6px;bottom:-6px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--card);color:var(--rc,var(--fg));box-shadow:0 1px 3px rgba(0,0,0,.18)}
-.rpe-badge svg{width:22px;height:22px;stroke-width:1.9}
-.rpe-badge.pre{opacity:0}
-.rpe-badge.pop{animation:rpePop .42s cubic-bezier(.3,1.7,.5,1)}
-@keyframes rpePop{0%{transform:scale(.6)}60%{transform:scale(1.22)}100%{transform:scale(1)}}
-.rpe-t{color:var(--fg)!important;font-weight:600}
-.rpe-fly{position:fixed;z-index:200;pointer-events:none;display:grid;place-items:center;transform-origin:center}
-.rpe-fly svg{width:100%;height:100%}
 /* v253: la cara de «¿Cómo fue?» va dentro de la etiqueta de deporte, a la derecha: así no la tapa un nombre largo. Icono con su color (tinte de icono) */
-.rpe-dt{margin-top:12px}.rpe-dt .rpe{margin:0}
-@media (prefers-reduced-motion:reduce){.rpe-badge.pop{animation:none}}
 .tc-row.done .tc-tx small{white-space:normal;overflow:visible;text-overflow:clip}
 /* v190 · Tercera tanda: explicaciones plegadas, cifras en recuadros, leyendas y etiquetas uniformes */
 .inote{margin-top:10px}
@@ -2447,23 +2428,11 @@ html body .legend{row-gap:6px}
 .dt-g>:nth-child(3n+1){border-left:0;padding-left:0}
 .dt-g span{display:block;font-size:13px;color:var(--muted)}
 .dt-g b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.dt-fi{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--rc);color:#fff}
-.dt-fi svg{width:18px;height:18px;stroke:#fff}
-.dt-faces{grid-column:1/-1;display:flex;gap:8px;padding:12px 0;border-bottom:.5px solid var(--sep);animation:dtIn .25s ease}
-.dt-faces button{flex:1;appearance:none;border:0;background:var(--fill2);border-radius:14px;padding:8px 0 6px;color:var(--fg);font:500 12px var(--font);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-height:64px}
-.dt-faces button .dt-fi{width:32px;height:32px}.dt-faces button .dt-fi svg{width:24px;height:24px}
-.dt-faces button[aria-pressed="true"]{background:color-mix(in srgb,var(--rc-v,var(--rc)) 16%,transparent)}
 @keyframes dtIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.dt-faces{animation:none}}
 .dr-e{font:500 11px var(--font);fill:var(--muted)}
 /* v209: el cuadrito de la gota de la cabecera recorta su contenido (en Android la tapa animada tapaba las esquinas) */
 header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolation:isolate}
 .dt-name{display:flex;align-items:center;gap:8px}
-.dt-rv{appearance:none;border:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--rc-v,var(--rc)) 16%,transparent);color:var(--fg);cursor:pointer;flex:none;padding:0}
-.dt-rv svg{width:22px;height:22px}
-.dt-rv:active{transform:scale(.92)}
-.dt-fq{font-size:13px;color:var(--muted);margin:14px 0 8px}
-.dt-faces{border-bottom:0!important;padding:0 0 4px!important}
 .me-card{display:flex;align-items:center;gap:16px}
 .me-av{position:relative;width:72px;height:72px;border-radius:50%;flex:none;display:grid;place-items:center;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--morado);font:600 28px var(--font);cursor:pointer}
 .me-av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
@@ -2768,8 +2737,6 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .pa-sp[aria-pressed="true"] .tc-ic{background:var(--ac);color:var(--ac-on)}
 /* sobre filas ya rellenas (tesela gris sobre gris), la tesela va en el color de la tarjeta, como en las listas agrupadas de iOS */
 .tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
-/* v263: la sensación da color a la tesela (tinte suave e icono del color de la carita); sin valorar, gris */
-.tc-ic.sp-rpe{background:color-mix(in srgb,var(--rc-v,var(--rc)) 18%,var(--card));color:var(--rc)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -2868,11 +2835,6 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .fz-why p{margin:0;font-size:14px;line-height:1.4}
 .fz-pg{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--fg);background:var(--fill2);border-radius:999px;padding:3px 10px;white-space:nowrap;flex:none}
 .fz-pg i{width:7px;height:7px;border-radius:50%}
-.fz-fq{margin:14px 0 6px;font-size:13px;color:var(--muted)}.fz-fq small{font-size:12px;color:var(--faint)}
-.fz-fe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.fz-fe button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 12px var(--font);border-radius:10px;min-height:34px;padding:0 4px;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;cursor:pointer;min-width:0}
-.fz-fe button i{width:8px;height:8px;border-radius:50%;flex:none}
-.fz-fe button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .fz-next{margin-top:12px;text-align:left;background:var(--card2);border-radius:14px;padding:10px 12px}
 .fz-next p{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--muted)}
 .fz-next ul{list-style:none;margin:0;padding:0}
@@ -2893,6 +2855,28 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .rest-tx{flex:1;min-width:0}.rest-tx b{display:block;font-size:20px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}.rest-tx small{font-size:13px;color:var(--muted);white-space:nowrap}
 .rest-b button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:600 15px var(--font);min-height:36px;padding:0 12px;border-radius:999px;flex:none;cursor:pointer;white-space:nowrap}
 .fzs-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* v271 · Sensación con deslizador de 4 paradas (082). La misma pieza que la intensidad (062 .isl). Clases ss- */
+.ss{margin-top:12px}
+.ss-in{margin-top:4px;padding:0 2px}
+.ss-dt{margin:14px 0}
+.ss-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:15px;font-weight:600;color:var(--muted)}
+.ss-h small{font-size:12px;font-weight:500;color:var(--faint)}
+.ss-v{color:var(--fg);font-weight:700}.ss-v em{font-style:normal;font-weight:500;font-size:13px;color:var(--muted)}
+.ss-t{position:relative;height:44px;touch-action:pan-y;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.ss-t::before{content:"";position:absolute;left:calc(12.5% - 5px);right:calc(12.5% - 5px);top:17px;height:10px;border-radius:999px;background:var(--fill)}
+.ss-f{position:absolute;left:calc(12.5% - 5px);top:17px;height:10px;width:calc(var(--p) * .75 + 10px);border-radius:999px;background:var(--c);opacity:0;transition:width .25s cubic-bezier(.3,.7,.2,1),background .2s}
+.ss-s{position:absolute;top:18px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--sc)}
+.ss-k{position:absolute;top:6px;left:calc(12.5% + var(--p) * .75);width:32px;height:32px;margin-left:-16px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 0 0 6px var(--c);opacity:0;transform:scale(.6);transition:left .25s cubic-bezier(.3,1.3,.5,1),box-shadow .2s,opacity .15s,transform .2s}
+.ss.on .ss-f,.ss.on .ss-k{opacity:1}.ss.on .ss-k{transform:none}
+.ss.on .ss-s{background:#fff;opacity:.85}
+.ss-t:focus-visible .ss-k{outline:2px solid var(--c);outline-offset:3px}
+.ss-l{display:grid;grid-template-columns:repeat(4,1fr)}
+.ss-l button{appearance:none;border:0;background:none;padding:4px 0 6px;font:500 14px var(--font);color:var(--muted);cursor:pointer;text-align:center;white-space:nowrap}
+.ss-l button[aria-pressed="true"]{color:var(--fg);font-weight:600}
+.ss-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;margin-right:6px;vertical-align:1px}
+.ss-st{appearance:none;border:0;display:inline-flex;align-items:center;background:var(--fill2);color:var(--fg);font:600 13px var(--font);border-radius:999px;padding:4px 10px;margin-left:8px;cursor:pointer;vertical-align:1px}
+.ss-st .ss-dot{margin-right:6px}
 
 </style>
 
@@ -2973,7 +2957,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="270";
+const APP_VER="271";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3609,7 +3593,7 @@ const SP_IC={run:'<g transform="translate(0.8 -0.35)"><circle cx="13.5" cy="4" r
 SP_IC.bike=SP_IC.road;SP_IC.foot=SP_IC.walk; /* v266: carretera, gravel, rodillo y natación; bike y foot para los filtros por familia */
 /* v263: cada icono lleva su corrección de centro óptico (la masa del dibujo, no su caja), medida a 480 px */
 /* tesela neutra (guía: «Deporte»): spIcon(deporte, "sm"|"xs"|"plan") */
-function spIcon(sp,cls,rpe){return`<span class="tc-ic${cls?" "+cls.split(" ").map(c=>"sp-"+c).join(" "):""}${rpe?` sp-rpe" style="--rc:var(--rpe${rpe});--rc-v:var(--rpe${rpe}-v,var(--rpe${rpe}))`:""}" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${SP_IC[sp]||SP_IC.oth}</svg></span>`}
+function spIcon(sp,cls){return`<span class="tc-ic${cls?" "+cls.split(" ").map(c=>"sp-"+c).join(" "):""}" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${SP_IC[sp]||SP_IC.oth}</svg></span>`}
 function buzz(ms){try{if(navigator.vibrate&&!matchMedia("(prefers-reduced-motion:reduce)").matches)navigator.vibrate(ms)}catch(e){}}
 document.addEventListener("toggle",e=>{const d=e.target;if(d.tagName==="DETAILS"&&d.open&&d.matches(".xb,.fu2,.psec,.pday,.dishlib")){d.classList.remove("dop");void d.offsetWidth;d.classList.add("dop");setTimeout(()=>d.classList.remove("dop"),400)}},true);
 
@@ -3742,13 +3726,13 @@ function stRow(x,path,inner){const z=[1,2,3,4,5].map(n=>`<button type="button" c
 /* Intensidad: deslizador de tres posiciones que toma el color de la zona; también se toca el nombre */
 const INT_K=["s","m","i"],INT_C={s:Z_C[2],m:Z_C[3],i:Z_C[5]},INT_D={s:"Puedes hablar sin esfuerzo · Z1–Z2",m:"Frases cortas, respiración marcada · Z3",i:"Apenas puedes hablar · Z4–Z5"};
 function intSlider(k){const i=INT_K.indexOf(k);return`<div class="pa-f isl-f" id="isl" style="--c:${INT_C[k]};--c-v:${vivo(INT_C[k])};--p:${i*50}%"><div class="pa-lr"><span class="pa-l">Intensidad</span><b class="isl-v">${INT_L[k]}</b></div>
-  <div class="isl" data-isl="1" role="slider" tabindex="0" aria-label="Intensidad" aria-valuemin="0" aria-valuemax="2" aria-valuenow="${i}" aria-valuetext="${INT_L[k]}"><i class="isl-f2"></i>${[0,50,100].map(x=>`<span class="isl-st" style="left:${x}%"></span>`).join("")}<span class="isl-th"></span></div>
+  <div class="isl" data-isl="1" role="slider" tabindex="0" aria-label="Intensidad" aria-valuemin="0" aria-valuemax="2" aria-valuenow="${i}" aria-valuetext="${INT_L[k]}"><i class="isl-f2"></i>${[0,1,2].map(x=>`<span class="isl-st" style="left:${(x+.5)/3*100}%"></span>`).join("")}<span class="isl-th"></span></div>
   <div class="isl-lb">${INT_K.map(x=>`<button type="button" data-pa="int:${x}" aria-pressed="${x===k}">${INT_L[x]}</button>`).join("")}</div>
   <div class="isl-d"><i></i><span>${INT_D[k]}</span></div></div>`}
 function islSet(k){if(!S.pa||S.pa.int===k)return;S.pa.int=k;const r=$("#isl");if(!r)return;const i=INT_K.indexOf(k);r.style.setProperty("--c",INT_C[k]);r.style.setProperty("--p",i*50+"%");
   r.querySelector(".isl-v").textContent=INT_L[k];const sl=r.querySelector(".isl");sl.setAttribute("aria-valuenow",i);sl.setAttribute("aria-valuetext",INT_L[k]);
   r.querySelectorAll(".isl-lb button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pa==="int:"+k));r.querySelector(".isl-d span").textContent=INT_D[k];pdLive();buzz(8)}
-(function(){let on=null;const pick=e=>{const r=on.getBoundingClientRect(),f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));islSet(INT_K[Math.round(f*2)])};
+(function(){let on=null;const pick=e=>{const r=on.getBoundingClientRect(),f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));islSet(INT_K[Math.min(2,Math.floor(f*3))])};
   document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest("[data-isl]");if(!t)return;on=t;try{t.setPointerCapture(e.pointerId)}catch(x){}pick(e)});
   document.addEventListener("pointermove",e=>{if(on)pick(e)});
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest('#isl [data-pa^="int:"]');if(!b)return;e.stopPropagation();islSet(b.dataset.pa.slice(4))},true);["pointerup","pointercancel"].forEach(v=>document.addEventListener(v,()=>{on=null}));
@@ -3982,25 +3966,8 @@ document.addEventListener("change",e=>{if(e.target.id==="bkfile"){backupRead(e.t
 function skRows(n,cls){let o="";for(let i=0;i<n;i++)o+=`<div class="skr ${cls||""}"><i class="sk sk-ic"></i><span><i class="sk" style="width:${[58,44,66,50,40,62][i%6]}%"></i><i class="sk sk-s" style="width:${[34,28,40,30,24,36][i%6]}%"></i></span><i class="sk sk-v"></i></div>`;return o}
 function skCard(h){return`<section class="glass pad fade" aria-hidden="true"><i class="sk sk-t"></i>${h||`<i class="sk sk-blk"></i>`}</section>`}
 const RPE_L=["Fácil","Normal","Duro","Muy duro"];
-/* Caritas: de feliz a agotado. Fácil: ojos sonrientes y boca abierta · Normal: sonrisa tranquila ·
-   Duro: boca recta y una gota de sudor · Muy duro: ojos cerrados, boca jadeando y sudor */
-const RPE_FACE=(()=>{const dot='<circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/>',
-  F=[ '<path d="M7.4 10.2q1.6-1.8 3.2 0M13.4 10.2q1.6-1.8 3.2 0"/><path d="M7.8 13.4h8.4q-.7 4.2-4.2 4.2t-4.2-4.2z" fill="currentColor"/>',
-      dot+'<path d="M8.6 14.4q3.4 2.4 6.8 0"/>',
-      dot+'<path d="M7.6 7.6l2.6.9M16.4 7.6l-2.6.9M8.9 15.4h6.2"/>',
-      '<path d="M7.6 8.9l2.4 1.3-2.4 1.3M16.4 8.9L14 10.2l2.4 1.3"/><ellipse cx="12" cy="15.7" rx="1.9" ry="2.1"/>'];
-  return F.map(x=>`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/>${x}</svg>`)})();
+/* v271: sin caritas; la sensación es un punto de su color con su palabra (082) */
 const rpeOf=id=>((S.rpe||{})[id]||{}).v||0;
-/* La carita elegida pasa a formar parte de la actividad: insignia sobre el icono del deporte */
-function rpeBadge(id){const v=rpeOf(id);return v?`<span class="rpe-badge" style="--rc:var(--rpe${v});--rc-v:var(--rpe${v}-v,var(--rpe${v}))" data-rpeb="${esc(id)}" title="Fue ${RPE_L[v-1].toLowerCase()}">${RPE_FACE[v-1]}</span>`:""}
-function rpePicker(a,k){const v=rpeOf(a.id);return`<div class="rpe${v?" on":""}" role="group" aria-label="¿Cómo fue ${esc(SPORT_L[a.sport]||"el entreno")}?"><span class="rpe-q"${v?` style="--rc:var(--rpe${v});--rc-v:var(--rpe${v}-v,var(--rpe${v}))"`:""}>${v?"Fue "+RPE_L[v-1].toLowerCase():"¿Cómo fue?"}</span><span class="rpe-f">${RPE_L.map((l,j)=>`<button type="button" class="rpe-b" style="--rc:var(--rpe${j+1});--rc-v:var(--rpe${j+1}-v,var(--rpe${j+1}))" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${k||a.day}" aria-pressed="${v===j+1}" aria-label="${l}" title="${l}">${RPE_FACE[j]}</button>`).join("")}</span></div>`}
-/* Efecto al elegir: la carita da un saltito y vuela hasta su actividad */
-function rpeFly(svg,from,id){const to=document.querySelector(`#view [data-rpeb="${CSS.escape(id)}"]`);if(!to||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  const r=to.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){to.classList.add("pop");return}
-  to.classList.add("pre");const c=document.createElement("div");c.className="rpe-fly";c.style.cssText=`left:${from.left}px;top:${from.top}px;width:${from.width}px;height:${from.height}px;color:${from.color}`;c.innerHTML=svg;document.body.appendChild(c);
-  const dx=r.left+r.width/2-(from.left+from.width/2),dy=r.top+r.height/2-(from.top+from.height/2),sc=r.width/from.width;
-  const an=c.animate([{transform:"translate(0,0) scale(1)"},{transform:"translate(0,-8px) scale(1.4)",offset:.25},{transform:`translate(${dx}px,${dy}px) scale(${sc})`}],{duration:640,easing:"cubic-bezier(.45,0,.2,1)"});
-  an.onfinish=an.oncancel=()=>{c.remove();to.classList.remove("pre");to.classList.add("pop")}}
 async function saveRpe(){const c=userCol();if(!c)return;try{await c.doc("rpe").set({kind:"rpe",map:S.rpe||{}})}catch(e){toast("No se ha podido guardar")}}
 function trainCard(t){
   if(S.actsState==="loading"&&!S.acts.length)return`<section class="glass pad fade tcard" aria-busy="true" aria-label="Cargando entrenos"><i class="sk sk-t"></i>${skRows(1)}</section>`;
@@ -4008,9 +3975,9 @@ function trainCard(t){
   /* Cada fila con su hora delante: dentro del día, el orden es la hora */
   const G=[],kg=num((S.profile||{}).weight)||70,tm=v=>v?`<span class="tc-time">${esc(v)}</span>`:`<span class="tc-time tc-nt">—</span>`;
   t.acts.forEach(a=>{const m=pm.pl.find(x=>x.a&&x.a.id===a.id),hh=(a.start||"").slice(11,16),h=[];
-    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport,"",rpeOf(a.id))}${rpeBadge(a.id)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov).replace(/ h (\d+) min$/," h $1")}</b>${rv?`<small class="rpe-t" style="--rc:var(--rpe${rv});--rc-v:var(--rpe${rv}-v,var(--rpe${rv}))">${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
+    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov).replace(/ h (\d+) min$/," h $1")}</b>${rv?`<small>${ssDot(a.id)}${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
     /* ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar "cómo llegas" a cada persona */
-    if(k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id))h.push(rpePicker(a,k));
+    if(k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id))h.push(ssHtml("act|"+a.id+"|"+k,0,{cls:"ss-in"}));
     G.push({t:hh||"99",h})});
   pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go,es=estSession(s,kg);
     const meta=`<b>${fmtDur((s.dur||0)*60)}</b><small>≈ ${fmtInt(es.kcal)} kcal</small>`;
@@ -6365,7 +6332,7 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
 function actRow(a){
   const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+"\u00a0m":(a.dist/1000).toFixed(1).replace(".",",")+" km";
   const sec=a.sport==="run"||a.sport==="trail"?fmtPace(a.speed):isBike(a.sport)?fmtSpeed(a.speed):a.sport==="swim"?fmtP100(a.speed):a.sport==="str"?(a.kcal?fmtInt(a.kcal)+"\u00a0kcal":""):fmtDur(a.mov);
-  return `<button class="act" data-open="${a.id}"><span class="tc-icw" title="${SPORT_L[a.sport]||""}">${spIcon(a.sport,"",rpeOf(a.id))}${rpeBadge(a.id)}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
+  return `<button class="act" data-open="${a.id}"><span class="tc-icw" title="${SPORT_L[a.sport]||""}">${spIcon(a.sport)}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${rpeOf(a.id)?ssDot(a.id)+esc(dateLabel(a.day).replace(/^[a-zé]{3} /,"")):esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
 }
 function vActs(){
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["bike","Bici"],["swim","Natación"],["foot","A pie"],["str","Fuerza"]]; /* v266: por familia */
@@ -6454,17 +6421,17 @@ function vDetail(){
     <div style="height:14px"></div><h2>Tiempo por banda de sustrato</h2><div style="height:6px"></div>${bandBar(s.bands)}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Qué parte de la energía de la salida sale de hidratos y de grasas según tu pulso. Es orientativo: en un momento concreto puede desviarse unos 17 puntos de lo que mediría un laboratorio; sumado a lo largo de la salida, el error se compensa en parte. Calibrado con 390 pruebas de laboratorio.${subAnchor(a,hp)}</p></details>`;
   return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
-    <div class="row"><div><span class="sp-lab">${spIcon(a.sport,"xs")}${SPORT_L[a.sport]||""}</span><h3 style="margin-top:8px" class="dt-name">${esc(a.name)}${(()=>{const v=rpeOf(a.id);return v&&a.sport!=="oth"?`<button type="button" class="dt-rv" data-fe="1" style="--rc:var(--rpe${v});--rc-v:var(--rpe${v}-v,var(--rpe${v}))" aria-expanded="${!!S.feOpen}" aria-label="Fue ${RPE_L[v-1].toLowerCase()}. Tocar para cambiar">${RPE_FACE[v-1]}</button>`:""})()}</h3><span class="note">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><div><span class="sp-lab">${spIcon(a.sport,"xs")}${SPORT_L[a.sport]||""}</span><h3 style="margin-top:8px" class="dt-name">${esc(a.name)}</h3><span class="note dt-when">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}${(()=>{const v=rpeOf(a.id);return v&&a.sport!=="oth"?`<button type="button" class="ss-st" data-fe="1" aria-expanded="${!!S.feOpen}" aria-label="Fue ${RPE_L[v-1].toLowerCase()}. Tocar para cambiar"><i class="ss-dot" style="--c:var(--rpe${v})"></i>${RPE_L[v-1]}</button>`:""})()}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${(()=>{const pk=["run","trail","walk","hike","swim"].includes(a.sport)?["Distancia","Ritmo"]:a.sport==="indoor"?["Duración","Energía"]:isBike(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+(?: \S+)?)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
       /* v208: rejilla de 3 × 2 a todo el ancho; «Sensaciones» es una casilla más y las caritas solo salen al editar */
       const RN={"FC media":"Pulso medio","FC máxima":"Pulso máx.","Deriva cardiaca":"Deriva"};
       let it=sec.filter(([k,v])=>!(k==="Desnivel"&&!a.elev)).map(([k,v])=>[RN[k]||k,k==="Deriva cardiaca"?String(v).split(" · ")[0]:v]);
-      /* v210: sin casilla de sensaciones; las caras salen arriba mientras no se valore, y la elegida se queda junto al nombre */
+      /* v210/v271: sin casilla de sensaciones; el deslizador sale arriba mientras no se valore, y la elegida queda como etiqueta junto a la fecha */
       const fe=a.sport!=="oth";it=it.slice(0,it.length>=6?6:3);
       const rv=rpeOf(a.id);
-      const faces=fe&&(!rv||S.feOpen)?`<div class="dt-faces" role="group" aria-label="¿Cómo fue?">${RPE_L.map((l,j)=>`<button type="button" data-rpe="${esc(a.id)}" data-v="${j+1}" data-k="${a.day}" aria-pressed="${rv===j+1}" style="--rc:var(--rpe${j+1});--rc-v:var(--rpe${j+1}-v,var(--rpe${j+1}))"><i class="dt-fi">${RPE_FACE[j]}</i>${l}</button>`).join("")}</div>`:"";
-      return`${faces?`<p class="dt-fq">${rv?"¿Cambiar cómo fue?":"¿Cómo fue?"}</p>`+faces:""}<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
+      const faces=fe&&(!rv||S.feOpen)?ssHtml("act|"+a.id+"|"+a.day,rv,{label:rv?"¿Cambiar cómo fue?":"¿Cómo fue?",cls:"ss-dt"}):"";
+      return`${faces}<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${(()=>{const su=hrSuspect(a.id);return su?`<p class="note hr-sus"><b>Pulso dudoso.</b> Para tu ${isBike(a.sport)?"potencia o velocidad":"ritmo"} te correspondían unas ${r0(su.exp)} ppm y el sensor marcó ${r0(su.exp*su.ratio)}: el reparto se ha calculado con el pulso esperado, y esta sesión no cuenta para tu umbral, tu VO2máx ni la deriva.</p>`:""})()}
@@ -6509,7 +6476,7 @@ setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),
       <span class="fz-tx"><b>${esc(ex.n)}</b><small>${ex.s} series × ${esc(ex.r)}${z.length?" · "+esc(joinY(z)):""}</small></span>
       <span class="fz-st">${filled?filled+"/"+ex.s:""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="fz-body">${pl?`<div class="fz-why">${fzTag(pl.tag)}<p>${esc(pl.why)}</p></div>`:last&&!cur?`<p class="fz-last">La última vez: ${esc(last)}. Marca tú el punto de partida.</p>`:""}<div class="fz-sets">${sets}</div>
-        <p class="fz-fq">¿Cómo fue? <small>opcional</small></p><div class="fz-fe" role="group" aria-label="Cómo fue ${esc(ex.n)}">${RPE_L.map((l,j)=>`<button type="button" data-fzfe="${ex.id}|${j+1}" aria-pressed="${fv===j+1}"><i style="background:var(--rpe${j+1})"></i>${l}</button>`).join("")}</div></div></details>`}).join("");
+        ${ssHtml("fz|"+ex.id,fv||0,{opt:true})}</div></details>`}).join("");
   const can=S.db&&S.uid;
   return`<section class="glass pad fade fz-hero">
     <div class="fz-rtw"><div class="fz-rt" role="tablist" aria-label="Rutina">${allRoutines().map(r=>`<button role="tab" data-routine="${esc(r.id)}" aria-selected="${S.strRoutine===r.id}" title="${esc(routineShort(r))}">${esc(routineShort(r))}</button>`).join("")}</div><button class="fz-add fz-mo" data-act="rtm" aria-label="Opciones de la rutina"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button><button class="fz-add" data-act="rnew" aria-label="Crear rutina"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
@@ -6748,9 +6715,6 @@ document.addEventListener("click",e=>{
   if(t.dataset.act==="bkno"){S.restore=null;render();return}
   if(/^cl[a-z]+$/.test(t.dataset.act||"")){cloudAction(t.dataset.act);return}
   if(/^ac[a-z]+$/.test(t.dataset.act||"")){acctAction(t.dataset.act);return}
-  if(t.dataset.rpe){const id=t.dataset.rpe,v=+t.dataset.v,inSheet=!!t.closest("#modal");S.rpe=S.rpe||{};const off=(S.rpe[id]||{}).v===v;if(off)delete S.rpe[id];else S.rpe[id]={v,d:t.dataset.k};saveRpe();buzz(10);
-    const sv=t.querySelector("svg"),rr=sv.getBoundingClientRect(),from={left:rr.left,top:rr.top,width:rr.width,height:rr.height,color:getComputedStyle(document.documentElement).getPropertyValue("--rpe"+v).trim()};
-    if(inSheet){renderModal();render();return}render();if(!off)rpeFly(RPE_FACE[v-1],from,id);return}
   if(t.dataset.act==="rsrec"||t.dataset.act==="rsall"){S.reset=t.dataset.act==="rsall"?"all":"rec";render();return}
   if(t.dataset.act==="rsno"){S.reset=null;render();return}
   if(t.dataset.act==="rsdo"){resetDo();return}
@@ -6968,7 +6932,7 @@ function rgSeen(){S._rgHint=1;try{localStorage.setItem("sustrato-rghint","1")}ca
 
 /* Sensaciones en el detalle: la casilla abre las caras; al elegir se cierran */
 document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-fe]");if(f){S.feOpen=!S.feOpen;buzz(6);renderModal();return}
-  if(e.target.closest&&(e.target.closest(".dt-faces [data-rpe]")||e.target.closest("[data-open]")))S.feOpen=false},true);
+  if(e.target.closest&&e.target.closest("[data-open]"))S.feOpen=false},true);
 
 /* ---------- Perfil (v211): tú, conexiones y conoce Sustrato ---------- */
 const BR_SV_CONNECT="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjM3IiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjM3IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjM2Ljg2NyIgaGVpZ2h0PSI0OCIgcng9IjYiIGZpbGw9IiNGQzUyMDAiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xODAuNzQ5IDMxLjgxOTVMMTgwLjc0OCAzMS44MTg4SDE4NS4zNTdMMTg4LjE4OCAyNi4xMjY4TDE5MS4wMTkgMzEuODE4OEgxOTYuNjE4TDE4OC4xODcgMTUuNTQwM0wxODAuMTg0IDMwLjk5NDVMMTc3LjExMSAyNi41MDc4QzE3OS4wMDggMjUuNTkyOCAxODAuMTkxIDI0LjAwODEgMTgwLjE5MSAyMS43MzE4VjIxLjY4N0MxODAuMTkxIDIwLjA4MDMgMTc5LjcgMTguOTE5NyAxNzguNzYzIDE3Ljk4MjJDMTc3LjY2OSAxNi44ODg3IDE3NS45MDYgMTYuMTk2OCAxNzMuMTM5IDE2LjE5NjhIMTY1LjUwNlYzMS44MTk1SDE3MC43MjhWMjcuMzU1OEgxNzEuODQ0TDE3NC43OSAzMS44MTk1SDE4MC43NDlaTTIxMi45NTQgMTUuNTQwM0wyMDQuNTI0IDMxLjgxODhIMjEwLjEyNEwyMTIuOTU1IDI2LjEyNjhMMjE1Ljc4NiAzMS44MTg4SDIyMS4zODVMMjEyLjk1NCAxNS41NDAzWk0yMDAuNTc2IDMyLjQ1OTNMMjA5LjAwNiAxNi4xODA4SDIwMy40MDZMMjAwLjU3NSAyMS44NzI5TDE5Ny43NDQgMTYuMTgwOEgxOTIuMTQ0TDIwMC41NzYgMzIuNDU5M1pNMTcyLjk4MiAyMy42Mjg3QzE3NC4yMzIgMjMuNjI4NyAxNzQuOTkxIDIzLjA3MDggMTc0Ljk5MSAyMi4xMTEyVjIyLjA2NjNDMTc0Ljk5MSAyMS4wNjIxIDE3NC4yMSAyMC41NzExIDE3My4wMDUgMjAuNTcxMUgxNzAuNzI4VjIzLjYyODdIMTcyLjk4MlpNMTU0LjMzNyAyMC42MTU4SDE0OS43NFYxNi4xOTY4SDE2NC4xNTdWMjAuNjE1OEgxNTkuNTZWMzEuODE5NUgxNTQuMzM3VjIwLjYxNThaTTEzNy4wMTUgMjYuMTUwN0wxMzQuMjI1IDI5LjQ3NjFDMTM2LjIxMSAzMS4yMTcyIDEzOS4wNjggMzIuMTA5NyAxNDIuMjM3IDMyLjEwOTdDMTQ2LjQzMyAzMi4xMDk3IDE0OS4xMzMgMzAuMTAxIDE0OS4xMzMgMjYuODJWMjYuNzc1NkMxNDkuMTMzIDIzLjYyODcgMTQ2LjQ1NSAyMi40NjggMTQyLjQ2IDIxLjczMThDMTQwLjgwOCAyMS40MTkgMTQwLjM4NCAyMS4xNTE1IDE0MC4zODQgMjAuNzI3M1YyMC42ODI3QzE0MC4zODQgMjAuMzAzMyAxNDAuNzQyIDIwLjAzNTUgMTQxLjUyMyAyMC4wMzU1QzE0Mi45NzMgMjAuMDM1NSAxNDQuNzM3IDIwLjUwNDIgMTQ2LjIwOSAyMS41NzU0TDE0OC43NTQgMTguMDQ5M0MxNDYuOTQ2IDE2LjYyMDkgMTQ0LjcxNCAxNS45MDY1IDE0MS43MDEgMTUuOTA2NUMxMzcuMzk0IDE1LjkwNjUgMTM1LjA3MyAxOC4yMDU1IDEzNS4wNzMgMjEuMTczN1YyMS4yMTg1QzEzNS4wNzMgMjQuNTIxNCAxMzguMTUzIDI1LjUyNiAxNDEuNjU2IDI2LjIzOThDMTQzLjMzIDI2LjU3NDcgMTQzLjgyMSAyNi44MiAxNDMuODIxIDI3LjI2NjVWMjcuMzExM0MxNDMuODIxIDI3LjczNTIgMTQzLjQyIDI3Ljk4MDUgMTQyLjQ4MiAyNy45ODA1QzE0MC42NTIgMjcuOTgwNSAxMzguNzExIDI3LjQ0NTIgMTM3LjAxNSAyNi4xNTA3WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTExNy45MiAzMS42ODEyVjIxLjk2MjJIMTE5LjkxOVYyNS43NTMzSDEyNC4xMzdWMjEuOTYyMkgxMjYuMTM2VjMxLjY4MTJIMTI0LjEzN1YyNy41MTc5SDExOS45MTlWMzEuNjgxMkgxMTcuOTJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTEwLjk1OSAzMS42ODEyVjIzLjcxM0gxMDcuODQ0VjIxLjk2MjJIMTE2LjA4OFYyMy43MTNIMTEyLjk1OFYzMS42ODEySDExMC45NTlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTA0LjAyIDMxLjY4MTJWMjEuOTYyMkgxMDYuMDE4VjMxLjY4MTJIMTA0LjAyWiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTkyLjEwMTMgMzEuNjgxMkw4OS41MzcxIDIxLjk2MjJIOTEuNjQ2NEw5Mi43NDkyIDI3LjIwMDhDOTIuODg3MSAyNy45MDM5IDkzLjAxMTIgMjguNDY5MSA5My4xMzUyIDI5LjMzNzZIOTMuMTkwNEM5My4zMjgyIDI4LjYwNyA5My40MTA5IDI4LjE1MiA5My42MzE1IDI3LjE4N0w5NC44NzIzIDIxLjk2MjJIOTYuOTY3N0w5OC4yMDg0IDI3LjE4N0M5OC40MjkgMjguMTUyIDk4LjUxMTcgMjguNjA3IDk4LjY0OTYgMjkuMzM3Nkg5OC43MDQ3Qzk4LjgyODggMjguNDY5MSA5OC45NTI5IDI3LjkwMzkgOTkuMDkwNyAyNy4yMDA4TDEwMC4yMDcgMjEuOTYyMkgxMDIuMzAzTDk5LjczODcgMzEuNjgxMkg5Ny42NTdMOTYuNDMwMSAyNi40OTc3Qzk2LjI2NDYgMjUuNzY3MSA5Ni4xNTQzIDI1LjI4NDYgOTUuOTQ3NiAyNC4yNzgySDk1Ljg5MjRDOTUuNjg1NiAyNS4yODQ2IDk1LjU3NTMgMjUuNzY3MSA5NS40MDk5IDI2LjQ5NzdMOTQuMTgzIDMxLjY4MTJIOTIuMTAxM1oiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik03OS45OTY1IDMxLjY4MTJWMjMuNzEzSDc2Ljg4MDlWMjEuOTYyMkg4NS4xMjQ4VjIzLjcxM0g4MS45OTU0VjMxLjY4MTJINzkuOTk2NVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik03MS41MjQgMzEuODg4QzY4Ljc4MDYgMzEuODg4IDY2Ljk3NDYgMjkuODc1MyA2Ni45NzQ2IDI2LjgxNDhDNjYuOTc0NiAyMy43NjgxIDY4Ljc4MDYgMjEuNzU1NCA3MS41MjQgMjEuNzU1NEM3My42ODgzIDIxLjc1NTQgNzUuMzE1MSAyMy4wMjM3IDc1LjU3NyAyNC44NDM0TDczLjU3ODEgMjUuMzEyMUM3My4zNTc1IDI0LjE5NTUgNzIuNTg1NSAyMy41MzM4IDcxLjQ5NjQgMjMuNTMzOEM2OS45Nzk5IDIzLjUzMzggNjkuMDI4NyAyNC43ODgzIDY5LjAyODcgMjYuODE0OEM2OS4wMjg3IDI4Ljg0MTMgNjkuOTc5OSAzMC4xMDk2IDcxLjQ5NjQgMzAuMTA5NkM3Mi41ODU1IDMwLjEwOTYgNzMuMzU3NSAyOS40NDc5IDczLjU3ODEgMjguMzQ1TDc1LjU3NyAyOC44MTM4Qzc1LjMxNTEgMzAuNjMzNSA3My42ODgzIDMxLjg4OCA3MS41MjQgMzEuODg4WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTU4LjQ1OSAzMS42ODEyVjIxLjk2MjJINjUuMjAwM1YyMy42NTc4SDYwLjQ1NzlWMjUuODYzNkg2NC44NTU2VjI3LjUwNDFINjAuNDU3OVYyOS45ODU2SDY1LjIwMDNWMzEuNjgxMkg1OC40NTlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNDcuNzY1NiAzMS42ODEyVjIxLjk2MjJINDkuOTU3Nkw1Mi45MjE2IDI2LjkxMTNDNTMuMzc2NSAyNy42NTU3IDUzLjY3OTggMjguMjg5OSA1NC4wMTA2IDI4Ljk5M0g1NC4wNzk2TDU0LjAzODIgMjYuNTExNVYyMS45NjIySDU1Ljk0MDdWMzEuNjgxMkg1My43NDg3TDUwLjc3MSAyNi43MzIxQzUwLjMyOTggMjUuOTg3NiA1MC4wMjY1IDI1LjM2NzMgNDkuNjgxOSAyNC42NTA0SDQ5LjYyNjdMNDkuNjY4MSAyNy4xMzE5VjMxLjY4MTJINDcuNzY1NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zNy4wNzQyIDMxLjY4MTJWMjEuOTYyMkgzOS4yNjYyTDQyLjIzMDEgMjYuOTExM0M0Mi42ODUxIDI3LjY1NTcgNDIuOTg4NCAyOC4yODk5IDQzLjMxOTIgMjguOTkzSDQzLjM4ODJMNDMuMzQ2OCAyNi41MTE1VjIxLjk2MjJINDUuMjQ5M1YzMS42ODEySDQzLjA1NzNMNDAuMDc5NSAyNi43MzIxQzM5LjYzODQgMjUuOTg3NiAzOS4zMzUxIDI1LjM2NzMgMzguOTkwNSAyNC42NTA0SDM4LjkzNTNMMzguOTc2NyAyNy4xMzE5VjMxLjY4MTJIMzcuMDc0MloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zMC4yOTAzIDMxLjg4OEMyNy40NjQyIDMxLjg4OCAyNS42NTgyIDI5LjgyMDEgMjUuNjU4MiAyNi44MTQ4QzI1LjY1ODIgMjMuODIzMyAyNy40NjQyIDIxLjc1NTQgMzAuMjkwMyAyMS43NTU0QzMzLjExNjQgMjEuNzU1NCAzNC45MjIzIDIzLjgyMzMgMzQuOTIyMyAyNi44MTQ4QzM0LjkyMjMgMjkuODIwMSAzMy4xMTY0IDMxLjg4OCAzMC4yOTAzIDMxLjg4OFpNMzAuMjkwMyAzMC4xMDk2QzMxLjg0ODEgMzAuMTA5NiAzMi44NjgyIDI4LjkzNzggMzIuODY4MiAyNi44MTQ4QzMyLjg2ODIgMjQuNjkxOCAzMS44NDgxIDIzLjUzMzggMzAuMjkwMyAyMy41MzM4QzI4LjczMjUgMjMuNTMzOCAyNy43MTIzIDI0LjY5MTggMjcuNzEyMyAyNi44MTQ4QzI3LjcxMjMgMjguOTM3OCAyOC43MzI1IDMwLjEwOTYgMzAuMjkwMyAzMC4xMDk2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTE5Ljk4NjggMzEuODg4QzE3LjI0MzUgMzEuODg4IDE1LjQzNzUgMjkuODc1MyAxNS40Mzc1IDI2LjgxNDhDMTUuNDM3NSAyMy43NjgxIDE3LjI0MzUgMjEuNzU1NCAxOS45ODY4IDIxLjc1NTRDMjIuMTUxMiAyMS43NTU0IDIzLjc3OCAyMy4wMjM3IDI0LjAzOTkgMjQuODQzNEwyMi4wNDA5IDI1LjMxMjFDMjEuODIwNCAyNC4xOTU1IDIxLjA0ODQgMjMuNTMzOCAxOS45NTkzIDIzLjUzMzhDMTguNDQyOCAyMy41MzM4IDE3LjQ5MTYgMjQuNzg4MyAxNy40OTE2IDI2LjgxNDhDMTcuNDkxNiAyOC44NDEzIDE4LjQ0MjggMzAuMTA5NiAxOS45NTkzIDMwLjEwOTZDMjEuMDQ4NCAzMC4xMDk2IDIxLjgyMDQgMjkuNDQ3OSAyMi4wNDA5IDI4LjM0NUwyNC4wMzk5IDI4LjgxMzhDMjMuNzc4IDMwLjYzMzUgMjIuMTUxMiAzMS44ODggMTkuOTg2OCAzMS44ODhaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",BR_SV_PWR_K="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzY1IiBoZWlnaHQ9IjM3IiB2aWV3Qm94PSIwIDAgMzY1IDM3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMC45MDUyNzMgMzUuMTU3N0gzLjMxNTQ3VjI5LjA1MDNINy4zNDAyOEMxMC44MjY5IDI5LjA1MDMgMTIuODg2MSAyNy4xMzE1IDEyLjg4NjEgMjMuOTI1N0MxMi44ODYxIDIwLjc0MzMgMTAuODI2OSAxOC43Nzc3IDcuMzYzNjggMTguNzc3N0gwLjkwNTI3M1YzNS4xNTc3Wk0zLjMxNTQ3IDI2LjgwMzlWMjEuMDI0MUg3LjI3MDA4QzkuNDIyODggMjEuMDI0MSAxMC40NzU5IDIxLjk2MDEgMTAuNDc1OSAyMy45MjU3QzEwLjQ3NTkgMjUuODQ0NSA5LjM5OTQ4IDI2LjgwMzkgNy4yNDY2OCAyNi44MDM5SDMuMzE1NDdaTTIzLjY3OSAzNS41MDg3QzI3Ljg5MSAzNS41MDg3IDMwLjY3NTYgMzIuMTE1NyAzMC42NzU2IDI2Ljk2NzdDMzAuNjc1NiAyMS44MTk3IDI3Ljg5MSAxOC40MjY3IDIzLjY3OSAxOC40MjY3QzE5LjQ2NyAxOC40MjY3IDE2LjcwNTggMjEuODE5NyAxNi43MDU4IDI2Ljk2NzdDMTYuNzA1OCAzMi4xMTU3IDE5LjQ2NyAzNS41MDg3IDIzLjY3OSAzNS41MDg3Wk0yMy42NzkgMzMuMjYyM0MyMC44NDc2IDMzLjI2MjMgMTkuMTE2IDMwLjg3NTUgMTkuMTE2IDI2Ljk2NzdDMTkuMTE2IDIzLjA1OTkgMjAuODQ3NiAyMC42NzMxIDIzLjY3OSAyMC42NzMxQzI2LjUzMzggMjAuNjczMSAyOC4yNjU0IDIzLjA1OTkgMjguMjY1NCAyNi45Njc3QzI4LjI2NTQgMzAuODc1NSAyNi41MzM4IDMzLjI2MjMgMjMuNjc5IDMzLjI2MjNaTTM3LjQ1NjUgMzUuMTU3N0g0MC4yMTc3TDQzLjk4NTEgMjIuNTkxOUg0NC4wMzE5TDQ3Ljc3NTkgMzUuMTU3N0g1MC41NjA1TDUzLjY5NjEgMTguNzc3N0g1MS4yMzkxTDQ4Ljg5OTEgMzEuMzIwMUg0OC44NTIzTDQ1LjEzMTcgMTguNzc3N0g0Mi44NjE5TDM5LjE2NDcgMzEuMzIwMUgzOS4xMTc5TDM2Ljc3NzkgMTguNzc3N0gzNC4yOTc1TDM3LjQ1NjUgMzUuMTU3N1pNNTguMzM1OCAzNS4xNTc3SDY4LjM3NDRWMzIuOTExM0g2MC43NDZWMjcuODEwMUg2Ny43MTkyVjI1LjY1NzNINjAuNzQ2VjIxLjAyNDFINjguMzc0NFYxOC43Nzc3SDU4LjMzNThWMzUuMTU3N1pNODEuNjMxNiAyOC41ODIzQzg0LjA0MTggMjguMDQ0MSA4NS40NjkyIDI2LjI4OTEgODUuNDY5MiAyMy43NjE5Qzg1LjQ2OTIgMjAuNjQ5NyA4My4zODY2IDE4Ljc3NzcgNzkuOTcwMiAxOC43Nzc3SDczLjc5MjZWMzUuMTU3N0g3Ni4yMDI4VjI4Ljc2OTVINzkuMDgxTDgyLjQ1MDYgMzUuMTU3N0g4NS4xNjVMODEuNjMxNiAyOC42MDU3VjI4LjU4MjNaTTc2LjIwMjggMjYuNTQ2NVYyMS4wMjQxSDc5LjczNjJDODEuOTM1OCAyMS4wMjQxIDgzLjA1OSAyMS45MzY3IDgzLjA1OSAyMy43NjE5QzgzLjA1OSAyNS41ODcxIDgxLjkxMjQgMjYuNTQ2NSA3OS43MzYyIDI2LjU0NjVINzYuMjAyOFpNOTAuNDgzNCAzNS4xNTc3SDEwMC41MjJWMzIuOTExM0g5Mi44OTM2VjI3LjgxMDFIOTkuODY2OFYyNS42NTczSDkyLjg5MzZWMjEuMDI0MUgxMDAuNTIyVjE4Ljc3NzdIOTAuNDgzNFYzNS4xNTc3Wk0xMDUuOTQgMzUuMTU3N0gxMTEuMTEyQzExNS40MTcgMzUuMTU3NyAxMTguMjk1IDMyLjUzNjkgMTE4LjI5NSAyNi45NDQzQzExOC4yOTUgMjEuNzk2MyAxMTUuNDE3IDE4Ljc3NzcgMTExLjIwNSAxOC43Nzc3SDEwNS45NFYzNS4xNTc3Wk0xMDguMzUgMzIuOTExM1YyMS4wMjQxSDExMS4xMzVDMTE0LjAzNyAyMS4wMjQxIDExNS44ODUgMjMuMDEzMSAxMTUuODg1IDI2Ljk0NDNDMTE1Ljg4NSAzMS4yMDMxIDExNC4wMzcgMzIuOTExMyAxMTEuMDE4IDMyLjkxMTNIMTA4LjM1Wk0xMzIuMDU1IDM1LjE1NzdIMTM4LjExNkMxNDIgMzUuMTU3NyAxNDQuMDEyIDMzLjQ3MjkgMTQ0LjAxMiAzMC4yNDM3QzE0NC4wMTIgMjguMzk1MSAxNDMuMDUzIDI2Ljk2NzcgMTQxLjU3OSAyNi4zODI3VjI2LjMzNTlDMTQyLjcwMiAyNS43NzQzIDE0My40MDQgMjQuNTgwOSAxNDMuNDA0IDIzLjA1OTlDMTQzLjQwNCAyMC41MDkzIDE0MS40NjIgMTguNzc3NyAxMzguNjA3IDE4Ljc3NzdIMTMyLjA1NVYzNS4xNTc3Wk0xMzQuNDY1IDI1LjU4NzFWMjEuMDAwN0gxMzguMjA5QzE0MC4wMzQgMjEuMDAwNyAxNDAuOTk0IDIxLjc3MjkgMTQwLjk5NCAyMy4yNzA1QzE0MC45OTQgMjQuODE0OSAxNDAuMDgxIDI1LjU4NzEgMTM4LjIwOSAyNS41ODcxSDEzNC40NjVaTTEzNC40NjUgMzIuOTM0N1YyNy42MjI5SDEzOC4xNjJDMTQwLjU3MyAyNy42MjI5IDE0MS42MDIgMjguNDE4NSAxNDEuNjAyIDMwLjIyMDNDMTQxLjYwMiAzMi4xMTU3IDE0MC41NDkgMzIuOTM0NyAxMzguMTE2IDMyLjkzNDdIMTM0LjQ2NVpNMTUxLjk2MyAzNS4xNTc3SDE1NC4zNzNWMjguMzcxN0wxNjAuMDEzIDE4Ljc3NzdIMTU3LjMyMkwxNTMuMTggMjYuMTI1M0gxNTMuMTMzTDE0OC45OTEgMTguNzc3N0gxNDYuM0wxNTEuOTYzIDI4LjM3MTdWMzUuMTU3N1oiIGZpbGw9ImJsYWNrIi8+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMjc1LjkyNSAzNS42MDA4TDI3NS45MjMgMzUuNTk5M0gyODYuMDAyTDI5Mi4xOTMgMjMuMTUxNEwyOTguMzgzIDM1LjU5OTNIMzEwLjYzTDI5Mi4xOTEgMEwyNzQuNjg5IDMzLjc5NjhMMjY3Ljk2OSAyMy45ODQ1QzI3Mi4xMTggMjEuOTgzNiAyNzQuNzA0IDE4LjUxODEgMjc0LjcwNCAxMy41NFYxMy40NDJDMjc0LjcwNCA5LjkyODQ5IDI3My42MzEgNy4zOTAyNyAyNzEuNTgxIDUuMzQwMDlDMjY5LjE4OSAyLjk0ODY4IDI2NS4zMzQgMS40MzU3NCAyNTkuMjgyIDEuNDM1NzRIMjQyLjU5VjM1LjYwMDhIMjU0LjAxMVYyNS44MzkxSDI1Ni40NTFMMjYyLjg5MyAzNS42MDA4SDI3NS45MjVaTTM0Ni4zNTMgMEwzMjcuOTE3IDM1LjU5OTNIMzQwLjE2NEwzNDYuMzU0IDIzLjE1MTRMMzUyLjU0NSAzNS41OTkzSDM2NC43OTFMMzQ2LjM1MyAwWk0zMTkuMjgzIDM3TDMzNy43MTkgMS40MDA3MUgzMjUuNDczTDMxOS4yODIgMTMuODQ4NkwzMTMuMDkxIDEuNDAwNzFIMzAwLjg0NUwzMTkuMjgzIDM3Wk0yNTguOTQgMTcuNjg4NUMyNjEuNjczIDE3LjY4ODUgMjYzLjMzMyAxNi40Njg0IDI2My4zMzMgMTQuMzY5OFYxNC4yNzE4QzI2My4zMzMgMTIuMDc1NiAyNjEuNjI0IDExLjAwMTkgMjU4Ljk4OSAxMS4wMDE5SDI1NC4wMVYxNy42ODg1SDI1OC45NFpNMjE4LjE2NSAxMS4wOTk0SDIwOC4xMTJWMS40MzU3NEgyMzkuNjRWMTEuMDk5NEgyMjkuNTg3VjM1LjYwMDhIMjE4LjE2NVYxMS4wOTk0Wk0xODAuMjgyIDIzLjIwMzdMMTc0LjE4MSAzMC40NzZDMTc4LjUyNSAzNC4yODM1IDE4NC43NzIgMzYuMjM1MyAxOTEuNzAzIDM2LjIzNTNDMjAwLjg3OSAzNi4yMzUzIDIwNi43ODQgMzEuODQyNSAyMDYuNzg0IDI0LjY2NzVWMjQuNTcwM0MyMDYuNzg0IDE3LjY4ODUgMjAwLjkyOCAxNS4xNTAyIDE5Mi4xOTEgMTMuNTQwMUMxODguNTc5IDEyLjg1NiAxODcuNjUyIDEyLjI3MTIgMTg3LjY1MiAxMS4zNDM1VjExLjI0NTlDMTg3LjY1MiAxMC40MTYyIDE4OC40MzMgOS44MzA1NiAxOTAuMTQxIDkuODMwNTZDMTkzLjMxMyA5LjgzMDU2IDE5Ny4xNyAxMC44NTU0IDIwMC4zOSAxMy4xOTgxTDIwNS45NTUgNS40ODY5N0MyMDIuMDAxIDIuMzYzMDkgMTk3LjEyMSAwLjgwMDk1OSAxOTAuNTMyIDAuODAwOTU5QzE4MS4xMTEgMC44MDA5NTkgMTc2LjAzNiA1LjgyODYgMTc2LjAzNiAxMi4zMTk2VjEyLjQxNzZDMTc2LjAzNiAxOS42NDA2IDE4Mi43NzIgMjEuODM3NiAxOTAuNDM0IDIzLjM5ODZDMTk0LjA5NSAyNC4xMzEgMTk1LjE2OCAyNC42Njc1IDE5NS4xNjggMjUuNjQ0VjI1Ljc0MkMxOTUuMTY4IDI2LjY2ODkgMTk0LjI5IDI3LjIwNTMgMTkyLjI0IDI3LjIwNTNDMTg4LjIzOCAyNy4yMDUzIDE4My45OTIgMjYuMDM0OCAxODAuMjgyIDIzLjIwMzdaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K",BR_SV_PWR_W="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzY1IiBoZWlnaHQ9IjM3IiB2aWV3Qm94PSIwIDAgMzY1IDM3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMC45MDUwMjkgMzUuMTU3N0gzLjMxNTIzVjI5LjA1MDNINy4zNDAwM0MxMC44MjY2IDI5LjA1MDMgMTIuODg1OCAyNy4xMzE1IDEyLjg4NTggMjMuOTI1N0MxMi44ODU4IDIwLjc0MzMgMTAuODI2NiAxOC43Nzc3IDcuMzYzNDMgMTguNzc3N0gwLjkwNTAyOVYzNS4xNTc3Wk0zLjMxNTIzIDI2LjgwMzlWMjEuMDI0MUg3LjI2OTgzQzkuNDIyNjMgMjEuMDI0MSAxMC40NzU2IDIxLjk2MDEgMTAuNDc1NiAyMy45MjU3QzEwLjQ3NTYgMjUuODQ0NSA5LjM5OTIzIDI2LjgwMzkgNy4yNDY0MyAyNi44MDM5SDMuMzE1MjNaTTIzLjY3ODcgMzUuNTA4N0MyNy44OTA3IDM1LjUwODcgMzAuNjc1MyAzMi4xMTU3IDMwLjY3NTMgMjYuOTY3N0MzMC42NzUzIDIxLjgxOTcgMjcuODkwNyAxOC40MjY3IDIzLjY3ODcgMTguNDI2N0MxOS40NjY3IDE4LjQyNjcgMTYuNzA1NSAyMS44MTk3IDE2LjcwNTUgMjYuOTY3N0MxNi43MDU1IDMyLjExNTcgMTkuNDY2NyAzNS41MDg3IDIzLjY3ODcgMzUuNTA4N1pNMjMuNjc4NyAzMy4yNjIzQzIwLjg0NzMgMzMuMjYyMyAxOS4xMTU3IDMwLjg3NTUgMTkuMTE1NyAyNi45Njc3QzE5LjExNTcgMjMuMDU5OSAyMC44NDczIDIwLjY3MzEgMjMuNjc4NyAyMC42NzMxQzI2LjUzMzUgMjAuNjczMSAyOC4yNjUxIDIzLjA1OTkgMjguMjY1MSAyNi45Njc3QzI4LjI2NTEgMzAuODc1NSAyNi41MzM1IDMzLjI2MjMgMjMuNjc4NyAzMy4yNjIzWk0zNy40NTYyIDM1LjE1NzdINDAuMjE3NEw0My45ODQ4IDIyLjU5MTlINDQuMDMxNkw0Ny43NzU2IDM1LjE1NzdINTAuNTYwMkw1My42OTU4IDE4Ljc3NzdINTEuMjM4OEw0OC44OTg4IDMxLjMyMDFINDguODUyTDQ1LjEzMTQgMTguNzc3N0g0Mi44NjE2TDM5LjE2NDQgMzEuMzIwMUgzOS4xMTc2TDM2Ljc3NzYgMTguNzc3N0gzNC4yOTcyTDM3LjQ1NjIgMzUuMTU3N1pNNTguMzM1NiAzNS4xNTc3SDY4LjM3NDJWMzIuOTExM0g2MC43NDU4VjI3LjgxMDFINjcuNzE5VjI1LjY1NzNINjAuNzQ1OFYyMS4wMjQxSDY4LjM3NDJWMTguNzc3N0g1OC4zMzU2VjM1LjE1NzdaTTgxLjYzMTQgMjguNTgyM0M4NC4wNDE2IDI4LjA0NDEgODUuNDY5IDI2LjI4OTEgODUuNDY5IDIzLjc2MTlDODUuNDY5IDIwLjY0OTcgODMuMzg2NCAxOC43Nzc3IDc5Ljk3IDE4Ljc3NzdINzMuNzkyNFYzNS4xNTc3SDc2LjIwMjZWMjguNzY5NUg3OS4wODA4TDgyLjQ1MDQgMzUuMTU3N0g4NS4xNjQ4TDgxLjYzMTQgMjguNjA1N1YyOC41ODIzWk03Ni4yMDI2IDI2LjU0NjVWMjEuMDI0MUg3OS43MzZDODEuOTM1NiAyMS4wMjQxIDgzLjA1ODggMjEuOTM2NyA4My4wNTg4IDIzLjc2MTlDODMuMDU4OCAyNS41ODcxIDgxLjkxMjIgMjYuNTQ2NSA3OS43MzYgMjYuNTQ2NUg3Ni4yMDI2Wk05MC40ODMyIDM1LjE1NzdIMTAwLjUyMlYzMi45MTEzSDkyLjg5MzRWMjcuODEwMUg5OS44NjY2VjI1LjY1NzNIOTIuODkzNFYyMS4wMjQxSDEwMC41MjJWMTguNzc3N0g5MC40ODMyVjM1LjE1NzdaTTEwNS45NCAzNS4xNTc3SDExMS4xMTFDMTE1LjQxNyAzNS4xNTc3IDExOC4yOTUgMzIuNTM2OSAxMTguMjk1IDI2Ljk0NDNDMTE4LjI5NSAyMS43OTYzIDExNS40MTcgMTguNzc3NyAxMTEuMjA1IDE4Ljc3NzdIMTA1Ljk0VjM1LjE1NzdaTTEwOC4zNSAzMi45MTEzVjIxLjAyNDFIMTExLjEzNUMxMTQuMDM2IDIxLjAyNDEgMTE1Ljg4NSAyMy4wMTMxIDExNS44ODUgMjYuOTQ0M0MxMTUuODg1IDMxLjIwMzEgMTE0LjAzNiAzMi45MTEzIDExMS4wMTggMzIuOTExM0gxMDguMzVaTTEzMi4wNTUgMzUuMTU3N0gxMzguMTE1QzE0MiAzNS4xNTc3IDE0NC4wMTIgMzMuNDcyOSAxNDQuMDEyIDMwLjI0MzdDMTQ0LjAxMiAyOC4zOTUxIDE0My4wNTMgMjYuOTY3NyAxNDEuNTc5IDI2LjM4MjdWMjYuMzM1OUMxNDIuNzAyIDI1Ljc3NDMgMTQzLjQwNCAyNC41ODA5IDE0My40MDQgMjMuMDU5OUMxNDMuNDA0IDIwLjUwOTMgMTQxLjQ2MiAxOC43Nzc3IDEzOC42MDcgMTguNzc3N0gxMzIuMDU1VjM1LjE1NzdaTTEzNC40NjUgMjUuNTg3MVYyMS4wMDA3SDEzOC4yMDlDMTQwLjAzNCAyMS4wMDA3IDE0MC45OTQgMjEuNzcyOSAxNDAuOTk0IDIzLjI3MDVDMTQwLjk5NCAyNC44MTQ5IDE0MC4wODEgMjUuNTg3MSAxMzguMjA5IDI1LjU4NzFIMTM0LjQ2NVpNMTM0LjQ2NSAzMi45MzQ3VjI3LjYyMjlIMTM4LjE2MkMxNDAuNTcyIDI3LjYyMjkgMTQxLjYwMiAyOC40MTg1IDE0MS42MDIgMzAuMjIwM0MxNDEuNjAyIDMyLjExNTcgMTQwLjU0OSAzMi45MzQ3IDEzOC4xMTUgMzIuOTM0N0gxMzQuNDY1Wk0xNTEuOTYzIDM1LjE1NzdIMTU0LjM3M1YyOC4zNzE3TDE2MC4wMTIgMTguNzc3N0gxNTcuMzIxTDE1My4xOCAyNi4xMjUzSDE1My4xMzNMMTQ4Ljk5MSAxOC43Nzc3SDE0Ni4zTDE1MS45NjMgMjguMzcxN1YzNS4xNTc3WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yNzUuOTI1IDM1LjYwMDhMMjc1LjkyMyAzNS41OTkzSDI4Ni4wMDJMMjkyLjE5MyAyMy4xNTE0TDI5OC4zODMgMzUuNTk5M0gzMTAuNjNMMjkyLjE5MSAwTDI3NC42ODkgMzMuNzk2OEwyNjcuOTY5IDIzLjk4NDVDMjcyLjExOCAyMS45ODM2IDI3NC43MDQgMTguNTE4MSAyNzQuNzA0IDEzLjU0VjEzLjQ0MkMyNzQuNzA0IDkuOTI4NDkgMjczLjYzMSA3LjM5MDI3IDI3MS41ODEgNS4zNDAwOUMyNjkuMTg5IDIuOTQ4NjggMjY1LjMzNCAxLjQzNTc0IDI1OS4yODIgMS40MzU3NEgyNDIuNTlWMzUuNjAwOEgyNTQuMDExVjI1LjgzOTFIMjU2LjQ1MUwyNjIuODkzIDM1LjYwMDhIMjc1LjkyNVpNMzQ2LjM1MyAwTDMyNy45MTcgMzUuNTk5M0gzNDAuMTY0TDM0Ni4zNTQgMjMuMTUxNEwzNTIuNTQ1IDM1LjU5OTNIMzY0Ljc5MUwzNDYuMzUzIDBaTTMxOS4yODMgMzdMMzM3LjcxOSAxLjQwMDcxSDMyNS40NzNMMzE5LjI4MiAxMy44NDg2TDMxMy4wOTEgMS40MDA3MUgzMDAuODQ1TDMxOS4yODMgMzdaTTI1OC45NCAxNy42ODg1QzI2MS42NzMgMTcuNjg4NSAyNjMuMzMzIDE2LjQ2ODQgMjYzLjMzMyAxNC4zNjk4VjE0LjI3MThDMjYzLjMzMyAxMi4wNzU2IDI2MS42MjQgMTEuMDAxOSAyNTguOTg5IDExLjAwMTlIMjU0LjAxVjE3LjY4ODVIMjU4Ljk0Wk0yMTguMTY1IDExLjA5OTRIMjA4LjExMlYxLjQzNTc0SDIzOS42NFYxMS4wOTk0SDIyOS41ODdWMzUuNjAwOEgyMTguMTY1VjExLjA5OTRaTTE4MC4yODIgMjMuMjAzN0wxNzQuMTgxIDMwLjQ3NkMxNzguNTI1IDM0LjI4MzUgMTg0Ljc3MiAzNi4yMzUzIDE5MS43MDMgMzYuMjM1M0MyMDAuODc5IDM2LjIzNTMgMjA2Ljc4NCAzMS44NDI1IDIwNi43ODQgMjQuNjY3NVYyNC41NzAzQzIwNi43ODQgMTcuNjg4NSAyMDAuOTI4IDE1LjE1MDIgMTkyLjE5MSAxMy41NDAxQzE4OC41NzkgMTIuODU2IDE4Ny42NTIgMTIuMjcxMiAxODcuNjUyIDExLjM0MzVWMTEuMjQ1OUMxODcuNjUyIDEwLjQxNjIgMTg4LjQzMyA5LjgzMDU2IDE5MC4xNDEgOS44MzA1NkMxOTMuMzEzIDkuODMwNTYgMTk3LjE3IDEwLjg1NTQgMjAwLjM5IDEzLjE5ODFMMjA1Ljk1NSA1LjQ4Njk3QzIwMi4wMDEgMi4zNjMwOSAxOTcuMTIxIDAuODAwOTU5IDE5MC41MzIgMC44MDA5NTlDMTgxLjExMSAwLjgwMDk1OSAxNzYuMDM2IDUuODI4NiAxNzYuMDM2IDEyLjMxOTZWMTIuNDE3NkMxNzYuMDM2IDE5LjY0MDYgMTgyLjc3MiAyMS44Mzc2IDE5MC40MzQgMjMuMzk4NkMxOTQuMDk1IDI0LjEzMSAxOTUuMTY4IDI0LjY2NzUgMTk1LjE2OCAyNS42NDRWMjUuNzQyQzE5NS4xNjggMjYuNjY4OSAxOTQuMjkgMjcuMjA1MyAxOTIuMjQgMjcuMjA1M0MxODguMjM4IDI3LjIwNTMgMTgzLjk5MiAyNi4wMzQ4IDE4MC4yODIgMjMuMjAzN1oiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=";
@@ -7702,9 +7666,6 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   d[id]=d[id]||{};const on=!d[id][i];d[id][i]=on;const row=b.closest(".fz-set");if(row){row.classList.toggle("fz-on",on);row.classList.remove("fz-sug-r")}b.setAttribute("aria-pressed",String(on));
   const det=b.closest(".fz-ex");if(det){const n=det.querySelectorAll(".fz-set").length,f=det.querySelectorAll(".fz-set.fz-on").length;const st=det.querySelector(".fz-st");if(st)st.textContent=f?f+"/"+n:"";det.classList.toggle("done",f>=n);det.classList.toggle("part",f>0&&f<n)}
   buzz(10);if(on){const ex=routineById(S.strRoutine).ex.find(x=>x.id===id),n=ex?+ex.s:0;if(+i+1<n)restStart(id,+i+2);else if(S.rest&&S.rest.id===id){S.rest=null;restDraw()}}});
-/* «¿Cómo fue?» de cada ejercicio */
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzfe]");if(!b)return;const[id,v]=b.dataset.fzfe.split("|"),dk=(S.strDate||S.day)+"|"+S.strRoutine;
-  S.strFe=S.strFe||{};const f=S.strFe[dk]=S.strFe[dk]||{};f[id]=f[id]===+v?null:+v;b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.fzfe.split("|")[1]===f[id])));buzz(8)});
 
 /* ---------- Rutinas: «···» con editar, duplicar, mover y eliminar (también las de ejemplo, que se pueden recuperar) ---------- */
 function rtmHtml(){const r=routineById(S.strRoutine),own=!r.base,L=S.routines||[],i=L.findIndex(x=>x.id===r.id);
@@ -7745,6 +7706,32 @@ function strSumCard(){if(!S.str.length)return"";const tk=today(),n4=S.str.filter
     <div class="kv fzs-kv" style="margin-top:8px"><div><span>Sesiones en 4 semanas</span><b>${n4}</b></div><div><span>Fuerza desde el inicio</span><b>${g!=null?(g>=0?"+":"")+fmtInt(g)+" %":"—"}</b></div></div><p class="note" style="margin:8px 0 0">Última sesión: ${esc(dateLabel(lastD))}</p>
     <button type="button" class="ms-link" data-fzgo="pro">Ver el detalle en Fuerza ›</button></section>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzgo]");if(!b)return;S.prevTab=S.tab;S.tab="fuerza";S.fzSec=b.dataset.fzgo;render();window.scrollTo(0,0)});
+
+/* ---------- Sensación sin caritas (v271) ----------
+   «¿Cómo fue?» es un deslizador de cuatro paradas, la misma pieza que la intensidad del planificador: cuatro columnas
+   iguales, cada palabra bajo su punto. Sin valorar: pista gris con los puntos de color y sin tirador. Al soltar se guarda.
+   Una vez valorada, la sensación es un punto de su color (Actividad, Hoy) o una etiqueta «● Duro» en el detalle.
+   Clave data-ssk: «act|id|día» (actividad) o «fz|ejercicio» (Fuerza). Clases ss- */
+const SS_C=i=>`var(--rpe${i+1})`;
+function ssHtml(key,v,opt){const o=opt||{},n=4,on=v>0,i=on?v-1:-1;
+  return`<div class="ss${on?" on":""}${o.cls?" "+o.cls:""}" data-ssk="${esc(key)}" style="--p:${on?i/(n-1)*100:0}%;--c:${on?SS_C(i):"var(--fill)"}">
+    <div class="ss-h"><span>${o.label||"¿Cómo fue?"}${o.opt?' <small>opcional</small>':""}</span><b class="ss-v">${on?RPE_L[i]:'<em>Toca o desliza</em>'}</b></div>
+    <div class="ss-t" role="slider" tabindex="0" aria-label="Sensación" aria-valuemin="1" aria-valuemax="4"${on?` aria-valuenow="${v}" aria-valuetext="${RPE_L[i]}"`:""}><span class="ss-f"></span>${RPE_L.map((l,j)=>`<span class="ss-s" style="left:${(j+.5)/n*100}%;--sc:${SS_C(j)}"></span>`).join("")}<span class="ss-k"></span></div>
+    <div class="ss-l">${RPE_L.map((l,j)=>`<button type="button" data-ssv="${j+1}" aria-pressed="${j===i}">${l}</button>`).join("")}</div></div>`}
+/* punto de la sensación (Actividad, Hoy) */
+function ssDot(id){const v=rpeOf(id);return v?`<i class="ss-dot" style="--c:${SS_C(v-1)}" role="img" aria-label="Fue ${RPE_L[v-1].toLowerCase()}"></i>`:""}
+function ssShow(g,v){const i=v-1;g.classList.add("on");g.style.setProperty("--p",i/3*100+"%");g.style.setProperty("--c",SS_C(i));
+  g.querySelector(".ss-v").textContent=RPE_L[i];g.querySelectorAll(".ss-l button").forEach((b,j)=>b.setAttribute("aria-pressed",String(j===i)));
+  const t=g.querySelector(".ss-t");t.setAttribute("aria-valuenow",v);t.setAttribute("aria-valuetext",RPE_L[i])}
+function ssSave(g,v){const[k,a,b]=g.dataset.ssk.split("|");buzz(10);
+  if(k==="act"){S.rpe=S.rpe||{};S.rpe[a]={v,d:b};saveRpe();S.feOpen=false;setTimeout(()=>{if($("#modal")&&!$("#modal").hidden)renderModal();render()},650);return}
+  if(k==="fz"){const dk=(S.strDate||S.day)+"|"+S.strRoutine;S.strFe=S.strFe||{};(S.strFe[dk]=S.strFe[dk]||{})[a]=v}}
+(function(){let g=null,last=0;const at=(t,x)=>{const r=t.getBoundingClientRect();return Math.max(1,Math.min(4,Math.floor((x-r.left)/r.width*4)+1))};
+  document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest(".ss-t");if(!t)return;g=t.parentNode;try{t.setPointerCapture(e.pointerId)}catch(x){}last=at(t,e.clientX);ssShow(g,last)});
+  document.addEventListener("pointermove",e=>{if(!g)return;const v=at(g.querySelector(".ss-t"),e.clientX);if(v!==last){last=v;ssShow(g,v);buzz(4)}});
+  const end=()=>{if(!g)return;const gg=g;g=null;ssSave(gg,last)};document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end);
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-ssv]");if(!b)return;const gg=b.closest(".ss");if(!gg)return;const v=+b.dataset.ssv;ssShow(gg,v);ssSave(gg,v)});
+  document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".ss-t");if(!t||(e.key!=="ArrowRight"&&e.key!=="ArrowLeft"))return;e.preventDefault();const gg=t.parentNode,c=+(t.getAttribute("aria-valuenow")||0),v=Math.max(1,Math.min(4,(c||(e.key==="ArrowRight"?0:5))+(e.key==="ArrowRight"?1:-1)));ssShow(gg,v);ssSave(gg,v)})})();
 
 })();
 </script>
