@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T09:31:53.150Z">
+<meta name="sustrato-version" content="2026-10-13T10:02:34.063Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2601,8 +2601,6 @@ html.modal-open,html.modal-open body{overflow:hidden!important;overscroll-behavi
 .en-wk span{font-size:11px;color:var(--muted)}.en-wk span b{color:var(--fg);font-weight:600}
 .en-ctx{margin:8px 0 0;font-size:13px;color:var(--muted)}
 .en-al{margin:10px 0 0;font-size:13px;font-weight:600;color:var(--fg);--pc:var(--rojo)}
-.en-more{appearance:none;border:0;background:none;padding:0;min-height:44px;display:flex;align-items:center;gap:6px;font:500 13px var(--font);color:var(--muted)}
-.en-more span{color:var(--faint);font-size:15px}.en-more[aria-expanded="true"] span{transform:rotate(90deg)}
 .en-x{font-size:13px;color:var(--muted);padding:0 0 10px}.en-x p{margin:0 0 6px}.en-x b{color:var(--fg)}
 .en-g{border-top:.5px solid var(--sep);margin-top:8px;padding-top:14px}
 .en-gh{display:flex;justify-content:space-between;align-items:baseline}.en-gh>b{font-size:17px;font-weight:600}.en-gh span b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -2817,7 +2815,7 @@ html[data-theme="light"]{--amarillo:#f0a800;--naranja:#e86518;--rojo:#d70015;--v
 .tchip .tc-ic{margin-right:2px}
 .pa-sp[aria-pressed="true"] .tc-ic{background:var(--fg);color:var(--card)}
 /* sobre filas ya rellenas (tesela gris sobre gris), la tesela va en el color de la tarjeta, como en las listas agrupadas de iOS */
-.tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic{background:var(--card)}
+.tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -2907,7 +2905,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="261";
+const APP_VER="262";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3535,7 +3533,8 @@ const SP_IC={run:'<circle cx="13.5" cy="4" r="1.6" fill="currentColor" stroke="n
   str:'<path d="M2.5 12h1M20.5 12h1M9 12h6"/><rect x="5.5" y="7" width="3.5" height="10" rx="1.2"/><rect x="15" y="7" width="3.5" height="10" rx="1.2"/><path d="M5.5 9H4.2a.9.9 0 0 0-.9.9v4.2a.9.9 0 0 0 .9.9h1.3M18.5 9h1.3a.9.9 0 0 1 .9.9v4.2a.9.9 0 0 1-.9.9h-1.3"/>',
   walk:'<circle cx="13" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M7 21l3-4"/><path d="M16 21l-2-4-3-3 1-6"/><path d="M6 12l2-3 4-1 3 3 3 1"/>',
   hike:'<circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"/><path d="M7 21l2-4"/><path d="M13 21v-4l-3-3 1-6 3 4 3 2"/><path d="M17 11v10"/>',
-  oth:'<path d="M3 12h4l3 7 4-14 3 7h4"/>'};
+  oth:'<path d="M3 12h4l3 7 4-14 3 7h4"/>',
+  rest:'<path d="M12 3h.4a7.5 7.5 0 0 0 7.9 12.4A9 9 0 1 1 12 3z"/>'}; /* v262: descanso = luna (reposo, como en iOS) */
 /* tesela neutra (guía: «Deporte»): spIcon(deporte, "sm"|"xs"|"plan") */
 function spIcon(sp,cls){return`<span class="tc-ic${cls?" "+cls.split(" ").map(c=>"sp-"+c).join(" "):""}" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${SP_IC[sp]||SP_IC.oth}</svg></span>`}
 function buzz(ms){try{if(navigator.vibrate&&!matchMedia("(prefers-reduced-motion:reduce)").matches)navigator.vibrate(ms)}catch(e){}}
@@ -3946,7 +3945,7 @@ function trainCard(t){
   G.sort((x,y)=>x.t<y.t?-1:x.t>y.t?1:0);const rows=[].concat(...G.map(g=>g.h));
   const tot=t.acts.reduce((s,a)=>s+(a.kcal||0),0)+t.plan.reduce((s,x)=>s+(x.kcal||0),0);
   return`<section class="glass pad fade tcard"><div class="row"><h2>Entreno · ${esc(dateLabel(k))}</h2>${fut?wxPill(k):""}</div>
-    ${rows.length?`<div class="tc-list">${rows.join("")}</div>`:`<div class="tc-empty">${spIcon("oth").replace('<circle cx="12" cy="12" r="7"/>','<path d="M4 12h4l2-5 4 10 2-5h4"/>')}<span><b>Descanso</b><small>Sin entrenos ${fut?"previstos":"registrados"} este día.</small></span></div>`}
+    ${rows.length?`<div class="tc-list">${rows.join("")}</div>`:`<div class="tc-empty">${spIcon("rest")}<span><b>Descanso</b><small>Sin entrenos ${fut?"previstos":"registrados"} este día.</small></span></div>`}
     ${fut?wxAdvice(k):""}
     ${subDetails(t,k>tk)}
     <div class="tc-foot">${tot?`<span class="note" style="margin:0">${fmtInt(tot)} kcal ${t.plan.length?"de ejercicio previsto":"de ejercicio"}</span>`:"<span></span>"}${fut?`<button class="chip sm" data-gotoplan="${k}">${rows.length?"Editar plan":"＋ Planificar"}</button>`:""}</div></section>`;
@@ -7028,8 +7027,6 @@ function energyCard0(k){
     <div class="en-wk" aria-label="Últimos 7 días">${bars}</div>
     <p class="en-ctx">${ctx}</p>
     ${alert?`<p class="en-al">Varios días comiendo por debajo de ${TH.lo}: riesgo de fatiga, lesión y alteraciones hormonales (RED‑S). Sube la comida los días de más carga.</p>`:""}
-    <button class="en-more" data-enrow="ea" aria-expanded="${open==="ea"}">Qué es y cómo se calcula<span aria-hidden="true">›</span></button>
-    ${open==="ea"?`<div class="en-x"><p>Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p>Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p>${TH.ok} o más es óptima. Entre ${TH.lo} y ${TH.ok}, suficiente. Por debajo de ${TH.lo} varios días seguidos aumenta el riesgo de RED‑S.${TH.lo===25?" En hombres el umbral es más bajo que el clásico de 30, que viene de estudios con mujeres.":""} Es una estimación orientativa, no un diagnóstico. Tu objetivo de comida nunca te deja por debajo de ${TH.lo}.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></div>`:""}
     <div class="en-g"><div class="en-gh"><b>Gasto</b><span><b>${fmtInt(tot)}</b><small class="u">kcal</small></span></div>
       <div class="en-band" aria-hidden="true"><i style="flex:${bas.toFixed(0)};background:var(--vz-n2)"></i>${neatV>0?`<i style="flex:${neatV.toFixed(0)};background:var(--verde)"></i>`:""}${done>0?`<i style="flex:${done.toFixed(0)};background:var(--azul)"></i>`:""}${pend>0?`<i class="pend" style="flex:${pend.toFixed(0)};background:var(--azul)"></i>`:""}</div>
       ${row("b","var(--vz-n2)","Basal","",bas)}
@@ -7038,6 +7035,7 @@ function energyCard0(k){
       ${open==="n"?`<div class="en-x">${hrs}<p>${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}${window.__native?(st2.manual!=null?"Pasos de tu reloj, se actualizan solos.":"Tu reloj aún no ha enviado pasos de este día."):st2.manual!=null?"Pasos apuntados por ti.":"Apunta los pasos de tu móvil para afinar."}</p>${stpCtl}</div>`:""}
       ${row("x","var(--azul)","Entreno",exSub,exV,pend>0&&!done?"Previsto":"")}
     </div>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p class="note">Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p class="note">${TH.ok} o más es óptima. Entre ${TH.lo} y ${TH.ok}, suficiente. Por debajo de ${TH.lo} varios días seguidos aumenta el riesgo de RED‑S.${TH.lo===25?" En hombres el umbral es más bajo que el clásico de 30, que viene de estudios con mujeres.":""} Es una estimación orientativa, no un diagnóstico. Tu objetivo de comida nunca te deja por debajo de ${TH.lo}.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></details>
   </section>`;
 }
 
@@ -7045,6 +7043,8 @@ function energyCard0(k){
 function hcarFit(){if(matchMedia("(min-width:900px)").matches)return;document.querySelectorAll(".hcar-en .hcar-track").forEach(t=>{const sl=[...t.children];if(sl.length<2)return;const pitch=(sl[1].offsetLeft-sl[0].offsetLeft)||t.clientWidth||1,x=t.scrollLeft/pitch,i=Math.max(0,Math.min(sl.length-1,Math.floor(x))),f=Math.min(1,Math.max(0,x-i)),a=sl[i].offsetHeight,b=sl[i+1]?sl[i+1].offsetHeight:a,h=Math.round(a+(b-a)*f)+"px";if(t.style.height!==h)t.style.height=h})}
 document.addEventListener("scroll",e=>{if(e.target.classList&&e.target.classList.contains("hcar-track"))hcarFit()},true);
 addEventListener("resize",hcarFit);
+/* v262: al abrir o cerrar un «Cómo se calcula» dentro del carrusel, la altura se recalcula (si no, el texto quedaba cortado) */
+document.addEventListener("toggle",e=>{const d=e.target;if(d.tagName==="DETAILS"&&d.closest&&d.closest(".hcar-en")){hcarFit();setTimeout(hcarFit,320)}},true);
 
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
