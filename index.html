@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T07:55:59.349Z">
+<meta name="sustrato-version" content="2026-10-13T08:14:31.811Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2890,6 +2890,7 @@ html[data-theme="light"]{--amarillo:#f0a800;--naranja:#e86518;--rojo:#d70015;--v
 .cy-f input{font:500 15px var(--font);color:var(--fg);background:var(--fill2);border:0;border-radius:10px;padding:7px 10px;width:auto;max-width:170px;min-width:0}
 .cy-av{--pc:var(--morado)}
 .cy-card .tg-r+.tg-r{border-top:.5px solid var(--sep)}
+.cy-sh{border-top:.5px solid var(--sep)}
 
 </style>
 
@@ -2962,7 +2963,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="258";
+const APP_VER="259";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3846,7 +3847,7 @@ async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)retu
    Un código de 24 caracteres genera dos cosas: el identificador de la copia en el servidor y la clave de cifrado.
    El servidor solo recibe datos ya cifrados: sin el código nadie (tampoco nosotros) puede leerlos. */
 const CLOUD_CFG="https://javierfp1993-design.github.io/sustrato-web/config.json",B32="0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const CLOUD_SKIP=id=>id==="cloud"||id==="eff"||id==="weather"||id.startsWith("sub_");
+const CLOUD_SKIP=id=>id==="cloud"||id==="eff"||id==="weather"||id.startsWith("sub_")||(id==="cycle"&&!cyShared()); /* v259: el ciclo, solo si ella lo comparte */
 function cloudNewCode(){const b=crypto.getRandomValues(new Uint8Array(15));let bits="";b.forEach(x=>bits+=x.toString(2).padStart(8,"0"));let s="";for(let i=0;i<120;i+=5)s+=B32[parseInt(bits.slice(i,i+5),2)];return s.match(/.{4}/g).join("-")}
 function cloudNorm(c){const s=String(c||"").toUpperCase().replace(/[^0-9A-Z]/g,"").replace(/O/g,"0").replace(/[IL]/g,"1");return s.length===24&&[...s].every(ch=>B32.includes(ch))?s.match(/.{4}/g).join("-"):null}
 const b64=u=>{let s="";const a=new Uint8Array(u);for(let i=0;i<a.length;i+=32768)s+=String.fromCharCode.apply(null,a.subarray(i,i+32768));return btoa(s)};
@@ -3920,8 +3921,8 @@ async function syncFlush(){if(!S.acct||SYNC.busy)return;const ids=Object.keys(SY
   catch(e){if(S.acct){S.acct=Object.assign({},S.acct,{err:e&&e.code||"net"});LS("sustrato-acct",S.acct)}}
   SYNC.busy=false;if(Object.keys(SYNC.q).length)SYNC.t=setTimeout(syncFlush,30e3)}
 /* Vuelve a leer el estado guardado tras recibir cambios de otro dispositivo */
-function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.profile,S.str,S.dishes,S.rhr,S.hrv,S.hrvMan,S.sleep,S.steps,S.stepsH,S.fasted,S.rpe,S.fuel,S.sweat,S.measures,S.routines,S.pantry])}catch(e){return String(Math.random())}}
-async function reloadFromStore(){const sig0=stateSig();["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines"].forEach(k=>{delete S[k]});
+function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.profile,S.str,S.dishes,S.rhr,S.hrv,S.hrvMan,S.sleep,S.steps,S.stepsH,S.fasted,S.rpe,S.fuel,S.sweat,S.measures,S.routines,S.pantry,S._cy])}catch(e){return String(Math.random())}}
+async function reloadFromStore(){const sig0=stateSig();["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines","_cy"].forEach(k=>{delete S[k]});
   Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();if(stateSig()!==sig0)quietRender()}
 function quietRender(){const h=document.documentElement;h.classList.add("quiet");render();clearTimeout(quietRender.t);quietRender.t=setTimeout(()=>h.classList.remove("quiet"),500)}
 async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol();if(!c)return 0;SYNC.pulling=true;let n=0;
@@ -4642,6 +4643,7 @@ async function loadStore(){
       else if(d.id==="glyans"&&v.map)S.glyAns=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="measures"&&v.list)S.measures=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="routines"&&v.list)S.routines=JSON.parse(JSON.stringify(v.list));
+      else if(d.id==="cycle"&&v.kind==="cycle")S._cy={on:!!v.on,horm:!!v.horm,share:v.share!==false,starts:(v.starts||[]).slice()};
       else if(v.kind==="str")S.str.push(Object.assign({},v));
     });
     S.str.sort((a,b)=>a.date<b.date?1:-1);
@@ -7425,16 +7427,19 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   setTimeout(()=>{if(!sw.isConnected)return;sw.dataset.tgGo="1";sw.click();delete sw.dataset.tgGo},220)},true);
 
 /* ---------- Ciclo menstrual (v258) ----------
-   Solo con sexo «Mujer» y si ella lo activa. Se guarda en este dispositivo (no se sincroniza ni va a la IA).
+   Solo con sexo «Mujer» y si ella lo activa. Documento «cycle» del almacén: viaja a la cuenta y a la copia cifrada como el resto de
+   datos de salud, salvo que apague «Guardar también en tu cuenta» (share:false → CLOUD_SKIP). Nunca va a la IA.
    Efecto que se descuenta (WHOOP 2024, 45.811 ciclos; revisión Sports Med 2025): en la segunda mitad del ciclo el pulso en reposo
    sube unos 2–3 ppm y la VFC baja un 5–10 %. No se tocan sustratos, kcal ni proteína (D'Souza 2023: sin diferencias que importen).
    Con anticonceptivo hormonal la oscilación casi desaparece: no se ajusta.
    La segunda mitad se cuenta hacia atrás desde la regla siguiente (fase lútea ≈ 14 días); la primera es la que varía.
    Tras 2 ciclos con datos, la amplitud es la de cada mujer (se adapta sola a la edad, que la reduce).
    Clases: .cy-card .cy-strip .cy-row .cy-reg .cy-av */
-const CY_LS="sustrato-cycle";
-function cyGet(){if(!S._cy){let v=null;try{v=JSON.parse(localStorage.getItem(CY_LS)||"null")}catch(e){}S._cy=Object.assign({on:false,horm:false,starts:[]},v||{})}return S._cy}
-function cySave(){try{localStorage.setItem(CY_LS,JSON.stringify(S._cy))}catch(e){}}
+const CY_LS="sustrato-cycle"; /* v258 lo guardaba aquí; se pasa al almacén la primera vez */
+function cyGet(){if(!S._cy){let v=null;try{v=JSON.parse(localStorage.getItem(CY_LS)||"null")}catch(e){}S._cy=Object.assign({on:false,horm:false,starts:[],share:true},v||{});
+    if(v){cySave();try{localStorage.removeItem(CY_LS)}catch(e){}}}return S._cy}
+function cySave(){const c=userCol(),v=S._cy;if(c&&v)c.doc("cycle").set({kind:"cycle",on:!!v.on,horm:!!v.horm,share:v.share!==false,starts:v.starts.slice()}).catch(()=>{})}
+function cyShared(){return!S._cy||S._cy.share!==false}
 function cyFem(){return(S.profile||{}).sex==="f"}
 function cyOn(){const c=cyGet();return cyFem()&&c.on}
 function cyActive(){const c=cyGet();return cyOn()&&!c.horm&&c.starts.length>0}
@@ -7481,13 +7486,16 @@ function cyCard(){if(!cyFem())return"";const c=cyGet(),s=cyStarts(),last=s[s.len
     ${c.on?`<div class="tg-r"><span class="tg-t"><b>Anticonceptivo hormonal</b><small>Píldora, DIU hormonal, anillo… El ciclo apenas mueve el pulso: no se ajusta nada</small></span>${sw("horm",c.horm,"Anticonceptivo hormonal")}</div>
     <label class="cy-f"><span>Última regla</span><input type="date" id="cy_last" value="${last||""}" max="${today()}"></label>
     <div class="cy-f"><span>Duración habitual</span><b>${ln.L} días</b></div>
-    <p class="note">${ln.n?`Media de tus ${ln.n} últimos ciclos. `:"Hasta tener dos reglas apuntadas uso 28 días. "}Se actualiza sola cada vez que apuntas una regla. Se queda en este móvil: no se sincroniza ni se envía a la IA.</p>
+    <p class="note">${ln.n?`Media de tus ${ln.n} últimos ciclos. `:"Hasta tener dos reglas apuntadas uso 28 días. "}Se actualiza sola cada vez que apuntas una regla.</p>
+    ${S.acct||S.cloud?`<div class="tg-r cy-sh"><span class="tg-t"><b>Guardar también en tu cuenta</b><small>${c.share!==false?"Para verlo en tus otros dispositivos y en la copia cifrada. Nunca se envía a la IA.":"Solo en este móvil. Nunca se envía a la IA."}</small></span>${sw("share",c.share!==false,"Guardar también en tu cuenta")}</div>`:`<p class="note">Nunca se envía a la IA.</p>`}
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">En la segunda mitad del ciclo el pulso en reposo sube unos 2–3 ppm y la VFC baja un 5–10 %: es la progesterona, no cansancio. La app descuenta ese efecto antes de compararte con tu media. Los dos primeros ciclos usa la media de grandes estudios; después, la tuya, así que se ajusta sola a tu edad (con los años la oscilación es menor). No cambia hidratos, grasas, proteína ni calorías: los estudios no encuentran diferencias que importen entre fases. Con anticonceptivo hormonal el ciclo casi no mueve el pulso ni la VFC, así que no se ajusta.</p></details>`:""}
   </section>`}
 /* acciones */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-cy],[data-cyreg]");if(!b)return;const c=cyGet();
   if(b.dataset.cyreg){const k=b.dataset.cyreg;if(!c.starts.includes(k))c.starts.push(k);cySave();buzz(10);render();undoToast("Apuntado: día 1 de tu ciclo",()=>{c.starts=c.starts.filter(x=>x!==k);cySave();render()});return}
-  const f=b.dataset.cy;c[f]=!c[f];cySave();render()});
+  const f=b.dataset.cy;
+  if(f==="share"){if(c.share!==false){syncMark("cycle",true);c.share=false;cySave();toast("Borrado de tu cuenta. En este móvil se queda.")}else{c.share=true;cySave();toast("Guardado también en tu cuenta")}render();return}
+  c[f]=!c[f];cySave();render()});
 document.addEventListener("change",e=>{if(e.target.id!=="cy_last"||!e.target.value)return;const c=cyGet(),v=e.target.value,s=cyStarts(),last=s[s.length-1];
   if(v>today())return;if(last&&daysBetween(last,v)<15&&daysBetween(last,v)>-15)c.starts=c.starts.filter(x=>x!==last); /* corrige la última si está cerca */
   if(!c.starts.includes(v))c.starts.push(v);cySave();toast("Regla apuntada");render()});
