@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-14T13:20:49.765Z">
+<meta name="sustrato-version" content="2026-10-14T13:53:48.829Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2936,14 +2936,36 @@ span.ia-ic{flex:none;width:32px;height:32px;border-radius:10px;display:grid;plac
 .wk-det .mw-sec{margin-top:16px}
 /* v275 · resumen de la semana en dos columnas: con tres casillas, la última ocupa la fila entera (a 360 px no caben tres sin tocar el borde) */
 .pl-kv>div:nth-child(3):last-child{grid-column:1/-1}
-.wk-card+.tweek{margin-top:0}
-/* v277 · Resumen semanal: la semana entera en el acento (una banda bajo los siete números), sin elegir día */
-.ws-cal{margin:12px 0 16px}
-.strip-n{font-size:13px;color:var(--muted)}
-.wk-r .day{cursor:default}
-.wk-r .day b{width:auto;border-radius:0;background:var(--ac);color:var(--ac-on)}
-.wk-r .day:first-child b{border-radius:999px 0 0 999px;margin-left:4px}
-.wk-r .day:last-child b{border-radius:0 999px 999px 0;margin-right:4px}
+.wk-card .pl-kv,.wk-card .pl-go{margin-top:16px} /* v278: bajo el calendario, el resumen y después Planificar */
+/* v278 · Resumen: calendario del mes (calMonth). Los días son .day, como en la tira; el tramo, una banda del acento */
+.ws-pre{margin:12px 0 16px}
+.ws-cal{margin-bottom:12px}
+.ws-sel{margin:0 0 16px;font-size:13px;color:var(--muted)}
+.cm-w,.cm-g{display:grid;grid-template-columns:repeat(7,1fr)}
+.cm-w span{text-align:center;font-size:11px;color:var(--muted);padding-bottom:2px}
+.cm-g{touch-action:none;user-select:none;-webkit-user-select:none}
+.cm-c{min-width:0;padding:2px 0}
+.cm-c.out{opacity:.35;cursor:default}.cm-c.out b,.cm-c.fut b{color:var(--muted);font-weight:500}.cm-c.fut{cursor:default}
+.cm-c.in b{width:auto;border-radius:0;background:var(--ac);color:var(--ac-on)}
+.cm-c.s b{border-top-left-radius:999px;border-bottom-left-radius:999px}.cm-c.e b{border-top-right-radius:999px;border-bottom-right-radius:999px}
+.cm-nav{width:36px;height:36px;margin:0;font-size:20px}.cm-nav:disabled{opacity:.3}
+
+/* v278 · Progreso › Comida (087). Clases com- */
+.com-card>.row{align-items:center}
+.com-n{font-size:13px;color:var(--muted);margin:4px 0 12px}
+.com-m{display:flex;flex-direction:column;gap:14px}
+.com-r{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:baseline}
+.com-r>b{font-size:15px;font-weight:600}
+.com-r>span{font-size:15px;font-variant-numeric:tabular-nums}.com-r>span small{font-size:13px;color:var(--muted)}
+.com-bar{grid-column:1/-1;position:relative;height:8px;border-radius:999px;background:var(--fill2)}
+.com-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--c)}
+.com-bar em{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;border-radius:999px;background:var(--fg)}
+.com-wk{display:flex;align-items:flex-end;gap:3px;height:28px;flex:none}
+.com-wk i{width:8px;border-radius:2px;background:var(--fg);opacity:.22}
+.com-wk i.md{background:var(--naranja);opacity:1}.com-wk i.lo{background:var(--rojo);opacity:1}.com-wk i.nd{opacity:.08}
+.com-al{display:flex;flex-direction:column;gap:8px;padding:14px;margin-bottom:12px;border-radius:14px;background:var(--card2)}
+.com-al h3{display:flex;align-items:flex-start;margin:0;font-size:15px;font-weight:600}.com-al h3 .ss-dot{margin-top:6px}
+.com-al p{margin:0;font-size:15px;line-height:1.45}.com-al p.note{font-size:13px}
 
 </style>
 
@@ -4233,16 +4255,17 @@ function recovCard(){if(S.day!==today())return"";const now=Date.now(),kg=num((S.
   </section>`}
 
 /* ---------- Resumen semanal ---------- */
-function weekStats(wk){const end=shiftKey(wk,6),A=S.acts.filter(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=end);
+/* v278: cifras de un tramo de días (de «wk» a «end», una semana si no se dice), comparadas con un tramo igual justo antes */
+function weekStats(wk,end){end=end||shiftKey(wk,6);const nd=Math.round((new Date(end+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5)+1,A=S.acts.filter(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=end);
   const by={};A.forEach(a=>{const f=famOf(a.sport);by[f]=(by[f]||0)+a.mov});
   const avg=(arr)=>arr.length?arr.reduce((x,y)=>x+y,0)/arr.length:null;
   const wIn=(f,t)=>(S.weights||[]).filter(x=>x.d>=f&&x.d<=t).map(x=>x.kg),rIn=(f,t)=>Object.entries(S.rhr||{}).filter(([d])=>d>=f&&d<=t).map(([,v])=>v);
-  let meals=0,ok=0,logged=0;for(let i=0;i<7;i++){const k=shiftKey(wk,i);if(k>today())break;meals+=4;const L=S.log[k]||{};["breakfast","lunch","snack","dinner"].forEach(m=>{const e=L[m];if(e){logged++;if(e.st==="done")ok++}})}
-  const sl={good:0,ok:0,bad:0};for(let i=0;i<7;i++){const v=(S.sleep||{})[shiftKey(wk,i)];if(v)sl[v]++}
+  let meals=0,ok=0,logged=0;for(let i=0;i<nd;i++){const k=shiftKey(wk,i);if(k>today())break;meals+=4;const L=S.log[k]||{};["breakfast","lunch","snack","dinner"].forEach(m=>{const e=L[m];if(e){logged++;if(e.st==="done")ok++}})}
+  const sl={good:0,ok:0,bad:0};for(let i=0;i<nd;i++){const v=(S.sleep||{})[shiftKey(wk,i)];if(v)sl[v]++}
   const longest=A.slice().sort((a,b)=>b.mov-a.mov)[0];
-  return{n:A.length,t:A.reduce((x,a)=>x+a.mov,0),km:A.filter(a=>a.sport!=="str").reduce((x,a)=>x+a.dist,0)/1000,by,cmp:weekCompliance(wk),
-    w:avg(wIn(wk,end)),w0:avg(wIn(shiftKey(wk,-7),shiftKey(wk,-1))),r:avg(rIn(wk,end)),r0:avg(rIn(shiftKey(wk,-7),shiftKey(wk,-1))),meals,ok,logged,sl,longest}}
-function weekCard(){const lw=shiftKey(mondayOf(today()),-7),wk=S.wkSum||lw,st=weekStats(wk),pv=weekStats(shiftKey(wk,-7));
+  return{n:A.length,t:A.reduce((x,a)=>x+a.mov,0),km:A.filter(a=>a.sport!=="str").reduce((x,a)=>x+a.dist,0)/1000,by,cmp:weekCompliance(wk,nd),
+    w:avg(wIn(wk,end)),w0:avg(wIn(shiftKey(wk,-nd),shiftKey(wk,-1))),r:avg(rIn(wk,end)),r0:avg(rIn(shiftKey(wk,-nd),shiftKey(wk,-1))),meals,ok,logged,sl,longest}}
+function weekCard(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5)+1,st=weekStats(wk,end),pv=weekStats(shiftKey(wk,-nd),shiftKey(wk,-1)),isWk=wk===mondayOf(wk)&&end===shiftKey(wk,6);
   const f1=v=>v.toFixed(1).replace(".",","),dl=(a,b,u,dec,good)=>a!=null&&b!=null&&Math.abs(a-b)>=(dec?.05:.5)?`<em class="${good==null?"nt":(a<b)===good?"up":"dn"}">${a>b?"↑":"↓"} ${dec?f1(Math.abs(a-b)):Math.round(Math.abs(a-b))} ${u}</em>`:"";
   const order=FAMS;
   const bar=order.filter(k=>st.by[k]).map(k=>`<i style="flex:${st.by[k]};background:${FAMC[k]}" title="${FAM_L[k]}: ${fmtDur(st.by[k])}"></i>`).join("");
@@ -4256,13 +4279,23 @@ function weekCard(){const lw=shiftKey(mondayOf(today()),-7),wk=S.wkSum||lw,st=we
     ["Pulso medio",st.r!=null?Math.round(st.r):"—",st.r!=null?"ppm":"",dl(st.r,st.r0,"ppm",0,true)],
     ["Comidas",st.logged?st.ok+"/"+st.meals:"—",st.logged?"como previstas":"sin registrar",""],
     ["Sueño",st.sl.good+st.sl.ok+st.sl.bad?st.sl.good+"/"+(st.sl.good+st.sl.ok+st.sl.bad):"—",st.sl.good+st.sl.ok+st.sl.bad?"noches buenas":"sin registrar",""]];
-  return`<section class="glass pad fade ws-card" id="wkcard"><span class="pkk">Resumen semanal</span>
-    <div class="ws-cal">${sumStrip(wk)}</div>
+  return`<section class="glass pad fade ws-card" id="wkcard"><span class="pkk">Resumen</span>
+    <div class="chips ws-pre">${sumPresets(wk,end)}</div>
+    <div class="ws-cal">${calMonth({view:S.sumView||end.slice(0,8)+"01",a:wk,b:end,dot:calDotTrain})}</div>
+    <p class="ws-sel">${esc(sumLabel(wk,end))}${nd>1?` · comparado con ${nd===7&&isWk?"la semana anterior":"los "+nd+" días anteriores"}`:""}</p>
     ${bar?`<div class="ws-bar" role="img" aria-label="Tiempo por deporte">${bar}</div><div class="ws-lg">${lg}</div>`:`<p class="note">Sin entrenos esta semana.</p>`}
     <div class="ws-g">${tiles.map(([l,v,u,d])=>`<div><span>${l}</span>${(()=>{const phys=/^(km|kg|ppm)$/.test(u);return`<b>${v}${phys&&v!=="—"?` <small>${u}</small>`:""}</b>${u&&(!phys||v==="—")&&!(phys&&v==="—")?`<small class="ws-na">${u}</small>`:""}`})()}${d}</div>`).join("")}</div>
     ${st.longest?`<p class="ws-hl"><span class="ws-star" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Sesión más larga: ${esc(SPORT_L[st.longest.sport])} · ${fmtDur(st.longest.mov)}${st.longest.dist?" · "+f1(st.longest.dist/1000)+" km":""} el ${esc(dateLabel(st.longest.day))}</p>`:""}
 
-    ${wrBlock(wk)}</section>`}
+    ${isWk?wrBlock(wk):""}</section>`}
+/* tramo elegido: por defecto, la semana pasada */
+function sumRange(){const lw=shiftKey(mondayOf(today()),-7);let a=S.sumA||lw,b=S.sumB||shiftKey(lw,6);if(a>b)[a,b]=[b,a];const tk=today();if(b>tk)b=tk;return[a,b]}
+function sumLabel(a,b){const f=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3).toLowerCase()};const n=Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)+1;return(a===b?dateLabel(a):a.slice(0,7)===b.slice(0,7)?(+a.slice(8))+" – "+f(b):f(a)+" – "+f(b))+" · "+n+(n===1?" día":" días")}
+const SUM_P=[["lw","Semana pasada"],["tw","Esta semana"],["tm","Este mes"],["30","30 días"]];
+function sumPreset(k){const tk=today(),mw=mondayOf(tk);return k==="lw"?[shiftKey(mw,-7),shiftKey(mw,-1)]:k==="tw"?[mw,tk]:k==="tm"?[tk.slice(0,8)+"01",tk]:[shiftKey(tk,-29),tk]}
+function sumPresets(a,b){return SUM_P.map(([k,l])=>{const[x,y]=sumPreset(k);return`<button type="button" class="chip sm" data-sump="${k}" aria-pressed="${x===a&&y===b}">${l}</button>`}).join("")}
+document.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data-sump]");if(p){const[a,b]=sumPreset(p.dataset.sump);S.sumA=a;S.sumB=b;S.sumView=b.slice(0,8)+"01";render();return}
+  const m=e.target.closest&&e.target.closest("[data-cmnav]");if(m){const b=sumRange()[1],v=new Date((S.sumView||b.slice(0,8)+"01")+"T12:00:00");v.setMonth(v.getMonth()+ +m.dataset.cmnav);S.sumView=keyOf(v).slice(0,8)+"01";render()}});
 function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!==2))return"";const lw=shiftKey(mondayOf(today()),-7);let hid=null;try{hid=localStorage.getItem("sustrato-wkseen")}catch(e){}if(hid===lw||S._wkSeen===lw)return"";
   const st=weekStats(lw);if(!st.n&&!st.logged)return"";
   return`<section class="glass pad fade ws-tease"><div><span class="pkk">Tu semana pasada</span><p>${st.n} entrenos · ${fmtDur(st.t)}${st.cmp.n?` · plan ${st.cmp.ok}/${st.cmp.n}`:""}</p></div><button class="btn sm primary" data-wkgo="${lw}">Ver resumen</button></section>`}
@@ -5170,7 +5203,7 @@ function weightBar(){
 
 
 /* ---------- Progreso ---------- */
-function weekCompliance(wk){let n=0,ok=0;const tk=today();for(let i=0;i<7;i++){const k=shiftKey(wk,i);if(k>tk)break;planMatch(k).pl.forEach(x=>{if(x.st==="pend")return;n++;if(x.st==="done"||x.st==="chg")ok++})}return{n,ok}}
+function weekCompliance(wk,nd){let n=0,ok=0;const tk=today();for(let i=0;i<(nd||7);i++){const k=shiftKey(wk,i);if(k>tk)break;planMatch(k).pl.forEach(x=>{if(x.st==="pend")return;n++;if(x.st==="done"||x.st==="chg")ok++})}return{n,ok}}
 function ring(v,col,track,size,stroke,label){const r=(size-stroke)/2,c=2*Math.PI*r,o=c*(1-Math.max(0,Math.min(1,v)));
   return`<svg class="ring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track}" stroke-width="${stroke}"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${o.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})" class="ring-v"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="ring-t">${label}</text></svg>`}
 /* ---------- Gramática de gráficas (v197) ----------
@@ -5448,16 +5481,18 @@ function perfNews(){const a=perfAgg(),tk=today();let s=LS("sustrato-perfseen")||
   return`<button type="button" class="pf-news" data-perf="${n.k}"><span class="tc-ic">${n.k==="run"?IC_LUNG:SP_ICS.mtb}</span><span class="pf-nt"><b>${t}</b><small>${sub}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`}
 function vProg(){if(S.actsState==="loading"&&!S.acts.length)return`<div class="pwrap" aria-busy="true" aria-label="Cargando progreso">`+skCard(`<i class="sk" style="height:140px;width:100%;border-radius:14px;margin-top:12px"></i>`)+skCard(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px"><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i><i class="sk" style="height:56px"></i></div>`)+skCard()+`</div>`;setTimeout(ensureEff,0);setTimeout(ensureProgSubs,400);if(!(S.measures||[]).length&&S.profile&&num(S.profile.neck)&&num(S.profile.waist))trackMeasures();const an=S.lastTab!=="prog";S.lastTab="prog";const sec=PROG_SECS.some(x=>x[0]===S.progSec)?S.progSec:"res";return`<div class="pwrap${an?" anim":""}">`+progSection(sec)+`</div>`}
 /* Progreso por secciones: lo importante primero; lo que aún no tiene datos, junto al final de cada sección. */
-const PROG_SECS=[["res","Resumen"],["ene","Energía"],["for","Forma"],["ent","Entreno"],["cue","Cuerpo"]];
+const PROG_SECS=[["res","Resumen"],["ene","Energía"],["for","Forma"],["ent","Entreno"],["com","Comida"],["cue","Cuerpo"]];
 /* Portada de Progreso: una loseta por sección con su dato clave. Color solo el de cada cosa: hidratos y grasas, salud, deporte, cuerpo. */
 function progSection(sec){
   const E=(t,need,h)=>({t,need,h:h||""});
   const L={
     res:()=>[weekCard(),weightHero(),computeAdapt().ok?adaptTile():""],
-    ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard()),ea=eatCard();
-      return[gastoCard(),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días"),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
+    ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard());
+      return[gastoCard(),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
     for:()=>{const pr=predCard(),ef=effCard();return[perfCard(),curveCard(),fitCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
     ent:()=>[volCard(),bandsCard(),heatCard(),strSumCard()||E("Fuerza","Registra una sesión en Fuerza con peso y repeticiones"),recordsCard()], /* v269: el detalle de fuerza está en Fuerza › Progreso */
+    com:()=>{const mi=comMicroCard(),ma=comMacroCard(),ea=eatCard(),P=x=>typeof x==="string"?x:E(x.t,x.need); /* v278: «Comer según el plan» viene de Energía */
+      const al=typeof mi==="string"&&mi.includes("com-al");return[al?mi:"",P(ma),al?"":P(mi),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días")].filter(x=>x!=="")}, /* con aviso, los micros van primero */
     cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil",bo):bo,stepsChart(),weightHistory()]}
   }[sec]();
   const ok=L.filter(x=>typeof x==="string"&&x),pend=L.filter(x=>x&&typeof x==="object");
@@ -6166,12 +6201,12 @@ function vPlanTrain(wk){
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
       <div class="tbody">${realH}${edit?`<div class="plist">${edit}</div>`:""}${empty&&k<tk?`<span class="trest">Descanso</span>`:""}${k>=tk?`<button class="tadd" data-pladd="${k}" aria-label="Añadir entreno el ${DOW[d.getDay()]} ${d.getDate()}"><span aria-hidden="true">＋</span> Añadir entreno</button>`:""}</div></div>`}).join("");
-  return`<section class="glass pad fade">
-    <button class="btn primary big mw-main pa-open" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}
-    <div class="kv kv4 pl-kv" style="margin-top:12px"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div></section>
-  <section class="glass pad fade wk-card">${wkStrip(wk,"train")}</section>
-  <section class="glass fade tweek">${rows}</section>
+  /* v278: calendario arriba y, en la misma tarjeta, el resumen de la semana y debajo planificar; luego el tiempo y la semana en lista */
+  return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
+    <div class="kv kv4 pl-kv"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div>
+    <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}</section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
+  <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
 }
 function vHoy(){
@@ -6806,8 +6841,7 @@ document.addEventListener("click",e=>{
     S.sweat=(S.sweat||[]).filter(x=>x.id!==a.id).concat([{id:a.id,d:a.day,sport:a.sport,pre,post,drank:dr,dur:a.mov,rate,temp:w?w.hi:null}]);saveSweat();buzz(12);renderModal();render();toast("Tasa de sudor: "+rate.toFixed(2).replace(".",",")+" L/h");return}
   if(t.dataset.sweatdel){S.sweat=(S.sweat||[]).filter(x=>x.id!==t.dataset.sweatdel);saveSweat();renderModal();render();return}
   if(t.dataset.rhrr){S.rhrRange=t.dataset.rhrr;render();return}
-  if(t.dataset.wks){S.wkSum=shiftKey(mondayOf(today()),-7);S._wkAnim="";render();return} /* v277: «Semana pasada» del calendario del resumen */
-  if(t.dataset.wkgo){try{localStorage.setItem("sustrato-wkseen",t.dataset.wkgo)}catch(e){}S._wkSeen=t.dataset.wkgo;S.wkSum=t.dataset.wkgo;S.tab="prog";render();window.scrollTo(0,0);return}
+  if(t.dataset.wkgo){try{localStorage.setItem("sustrato-wkseen",t.dataset.wkgo)}catch(e){}S._wkSeen=t.dataset.wkgo;S.sumA=t.dataset.wkgo;S.sumB=shiftKey(t.dataset.wkgo,6);S.sumView=null;S.tab="prog";render();window.scrollTo(0,0);return}
   if(t.dataset.recovok){let d={};try{d=JSON.parse(localStorage.getItem("sustrato-recov")||"{}")}catch(e){}d[t.dataset.recovok]=1;try{localStorage.setItem("sustrato-recov",JSON.stringify(d))}catch(e){}S._recovHide=(S._recovHide||{});S._recovHide[t.dataset.recovok]=1;buzz(8);render();toast("Bien hecho");return}
   if(t.dataset.act==="bksave"){backupSave();return}
   if(t.dataset.act==="bkdo"){backupDo();return}
@@ -6964,7 +6998,7 @@ function ttAlign(tt,anim){if(!tt)return;const on=tt.querySelector('[aria-selecte
 function ttGo(k){if(S.tab==="prog")S.progSec=k;else if(S.tab==="plan")S.planView=k;else if(S.tab==="fuerza")S.fzSec=k;else return;render();window.scrollTo(0,0)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tt]");if(b)ttGo(b.dataset.tt)});
 (function(){let x0=null,y0=0,ok=false;
-  document.addEventListener("touchstart",e=>{const t=e.touches[0];ok=(S.tab==="prog"||S.tab==="plan")&&!document.querySelector(".overlay")&&!e.target.closest(".seg,.pf-pick,svg,input,textarea,.scroll-x,.tt,.chips,.daystrip,.overlay");x0=ok?t.clientX:null;y0=t.clientY},{passive:true});
+  document.addEventListener("touchstart",e=>{const t=e.touches[0];ok=(S.tab==="prog"||S.tab==="plan")&&!document.querySelector(".overlay")&&!e.target.closest(".seg,.pf-pick,svg,input,textarea,.scroll-x,.tt,.chips,.daystrip,.cm-g,.overlay");x0=ok?t.clientX:null;y0=t.clientY},{passive:true});
   document.addEventListener("touchend",e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)<70||Math.abs(dy)>45)return;
     const L=S.tab==="prog"?PROG_SECS.map(x=>x[0]):["train","week","dishes"],cur=S.tab==="prog"?(S.progSec||"res"):(S.planView||"train"),i=L.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<L.length)ttGo(L[i])},{passive:true})})();
 
@@ -7926,23 +7960,40 @@ document.addEventListener("change",async e=>{if(e.target.id!=="fbimg"||!e.target
    Se pasa de semana deslizando la fila. Clases wk- y las de la tira (.daystrip, .day, .dot). */
 function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>=wk&&d<=e?d:tk>=wk&&tk<=e?tk:wk}
 /* ---------- Módulo «Calendario» (v276): la tira de días, una sola pieza para Hoy, Entrenos y Menú ----------
-   calStrip({days, sel, attr, dot, right, label, wk, kk, range, mon}): mes arriba (con «right» a su derecha), «hoy» en vez del día de la semana,
-   el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando («kk»: qué semana mueve, plan o resumen).
-   Con «range» (v277, Resumen semanal) no se elige día: la semana entera va en el acento. «mon» cambia el texto del mes.
+   calStrip({days, sel, attr, dot, right, label, wk}): mes arriba (con «right» a su derecha), «hoy» en vez del día de la semana,
+   el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando.
+   calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; arrastrando se elige un tramo de días, que va en una banda del acento.
    Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
    Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
 function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
-  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00"),in_=`<small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${o.dot(k)}"></span>`;
-    return o.range?`<span class="day">${in_}</span>`:`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}">${in_}</button>`}).join("");
-  const strip=`<div class="daystrip${o.range?" wk-r":""}${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
-  return`<div class="row strip-h"><b class="strip-m">${o.mon||MON[ds.getMonth()]+(ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():"")}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}"${o.kk?` data-wkk="${o.kk}"`:""}>${strip}</div>`:strip}`}
-/* Resumen semanal (v277): la semana entera en el acento; se desliza hasta la semana pasada como mucho */
-function sumStrip(wk){const lw=shiftKey(mondayOf(today()),-7),days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),a=new Date(wk+"T12:00:00"),b=new Date(days[6]+"T12:00:00");
-  const mon=a.getMonth()===b.getMonth()?MON[a.getMonth()]:MON[a.getMonth()].slice(0,3)+" – "+MON[b.getMonth()].slice(0,3);
-  return calStrip({days,sel:"",dot:calDotTrain,wk,kk:"sum",range:true,mon:mon+(b.getFullYear()!==new Date().getFullYear()?" "+b.getFullYear():""),label:periodLabel("week",wk)+". Desliza para cambiar de semana",
-    right:wk===lw?'<small class="strip-n">La semana pasada</small>':`<button type="button" class="chip sm" data-wks="0">Semana pasada</button>`})}
+  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${o.dot(k)}"></span></button>`}).join("");
+  const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
+  return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}`}
+/* Mes (v278): seis filas como mucho; los días de otros meses, apagados; sin días futuros.
+   Cada día lleva data-ck; el tramo va en una banda (in, y s/e en sus extremos o al cambiar de fila). cmPaint la repinta mientras se arrastra. */
+function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
+  const cur=y===new Date().getFullYear()&&mo===new Date().getMonth(),K=[];
+  for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;K.push({d,k:keyOf(d),out})}
+  const has=i=>{const x=K[i];return!!x&&!x.out&&x.k<=tk&&x.k>=o.a&&x.k<=o.b};
+  const h=K.map(({d,k,out},i)=>{if(out)return`<span class="day cm-c out"><b>${d.getDate()}</b></span>`;if(k>tk)return`<span class="day cm-c fut"><b>${d.getDate()}</b><i class="dot"></i></span>`;
+    const inn=has(i),s_=inn&&(i%7===0||!has(i-1)),e_=inn&&(i%7===6||!has(i+1));
+    return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b><i class="dot ${o.dot(k)}"></i></span>`}).join("");
+  return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
+    <div class="cm-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
+    <div class="cm-g" role="group" aria-label="Arrastra sobre los días para elegir un tramo">${h}</div>`}
+function cmPaint(g,a,b){if(a>b)[a,b]=[b,a];const C=[...g.querySelectorAll(".cm-c")];
+  C.forEach((c,i)=>{const k=c.dataset.ck,inn=!!k&&k>=a&&k<=b;c.classList.toggle("in",inn);
+    const pin=i%7!==0&&C[i-1]&&C[i-1].dataset.ck>=a&&C[i-1].dataset.ck<=b,nin=i%7!==6&&C[i+1]&&C[i+1].dataset.ck>=a&&C[i+1].dataset.ck<=b;
+    c.classList.toggle("s",inn&&!pin);c.classList.toggle("e",inn&&!nin)})}
+/* arrastrar: se pinta en vivo y, al soltar, se recalcula el resumen */
+(function(){let g=null,a=null,b=null;
+  const at=e=>{const el=document.elementFromPoint(e.clientX,e.clientY),c=el&&el.closest&&el.closest(".cm-c[data-ck]");return c&&c.parentElement===g?c.dataset.ck:null};
+  document.addEventListener("pointerdown",e=>{const c=e.target.closest&&e.target.closest(".cm-c[data-ck]");if(!c)return;g=c.parentElement;a=b=c.dataset.ck;try{g.setPointerCapture(e.pointerId)}catch(x){}cmPaint(g,a,b);buzz(6)});
+  document.addEventListener("pointermove",e=>{if(!g)return;const k=at(e);if(k&&k!==b){b=k;cmPaint(g,a,b)}});
+  const end=()=>{if(!g)return;g=null;let x=a,y=b;if(x>y)[x,y]=[y,x];S.sumA=x;S.sumB=y;S.sumView=y.slice(0,8)+"01";render()};
+  document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end)})();
 /* Plan: la semana de S.planWeek con su día elegido */
 function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today());
   return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:kind==="menu"?calDotMenu:calDotTrain,wk,label:periodLabel("week",wk)+". Desliza para cambiar de semana",
@@ -7960,8 +8011,7 @@ document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest
   const end=e=>{if(!on)return;const w=on;on=null;const dx=(e.clientX||x0)-x0,s=w.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}
     if(Math.abs(dx)<50||Math.abs(dx)<1.5*Math.abs((e.clientY||y0)-y0)||Date.now()-t0>800)return;
     const dir=dx<0?1:-1,wk=w.dataset.wk,i=Math.round((new Date(planDayK(wk)+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5);
-    if(w.dataset.wkk==="sum"){const lw=shiftKey(mondayOf(today()),-7),nw=shiftKey(wk,7*dir);if(nw>lw)return;S.wkSum=nw}
-    else{S.planWeek=shiftKey(wk,7*dir);S.planDay=shiftKey(S.planWeek,i)}
+    S.planWeek=shiftKey(wk,7*dir);S.planDay=shiftKey(S.planWeek,i);
     S._wkSw=true;setTimeout(()=>{S._wkSw=false},60);S._wkAnim=dir>0?"wk-in-l":"wk-in-r";buzz(8);render();setTimeout(()=>{S._wkAnim=""},400)};
   document.addEventListener("pointerup",end);document.addEventListener("pointercancel",()=>{if(on){const s=on.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}on=null}})})();
 
@@ -8032,6 +8082,52 @@ function logMicros(k){const L=S.log[k]||{},o={};MI_K.forEach(x=>o[x]=0);let ok=0
       if(d&&s)mi=miScale(Object.fromEntries(MI_K.map(x=>[x,d[x]||0])),s)}
     if(mi){ok++;MI_K.forEach(x=>o[x]+=mi[x]||0)}});
   return n?{o,ok,n}:null}
+
+/* ---------- Progreso › Comida (v278) ----------
+   Lo que comes de media frente a tu objetivo y los micronutrientes semana a semana, con un aviso cuando uno se queda
+   bajo dos semanas o más. Los micros salen de lo apuntado (086): solo cuentan los días en que todo lo comido los trae
+   (al menos tres comidas) y las semanas con cuatro días así o más. Clases com- */
+const COM_P=[["7","1 semana"],["28","4 semanas"],["90","3 meses"]];
+/* media de macros de los días apuntados (hasta ayer) frente al objetivo de esos días */
+function comMacros(nd){const w=num((S.profile||{}).weight)||70,tk=today(),A={P:0,C:0,F:0,K:0},T={P:0,C:0,F:0,K:0};let n=0;
+  for(let i=1;i<=nd;i++){const k=shiftKey(tk,-i),lk=loggedKcal(k);if(lk==null)continue;const t=dayTargets(k,true);if(!t)continue;n++;
+    Object.values(S.log[k]).forEach(e=>{if(e.st!=="skip"){A.P+=+e.P||0;A.C+=+e.C||0;A.F+=+e.F||0}});A.K+=lk;T.P+=t.P;T.C+=t.C;T.F+=t.F;T.K+=t.kcal}
+  return n?{n,nd,w,a:{P:A.P/n,C:A.C/n,F:A.F/n,K:A.K/n},t:{P:T.P/n,C:T.C/n,F:T.F/n,K:T.K/n}}:null}
+/* cobertura de cada micro por semana (las cuatro últimas, de la más antigua a la actual) */
+function comMicros(){const tk=today(),w0=mondayOf(tk),out=[];let meta=null;
+  for(let i=3;i>=0;i--){const wk=shiftKey(w0,-7*i),sum={},days=[];
+    for(let j=0;j<7;j++){const k=shiftKey(wk,j);if(k>=tk)break;const lm=logMicros(k);if(!lm||lm.ok!==lm.n||lm.n<3)continue;const t=dayTargets(k,true);if(!t)continue;
+      const ms=micros(t).filter(m=>m.key&&m.tv);if(!meta)meta=ms;days.push(k);ms.forEach(m=>{sum[m.key]=(sum[m.key]||0)+Math.min(1.5,lm.o[m.key]/m.tv)})}
+    out.push({wk,n:days.length,cov:days.length>=4?Object.fromEntries(Object.entries(sum).map(([k,v])=>[k,v/days.length])):null})}
+  if(!meta){const t=dayTargets(tk,true);meta=t?micros(t).filter(m=>m.key&&m.tv):[]}
+  const valid=out.filter(x=>x.cov);if(!valid.length)return{weeks:out,rows:[],valid:0};
+  const rows=meta.map(m=>{const last=valid[valid.length-1].cov[m.key];let streak=0;for(let i=valid.length-1;i>=0&&valid[i].cov[m.key]<.7;i--)streak++;
+    return{m,c:last,st:last<.7?"lo":last<.9?"md":"ok",streak}});
+  return{weeks:out,rows,valid:valid.length}}
+const COM_ST={lo:["var(--rojo)","Bajo"],md:["var(--naranja)","Justo"],ok:["var(--verde)","Cubierto"]};
+function comMacroCard(){const nd=+(S.comP||28),M=comMacros(nd);
+  const seg=`<div class="seg sm" role="group" aria-label="Periodo">${COM_P.map(([k,l])=>`<button data-comp="${k}" aria-pressed="${String(nd)===k}">${l}</button>`).join("")}</div>`;
+  if(!M||M.n<3)return{t:"Lo que comes",need:"Apunta lo que comes al menos 3 días"};
+  const f1=v=>v.toFixed(1).replace(".",","),row=(l,a,t,u,c,fm)=>{const mx=Math.max(Math.min(a,t*1.5),t)*1.1,A=fm(a),T=fm(t);return`<div class="com-r"><b>${l}</b><span>${A} <small>/ ${T} ${u} · ${r0(a/t*100)} %</small></span>
+    <div class="com-bar" role="img" aria-label="${l}: ${A} de ${T} ${u}"><i style="width:${(Math.min(a,t*1.5)/mx*100).toFixed(1)}%;--c:${c}"></i><em style="left:${(t/mx*100).toFixed(1)}%"></em></div></div>`};
+  const g=x=>x/M.w;
+  return`<section class="glass pad fade com-card"><div class="row"><span class="pkk">Lo que comes</span>${seg}</div>
+    <p class="com-n">${M.n} de ${M.nd} días apuntados</p>
+    <div class="com-m">${row("Energía",M.a.K,M.t.K,"kcal","var(--muted)",fmtInt)}${row("Proteína",g(M.a.P),g(M.t.P),"g/kg","var(--prot)",f1)}${row("Hidratos",g(M.a.C),g(M.t.C),"g/kg","var(--carb)",f1)}${row("Grasa",g(M.a.F),g(M.t.F),"g/kg","var(--fat)",f1)}</div>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Media de los días con al menos dos comidas apuntadas, sin contar hoy. La raya marca tu objetivo medio de esos días, que sube los días de entreno.</p></details></section>`}
+function comMicroCard(){const D=comMicros();
+  if(!D.valid)return{t:"Micronutrientes",need:"Cuatro días en una semana con todo lo comido apuntado desde el menú, un plato o con IA"};
+  const AL=D.rows.filter(r=>r.streak>=2).sort((a,b)=>b.streak-a.streak||a.c-b.c),al=AL[0],more=AL.slice(1).map(r=>r.m.n.toLowerCase());
+  const bars=key=>`<span class="com-wk" aria-hidden="true">${D.weeks.map(w=>{const c=w.cov&&w.cov[key];return`<i class="${c==null?"nd":c<.7?"lo":c<.9?"md":""}" style="height:${c==null?12:Math.max(12,Math.min(100,c*100)).toFixed(0)}%"></i>`}).join("")}</span>`;
+  const rows=D.rows.map(r=>{const [col,lab]=COM_ST[r.st],ik=r.m.key,d=INFO[ik];
+    return`<details class="xb"><summary>${r.m.ic||""}<span class="xb-t"><b>${r.m.n}</b><small><i class="ss-dot" style="--c:${col}" aria-hidden="true"></i>${lab} · ${r0(r.c*100)} %</small></span>${bars(ik)}<span class="xb-ch" aria-hidden="true"></span></summary>
+      <div class="xb-d">${r.m.x?`<p class="xb-s">${esc(r.m.x)}</p>`:""}${xbRow("src",r.m.src)}${d?`<button class="ibtn" data-info="${ik}" data-iv="">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
+  const alert=al?`<div class="com-al"><h3><i class="ss-dot" style="--c:var(--rojo)" aria-hidden="true"></i>${esc(al.m.n)} bajo ${al.streak} semanas seguidas</h3>
+    <p>Llevas ${al.streak} semanas en torno al ${r0(al.c*100)} % de lo que necesitas${al.m.x?" ("+esc(al.m.x.toLowerCase())+")":""}. Son desajustes que no se notan en el día a día y se acumulan.${more.length?" También bajos: "+esc(more.join(" y "))+".":""}</p><p class="note">${esc(al.m.src)}</p></div>`:"";
+  return`<section class="glass pad fade com-card"><div class="row"><span class="pkk">Micronutrientes</span><small class="com-n">últimas 4 semanas</small></div>
+    ${alert}<div class="xlist">${rows}</div>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Cada barra es una semana, de la más antigua a la actual: gris si está cubierto, naranja si se queda justo (70–90 %) y rojo si está bajo. Cuentan los días en que todo lo que comiste trae sus micros (del menú, de un plato o apuntado con IA) y las semanas con cuatro días así o más. «Según objetivo» y el avituallamiento no los traen. El sodio no incluye la sal que añades al cocinar. Objetivos de referencia (EFSA) ajustados al entreno de cada día.</p></details></section>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-comp]");if(!b)return;S.comP=b.dataset.comp;render()});
 
 })();
 </script>
