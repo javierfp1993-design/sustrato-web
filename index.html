@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-14T13:53:48.829Z">
+<meta name="sustrato-version" content="2026-10-14T14:22:08.056Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2943,7 +2943,7 @@ span.ia-ic{flex:none;width:32px;height:32px;border-radius:10px;display:grid;plac
 .ws-sel{margin:0 0 16px;font-size:13px;color:var(--muted)}
 .cm-w,.cm-g{display:grid;grid-template-columns:repeat(7,1fr)}
 .cm-w span{text-align:center;font-size:11px;color:var(--muted);padding-bottom:2px}
-.cm-g{touch-action:none;user-select:none;-webkit-user-select:none}
+.cm-g{touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none} /* deslizar mueve la página; mantener y arrastrar elige */
 .cm-c{min-width:0;padding:2px 0}
 .cm-c.out{opacity:.35;cursor:default}.cm-c.out b,.cm-c.fut b{color:var(--muted);font-weight:500}.cm-c.fut{cursor:default}
 .cm-c.in b{width:auto;border-radius:0;background:var(--ac);color:var(--ac-on)}
@@ -4281,8 +4281,8 @@ function weekCard(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00
     ["Sueño",st.sl.good+st.sl.ok+st.sl.bad?st.sl.good+"/"+(st.sl.good+st.sl.ok+st.sl.bad):"—",st.sl.good+st.sl.ok+st.sl.bad?"noches buenas":"sin registrar",""]];
   return`<section class="glass pad fade ws-card" id="wkcard"><span class="pkk">Resumen</span>
     <div class="chips ws-pre">${sumPresets(wk,end)}</div>
-    <div class="ws-cal">${calMonth({view:S.sumView||end.slice(0,8)+"01",a:wk,b:end,dot:calDotTrain})}</div>
-    <p class="ws-sel">${esc(sumLabel(wk,end))}${nd>1?` · comparado con ${nd===7&&isWk?"la semana anterior":"los "+nd+" días anteriores"}`:""}</p>
+    <div class="ws-cal">${calMonth({view:S.sumView||end.slice(0,8)+"01",a:S._cmDrag?[S._cmDrag.a,S._cmDrag.b].sort()[0]:wk,b:S._cmDrag?[S._cmDrag.a,S._cmDrag.b].sort()[1]:end,dot:calDotTrain})}</div>
+    <p class="ws-sel">${S._cmA&&wk===end?"Toca otro día para elegir un tramo · ":""}${esc(sumLabel(wk,end))}${nd>1?` · comparado con ${nd===7&&isWk?"la semana anterior":"los "+nd+" días anteriores"}`:""}</p>
     ${bar?`<div class="ws-bar" role="img" aria-label="Tiempo por deporte">${bar}</div><div class="ws-lg">${lg}</div>`:`<p class="note">Sin entrenos esta semana.</p>`}
     <div class="ws-g">${tiles.map(([l,v,u,d])=>`<div><span>${l}</span>${(()=>{const phys=/^(km|kg|ppm)$/.test(u);return`<b>${v}${phys&&v!=="—"?` <small>${u}</small>`:""}</b>${u&&(!phys||v==="—")&&!(phys&&v==="—")?`<small class="ws-na">${u}</small>`:""}`})()}${d}</div>`).join("")}</div>
     ${st.longest?`<p class="ws-hl"><span class="ws-star" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Sesión más larga: ${esc(SPORT_L[st.longest.sport])} · ${fmtDur(st.longest.mov)}${st.longest.dist?" · "+f1(st.longest.dist/1000)+" km":""} el ${esc(dateLabel(st.longest.day))}</p>`:""}
@@ -4294,7 +4294,7 @@ function sumLabel(a,b){const f=k=>{const d=new Date(k+"T12:00:00");return d.getD
 const SUM_P=[["lw","Semana pasada"],["tw","Esta semana"],["tm","Este mes"],["30","30 días"]];
 function sumPreset(k){const tk=today(),mw=mondayOf(tk);return k==="lw"?[shiftKey(mw,-7),shiftKey(mw,-1)]:k==="tw"?[mw,tk]:k==="tm"?[tk.slice(0,8)+"01",tk]:[shiftKey(tk,-29),tk]}
 function sumPresets(a,b){return SUM_P.map(([k,l])=>{const[x,y]=sumPreset(k);return`<button type="button" class="chip sm" data-sump="${k}" aria-pressed="${x===a&&y===b}">${l}</button>`}).join("")}
-document.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data-sump]");if(p){const[a,b]=sumPreset(p.dataset.sump);S.sumA=a;S.sumB=b;S.sumView=b.slice(0,8)+"01";render();return}
+document.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data-sump]");if(p){const[a,b]=sumPreset(p.dataset.sump);S._cmA=null;S.sumA=a;S.sumB=b;S.sumView=b.slice(0,8)+"01";render();return}
   const m=e.target.closest&&e.target.closest("[data-cmnav]");if(m){const b=sumRange()[1],v=new Date((S.sumView||b.slice(0,8)+"01")+"T12:00:00");v.setMonth(v.getMonth()+ +m.dataset.cmnav);S.sumView=keyOf(v).slice(0,8)+"01";render()}});
 function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!==2))return"";const lw=shiftKey(mondayOf(today()),-7);let hid=null;try{hid=localStorage.getItem("sustrato-wkseen")}catch(e){}if(hid===lw||S._wkSeen===lw)return"";
   const st=weekStats(lw);if(!st.n&&!st.logged)return"";
@@ -6684,7 +6684,10 @@ function vPerfil(){
     </section>
   </div></div>`;
 }
-function render(){setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv()}}
+/* v278b: mientras el dedo está en el calendario del Resumen (S._hold), los repintados esperan: si la página se rehiciera
+   bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
+function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv()}}
+function holdEnd(){S._hold=false;if(S._holdPend)render()}
 function render0(){
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
@@ -7962,7 +7965,7 @@ function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>
 /* ---------- Módulo «Calendario» (v276): la tira de días, una sola pieza para Hoy, Entrenos y Menú ----------
    calStrip({days, sel, attr, dot, right, label, wk}): mes arriba (con «right» a su derecha), «hoy» en vez del día de la semana,
    el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando.
-   calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; arrastrando se elige un tramo de días, que va en una banda del acento.
+   calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; el tramo elegido va en una banda del acento (cómo se elige, abajo).
    Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
    Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
@@ -7982,18 +7985,38 @@ function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFull
     return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b><i class="dot ${o.dot(k)}"></i></span>`}).join("");
   return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
     <div class="cm-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
-    <div class="cm-g" role="group" aria-label="Arrastra sobre los días para elegir un tramo">${h}</div>`}
+    <div class="cm-g" role="group" aria-label="Toca dos días, o mantén pulsado y arrastra, para elegir un tramo">${h}</div>`}
 function cmPaint(g,a,b){if(a>b)[a,b]=[b,a];const C=[...g.querySelectorAll(".cm-c")];
   C.forEach((c,i)=>{const k=c.dataset.ck,inn=!!k&&k>=a&&k<=b;c.classList.toggle("in",inn);
     const pin=i%7!==0&&C[i-1]&&C[i-1].dataset.ck>=a&&C[i-1].dataset.ck<=b,nin=i%7!==6&&C[i+1]&&C[i+1].dataset.ck>=a&&C[i+1].dataset.ck<=b;
     c.classList.toggle("s",inn&&!pin);c.classList.toggle("e",inn&&!nin)})}
-/* arrastrar: se pinta en vivo y, al soltar, se recalcula el resumen */
-(function(){let g=null,a=null,b=null;
-  const at=e=>{const el=document.elementFromPoint(e.clientX,e.clientY),c=el&&el.closest&&el.closest(".cm-c[data-ck]");return c&&c.parentElement===g?c.dataset.ck:null};
-  document.addEventListener("pointerdown",e=>{const c=e.target.closest&&e.target.closest(".cm-c[data-ck]");if(!c)return;g=c.parentElement;a=b=c.dataset.ck;try{g.setPointerCapture(e.pointerId)}catch(x){}cmPaint(g,a,b);buzz(6)});
-  document.addEventListener("pointermove",e=>{if(!g)return;const k=at(e);if(k&&k!==b){b=k;cmPaint(g,a,b)}});
-  const end=()=>{if(!g)return;g=null;let x=a,y=b;if(x>y)[x,y]=[y,x];S.sumA=x;S.sumB=y;S.sumView=y.slice(0,8)+"01";render()};
-  document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end)})();
+/* Elegir el tramo (v278b). Deslizar sobre el mes mueve la página. Un toque elige un día y deja ese día como inicio:
+   el siguiente toque cierra el tramo. Mantener pulsado (0,3 s) y arrastrar elige el tramo con el dedo, también entre semanas.
+   Con ratón, arrastrar directamente. Mientras se arrastra solo se repintan las clases; al soltar se recalcula el resumen. */
+function cmPick(a,b){if(a>b)[a,b]=[b,a];S.sumA=a;S.sumB=b;render()}
+function cmTap(k){const p=S._cmA;if(p&&p!==k){S._cmA=null;cmPick(p,k)}else{S._cmA=k;cmPick(k,k)}buzz(6)}
+/* La app puede querer repintarse mientras tocas (llegan datos): render() espera (S._hold) hasta que sueltas. Por si acaso,
+   el tramo en curso vive en S._cmDrag, que calMonth respeta, y la rejilla se busca de nuevo en cada movimiento. */
+(function(){let on=false,a=null,b=null,t=null,x0=0,y0=0,k0=null; /* S._hold: ver render() */
+  const grid=()=>document.querySelector(".cm-g");
+  const cellAt=(x,y)=>{const el=document.elementFromPoint(x,y),c=el&&el.closest&&el.closest(".cm-g .cm-c[data-ck]");return c?c.dataset.ck:null};
+  const paint=()=>{S._cmDrag={a,b};const g=grid();if(g)cmPaint(g,a,b)};
+  const move=(x,y)=>{const k=cellAt(x,y);if(k&&k!==b){b=k;paint();buzz(4)}};
+  const stop=()=>{clearTimeout(t);on=false;S._cmDrag=null;k0=null;S._hold=false};
+  /* táctil */
+  document.addEventListener("touchstart",e=>{const c=e.target.closest&&e.target.closest(".cm-g .cm-c[data-ck]");if(!c||e.touches.length>1)return;
+    on=true;S._hold=true;k0=c.dataset.ck;x0=e.touches[0].clientX;y0=e.touches[0].clientY;S._cmDrag=null;
+    t=setTimeout(()=>{if(!on)return;a=b=k0;S._cmA=null;paint();buzz(10)},300)},{passive:true});
+  document.addEventListener("touchmove",e=>{if(!on)return;const p=e.touches[0];
+    if(S._cmDrag){e.preventDefault();move(p.clientX,p.clientY);return}
+    if(Math.abs(p.clientX-x0)>8||Math.abs(p.clientY-y0)>8){clearTimeout(t);on=false;holdEnd()}},{passive:false});
+  document.addEventListener("touchend",e=>{if(!on)return;const k=k0,d=!!S._cmDrag;e.preventDefault();stop();if(d){S._cmA=null;cmPick(a,b)}else cmTap(k)});
+  document.addEventListener("touchcancel",()=>{if(on){stop();render()}});
+  /* ratón */
+  let md=false;
+  document.addEventListener("mousedown",e=>{const c=e.target.closest&&e.target.closest(".cm-g .cm-c[data-ck]");if(!c||e.button)return;md=true;S._hold=true;k0=a=b=c.dataset.ck;x0=e.clientX;y0=e.clientY;e.preventDefault()});
+  document.addEventListener("mousemove",e=>{if(!md)return;if(!S._cmDrag&&(Math.abs(e.clientX-x0)>4||Math.abs(e.clientY-y0)>4)){S._cmA=null;paint()}if(S._cmDrag)move(e.clientX,e.clientY)});
+  document.addEventListener("mouseup",()=>{if(!md)return;md=false;const k=k0,d=!!S._cmDrag;stop();if(d){S._cmA=null;cmPick(a,b)}else cmTap(k)})})();
 /* Plan: la semana de S.planWeek con su día elegido */
 function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today());
   return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:kind==="menu"?calDotMenu:calDotTrain,wk,label:periodLabel("week",wk)+". Desliza para cambiar de semana",
