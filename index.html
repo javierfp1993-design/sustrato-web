@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-14T10:46:27.715Z">
+<meta name="sustrato-version" content="2026-10-14T11:14:27.939Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2165,7 +2165,7 @@ table.bands td.num{font-size:13px;white-space:normal}
 
 .pmpick{appearance:none;border:0;flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:0 16px 0 18px;border-radius:14px;background:var(--fill);color:var(--fg);font:600 15px var(--font);text-align:left;cursor:pointer}
 .pmpick span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pmpick.empty{color:var(--muted);font-weight:500}
+.pmpick.pm-nil{color:var(--muted);font-weight:500}
 .pmsel{display:flex;align-items:center;gap:8px}.pmsel .pill{flex:0 0 auto;white-space:nowrap}
 .dpk-a{display:flex;gap:8px;flex-wrap:wrap}
 .ms-it.on span:first-child{font-weight:700}
@@ -2909,7 +2909,6 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .wk-d.past{opacity:.55}
 .wk-d[aria-pressed="true"]{background:var(--ac-soft);opacity:1}
 .wk-d[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
-.wk-d.pm-over{background:var(--ac-soft)}
 .wk-mk{display:flex;gap:3px;height:12px;align-items:center;justify-content:center}
 .wk-mk i{width:7px;height:7px;border-radius:50%;background:var(--c)}
 .wk-mk i.pl{background:none;box-shadow:inset 0 0 0 1.5px var(--muted)}
@@ -2921,12 +2920,28 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .wk-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .wk-h b{font-size:17px;font-weight:600}
 .wk-h span{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap}
-.wk-e{margin:0;font-size:14px;color:var(--faint)}
 .wk-sp{align-items:center;margin-bottom:10px}.wk-sp small{font-size:13px;color:var(--muted)}
 .wk-mac{font-size:13px;color:var(--muted);margin:6px 0 12px;font-variant-numeric:tabular-nums}
 @keyframes wkL{from{transform:translateX(40%);opacity:0}}@keyframes wkR{from{transform:translateX(-40%);opacity:0}}
 .wk-in-l{animation:wkL .3s cubic-bezier(.2,.8,.3,1)}.wk-in-r{animation:wkR .3s cubic-bezier(.2,.8,.3,1)}
 @media (prefers-reduced-motion:reduce){.wk-s{transition:none}.wk-in-l,.wk-in-r{animation:none}}
+/* v275 · Entrenos: la semana en lista bajo la fila (para mover entrenos de un día a otro) */
+.tweek{padding:4px 0}
+.trow{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:start;padding:14px 18px;border-top:.5px solid var(--sep);scroll-margin-top:96px}
+.trow:first-child{border-top:0}
+.trow.past{opacity:.85}
+.trow.flash{animation:flash 1.4s ease}
+.trow.pm-over{background:var(--ac-soft);box-shadow:inset 3px 0 0 var(--ac)}
+.tday{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.tday b{font-size:13px;color:var(--muted);font-weight:500}
+.tday span{font:700 24px var(--round)}
+.trow.today .tday span{color:var(--ac)}
+.tday small{font-size:11px;color:var(--fg);font-weight:600;margin-top:2px}
+.trest{font-size:14px;color:var(--faint);padding:8px 0}
+.wk-det .mw-sec{margin-top:16px}
+/* v275 · resumen de la semana en dos columnas: con tres casillas, la última ocupa la fila entera (a 360 px no caben tres sin tocar el borde) */
+.pl-kv>div:nth-child(3):last-child{grid-column:1/-1}
+.wk-card+.tweek{margin-top:0}
 
 </style>
 
@@ -3007,7 +3022,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="274";
+const APP_VER="275";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3869,7 +3884,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     S.plan=S.plan||{};if(p.editIdx!=null&&S.plan[p.origDate]){S.plan[p.origDate].splice(p.editIdx,1);if(!S.plan[p.origDate].length)delete S.plan[p.origDate]}
     if(p.editIdx!=null&&p.origDate===p.date){(S.plan[p.date]=S.plan[p.date]||[]).splice(p.editIdx,0,s0)}else (S.plan[p.date]=S.plan[p.date]||[]).push(s0);savePlan();buzz(10);
     const k=p.date;S.pa=null;S.sheet=null;renderModal();S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();
-    toast((t.textContent.indexOf("Guardar")===0?"Entreno actualizado · ":"Entreno añadido el ")+dateLabel(k));setTimeout(()=>{const el=document.querySelector('[data-wkdet="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
+    toast((t.textContent.indexOf("Guardar")===0?"Entreno actualizado · ":"Entreno añadido el ")+dateLabel(k));setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
 });
 document.addEventListener("change",e=>{if(!S.pa)return;if(e.target.id==="pa_date"&&e.target.value){S.pa.date=e.target.value<today()?today():e.target.value;renderModal()}if(e.target.id==="pa_time")S.pa.time=e.target.value});
 
@@ -6130,28 +6145,32 @@ function suppCard(t){
   document.addEventListener("mousedown",e=>{if(e.button===0)start(e)});document.addEventListener("mousemove",move);document.addEventListener("mouseup",end);
   document.addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest("[data-pmove]"))e.preventDefault()});
 })();
+/* v275 · Entrenos: la fila de la semana arriba (marcas, deslizar para cambiar de semana, tocar un día lleva a él)
+   y debajo la semana en lista, donde los entrenos se mueven de un día a otro manteniéndolos pulsados. */
 function vPlanTrain(wk){
-  const tk=today(),sel=planDayK(wk),kg=num((S.profile||{}).weight)||70;let tot={n:0,min:0,kcal:0},comp={n:0,ok:0};
-  for(let i=0;i<7;i++){const k=shiftKey(wk,i),pm=planMatch(k);pm.pl.forEach(x=>{if(x.st!=="pend"){comp.n++;if(x.st==="done"||x.st==="chg")comp.ok++}});
-    S.acts.filter(a=>a.day===k).forEach(a=>{tot.n++;tot.min+=a.mov/60;tot.kcal+=a.kcal||0});pendingPlanned(k).forEach(s=>{tot.n++;tot.min+=s.dur||0;tot.kcal+=estSession(s,kg).kcal})}
-  /* el día elegido */
-  const k=sel,real=S.acts.filter(a=>a.day===k),pl=plannedFor(k),pm=planMatch(k);
-  const realH=real.length?`<div class="treal">${real.map(a=>`<button class="tchip trc" data-open="${a.id}">${spIcon(a.sport,"sm")}<span class="tci"><b>${fmtDur(a.mov)}</b><small>${ssDot(a.id)}${fmtInt(a.kcal)} kcal · ${pm.matched.has(a.id)?"según plan":pm.swapped.has(a.id)?"en lugar de lo previsto":pl.length?"extra":"hecho"}</small></span></button>`).join("")}</div>`:"";
-  let edit="";
-  if(k>=tk){
-    edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
-      const es=estSession(s,kg),meta=[s.km&&!s.steps?pdFmtD(s.sport,s.km):null,fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
-      return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo a otro día">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div></div>`}).join("");
-  }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
-  const kc=real.reduce((a,x)=>a+(x.kcal||0),0)+pendingPlanned(k).reduce((a,x)=>a+estSession(x,kg).kcal,0),empty=!real.length&&!pl.length;
-  return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
-    <div class="wk-det" data-wkdet="${k}">${wkDayHead(k,`${k>=tk?wxPill(k):""}${empty?(k<tk?"Descanso":""):"≈ "+fmtInt(kc)+" kcal"}`)}
-      <div class="tbody">${realH}${edit?`<div class="plist">${edit}</div>`:""}${empty&&k>=tk?`<p class="wk-e">Nada previsto.</p>`:""}${k>=tk?`<button class="tadd" data-pladd="${k}"><span aria-hidden="true">＋</span> Añadir entreno</button>`:""}</div></div></section>
-  <section class="glass pad fade">
+  const tk=today(),days=[];for(let i=0;i<7;i++)days.push(shiftKey(wk,i));
+  const kg=num((S.profile||{}).weight)||70;let tot={n:0,min:0,kcal:0},comp={n:0,ok:0};
+  const rows=days.map(k=>{
+    const d=new Date(k+"T12:00:00"),real=S.acts.filter(a=>a.day===k),pl=plannedFor(k),pm=planMatch(k);
+    pm.pl.forEach(x=>{if(x.st!=="pend"){comp.n++;if(x.st==="done"||x.st==="chg")comp.ok++}});
+    real.forEach(a=>{tot.n++;tot.min+=a.mov/60;tot.kcal+=a.kcal||0});pendingPlanned(k).forEach(s=>{tot.n++;tot.min+=s.dur||0;tot.kcal+=estSession(s,kg).kcal});
+    const realH=real.length?`<div class="treal">${real.map(a=>`<button class="tchip trc" data-open="${a.id}">${spIcon(a.sport,"sm")}<span class="tci"><b>${fmtDur(a.mov)}</b><small>${ssDot(a.id)}${fmtInt(a.kcal)} kcal · ${pm.matched.has(a.id)?"según plan":pm.swapped.has(a.id)?"en lugar de lo previsto":pl.length?"extra":"hecho"}</small></span></button>`).join("")}</div>`:"";
+    let edit="";
+    if(k>=tk){
+      edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
+        const es=estSession(s,kg),meta=[s.km&&!s.steps?pdFmtD(s.sport,s.km):null,fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
+        return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div></div>`}).join("");
+    }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
+    const empty=!real.length&&!pl.length;
+    return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
+      <div class="tbody">${realH}${edit?`<div class="plist">${edit}</div>`:""}${empty&&k<tk?`<span class="trest">Descanso</span>`:""}${k>=tk?`<button class="tadd" data-pladd="${k}" aria-label="Añadir entreno el ${DOW[d.getDay()]} ${d.getDate()}"><span aria-hidden="true">＋</span> Añadir entreno</button>`:""}</div></div>`}).join("");
+  return`<section class="glass pad fade">
     <button class="btn primary big mw-main pa-open" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}
-    <div class="kv${comp.n?" kv4":""}" style="margin-top:12px"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div></section>
+    <div class="kv kv4 pl-kv" style="margin-top:12px"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div></section>
+  <section class="glass pad fade wk-card">${wkStrip(wk,"train")}</section>
+  <section class="glass fade tweek">${rows}</section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
-  <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno, mantenlo pulsado y suéltalo sobre otro día de la semana.</p></details>`;
+  <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
 }
 function vHoy(){
   const days=[];for(let i=6;i>=-7;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
@@ -6373,7 +6392,7 @@ function vPlan(){
         const got=ds?{P:ds.P*a.s,C:ds.C*a.s,F:ds.F*a.s}:null;const gk=got?4*got.P+4*got.C+9*got.F:0;
         const tags=(m.pre?'<span class="pill tag-pre">Antes</span>':"")+(m.post?'<span class="pill tag-post">Después</span>':"")+(m.id==="dinner"&&t.bonus?'<span class="pill tag-load">Carga</span>':"");
         return`<div class="pm"><div class="pmh"><span><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span><span class="tags">${tags}</span></div>
-          <div class="pmsel"><button type="button" class="pmpick${ds?"":" empty"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<span class="pill">${fmtS(a.s)}${a.lock?"":" · auto"}</span>`:""}</div>
+          <div class="pmsel"><button type="button" class="pmpick${ds?"":" pm-nil"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<span class="pill">${fmtS(a.s)}${a.lock?"":" · auto"}</span>`:""}</div>
           <div class="pmm"><span class="pm-o">Objetivo<i style="--c:var(--prot)"></i>P ${fmtInt(m.P)}<i style="--c:var(--carb)"></i>H ${fmtInt(m.C)}<i style="--c:var(--fat)"></i>G ${fmtInt(m.F)}</span>${got?`<span class="pmgot">Plato P ${fmtInt(got.P)} · H ${fmtInt(got.C)} · G ${fmtInt(got.F)} · ${fmtInt(gk)} kcal</span>`:""}${got?complement(m,got):""}</div></div>`}).join("");
     }else body='<p class="empty">Completa el perfil para calcular este día.</p>';
     return`<section class="glass pad fade wk-card">${wkStrip(wk,"menu")}<div class="wk-det" data-wkdet="${k}">${wkDayHead(k,t?`${fmtInt(t.kcal)} kcal · ${nAs}/4 platos`:"")}
@@ -6822,7 +6841,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.dishdel){const prev=(S.dishes||[]).slice(),d=prev.find(x=>x.id===t.dataset.dishdel);S.dishes=prev.filter(x=>x.id!==t.dataset.dishdel);saveDishes();render();undoToast("Plato «"+(d?d.n:"")+"» quitado",()=>{S.dishes=prev;saveDishes();render()});return}
   if(t.dataset.act==="planedit"){S.planEdit=!S.planEdit;render();return}
   if(t.dataset.pladd){paOpen(t.dataset.pladd);return}
-  if(t.dataset.gotoplan){const k=t.dataset.gotoplan;S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();window.scrollTo(0,0);return}
+  if(t.dataset.gotoplan){const k=t.dataset.gotoplan;S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},50);return}
   if(t.dataset.pldel!=null){if(S.sheet==="planadd"){S.pa=null;S.sheet=null;renderModal()}planAction("del",+t.dataset.pldel,t.dataset.k);return}
   if(t.dataset.plskip!=null){if(S.sheet==="planadd"){S.pa=null;S.sheet=null;renderModal()}planAction("skip",+t.dataset.plskip,t.dataset.k);return}
 });
@@ -7896,7 +7915,8 @@ document.addEventListener("change",async e=>{if(e.target.id!=="fbimg"||!e.target
   try{S.fb.img=await fbShrink(e.target.files[0]);renderModal()}catch(err){toast("No se ha podido usar esa imagen")}});
 
 /* ---------- Calendario semanal de Plan (v274) ----------
-   La semana en una fila de siete días; debajo, solo el día elegido. Misma pieza en Entrenos y en Menú.
+   La semana en una fila de siete días. En Menú, debajo va solo el día elegido; en Entrenos (v275), la semana en lista,
+   y tocar un día de la fila lleva a su fila de la lista.
    Se pasa de semana deslizando la fila. Entrenos: un punto por sesión hecha (color de cómo fue) y un aro por la prevista.
    Menú: una barrita con los platos asignados. Clases wk- */
 function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>=wk&&d<=e?d:tk>=wk&&tk<=e?tk:wk}
@@ -7906,13 +7926,14 @@ function wkMarks(k,kind){
   return`<span class="wk-mk" aria-hidden="true">${m.slice(0,3).join("")}</span>`}
 function wkStrip(wk,kind){const tk=today(),sel=planDayK(wk);
   const cells=[0,1,2,3,4,5,6].map(i=>{const k=shiftKey(wk,i),d=new Date(k+"T12:00:00");
-    return`<button type="button" class="wk-d${k===tk?" today":""}${k<tk?" past":""}" data-wday="${k}"${kind==="train"&&k>=tk?` data-trow="${k}"`:""} aria-pressed="${k===sel}" aria-label="${esc(dateLabel(k))}"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b>${wkMarks(k,kind)}</button>`}).join("");
+    return`<button type="button" class="wk-d${k===tk?" today":""}${k<tk?" past":""}" data-wday="${k}" aria-pressed="${kind==="menu"&&k===sel}" aria-label="${esc(dateLabel(k))}"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b>${wkMarks(k,kind)}</button>`}).join("");
   const cur=wk===mondayOf(tk);
   return`<div class="wk" data-wk="${wk}" role="group" aria-label="${esc(periodLabel("week",wk))}. Desliza para cambiar de semana"><div class="wk-s${S._wkAnim?" "+S._wkAnim:""}">${cells}</div></div>${cur?"":`<button type="button" class="chip wk-now" data-wknow="1">Volver a esta semana</button>`}`}
 /* cabecera del día elegido: fecha (con el mes, ya que arriba no hay fechas) y un dato a la derecha */
 function wkDayHead(k,right){const tk=today(),d=new Date(k+"T12:00:00");
   return`<div class="wk-h"><b>${k===tk?"Hoy · ":""}${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()].slice(0,3)}</b><span>${right||""}</span></div>`}
-document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-wday]");if(d){if(S._wkSw)return;S.planDay=d.dataset.wday;S._wkAnim="";buzz(6);render();return}
+document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-wday]");if(d){if(S._wkSw)return;S.planDay=d.dataset.wday;S._wkAnim="";buzz(6);
+    if(S.planView==="train"){const r=document.querySelector('.trow[data-trow="'+d.dataset.wday+'"]');if(r){r.scrollIntoView({block:"start",behavior:"smooth"});r.classList.remove("flash");void r.offsetWidth;r.classList.add("flash")}return}render();return}
   const n=e.target.closest&&e.target.closest("[data-wknow]");if(n){S.planWeek=mondayOf(today());S.planDay=today();S._wkAnim="";render()}});
 /* deslizar la fila: semana siguiente (hacia la izquierda) o anterior */
 (function(){let x0=0,y0=0,t0=0,on=null;
@@ -7925,42 +7946,50 @@ document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest
   document.addEventListener("pointerup",end);document.addEventListener("pointercancel",()=>{if(on){const s=on.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}on=null}})})();
 
 
-/* ---------- Ingrediente propio (v274) ----------
-   En el creador de platos, «＋ Ingrediente propio»: nombre, ración y macros por 100 g, como vienen en la etiqueta.
-   Se guarda con tus alimentos (documento «foods», el mismo que la lectura de etiquetas) y entra ya en el plato.
+/* ---------- Ingrediente propio (v274, v275) ----------
+   En el creador de platos, «＋ Ingrediente propio»: nombre, ración y lo que aporta esa ración.
+   Por dentro se guarda «por 100 g» (base): si cambias los gramos de la ración, proteína, hidratos y grasa se recalculan
+   desde esa base; si cambias un macro a mano, la base se ajusta a él. Se guarda con tus alimentos (documento «foods»,
+   el mismo que la lectura de etiquetas) y entra ya en el plato.
    Con IA (solo en la versión con IA), «Calcular» rellena valores típicos a partir del nombre: solo viaja el nombre. Clases ig- */
 function ingSheet(cat,from){const ov=document.createElement("div");ov.className="overlay pk-ov";
-  let ct=cat||"prot";const tl=k=>(PB_TABS.find(x=>x[0]===k)||PB_TABS[0])[1],N=(id,l,ph)=>`<label class="f" for="${id}">${l}<input id="${id}" inputmode="decimal" placeholder="${ph}" autocomplete="off"></label>`;
+  let ct=cat||"prot";const base={P:null,C:null,F:null},tl=k=>(PB_TABS.find(x=>x[0]===k)||PB_TABS[0])[1],N=(id,l,ph)=>`<label class="f" for="${id}">${l}<input id="${id}" inputmode="decimal" placeholder="${ph}" autocomplete="off"></label>`;
   ov.innerHTML=`<div class="sheet glass pad fade sh-st" role="dialog" aria-modal="true" aria-labelledby="ig_t"><div class="row"><h3 id="ig_t">Ingrediente propio</h3><button type="button" class="hbtn xclose" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
-    <p class="ms-sub">Copia los valores «por 100 g» de la etiqueta. Se guarda en tus alimentos para otros platos.</p>
     <div class="ig-g"><label class="f ig-w" for="ig_n">Nombre<span class="ig-nr"><input id="ig_n" placeholder="p. ej. Hummus de remolacha" autocomplete="off" maxlength="60">${S.sample?`<button type="button" class="chip ig-ai">${IC_SPARK}Calcular</button>`:""}</span></label>
       <label class="f ig-w">Tipo<button type="button" class="pk-f ig-c" aria-haspopup="dialog"><span>${esc(tl(ct))}</span><i aria-hidden="true">›</i></button></label>
-      <label class="f" for="ig_r">Ración<input id="ig_r" placeholder="1 tarrina" autocomplete="off" maxlength="24"></label>${N("ig_g","Gramos por ración","100")}
-      ${N("ig_p","Proteína / 100 g","0")}${N("ig_h","Hidratos / 100 g","0")}${N("ig_f","Grasa / 100 g","0")}</div>
+      <label class="f" for="ig_r">Ración<input id="ig_r" placeholder="1 tarrina" autocomplete="off" maxlength="24"></label>${N("ig_g","Gramos de la ración","100")}
+      ${N("ig_p","Proteína (g)","0")}${N("ig_h","Hidratos (g)","0")}${N("ig_f","Grasa (g)","0")}</div>
     <p class="fb-err ig-e" role="alert" hidden></p>
-    <button type="button" class="btn primary big ig-ok">Guardar y añadir al plato</button></div>`;
-  const close=()=>{ov.remove();from&&from.isConnected&&from.focus()},v=id=>ov.querySelector("#"+id).value.trim(),n=id=>parseFloat(v(id).replace(",","."));
+    <button type="button" class="btn primary big ig-ok">Guardar y añadir al plato</button>
+    <details class="inote"><summary>${IC_INFO}Cómo funciona</summary><p class="note">Escribe la ración y lo que aporta: proteína, hidratos y grasa en gramos. Si cambias los gramos de la ración, el resto se recalcula solo. ${S.sample?"«Calcular» rellena valores típicos a partir del nombre; si tienes la etiqueta, compruébalos. ":""}Se guarda en tus alimentos para usarlo en otros platos.</p></details></div>`;
+  const close=()=>{ov.remove();from&&from.isConnected&&from.focus()},inp=id=>ov.querySelector("#"+id),v=id=>inp(id).value.trim(),n=id=>parseFloat(v(id).replace(",","."));
+  const MK={ig_p:"P",ig_h:"C",ig_f:"F"},put=(id,x)=>{inp(id).value=String(Math.round(x*10)/10).replace(".",",")},gr=()=>n("ig_g")>0?n("ig_g"):100;
+  /* gramos → macros desde la base; macro tecleado → nueva base */
+  ov.addEventListener("input",e=>{const id=e.target.id;
+    if(id==="ig_g"){const g=n("ig_g");if(g>0)Object.entries(MK).forEach(([i,k])=>{if(base[k]!=null)put(i,base[k]*g/100)})}
+    else if(MK[id]){const x=n(id);base[MK[id]]=isFinite(x)?x*100/gr():null}});
   ov.addEventListener("click",e=>{e.stopPropagation();if(e.target===ov||e.target.closest(".xclose")){close();return}
-    const ai=e.target.closest(".ig-ai");if(ai){igAi(ov,ai,k=>{ct=k;ov.querySelector(".ig-c span").textContent=tl(k)});return}
+    const ai=e.target.closest(".ig-ai");if(ai){igAi(ov,ai,r=>{if(PB_TABS.some(x=>x[0]===r.tipo)){ct=r.tipo;ov.querySelector(".ig-c span").textContent=tl(ct)}
+      if(r.racion)inp("ig_r").value=String(r.racion).slice(0,24);if(+r.racion_g>0&&+r.racion_g<=1000)inp("ig_g").value=String(Math.round(+r.racion_g));
+      base.P=+r.P;base.C=+r.C;base.F=+r.F;const g=gr();Object.entries(MK).forEach(([i,k])=>put(i,base[k]*g/100))});return}
     const tb=e.target.closest(".ig-c");if(tb){pkSheet("Tipo",PB_TABS.map(([k,l])=>[k,l]),ct,k=>{ct=k;tb.querySelector("span").textContent=tl(k)},tb);return}
     if(!e.target.closest(".ig-ok"))return;
-    const P=n("ig_p")||0,C=n("ig_h")||0,F=n("ig_f")||0,g=n("ig_g")||100,er=ov.querySelector(".ig-e"),bad=t=>{er.textContent=t;er.hidden=false};
+    const g=n("ig_g"),er=ov.querySelector(".ig-e"),bad=t=>{er.textContent=t;er.hidden=false};
     if(v("ig_n").length<2)return bad("Ponle un nombre.");
-    if([P,C,F].some(x=>!(x>=0&&x<=100))||P+C+F>100)return bad("Revisa los macros: son gramos por cada 100 g, y entre los tres no pasan de 100.");
     if(!(g>0&&g<=1000))return bad("La ración va en gramos, entre 1 y 1000.");
-    const f={id:"u_"+Date.now().toString(36),n:v("ig_n"),cat:ct,r:v("ig_r")||Math.round(g)+" g",g:Math.round(g),P,C,F,fib:0,na:0};
+    const [P,C,F]=["ig_p","ig_h","ig_f"].map(i=>(n(i)||0)*100/g);
+    if([P,C,F].some(x=>!(x>=0&&x<=100))||P+C+F>100)return bad("Revisa los macros: entre proteína, hidratos y grasa no pueden pesar más que la ración.");
+    const r1=x=>Math.round(x*10)/10,f={id:"u_"+Date.now().toString(36),n:v("ig_n"),cat:ct,r:v("ig_r")||Math.round(g)+" g",g:Math.round(g),P:r1(P),C:r1(C),F:r1(F),fib:0,na:0};
     S.myFoods=(S.myFoods||[]).concat([f]);saveMyFoods();myFoodsApply();close();
     if(S.pb){S.pb.items.push({id:f.id,q:1});S.pb.tab=f.cat;if(S.pb.mealsAuto)S.pb.meals=pbMeals(S.pb.items);renderPb()}toast(`«${f.n}» añadido`)});
-  ov.addEventListener("keydown",e=>{if(e.key==="Escape")close()});document.body.appendChild(ov);ov.querySelector("#ig_n").focus()}
+  ov.addEventListener("keydown",e=>{if(e.key==="Escape")close()});document.body.appendChild(ov);inp("ig_n").focus()}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pbing]");if(!b)return;e.preventDefault();e.stopPropagation();ingSheet(b.dataset.pbing,b)},true);
-async function igAi(ov,b,setCat){const nm=ov.querySelector("#ig_n").value.trim(),er=ov.querySelector(".ig-e");if(nm.length<2||!S.sample){er.textContent="Escribe primero el nombre.";er.hidden=false;return}
+/* «Calcular»: valores típicos por 100 g y una ración habitual; quien llama los pone en el formulario */
+async function igAi(ov,b,fill){const nm=ov.querySelector("#ig_n").value.trim(),er=ov.querySelector(".ig-e");if(nm.length<2||!S.sample){er.textContent="Escribe primero el nombre.";er.hidden=false;return}
   b.disabled=true;b.lastChild.textContent="Calculando…";er.hidden=true;
   try{const r=await S.sample.json(`Valores nutricionales típicos por 100 g de «${nm}», tal como se vende o se come en España (si parece un producto de marca, los habituales de ese producto).
 Responde solo JSON: {"P":proteínas_g,"C":hidratos_g,"F":grasas_g,"racion":"ración corta en español, p. ej. 1 tarrina o 1 puñado","racion_g":gramos_de_esa_ración,"tipo":"prot|carb|veg|extra","conocido":true}`,{modelTier:"quick"});
-    const P=+r.P,C=+r.C,F=+r.F;if(r.conocido===false||![P,C,F].every(x=>isFinite(x)&&x>=0&&x<=100))throw{code:"unknown"};
-    const put=(id,v)=>{ov.querySelector("#"+id).value=String(v).replace(".",",")};put("ig_p",Math.round(P*10)/10);put("ig_h",Math.round(C*10)/10);put("ig_f",Math.round(F*10)/10);
-    if(r.racion)ov.querySelector("#ig_r").value=String(r.racion).slice(0,24);if(+r.racion_g>0&&+r.racion_g<=1000)put("ig_g",Math.round(+r.racion_g));
-    if(PB_TABS.some(x=>x[0]===r.tipo))setCat(r.tipo);er.textContent="Valores típicos: si tienes la etiqueta, compruébalos.";er.hidden=false}
+    if(r.conocido===false||![+r.P,+r.C,+r.F].every(x=>isFinite(x)&&x>=0&&x<=100))throw{code:"unknown"};fill(r)}
   catch(x){er.textContent=x&&x.code==="unknown"?"No lo reconozco. Prueba con un nombre más concreto o copia la etiqueta.":(sampleMsg(x)||"No se ha podido calcular.");er.hidden=false}
   b.disabled=false;b.lastChild.textContent="Calcular"}
 
