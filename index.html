@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-14T11:14:27.939Z">
+<meta name="sustrato-version" content="2026-10-14T12:20:36.046Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2706,6 +2706,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .pa-sp[aria-pressed="true"] .tc-ic{background:var(--ac);color:var(--ac-on)}
 /* sobre filas ya rellenas (tesela gris sobre gris), la tesela va en el color de la tarjeta, como en las listas agrupadas de iOS */
 .tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
+/* v276 · Actividad: la baldosa del deporte en el color de su familia */
+.act .tc-icw .tc-ic{background:color-mix(in srgb,var(--f) 16%,transparent);color:var(--f)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -2900,21 +2902,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .wf-list>.wf-row>.wf-ic{width:36px;height:36px;padding:8px;border-radius:10px;background:var(--fill2);color:var(--muted)}
 
 /* v274 · Calendario semanal de Plan (084). Clases wk- */
-.wk{touch-action:pan-y;overflow:hidden;margin:-4px -6px 0}
-.wk-s{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;transition:transform .25s cubic-bezier(.2,.8,.3,1),opacity .25s}
-.wk-d{appearance:none;border:0;background:none;color:var(--fg);font:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0 10px;border-radius:14px;cursor:pointer;min-width:0}
-.wk-d small{font-size:12px;color:var(--muted)}
-.wk-d b{font-size:17px;font-weight:600;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;font-variant-numeric:tabular-nums}
-.wk-d.today b{color:var(--ac)}
-.wk-d.past{opacity:.55}
-.wk-d[aria-pressed="true"]{background:var(--ac-soft);opacity:1}
-.wk-d[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
-.wk-mk{display:flex;gap:3px;height:12px;align-items:center;justify-content:center}
-.wk-mk i{width:7px;height:7px;border-radius:50%;background:var(--c)}
-.wk-mk i.pl{background:none;box-shadow:inset 0 0 0 1.5px var(--muted)}
-.wk-bar{display:block;width:22px;height:5px;margin:3px 0 4px;border-radius:999px;background:var(--fill2);overflow:hidden}
-.wk-bar i{display:block;height:100%;border-radius:999px;background:var(--verde)}
-.wk-now{margin-top:8px}
+.wk{touch-action:pan-y;overflow:hidden}
+.wk-s{transition:transform .25s cubic-bezier(.2,.8,.3,1),opacity .25s}
 .wk-det{margin-top:12px;padding-top:12px;border-top:.5px solid var(--sep)}
 .wk-det.flash{animation:flash 1.4s ease}
 .wk-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
@@ -3022,7 +3011,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="275";
+const APP_VER="276";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -6174,13 +6163,10 @@ function vPlanTrain(wk){
 }
 function vHoy(){
   const days=[];for(let i=6;i>=-7;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
-  const tk=today();
   const per=`<div class="seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-period="${k}" aria-pressed="${S.period===k}">${l}</button>`).join("")}</div>`;
   if(S.period!=="day"){S.anchor=S.anchor||S.day;
     return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button></div></div></section>`+vPeriod()}
-  const dsel=new Date(S.day+"T12:00:00");
-  const strip=`<div class="row strip-h"><b class="strip-m">${MON[dsel.getMonth()]}${dsel.getFullYear()!==new Date().getFullYear()?" "+dsel.getFullYear():""}</b><span class="strip-r">${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button></span></div><div class="daystrip" role="group" aria-label="Día">${days.map(k=>{const d=new Date(k+"T12:00:00");const has=S.acts.some(a=>a.day===k),pl=k>=tk&&pendingPlanned(k).length,miss=k<tk&&planMatch(k).pl.some(x=>x.st==="miss");
-    return`<button class="day ${k>tk?"fut":""}" data-day="${k}" aria-pressed="${k===S.day}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${has?"on":pl?"pl":miss?"miss":""}"></span></button>`}).join("")}</div>`;
+  const strip=calStrip({days,sel:S.day,attr:"data-day",dot:calDotTrain,right:`${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button>`});
   const p=S.profile||{};const t=dayTargets(S.day);
   if(!t&&!S.storeLoaded)return`<section class="glass pad boot-sk" aria-label="Cargando"><i class="sk" style="height:180px;width:100%;border-radius:14px"></i></section><section class="glass pad boot-sk"><i class="sk" style="height:120px;width:100%;border-radius:14px"></i></section>`;
   if(!t){
@@ -6427,7 +6413,7 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
 function actRow(a){
   const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+"\u00a0m":(a.dist/1000).toFixed(1).replace(".",",")+" km";
   const sec=a.sport==="run"||a.sport==="trail"?fmtPace(a.speed):isBike(a.sport)?fmtSpeed(a.speed):a.sport==="swim"?fmtP100(a.speed):a.sport==="str"?(a.kcal?fmtInt(a.kcal)+"\u00a0kcal":""):fmtDur(a.mov);
-  return `<button class="act" data-open="${a.id}"><span class="tc-icw" title="${SPORT_L[a.sport]||""}">${spIcon(a.sport)}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${rpeOf(a.id)?ssDot(a.id)+esc(dateLabel(a.day).replace(/^[a-zé]{3} /,"")):esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
+  return `<button class="act" data-open="${a.id}"><span class="tc-icw" title="${SPORT_L[a.sport]||""}" style="--f:${FAMC[famOf(a.sport)]||"var(--fg)"}">${spIcon(a.sport)}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${rpeOf(a.id)?ssDot(a.id)+esc(dateLabel(a.day).replace(/^[a-zé]{3} /,"")):esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
 }
 function vActs(){
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["bike","Bici"],["swim","Natación"],["foot","A pie"],["str","Fuerza"]]; /* v266: por familia */
@@ -6462,10 +6448,14 @@ function routeMap(a){if(!a.poly)return"";let pts;try{pts=polyDecode(a.poly)}catc
   let z=16;for(;z>3;z--){const p0=px(b[1],b[2],z),p1=px(b[0],b[3],z);if(p1[0]-p0[0]<=W*.82&&p1[1]-p0[1]<=H*.78)break}
   const c0=px(b[1],b[2],z),c1=px(b[0],b[3],z),cx=(c0[0]+c1[0])/2,cy=(c0[1]+c1[1])/2,x0=cx-W/2,y0=cy-H/2;
   const tiles=[];for(let tx=Math.floor(x0/256);tx<=Math.floor((x0+W)/256);tx++)for(let ty=Math.floor(y0/256);ty<=Math.floor((y0+H)/256);ty++){const m=Math.pow(2,z);if(ty<0||ty>=m)continue;
-    tiles.push(`<img src="https://tile.openstreetmap.org/${z}/${((tx%m)+m)%m}/${ty}.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'" style="left:${((tx*256-x0)/W*100).toFixed(3)}%;top:${((ty*256-y0)/H*100).toFixed(3)}%;width:${(256/W*100).toFixed(3)}%;height:${(256/H*100).toFixed(3)}%">`)}
+    const tX=((tx%m)+m)%m;tiles.push(`<img src="${tileUrl(z,tX,ty)}" alt="" loading="lazy" data-osm="https://tile.openstreetmap.org/${z}/${tX}/${ty}.png" onerror="if(this.dataset.osm&&this.src!==this.dataset.osm)this.src=this.dataset.osm;else this.style.visibility='hidden'" style="left:${((tx*256-x0)/W*100).toFixed(3)}%;top:${((ty*256-y0)/H*100).toFixed(3)}%;width:${(256/W*100).toFixed(3)}%;height:${(256/H*100).toFixed(3)}%">`)}
   const step=Math.max(1,Math.floor(pts.length/400)),d=pts.filter((p,i)=>i%step===0||i===pts.length-1).map((p,i)=>{const q=px(p[0],p[1],z);return(i?"L":"M")+(q[0]-x0).toFixed(1)+" "+(q[1]-y0).toFixed(1)}).join(" ");
   const s0=px(pts[0][0],pts[0][1],z),s1=px(pts[pts.length-1][0],pts[pts.length-1][1],z);
   return`<div class="rmap" role="img" aria-label="Mapa del recorrido" data-z="${z}" data-x0="${x0.toFixed(2)}" data-y0="${y0.toFixed(2)}">${tiles.join("")}<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}" class="rm-halo"/><path d="${d}" class="rm-line"/><circle cx="${(s0[0]-x0).toFixed(1)}" cy="${(s0[1]-y0).toFixed(1)}" r="5" class="rm-start"/><circle cx="${(s1[0]-x0).toFixed(1)}" cy="${(s1[1]-y0).toFixed(1)}" r="5" class="rm-end"/><circle id="rmpos" r="6.5" class="rm-pos" cx="-20" cy="-20"/></svg><span class="rm-attr">© OpenStreetMap</span></div>`}
+/* v276 · Teselas del mapa a través del servidor (/tile): se piden con el nombre de la app y quedan en caché 7 días, como piden
+   las normas de OpenStreetMap; si un día se cambia de proveedor, se cambia allí. Si el servidor aún no la tiene, la tesela se pide directa. */
+function tileUrl(z,x,y){return CLOUD_C&&CLOUD_C.api?`${CLOUD_C.api.replace(/\/$/,"")}/tile/${z}/${x}/${y}.png`:`https://tile.openstreetmap.org/${z}/${x}/${y}.png`}
+cloudCfg().catch(()=>{});
 /* Perfil: color por pendiente y recorrible con el dedo (el punto se mueve también en el mapa) */
 const SLOPE=[[-0.03,"var(--cian)","Bajada"],[0.03,"var(--sl-flat)","Llano"],[0.06,"var(--amarillo)","Suave"],[0.10,"var(--naranja)","Fuerte"],[9,"var(--rojo)","Muy fuerte"]];
 const slopeCol=g=>(SLOPE.find(x=>g<x[0])||SLOPE[4])[1];
@@ -7914,21 +7904,26 @@ document.addEventListener("input",e=>{if(!S.fb)return;const id=e.target.id;
 document.addEventListener("change",async e=>{if(e.target.id!=="fbimg"||!e.target.files||!e.target.files[0]||!S.fb)return;
   try{S.fb.img=await fbShrink(e.target.files[0]);renderModal()}catch(err){toast("No se ha podido usar esa imagen")}});
 
-/* ---------- Calendario semanal de Plan (v274) ----------
+/* ---------- Calendario (tira de días) y semana de Plan (v274, módulo desde v276) ----------
    La semana en una fila de siete días. En Menú, debajo va solo el día elegido; en Entrenos (v275), la semana en lista,
    y tocar un día de la fila lleva a su fila de la lista.
-   Se pasa de semana deslizando la fila. Entrenos: un punto por sesión hecha (color de cómo fue) y un aro por la prevista.
-   Menú: una barrita con los platos asignados. Clases wk- */
+   Se pasa de semana deslizando la fila. Clases wk- y las de la tira (.daystrip, .day, .dot). */
 function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>=wk&&d<=e?d:tk>=wk&&tk<=e?tk:wk}
-function wkMarks(k,kind){
-  if(kind==="menu"){const n=Object.keys((S.menu||{})[k]||{}).length;return`<span class="wk-bar" aria-hidden="true"><i style="width:${Math.min(4,n)/4*100}%"></i></span>`}
-  const real=S.acts.filter(a=>a.day===k),pend=pendingPlanned(k),m=real.map(a=>{const v=rpeOf(a.id);return`<i style="--c:${v?SS_C(v-1):"var(--muted)"}"></i>`}).concat(pend.map(()=>'<i class="pl"></i>'));
-  return`<span class="wk-mk" aria-hidden="true">${m.slice(0,3).join("")}</span>`}
-function wkStrip(wk,kind){const tk=today(),sel=planDayK(wk);
-  const cells=[0,1,2,3,4,5,6].map(i=>{const k=shiftKey(wk,i),d=new Date(k+"T12:00:00");
-    return`<button type="button" class="wk-d${k===tk?" today":""}${k<tk?" past":""}" data-wday="${k}" aria-pressed="${kind==="menu"&&k===sel}" aria-label="${esc(dateLabel(k))}"><small>${DOW[d.getDay()]}</small><b>${d.getDate()}</b>${wkMarks(k,kind)}</button>`}).join("");
-  const cur=wk===mondayOf(tk);
-  return`<div class="wk" data-wk="${wk}" role="group" aria-label="${esc(periodLabel("week",wk))}. Desliza para cambiar de semana"><div class="wk-s${S._wkAnim?" "+S._wkAnim:""}">${cells}</div></div>${cur?"":`<button type="button" class="chip wk-now" data-wknow="1">Volver a esta semana</button>`}`}
+/* ---------- Módulo «Calendario» (v276): la tira de días, una sola pieza para Hoy, Entrenos y Menú ----------
+   calStrip({days, sel, attr, dot, right, label, wk}): mes arriba (con «right» a su derecha), «hoy» en vez del día de la semana,
+   el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando.
+   Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
+   Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
+function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
+function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
+function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
+  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${o.dot(k)}"></span></button>`}).join("");
+  const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
+  return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}`}
+/* Plan: la semana de S.planWeek con su día elegido */
+function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today());
+  return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:kind==="menu"?calDotMenu:calDotTrain,wk,label:periodLabel("week",wk)+". Desliza para cambiar de semana",
+    right:cur?"":'<button type="button" class="chip" data-wknow="1">Esta semana</button>'})}
 /* cabecera del día elegido: fecha (con el mes, ya que arriba no hay fechas) y un dato a la derecha */
 function wkDayHead(k,right){const tk=today(),d=new Date(k+"T12:00:00");
   return`<div class="wk-h"><b>${k===tk?"Hoy · ":""}${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()].slice(0,3)}</b><span>${right||""}</span></div>`}
