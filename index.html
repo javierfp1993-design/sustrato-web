@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-13T20:23:18.641Z">
+<meta name="sustrato-version" content="2026-10-14T09:34:00.281Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -198,7 +198,7 @@ nav.tabs .fab:focus-visible{outline:2px solid var(--amarillo);outline-offset:3px
 .rstep p{margin:2px 0 0;font-size:13px;color:var(--muted)}
 .chip.photo{cursor:pointer}
 .lged{display:grid;grid-template-columns:minmax(0,1fr) 64px auto;gap:6px;margin-top:8px;align-items:center}
-.lged select,.lged input{min-height:38px;padding:7px 10px;font-size:14px}
+.lged select,.lged input{min-height:38px;padding:7px 12px;font-size:14px}
 .lgres{font-size:12px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
 .lsum{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--edge-soft);font-size:14px}
 .lsum b{font-variant-numeric:tabular-nums}
@@ -209,7 +209,7 @@ nav.tabs .fab:focus-visible{outline:2px solid var(--amarillo);outline-offset:3px
 .shop input{width:20px;min-height:20px;height:20px}
 .shop b{font-variant-numeric:tabular-nums;font-weight:500;color:var(--muted)}
 .shop input:checked+span{text-decoration:line-through;color:var(--faint)}
-.mcov{height:5px;border-radius:999px;background:rgba(255,255,255,.07);margin-top:6px;overflow:hidden}
+.mcov{height:5px;border-radius:999px;background:var(--fill2);margin-top:6px;overflow:hidden}
 .mcov i{display:block;height:100%;border-radius:999px}
 #wiz .sheet{max-width:760px}
 .wtop{display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:12px;margin-top:14px}
@@ -301,7 +301,7 @@ nav.tabs button{padding:10px 13px}
 form .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:520px){form .fields{grid-template-columns:minmax(0,1fr)}}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
-input,select{font:500 15px var(--font);color:var(--fg);background:rgba(255,255,255,.06);border:1px solid var(--edge-soft);border-radius:14px;padding:10px 12px;min-height:44px;width:100%}
+input,select{font:500 15px var(--font);color:var(--fg);background:rgba(255,255,255,.06);border:1px solid var(--edge-soft);border-radius:14px;padding:12px 14px;min-height:44px;width:100%}
 input::placeholder{color:var(--faint)}
 fieldset{border:0;padding:0;margin:0 0 18px}
 legend.lg{font-size:13px;color:var(--muted);margin-bottom:10px}
@@ -666,7 +666,7 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 .wmm{margin-left:auto;color:var(--faint);font-variant-numeric:tabular-nums}
 .wri{margin:10px 0 0;font-size:14px;color:var(--muted)}.wri b{color:var(--fg)}
 .wref-ed{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.wref-ed input{width:76px;min-height:32px;padding:4px 10px}
+.wref-ed input{width:76px;min-height:32px;padding:4px 12px}
 
 /* ===== Donut protagonista ===== */
 .hero .macro{gap:22px}
@@ -742,7 +742,7 @@ html[data-theme="light"] .avbtn[aria-current="page"]{background:rgba(0,0,0,.06)}
 .rex{display:grid;grid-template-columns:minmax(0,1fr) 62px 92px auto;gap:8px;align-items:center;padding:10px 0;border-top:.5px solid var(--sep)}
 .rex:first-child{border-top:0}
 .rex-n{display:flex;flex-direction:column;min-width:0}.rex-n b{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis}.rex-n small{font-size:12px;color:var(--muted)}
-.rex-f{display:flex;flex-direction:column;align-items:center;gap:2px}.rex-f input{width:100%;min-height:34px;padding:4px 8px;text-align:center}.rex-f span{font-size:11px;color:var(--faint)}
+.rex-f{display:flex;flex-direction:column;align-items:center;gap:2px}.rex-f input{width:100%;min-height:34px;padding:4px 12px;text-align:center}.rex-f span{font-size:11px;color:var(--faint)}
 .rex-a{display:flex;gap:4px}.rex-a .tskip{width:26px;height:26px}.rex-a .tskip:disabled{opacity:.3;cursor:default}
 @media (max-width:420px){.rex{grid-template-columns:minmax(0,1fr) 54px 78px;grid-template-areas:"n s r" "a a a"}.rex-n{grid-area:n}.rex-a{grid-column:1/-1;justify-content:flex-end}}
 .rpick{margin-top:12px;padding:12px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;gap:10px}
@@ -828,29 +828,28 @@ html[data-theme="light"] .qa-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
 .inote{margin:10px 0 0;font-size:14px;color:var(--muted)}
 
 /* ===== Cajas desplegables (micros y suplementos) ===== */
-.xlist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.xb{border-radius:14px;background:var(--card2);transition:background .2s}
-.xb summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:10px 12px;min-height:56px}
+.xlist{display:flex;flex-direction:column;margin:12px 0 18px;background:var(--card2);border-radius:14px;overflow:hidden}
+.xb{position:relative}
+.xb+.xb::before{content:"";position:absolute;top:0;left:66px;right:0;border-top:.5px solid var(--sep)}
+.xb summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px;min-height:66px}
 .xb summary::-webkit-details-marker{display:none}
-.xb .ico,.xb .eltile{background:var(--card)!important;width:36px;height:36px}
+.xb .ico,.xb .eltile{width:42px;height:42px;border:0;border-radius:10px;box-shadow:none;background:color-mix(in srgb,currentColor 16%,transparent)}
+.xb .eltile{padding-top:12px;font-size:15px}.xb .eltile small{top:5px;left:7px;font-size:11px;line-height:1}
+.xlist~.note{margin:0 4px 10px;line-height:1.5}
 .xb-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xb-t b{font-size:15px;font-weight:600}
-.xb-t small{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.xb[open] .xb-t small{white-space:normal}
+.xb-t small{font-size:13px;color:var(--muted)}
 .xb-t small.xb-x{color:var(--muted)}
 .xb-v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
 .xb .ev{flex:0 0 auto}
 .xb-ev{display:flex;margin-top:3px}
 .xb-ch{width:16px;height:16px;flex:0 0 auto;opacity:.5;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform .2s}
 .xb[open] .xb-ch{transform:rotate(180deg)}
-.xb-d{padding:0 14px 12px 60px;display:flex;flex-direction:column;gap:6px}
+.xb-d{padding:0 14px 12px 66px;display:flex;flex-direction:column;gap:6px}
 .xb-d p{margin:0;font-size:14px;line-height:1.5}
 .xb-d .k{display:inline-block;font-size:11px;font-weight:600;color:var(--muted);margin-right:8px}
 .xb-d .mcov{margin:0}
 .xb-s{color:var(--muted)}
-.xb.warn{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo-v,var(--rojo)) 35%,transparent)}
-html[data-theme="light"] .xb{background:#f2f2f7}
-html[data-theme="light"] .xb .ico,html[data-theme="light"] .xb .eltile{background:#fff!important}
 @media (max-width:420px){.xb-d{padding-left:14px}}
 
 /* ===== Nuevo logotipo ===== */
@@ -884,7 +883,7 @@ header.top .logo svg{width:20px!important;height:20px!important}
 .stp-r{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .stp-kv{display:flex;gap:18px}.stp-kv div{display:flex;flex-direction:column}.stp-kv b{font-size:15px;font-variant-numeric:tabular-nums}.stp-kv span{font-size:12px;color:var(--muted)}
 .stp-src{margin:0;font-size:13px;color:var(--muted)}
-.stp-ed{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.stp-ed input{width:110px;min-height:34px;padding:4px 10px}
+.stp-ed{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.stp-ed input{width:110px;min-height:34px;padding:4px 12px}
 @media (prefers-reduced-motion:no-preference){.stp .stp-v{animation:ringIn 1s cubic-bezier(.2,.8,.3,1) both}}
 html[data-theme="light"] .stp-glow{display:none}
 
@@ -1210,7 +1209,7 @@ html[data-theme="light"] .ob-goal{box-shadow:0 1px 2px rgba(0,0,0,.04)}
 :root,html[data-theme="dark"]{--muted:#aeaeb2!important;--faint:#8e8e93!important}
 html[data-theme="light"]{--muted:#5f5f64!important;--faint:#636366!important}
 @media (prefers-color-scheme:light){html:not([data-theme="dark"]){--muted:#5f5f64!important;--faint:#636366!important}}
-:focus-visible{outline:2px solid var(--azul)!important;outline-offset:2px;border-radius:10px}
+:focus-visible:not(.ms-q input){outline:2px solid var(--azul)!important;outline-offset:2px;border-radius:10px} /* el buscador marca el foco en su caja (.ms-q:focus-within) */
 input:focus-visible,select:focus-visible{outline-offset:0}
 .mp.on{color:#1c1c1e!important}
 
@@ -1259,7 +1258,7 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .fz-n{font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums}
 .fz-x{color:var(--faint);text-align:center;font-size:13px}
 .fz-in{position:relative;display:block}
-.fz-in input{min-height:44px;font-size:17px;padding:0 30px 0 10px;border-radius:14px;font-variant-numeric:tabular-nums}
+.fz-in input{min-height:44px;font-size:17px;padding:0 30px 0 12px;border-radius:14px;font-variant-numeric:tabular-nums}
 .fz-in i{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--faint);pointer-events:none}
 .fz-save{padding:18px;border-top:.5px solid var(--sep,var(--edge-soft));display:flex;flex-direction:column;gap:10px}
 .fz-save .btn{width:100%}
@@ -1385,7 +1384,7 @@ html[data-theme="light"] .str-step{background:#fff}
 .wc-f{display:flex;flex-direction:column;gap:8px;padding:12px 12px 10px;border-radius:14px;background:rgba(0,0,0,.18);min-width:0;cursor:text}
 .wc-l{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:.01em}
 .wc-in{position:relative;display:block}
-.wc-in input{width:100%;min-height:52px!important;padding:0 44px 0 12px!important;border:0!important;border-radius:14px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font:650 28px var(--round)!important;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.wc-in input{width:100%;min-height:52px!important;padding:0 44px 0 14px!important;border:0!important;border-radius:14px!important;background:rgba(255,255,255,.14)!important;color:#fff!important;font:650 28px var(--round)!important;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .wc-in input::placeholder{color:rgba(255,255,255,.4)}
 .wc-in input:focus{background:rgba(255,255,255,.22)!important}
 .wc-in i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;font-size:14px;font-weight:500;color:rgba(255,255,255,.7);pointer-events:none}
@@ -1462,7 +1461,7 @@ html[data-theme="light"] .sw-ic{color:var(--azul)}
 .sw-r{font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sw-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .sw-f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}
-.sw-in{position:relative;display:block}.sw-in input{min-height:42px;padding:0 30px 0 10px;font-size:17px;font-variant-numeric:tabular-nums;background:var(--bg)!important}
+.sw-in{position:relative;display:block}.sw-in input{min-height:42px;padding:0 30px 0 12px;font-size:17px;font-variant-numeric:tabular-nums;background:var(--bg)!important}
 html[data-theme="light"] .sw-in input{background:#fff!important}
 .sw-in i{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-style:normal;font-size:12px;color:var(--faint);pointer-events:none}
 .sw-a{display:flex;gap:8px}
@@ -1646,7 +1645,7 @@ html[data-theme="light"] .fl-chip{background:#fff}
 .fl-form{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:var(--bg)}
 html[data-theme="light"] .fl-form{background:#fff}
 .fl-form .sw-in input,.fl-form input{background:var(--card2,rgba(127,127,127,.12))!important}
-.fl-wide input{min-height:42px;padding:0 12px;font-size:15px}
+.fl-wide input{min-height:42px;padding:0 14px;font-size:15px}
 .fl-f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}
 .fl-f .seg{display:flex}.fl-f .seg button{flex:1}
 .fl-tot{display:flex;flex-direction:column;gap:10px;padding-top:4px}
@@ -1671,7 +1670,7 @@ html[data-theme="light"] .fl-kv{background:#fff}
 .re-n{min-width:0}.re-n b{display:block;font-size:17px;font-weight:600}.re-n span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
 .re-sr{display:flex;align-items:center;gap:8px}
 .re-sr label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
-.re-sr input{width:48px;min-height:38px!important;padding:0 8px!important;text-align:center;font-size:17px!important;font-weight:600;font-variant-numeric:tabular-nums;background:var(--card)!important;border:0!important;border-radius:10px!important}
+.re-sr input{width:48px;min-height:38px!important;padding:0 12px!important;text-align:center;font-size:17px!important;font-weight:600;font-variant-numeric:tabular-nums;background:var(--card)!important;border:0!important;border-radius:10px!important}
 .re-sr label.w{flex:1}.re-sr label.w input{width:100%;min-width:0}
 .re-top{display:flex;align-items:flex-start;gap:8px}.re-top .re-n{flex:1}
 .re-x{color:var(--faint)}
@@ -1773,7 +1772,7 @@ html[data-theme="light"] .wc-ics{color:var(--azul)!important}
 .wc-hvv{flex:1;text-align:right;font-variant-numeric:tabular-nums;color:var(--wc-mu)}
 .wc-hvv b{font:650 20px var(--round,var(--font));color:var(--wc-tx)}.wc-hvv small{font-size:13px}
 .wc-hvin{position:relative;flex:1;min-width:90px;max-width:140px;margin-left:auto}
-.wc-hvin input{width:100%;min-height:40px;padding:0 34px 0 12px;border:0;border-radius:10px;background:var(--wc-in,var(--fill));color:var(--wc-tx,var(--fg));font:600 17px var(--font);font-variant-numeric:tabular-nums}
+.wc-hvin input{width:100%;min-height:40px;padding:0 34px 0 14px;border:0;border-radius:10px;background:var(--wc-in,var(--fill));color:var(--wc-tx,var(--fg));font:600 17px var(--font);font-variant-numeric:tabular-nums}
 .wc-hvin i{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-style:normal;font-size:13px;color:var(--wc-mu,var(--muted))}
 .wc-hvn{flex-basis:100%;font-size:13px;color:var(--wc-mu,var(--muted))}
 /* foto de comida */
@@ -2010,7 +2009,7 @@ div.mbody{cursor:default}
 .xline:active{transform:scale(.99)}
 .ms-sheet{display:flex;flex-direction:column;gap:10px}
 .ms-sheet h3{margin:0}
-.ms-sub{margin:-6px 0 2px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ms-sub{margin:2px 0 12px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .ms-opt{border-radius:14px;background:var(--card2);padding:12px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1.5px transparent}
 .ms-opt.on{box-shadow:inset 0 0 0 1.5px var(--fg)}
 .ms-oh{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;cursor:pointer;min-width:0}
@@ -2021,8 +2020,9 @@ div.mbody{cursor:default}
 .ms-seg button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .ms-lbl{font-size:12px;font-weight:600;color:var(--muted);margin-top:8px}
 .ms-lbl2{font-size:13px;color:var(--muted);margin:4px 0 2px}
-.ms-q{display:flex;align-items:center;gap:8px;border-radius:14px;background:var(--card2);padding:0 12px;color:var(--muted)}
-.ms-q input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;outline:0;font:17px var(--font);color:var(--fg);min-height:42px;padding:0!important}
+.ms-q{display:flex;align-items:center;gap:10px;border-radius:14px;background:var(--card2);padding:0 16px;color:var(--muted)}
+.ms-q input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;outline:0;font:17px var(--font);color:var(--fg);min-height:48px;padding:0!important}
+.ms-q:focus-within{box-shadow:inset 0 0 0 1.5px var(--ac)}.ms-q input:focus-visible{outline:0}
 .ms-list{display:flex;flex-direction:column}
 .ms-it{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--edge-soft,rgba(127,127,127,.15));cursor:pointer;font-size:15px}
 .ms-it span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -2365,38 +2365,25 @@ html body .pf-sw button{justify-content:center;background:transparent;border-rad
 .rg-g svg{display:block;width:100%;height:100%;overflow:visible}
 .rg-t{fill:none;stroke:var(--fill2)}
 .rg-a{fill:none;stroke-linecap:round;stroke-dasharray:0 999;transition:stroke-dasharray .9s cubic-bezier(.25,1,.3,1)}
-.rg-s{fill:var(--card)}
-.rg-h{fill:none;stroke:transparent;pointer-events:stroke;cursor:pointer}
-.rg-r{transition:opacity .3s}.rg-g.sel .rg-r.off{opacity:.2}
-.rg-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);appearance:none;border:0;background:none;color:var(--fg);font:inherit;display:flex;align-items:baseline;gap:3px;padding:0;cursor:pointer;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.rg-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--fg);display:flex;align-items:baseline;gap:3px}
 .rg-c b{font-size:34px;font-weight:700;letter-spacing:-.04em;line-height:1}
-.rg-c b.t{font-size:15px;letter-spacing:0}
-.rg-c small{font-size:12px;color:var(--muted);font-weight:500;align-self:flex-end;margin-bottom:4px}
 .rg-x{flex:1;min-width:0;min-height:140px;display:flex;flex-direction:column;justify-content:center}
 .rg-k{font-size:13px;color:var(--muted);margin:0}
 .rg-x h4{font-size:20px;font-weight:700;margin:2px 0 0!important;letter-spacing:-.01em;line-height:1.2;color:var(--fg)}
 .rg-w{font-size:13px;color:var(--muted);margin:4px 0 0;line-height:1.35}
 .rg-w b{color:var(--fg);font-weight:600}
-.rg-x .chip{align-self:flex-start;margin-top:10px}
-.rg-hint{font-size:12px;color:var(--muted);margin:10px 0 0;text-align:center}
 .rg-wk{display:flex;gap:4px;margin:14px 0 0}
 .rg-wk button{flex:1;appearance:none;border:0;background:none;padding:8px 0 6px;border-radius:8px;font:400 11px var(--font);color:var(--muted);cursor:pointer;min-height:38px;transition:background .2s}
 .rg-wk button i{display:block;height:6px;border-radius:3px;margin:0 4px 6px}
 .rg-wk button[aria-pressed="true"]{background:var(--fill2);color:var(--fg);font-weight:600}
 .rg-wk button:disabled{cursor:default;opacity:.6}
-.wf-dot{width:8px;height:8px;border-radius:50%;flex:none;margin-left:4px}
-.wf-row[aria-pressed="true"]{background:var(--fill2);border-radius:10px;margin:0 -8px;padding-left:8px;padding-right:8px;width:calc(100% + 16px)}
-.wf-row[aria-pressed="true"],.wf-row[aria-pressed="true"]+.wf-row{border-top-color:transparent}
 @media (prefers-reduced-motion:reduce){.rg-a{transition:none}}
-.wc-neo .rg{margin-top:0}.wc-neo .rg-hint{margin:-8px 0 0}.wc-neo .rg-wk{margin:-4px 0 0}
+.wc-neo .rg{margin-top:0}.wc-neo .rg-wk{margin:-4px 0 0}
 .wc-neo .wc-sec{margin-top:4px}.wc-neo .wf-list{margin-top:-12px}
 .wc-neo .rg{flex-direction:column;gap:12px;align-items:stretch}
 .wc-neo .rg-g{width:min(240px,72vw);height:min(240px,72vw);margin:0 auto}
 .wc-neo .rg-c b{font-size:52px}
-.wc-neo .rg-c b.t{font-size:17px}
-.wc-neo .rg-c small{font-size:13px;margin-bottom:6px}
 .wc-neo .rg-x{min-height:92px;justify-content:flex-start;align-items:center;text-align:center}
-.wc-neo .rg-x .chip{align-self:center}
 .wc-neo .rg-w{max-width:320px}
 .strip-m{white-space:nowrap}
 #dropsvg{width:min(150px,40vw)}
@@ -2467,19 +2454,20 @@ html[data-theme="dark"] .gsi-material-button:not(:disabled):active .gsi-material
 .gly-card .vhead{align-items:baseline}
 .gly-tag{margin-left:auto;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--fill2);color:var(--muted);align-self:center}
 .gly-tank{margin:12px 0 4px}.gly-tank svg{display:block;width:100%;height:32px}
-.gly-bg{fill:var(--fill2)}.gly-hab{fill:color-mix(in srgb,#ffd21e 16%,transparent)}
-.gly-l{fill:#ffd21e}.gly-tank.est .gly-l{fill:color-mix(in srgb,#ffd21e 60%,var(--card))}
+.gly-bg{fill:var(--fill2)}.gly-hab{fill:color-mix(in srgb,var(--carb) 16%,transparent)}
+/* v273 · el color de los hidratos; si es estimado, en trama */
+.gly-l{fill:var(--carb)}.gly-tank.est .gly-l{fill:url(#glyh)}.gly-hs{fill:var(--carb)}.gly-hb{fill:color-mix(in srgb,var(--carb) 30%,var(--card))}
 .gly-sc{position:relative;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
 .gly-spk{display:block;width:100%;height:46px;margin-top:12px}
-.gly-sb{fill:color-mix(in srgb,#ffd21e 12%,transparent)}.gly-sl{fill:none;stroke:#ffd21e;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}.gly-sd{fill:#ffd21e}
+.gly-sb{fill:color-mix(in srgb,var(--carb) 12%,transparent)}.gly-sl{fill:none;stroke:var(--carb);stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}.gly-sd{fill:var(--carb)}
 .gly-q{background:var(--fill2);border-radius:14px;padding:12px 14px;margin:4px 0 0}
 .gly-q p{margin:0 0 10px;font-size:15px}.gly-q p small{display:block;color:var(--muted);font-size:13px}
 .gly-ch{display:flex;gap:8px}.gly-ch button{flex:1;appearance:none;border:0;background:var(--card);color:var(--fg);font:600 14px var(--font);border-radius:10px;min-height:38px;cursor:pointer}
 .gly-ch button:active{transform:scale(.97)}
-.gly-sug{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;background:color-mix(in srgb,#ffd21e 14%,transparent);border-radius:14px;padding:10px 12px;font-size:13px}
+.gly-sug{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;background:color-mix(in srgb,var(--carb) 14%,transparent);border-radius:14px;padding:10px 12px;font-size:13px}
 .gly-sug .chip{flex:none;background:var(--card)}
 .gly-in{margin:8px 0 0;font-size:13px;color:var(--muted)}
-html[data-theme="dark"] .gly-sb{fill:color-mix(in srgb,#ffd21e 7%,transparent)}
+html[data-theme="dark"] .gly-sb{fill:color-mix(in srgb,var(--carb) 7%,transparent)}
 .mrs{margin-top:14px}
 .mr-r{display:block;width:100%;appearance:none;border:0;background:none;color:var(--fg);font:inherit;text-align:left;padding:12px 0;border-top:.5px solid var(--sep)}
 .mrs .mr-r:first-child{border-top:0;padding-top:2px}
@@ -2791,13 +2779,13 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 
 /* v264 · IA: ¿Qué como ahora? (076). Clases qn- */
 .qn-l{display:flex;align-items:center;gap:10px}.qn-l small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
-.qn-os{display:flex;flex-direction:column;gap:10px;margin:12px 0}
-.qn-o{padding:14px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.qn-os{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+.qn-o{padding:16px;border-radius:14px;background:var(--card2);display:flex;flex-direction:column;gap:4px;align-items:flex-start}
 .qn-o b{font-size:17px;font-weight:600}.qn-o small{font-size:13px;color:var(--muted)}
 .qn-m{font-size:13px;color:var(--fg);font-variant-numeric:tabular-nums}
 .qn-o .btn{margin-top:8px}
-.qn-busy{margin:12px 0 0;font-size:15px;color:var(--muted)}
-.qn-run{width:100%;margin-top:12px}
+.qn-busy{margin:16px 0 0;font-size:15px;color:var(--muted)}
+.qn-run{width:100%;margin-top:16px}
 .qn-go .qn-l,.qn-go .qn-l>span{color:var(--fg)}
 /* v264 · producto por su etiqueta (077) */
 .wz-add{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
@@ -2908,6 +2896,25 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .fb-done code{font:600 13px var(--font);font-variant-numeric:tabular-nums;padding:3px 8px;border-radius:8px;background:var(--fill2)}
 .fb-err{margin:0;padding:10px 12px;border-radius:10px;background:var(--fill2);font-size:14px;color:var(--fg)}
 
+/* v273 · Cómo llegas hoy: filas de factores (057, rgRows). Clases rf- */
+.rf{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;width:100%;display:grid;grid-template-columns:36px 1fr auto;column-gap:12px;row-gap:8px;align-items:center;padding:12px 0;border-top:.5px solid var(--sep);cursor:pointer}
+.wf-list>.rf:first-child{border-top:0}
+.rf-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c)}
+.rf-ic svg{width:20px;height:20px}
+.rf-n{min-width:0;font-size:17px;font-weight:600}.rf-n small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.rf-v{font-size:24px;font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rf-v small{font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-left:3px}
+.rf-v.nd{font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted)}
+.rf-b{grid-column:2/4;height:10px;border-radius:999px;background:var(--fill2);overflow:hidden}
+.rf-b i{display:block;height:100%;border-radius:999px;background:var(--c)}
+.rf-d{display:flex;flex-direction:column;gap:10px;padding:0 0 14px 48px}
+.rf-d p{margin:0;font-size:14px;line-height:1.5;color:var(--muted)}
+.rf-d .chip{align-self:flex-start}
+.rf[aria-expanded="true"] .rf-n{color:var(--fg)}
+/* las filas que no son factor (VFC por añadir, sueño, ciclo) llevan la misma baldosa, en gris */
+.wf-list>.wf-row{gap:12px;padding:12px 0}
+.wf-list>.wf-row>.wf-ic{width:36px;height:36px;padding:8px;border-radius:10px;background:var(--fill2);color:var(--muted)}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -2987,7 +2994,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="272";
+const APP_VER="273";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3269,7 +3276,7 @@ function supplements(t){
   out.push({ic:icon("shaker","var(--rojo)"),n:"Proteína en polvo (whey)",ev:"Alta como alimento",why:"Útil si no llegas a tus "+fmtInt(t.P)+" g de proteína con comida.",dose:"20–40 g después de entrenar o en la merienda.",note:"Es comida práctica, no un extra mágico: si llegas con la dieta, no hace falta."});
   if(winter)out.push({ic:icon("sun","var(--verde)"),n:"Vitamina D",ev:"Alta si hay déficit",why:"De octubre a marzo se sintetiza poca vitamina D con el sol.",dose:"1.000–2.000 UI al día, idealmente tras un análisis.",note:"Pide en tu analítica la 25-OH vitamina D; si está bien, no hace falta."});
   out.push({ic:icon("fish","var(--verde)"),n:"Omega-3 (EPA + DHA)",ev:"Moderada",why:"Salud cardiovascular y recuperación si comes poco pescado azul.",dose:"1–2 g de EPA+DHA al día, con comida.",note:"Si comes pescado azul 2–3 veces por semana, ya lo cubres."});
-  out.push({ic:elTile("Fe",26,"var(--verde)"),n:"Hierro",ev:"Solo con análisis",why:"Corredores y mujeres tienen más riesgo de ferritina baja.",dose:"Solo si una analítica confirma ferritina baja, con pauta médica.",note:"Tomarlo sin déficit no mejora el rendimiento y puede ser perjudicial.",warn:true});
+  out.push({ic:elTile("Fe",26,"var(--verde)"),n:"Hierro",ev:"Solo con análisis",why:"Corredores y mujeres tienen más riesgo de ferritina baja.",dose:"Solo si una analítica confirma ferritina baja, con pauta médica.",note:"Tomarlo sin déficit no mejora el rendimiento y puede ser perjudicial."});
   return out;
 }
 
@@ -5899,7 +5906,7 @@ function xLine(t){const mm=menuMicros(S.day),cap=x=>esc(x.charAt(0).toUpperCase(
   return`<div class="xgrp">${row("micro",IC_DROP,"Micronutrientes",mi)}${row("supl",IC_PILL,"Suplementos",su)}</div>`}
 function xSheetHtml(){const t=dayTargets(S.day);if(!t)return"";const mi=S.xsKind!=="supl";
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade xs-sheet" role="dialog" aria-modal="true" aria-label="${mi?"Micronutrientes":"Suplementos"}">
-    <div class="row"><h3>${mi?"Micronutrientes del día":"Suplementación para este día"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><h3>${mi?"Micronutrientes del día":"Suplementos del día"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="xs-one">${mi?microCard(t):suppCard(t)}</div></div></div>`}
 /* ---------- Fichas divulgativas ---------- */
 const EF=(t,y,n,code)=>[`EFSA NDA Panel. ${t}. EFSA Journal ${y};${n}.`,`https://doi.org/10.2903/j.efsa.${code}`];
@@ -6041,14 +6048,14 @@ function microCard(t){
     return`<details class="xb"><summary>${m.ic||""}<span class="xb-t"><b>${m.n}</b>${m.x?`<small class="xb-x">${esc(m.x)}</small>`:got!=null?`<small>El menú cubre el ${fmtInt(pc)} %</small>`:""}</span><span class="xb-v">${m.v?m.v+" "+m.u:""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="xb-d">${got!=null?`${cov}<p class="xb-s">El menú aporta ${got<10&&got%1?got.toFixed(1).replace(".",","):fmtInt(got)} ${m.u} de ${m.v} ${m.u}.</p>`:""}${xbRow("src",m.src)}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(m.v?m.v+" "+m.u:"")}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
   return`<section class="glass pad fade hue-health"><h2>Micronutrientes del día</h2><div class="xlist">${rows}</div>
-  ${mm?"":'<p class="note" style="margin:0 0 6px">Asigna platos en la pestaña Plan y verás aquí cuánto cubre tu menú de cada uno.</p>'}<p class="note">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
+  ${mm?"":'<p class="note">Asigna platos en la pestaña Plan y verás aquí cuánto cubre tu menú de cada uno.</p>'}<p class="note">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
 }
 function suppCard(t){
   const evc=e=>/^Alta/.test(e)?"ev-hi":/^Moderada-alta/.test(e)?"ev-mh":/^Moderada/.test(e)?"ev-md":"ev-lo";
   const rows=supplements(t).map(s=>{const ik=suppKey(s.n),d=INFO[ik];
-    return`<details class="xb${s.warn?" warn":""}"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev)}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
+    return`<details class="xb"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev)}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="xb-d"><p>${esc(s.why)}</p>${xbRow("dose",s.dose)}${s.note?xbRow("warn",s.note):""}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note)}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
-  return`<section class="glass pad fade hue-health"><h2>Suplementación para este día</h2><div class="xlist">${rows}</div>
+  return`<section class="glass pad fade hue-health"><h2>Suplementos del día</h2><div class="xlist">${rows}</div>
   <p class="note">Solo suplementos con evidencia sólida (Instituto Australiano del Deporte, grupo A, y posturas de la ISSN). No sustituyen a la dieta. Consulta con tu médico si tomas medicación, tienes hipertensión o problemas renales.</p></section>`;
 }
 
@@ -6144,7 +6151,7 @@ function vHoy(){
     </div>
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
-        <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos y día a día":"Actividad diaria"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
+        <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos":"Día a día"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
         <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.eaFloor?" · +"+fmtInt(t.eaFloor)+" kcal para no bajar de "+eaThr().lo+" de disponibilidad energética":""}${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}</p>
       </details>
     </div>
@@ -6908,8 +6915,7 @@ function unitize(root){(root||document).querySelectorAll("section b, .sheet b, .
     if(h){const sp=document.createElement("span");sp.innerHTML=h;el.replaceChild(sp,n);sp.outerHTML=h}
     if(el.tagName==="B")el.querySelectorAll(":scope>small.u").forEach(x=>{const p=x.previousSibling;if(p&&p.nodeType===3)p.textContent=p.textContent.replace(/[\s\u00a0]+$/,"")});el.dataset.u=el.textContent})}
 
-/* Cómo llegas hoy (v203): anillos de equilibrio. Cada anillo es un factor; su color nace en la semilla de arriba
-   (tu normal) y va a la derecha si suma o a la izquierda si resta. Nunca se "cierran": no son un objetivo. */
+/* Cómo llegas hoy: la nota de 0 a 100 y lo que suma o resta cada factor (v273: anillo único y filas rf-) */
 const RG_MX={hrv:22,rhr:30,tsb:20,sleep:20,gly:18},RGP={};
 const rgCol=c=>c==null?"var(--faint)":c>0?"var(--verde)":c>-15?"var(--naranja)":"var(--rojo)";
 const rgVd=sc=>sc>=78?"var(--verde)":sc>=58?"color-mix(in srgb,var(--verde) 50%,var(--card))":sc>=38?"var(--naranja)":"var(--rojo)";
@@ -6936,29 +6942,28 @@ function rgWhy(it,fb){const L=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+
   if(neg.length)return`<b>${cap(L(neg))}</b> ${neg.length>1?"restan":"resta"}${pos.length?`, pero <b>${L(pos)}</b>`:""}.`;
   return pos.length?`A favor: <b>${L(pos)}</b>.`:esc(fb)}
 function rgDayK(tk){return S.rgDay&&S.rgDay<tk&&S.rgDay>=shiftKey(tk,-6)?S.rgDay:tk}
-function rgHint(){try{return!localStorage.getItem("sustrato-rghint")&&!S._rgHint}catch(e){return!S._rgHint}}
-function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),sel=it.find(x=>x.k===S.rgSel)||null,n=it.length,step=n>3?13:16,w=n>3?9:11,R0=102;
-  const rings=it.map((x,i)=>{const rr=R0-i*step,C=2*Math.PI*rr,fr=x.c==null?0:Math.max(.05,Math.min(1,Math.abs(x.c)/RG_MX[x.k])*.42),neg=x.c<0;
-    return`<g class="rg-r${sel?(sel.k===x.k?" on":" off"):""}" data-rgk="${x.k}"><circle class="rg-t" cx="110" cy="110" r="${rr}" stroke-width="${w}"/>${fr?`<circle class="rg-a" data-k="${x.k}${neg?"-":"+"}" data-l="${(C*fr).toFixed(1)}" data-c="${C.toFixed(1)}" cx="110" cy="110" r="${rr}" stroke-width="${w}" stroke="${rgCol(x.c)}" transform="${neg?"matrix(-1 0 0 1 220 0) ":""}rotate(-90 110 110)"/>`:""}<circle class="rg-s" cx="110" cy="${110-rr}" r="${n>3?3:3.5}"/><circle class="rg-h" cx="110" cy="110" r="${rr}" stroke-width="${step}"><title>${esc(x.l)}</title></circle></g>`}).join("");
-  const ctr=sel?`<b class="${typeof sel.v==="string"?"t":""}">${esc(String(sel.v))}</b>${sel.u?`<small>${sel.u}</small>`:""}`:`<b>${r.sc}</b>`;
+/* v273 · Un anillo con la nota (0–100) en el color del veredicto y, debajo, una fila por factor: cuánto suma o resta,
+   con su dato y una barra de lo que pesa. Tocar una fila abre su porqué y, si se puede, su edición. Clases rf- */
+const rgScCol=sc=>sc>=58?"var(--verde)":sc>=38?"var(--naranja)":"var(--rojo)";
+const RG_IC={gly:'<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M7 14h10"/>',hrv:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',rhr:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',tsb:'<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>',sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'};
+function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),R=94,C=2*Math.PI*R,L=C*Math.max(0,Math.min(100,r.sc))/100;
   const dl=day===tk?"Hoy":"El "+DOW[new Date(day+"T12:00:00").getDay()]+" "+(+day.slice(8));
-  const act=sel&&day===tk?(sel.k==="hrv"?"hrvedit":sel.k==="sleep"||(sel.k==="rhr"&&!window.__native)?"wtedit":""):"";
-  const tx=sel?`<p class="rg-k">${esc(sel.l)}</p><h4>${sel.c>0?"Suma "+sel.c+" puntos":sel.c<0?"Resta "+(-sel.c)+" puntos":sel.c===0?"Neutro":"Sin dato"}</h4><p class="rg-w">${esc(sel.why)}</p>${sel.k==="hrv"?(()=>{const hs=hrvStat(day);return hs?hrvChart(day,hs):""})():""}${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}`
-    :`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p>`;
   const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
-  const names=it.map(x=>({hrv:"VFC",rhr:"pulso",tsb:"carga",sleep:"sueño",gly:"glucógeno"})[x.k]),nm=names.slice(0,-1).join(", ")+" y "+names[names.length-1];
-  return`<div class="rg"><div class="rg-g${sel?" sel":""}"><svg viewBox="0 0 220 220" role="img" aria-label="Disposición ${r.sc} de 100. Toca un anillo para ver su porqué">${rings}</svg><button type="button" class="rg-c" data-rgk="" aria-label="Volver al resumen">${ctr}</button></div><div class="rg-x">${tx}</div></div>
-    ${rgHint()?`<p class="rg-hint">De fuera a dentro: ${nm}. Toca un anillo para ver su porqué.</p>`:""}
+  return`<div class="rg"><div class="rg-g"><svg viewBox="0 0 220 220" role="img" aria-label="Cómo llegas: ${r.sc} de 100"><circle class="rg-t" cx="110" cy="110" r="${R}" stroke-width="18"/><circle class="rg-a" data-k="sc" data-l="${L.toFixed(1)}" data-c="${C.toFixed(1)}" cx="110" cy="110" r="${R}" stroke-width="18" stroke="${rgScCol(r.sc)}" transform="rotate(-90 110 110)"/></svg><span class="rg-c"><b>${r.sc}</b></span></div>
+    <div class="rg-x"><p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p></div></div>
     <div class="rg-wk" role="group" aria-label="Cómo llegaste cada día">${wk}</div>`}
-function rgRows(tk,hrvSpecial,tail){const day=rgDayK(tk),{it}=rgItems(day),I=p=>`<svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
-  const IC={gly:'<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M7 14h10"/>',hrv:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',rhr:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',tsb:'<path d="M4 18V12M9 18V8M14 18v-5M19 18V5"/>',sleep:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'};
-  const rows=it.map(x=>x.k==="hrv"&&hrvSpecial?hrvSpecial:`<button type="button" class="wf-row" data-rgk="${x.k}" aria-pressed="${S.rgSel===x.k}">${I(IC[x.k])}<span class="wf-n">${esc(x.l)}<small>${esc(x.sub)}</small></span><span class="wf-v">${esc(String(x.v))}${x.u?`<small>${x.u}</small>`:""}</span><i class="wf-dot" style="background:${rgCol(x.c)}" aria-hidden="true"></i></button>`).join("");
+function rgRows(tk,hrvSpecial,tail){const day=rgDayK(tk),{it}=rgItems(day);
+  const lo=t=>t.charAt(0).toLowerCase()+t.slice(1),ord=it.slice().sort((a,b)=>(b.c==null?-1:Math.abs(b.c))-(a.c==null?-1:Math.abs(a.c)));
+  const rows=ord.map(x=>{if(x.k==="hrv"&&hrvSpecial)return hrvSpecial;const on=S.rgSel===x.k,nd=x.c==null,col=rgCol(x.c),w=nd?0:Math.max(6,Math.min(1,Math.abs(x.c)/RG_MX[x.k])*100);
+    const dat=x.v!=="—"&&x.v!==""?`${x.v}${x.u?" "+x.u:""}`:"",sub=!dat?(nd?"Sin dato de hoy":x.sub):x.k==="sleep"?dat:dat+" · "+lo(x.sub);
+    const act=on&&day===tk?(x.k==="hrv"?"hrvedit":x.k==="sleep"||(x.k==="rhr"&&!window.__native)?"wtedit":""):"";
+    return`<button type="button" class="rf" data-rgk="${x.k}" aria-expanded="${on}" style="--c:${col}"><span class="rf-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${RG_IC[x.k]}</svg></span><span class="rf-n">${esc(x.l)}${sub?`<small>${esc(sub)}</small>`:""}</span><b class="rf-v${nd?" nd":""}">${nd?"Sin dato":(x.c>0?"+":x.c<0?"−":"±")+Math.abs(x.c)+"<small>pts</small>"}</b>${nd?"":`<span class="rf-b"><i style="width:${w.toFixed(0)}%"></i></span>`}</button>`
+      +(on?`<div class="rf-d"><p>${esc(x.why)}</p>${x.k==="hrv"?(()=>{const hs=hrvStat(day);return hs?hrvChart(day,hs):""})():""}${act?`<button type="button" class="chip sm" data-act="${act}">Cambiar</button>`:""}</div>`:"")}).join("");
   return`<span class="wc-sec">${day===tk?"Así amaneces":"Así amaneciste el "+DOW[new Date(day+"T12:00:00").getDay()]}</span><div class="wf-list">${cyRow(day)}${rows}${tail||""}</div>${cyRegBtn(day)}`}
 function rgAnim(){document.querySelectorAll(".rg-a:not([data-done])").forEach(el=>{el.dataset.done=1;const k=el.dataset.k,L=+el.dataset.l,C=+el.dataset.c,from=RGP[k]!=null?RGP[k]:0;RGP[k]=L;
   el.style.transition="none";el.style.strokeDasharray=`${from} ${C}`;el.getBoundingClientRect();el.style.transition="";el.style.strokeDasharray=`${L} ${C}`})}
-document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-rgday]");if(d){S.rgDay=d.dataset.rgday===today()?null:d.dataset.rgday;S.rgSel=null;buzz(8);rgSeen();render();return}
-  const g=e.target.closest&&e.target.closest("[data-rgk]");if(!g)return;const k=g.dataset.rgk;S.rgSel=!k||S.rgSel===k?null:k;buzz(8);rgSeen();render()});
-function rgSeen(){S._rgHint=1;try{localStorage.setItem("sustrato-rghint","1")}catch(e){}}
+document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest("[data-rgday]");if(d){S.rgDay=d.dataset.rgday===today()?null:d.dataset.rgday;S.rgSel=null;buzz(8);render();return}
+  const g=e.target.closest&&e.target.closest("[data-rgk]");if(!g)return;const k=g.dataset.rgk;S.rgSel=!k||S.rgSel===k?null:k;buzz(8);render()});
 
 /* Sensaciones en el detalle: la casilla abre las caras; al elegir se cierran */
 document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-fe]");if(f){S.feOpen=!S.feOpen;buzz(6);renderModal();return}
@@ -7020,7 +7025,7 @@ function glyCard(){const g=glyState();if(!g||S.day!==today())return"";const f1=v
   const H=g.hist,X=i=>4+i*(392/Math.max(1,H.length-1)),Y=v=>42-(Math.max(.3,v/g.cap)-.3)/.7*38;
   return`<section class="glass pad fade gly-card"><span class="pkk">Depósito de glucógeno</span>
     <div class="vhead" data-vzread><b>${g.est?"≈ ":""}${g.pct}<small class="u">%</small></b><span>${g.est?"≈ ":""}${f1(g.g)} de ${f1(g.cap)} g</span>${g.est?'<span class="gly-tag">Estimado</span>':""}</div>
-    <div class="gly-tank${g.est?" est":""}"><svg viewBox="0 0 340 32" preserveAspectRatio="none" id="glyband" data-f="${(g.g/g.cap).toFixed(4)}" aria-hidden="true"><defs><clipPath id="glyc"><rect width="340" height="32" rx="16"/></clipPath></defs><g clip-path="url(#glyc)"><rect width="340" height="32" class="gly-bg"/><rect width="${(340*GLY_HAB).toFixed(1)}" height="32" class="gly-hab"/><path class="gly-l" d=""/></g></svg></div>
+    <div class="gly-tank${g.est?" est":""}"><svg viewBox="0 0 340 32" preserveAspectRatio="none" id="glyband" data-f="${(g.g/g.cap).toFixed(4)}" aria-hidden="true"><defs><clipPath id="glyc"><rect width="340" height="32" rx="16"/></clipPath><pattern id="glyh" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)"><rect width="7" height="7" class="gly-hb"/><rect width="3.5" height="7" class="gly-hs"/></pattern></defs><g clip-path="url(#glyc)"><rect width="340" height="32" class="gly-bg"/><rect width="${(340*GLY_HAB).toFixed(1)}" height="32" class="gly-hab"/><path class="gly-l" d=""/></g></svg></div>
     <div class="gly-sc"><span>vacío</span><span style="position:absolute;left:${GLY_HAB*100}%;transform:translateX(-50%)">habitual</span><span>lleno</span></div>
     <p class="note" style="margin:10px 0 0">${why} ${g.need?`Para volver a tu nivel habitual te faltan <b>unos ${f1(g.need)} g</b>.`:"Estás en tu nivel habitual o por encima."}</p>
     ${H.length>1?`<svg class="gly-spk" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="${Y(g.cap*GLY_HAB).toFixed(1)}" width="400" height="${(46-Y(g.cap*GLY_HAB)).toFixed(1)}" class="gly-sb"/><path d="${H.map((x,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(x.g).toFixed(1)).join(" ")}" class="gly-sl"/><circle cx="${X(H.length-1).toFixed(1)}" cy="${Y(H[H.length-1].g).toFixed(1)}" r="4" class="gly-sd"/></svg><div class="gly-sc"><span>hace ${H.length-1} días</span><span>hoy</span></div>`:""}
@@ -7539,7 +7544,7 @@ function qnHtml(){const q=S.qn,m=qnMeal();if(!m)return"";const kc=Math.round(4*m
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade qn" role="dialog" aria-modal="true" aria-label="¿Qué como ahora?">
     <div class="row"><h3>¿Qué como ahora?</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="ms-sub">${esc(m.n)} · ${fromMin(m.min)} · ${fmtInt(kc)} kcal · P ${fmtInt(m.P)} · H ${fmtInt(m.C)} · G ${fmtInt(m.F)}${m.pre?" · antes de "+esc(m.pre):m.post?" · después de "+esc(m.post):""}</p>
-    <label class="ms-q">${IC_SRCH}<input id="qn_have" type="search" placeholder="¿Qué tienes a mano? (opcional)" autocomplete="off" value="${esc(q.have||"")}" aria-label="Qué tienes a mano"></label>
+    <label class="ms-q">${IC_SRCH}<input id="qn_have" type="search" placeholder="¿Qué tienes a mano?" autocomplete="off" value="${esc(q.have||"")}" aria-label="Qué tienes a mano"></label>
     ${q.busy?`<p class="qn-busy">Pensando tres ideas…</p>`:q.err?`<p class="wr-e">${esc(q.err)}</p>`:""}
     ${ops?`<div class="qn-os">${ops}</div>`:""}
     <button type="button" class="btn primary big qn-run" data-qnrun="1" ${q.busy?"disabled":""}>${q.res?"Otras ideas":"Proponer"}</button>
