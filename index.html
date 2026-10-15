@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T08:46:34.589Z">
+<meta name="sustrato-version" content="2026-10-15T08:51:50.665Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2951,6 +2951,13 @@ span.ia-ic{flex:none;width:32px;height:32px;border-radius:10px;display:grid;plac
 .cm-c.in b{width:auto;border-radius:0;background:var(--ac);color:var(--ac-on)}
 .cm-c.s b{border-top-left-radius:999px;border-bottom-left-radius:999px}.cm-c.e b{border-top-right-radius:999px;border-bottom-right-radius:999px}
 .cm-nav{width:36px;height:36px;margin:0;font-size:20px}.cm-nav:disabled{opacity:.3}
+
+/* v282 · Icono del deporte principal en el calendario (en vez del punto «hecho»). Clase cal- */
+.daystrip{align-items:flex-start} /* con o sin icono, los números a la misma altura */
+.day .cal-ic{display:block;width:16px;height:16px;margin:3px auto 0;color:var(--f,var(--fg))}
+.day .cal-ic svg{display:block;width:16px;height:16px;stroke-width:2.1}
+.cm-c .cal-ic{width:13px;height:13px;margin-top:2px}
+.cm-c .cal-ic svg{width:13px;height:13px}
 
 /* v278 · Progreso › Comida (087). Clases com- */
 .com-card>.row{align-items:center}
@@ -7986,9 +7993,13 @@ function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>
    Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
    Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
+/* v282 · Día con entreno hecho: en vez del punto, el icono del deporte principal (el más largo) en el color de su familia.
+   Previsto y saltado siguen con su aro. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
+function calMark(o,k,tag){const d=o.dot(k);if(d==="on"&&o.dot===calDotTrain){const L=S.acts.filter(a=>a.day===k);if(L.length){const sp=L.reduce((m,a)=>(a.mov||0)>(m.mov||0)?a:m).sport;
+  return`<${tag} class="cal-ic" style="--f:${FAMC[famOf(sp)]||"var(--fg)"}" title="${esc(SPORT_L[sp]||"")}">${spSvg(sp)}</${tag}>`}}return`<${tag} class="dot ${d}"></${tag}>`}
 function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
-  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><span class="dot ${o.dot(k)}"></span></button>`}).join("");
+  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b>${calMark(o,k,"span")}</button>`}).join("");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
   return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}`}
 /* Mes (v278): seis filas como mucho; los días de otros meses, apagados; sin días futuros.
@@ -7999,7 +8010,7 @@ function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFull
   const has=i=>{const x=K[i];return!!x&&!x.out&&x.k<=tk&&x.k>=o.a&&x.k<=o.b};
   const h=K.map(({d,k,out},i)=>{if(out)return`<span class="day cm-c out"><b>${d.getDate()}</b></span>`;if(k>tk)return`<span class="day cm-c fut"><b>${d.getDate()}</b><i class="dot"></i></span>`;
     const inn=has(i),s_=inn&&(i%7===0||!has(i-1)),e_=inn&&(i%7===6||!has(i+1));
-    return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b><i class="dot ${o.dot(k)}"></i></span>`}).join("");
+    return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b>${calMark(o,k,"i")}</span>`}).join("");
   return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
     <div class="cm-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
     <div class="cm-g" role="group" aria-label="Toca dos días, o mantén pulsado y arrastra, para elegir un tramo">${h}</div>`}
