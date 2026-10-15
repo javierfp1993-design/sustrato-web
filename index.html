@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T08:15:52.706Z">
+<meta name="sustrato-version" content="2026-10-15T08:46:34.589Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -282,7 +282,7 @@ nav.tabs button{padding:10px 13px}
 .month{font-size:12px;color:var(--faint);margin:12px 4px 2px}
 form .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:520px){form .fields{grid-template-columns:minmax(0,1fr)}}
-label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+label.f,.pfx-g{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
 input,select{font:500 15px var(--font);color:var(--fg);background:rgba(255,255,255,.06);border:1px solid var(--edge-soft);border-radius:14px;padding:12px 14px;min-height:44px;width:100%}
 input::placeholder{color:var(--faint)}
 fieldset{border:0;padding:0;margin:0 0 18px}
@@ -952,6 +952,9 @@ button:active:not(:disabled){transform:scale(.98)}
 .fu2-tl span{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:10px;background:var(--card);font-variant-numeric:tabular-nums}
 .fu2-tl b{font-size:13px}.fu2-tl small{font-size:11px;color:var(--muted)}
 .fu2-d .btn{align-self:flex-start}
+/* v281 · Avituallamiento tomado: punto verde y «Hecho», con «Deshacer» al lado (sin ✓) */
+.fu2-ok{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:15px}
+
 /* ===== MODO CLARO ===== */
 html[data-theme="light"] .dr-it:hover{background:rgba(0,0,0,.04)}
 html[data-theme="light"] .dr-it[aria-current="page"]{background:rgba(0,0,0,.06)}
@@ -2588,11 +2591,8 @@ html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:var(--azul);--cv-v:
 .pk-o small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
 .pk-o[aria-checked="true"]{background:var(--ac);color:var(--ac-on)}
 .pk-o[aria-checked="true"] small{color:inherit;opacity:.7}
-.pk-f:active,.pk-o:active,.pk-c:active{transform:scale(.97)}
+.pk-f:active,.pk-o:active{transform:scale(.97)}
 /* Chips de «Excluir»: la casilla del sistema queda oculta (sigue ahí para el formulario y la accesibilidad); el chip elegido se rellena */
-.pk-c{cursor:pointer}
-.pk-c:has(input:checked){background:var(--ac);color:var(--ac-on)}
-.pk-c:has(input:focus-visible){outline:2px solid var(--fat);outline-offset:2px}
 /* v274 · ciudad para el tiempo */
 .wl-me{width:100%}
 /* v274 · regla de espaciado en hojas con formulario: bloques a 16 px con gap, sin márgenes sueltos; campos en rejilla a 12 px */
@@ -2719,12 +2719,14 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .fd-ch{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .fd-ch button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 13px var(--font);border-radius:999px;padding:7px 12px;min-height:32px;cursor:pointer;font-variant-numeric:tabular-nums}
 .fd-ch button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
-.fd-row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px;border-top:.5px solid var(--sep)}
-.fd-row:first-child{border-top:0}
-.fd-row>span{font-size:17px;font-weight:500}
-.fd-row .fd-f{min-width:96px;justify-content:center;gap:6px}
 .fd-l{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}
-.fields .fd-rows{grid-column:1/-1}
+/* v281 · Horario de comidas: un solo bloque como el selector en hoja, una fila por comida (nombre, hora, ›) con separador sangrado. Clases hr- */
+.hr-g{grid-column:1/-1;display:flex;flex-direction:column;border-radius:10px;background:var(--card2);overflow:hidden}
+.hr-g .fd-f{border-radius:0;background:none;gap:8px}
+.hr-g .fd-f:active{transform:none;background:var(--fill2)}
+.hr-r span{flex:1}
+.hr-r b{color:var(--muted)}
+.hr-r+.hr-r::before{content:"";position:absolute;top:0;left:12px;right:0;border-top:.5px solid var(--sep)}
 
 /* v263 · Botones (guía: «Controles»): tres piezas y ninguna más.
    Compacto · cápsula de 36 px para cualquier acción dentro de una tarjeta (.btn, .chip sin aria-pressed); negro si es la principal.
@@ -2735,7 +2737,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .btn.primary{background:var(--fg);color:var(--card)}
 .btn:not(.primary):hover,.chip:not([aria-pressed]):hover{background:color-mix(in srgb,var(--fg) 10%,var(--fill))}
 .btn.big,.pa-go,.pf-save,.ob-cta,.sh-go,.tr-next,.wc-save,.fz-save .btn,.rw-act .btn{min-height:50px;padding:12px 20px;border-radius:14px;font-size:17px}
-.chip[aria-pressed],.chip.pk-c{min-height:34px;padding:7px 12px;border-radius:10px;font:500 14px var(--font);background:var(--fill2);color:var(--fg)}
+.chip[aria-pressed]{min-height:34px;padding:7px 12px;border-radius:10px;font:500 14px var(--font);background:var(--fill2);color:var(--fg)}
 .chip[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .chip.danger{color:var(--rojo)}
 .btn:disabled,.chip:disabled{opacity:.5;cursor:default}
@@ -4238,7 +4240,7 @@ function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
 
 /* ---------- Recuperación tras entrenar ---------- */
 function flPrompt(){if(S.day!==today())return"";let hid={};try{hid=JSON.parse(localStorage.getItem("sustrato-flask")||"{}")}catch(e){}
-  const a=S.acts.filter(x=>x.sport!=="str"&&x.sport!=="oth"&&x.mov>=3600&&x.day>=shiftKey(today(),-1)&&!(S.fuel||[]).some(f=>f.id===x.id)&&!hid[x.id]&&!(S._flHide||{})[x.id]).sort((p,q)=>q.start<p.start?-1:1)[0];
+  const a=S.acts.filter(x=>x.sport!=="str"&&x.sport!=="oth"&&x.mov>=3600&&x.day>=shiftKey(today(),-1)&&!flEntry(x)&&!hid[x.id]&&!(S._flHide||{})[x.id]).sort((p,q)=>q.start<p.start?-1:1)[0];
   if(!a)return"";const when=a.day===today()?"hoy":"ayer";
   return`<section class="glass pad fade fl-ask"><div class="fl-ask-h"><span class="sw-ic fl-ic big" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><span class="pkk">Avituallamiento</span><h2>¿Qué tomaste en ${esc(a.name)}?</h2><p>${esc(SPORT_L[a.sport]||"Entreno")} de ${when} · ${fmtDur(a.mov)}. Con unos cuantos registros sabrás cuántos hidratos por hora toleras.</p></div></div>
     <div class="fl-ask-a"><button class="btn primary" data-flask="${esc(a.id)}">Apuntar</button><button class="chip" data-flno="${esc(a.id)}">Ahora no</button></div></section>`}
@@ -4306,15 +4308,22 @@ const PT_T={gel:["Gel","var(--amarillo)"],drink:["Bebida","var(--cian)"],bar:["B
 function pantry(){const own=S.pantry||[];return own.concat(PT_DEF.filter(d=>!own.some(o=>o.id===d.id)))}
 function ptById(id){return pantry().find(p=>p.id===id)}
 function ptSub(p){return[p.c+" g hidratos",p.caf?p.caf+" mg cafeína":null,p.na?p.na+" mg sodio":null].filter(Boolean).join(" · ")}
+/* v281 · Un solo dato por actividad: lo apuntado en Actividad, lo marcado como tomado en Hoy y la pregunta de arriba
+   leen y escriben el mismo registro (S.fuel). «Tomado» en Hoy crea uno con lo previsto (src:"plan"); al detallarlo se sustituye.
+   Las marcas antiguas en el registro del día (fuel_a…) se leen como si fueran ese registro. */
+function flEntry(a){const ex=(S.fuel||[]).find(x=>x.id===a.id);if(ex)return ex;const l=((S.log||{})[a.day]||{})["fuel_a"+a.id];
+  return l?{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:l.C||0,caf:0,na:0,cph:a.mov?Math.round((l.C||0)/(a.mov/3600)):0,tg:fuelTarget(a.mov/60,actInt(a)),src:"plan"}:null}
+function flPut(a,e){S.fuel=(S.fuel||[]).filter(x=>x.id!==a.id);if(e)S.fuel.push(e);saveFuel();
+  if(((S.log||{})[a.day]||{})["fuel_a"+a.id])setLog(a.day,"fuel_a"+a.id,null)}
 function fuelTol(){const L=(S.fuel||[]).filter(x=>x.gi==="good"&&x.cph>0);return L.length?Math.max(...L.map(x=>x.cph)):null}
 function flTotals(items){let c=0,caf=0,na=0;(items||[]).forEach(it=>{const p=ptById(it.pid);if(!p)return;c+=p.c*it.q;caf+=(p.caf||0)*it.q;na+=(p.na||0)*it.q});return{c,caf,na}}
-function flSummary(a,ex){const T=flTotals(ex.items),kg=num((S.profile||{}).weight)||70;
+function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c:ex.carbs||0,caf:ex.caf||0,na:ex.na||0},kg=num((S.profile||{}).weight)||70;
   const its=(ex.items||[]).map(it=>{const p=ptById(it.pid);if(!p)return"";return`<li><i style="background:${(PT_T[p.t]||PT_T.food)[1]}" aria-hidden="true"></i><span>${esc(p.n)}</span><b>× ${it.q}</b></li>`}).join("");
-  const gi={good:"Te sentó bien",meh:"Te sentó regular",bad:"Tuviste molestias"}[ex.gi]||"";
-  return`<div class="fl-box fl-done" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex.cph} g/h${ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}</p></div><button type="button" class="chip sm" data-fledit="${esc(a.id)}">Editar</button></div>
+  const gi={good:"Te sentó bien",meh:"Te sentó regular",bad:"Tuviste molestias"}[ex.gi]||"",pl=ex.src==="plan"?"según lo previsto":"";
+  return`<div class="fl-box fl-done" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}</p></div><button type="button" class="chip sm" data-fledit="${esc(a.id)}">Editar</button></div>
     ${its?`<ul class="fl-list">${its}</ul>`:""}
     <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+" mg":"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+" mg":"—"}</b></div></div></div>`}
-function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=(S.fuel||[]).find(x=>x.id===a.id);
+function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a);
   if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
   const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelTarget(a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
@@ -4323,7 +4332,7 @@ function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=(S.fuel||
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
   const row=it=>{const p=ptById(it.pid);if(!p)return"";const tt=PT_T[p.t]||PT_T.food;return`<div class="fl-it"><span class="fl-dot" style="background:${tt[1]}" aria-hidden="true"></span><span class="fl-nm"><b>${esc(p.n)}</b><small>${esc(ptSub(p))}</small></span><div class="str-step"><button type="button" data-fl="${esc(p.id)}|-1" aria-label="Uno menos">−</button><b>${it.q}</b><button type="button" data-fl="${esc(p.id)}|1" aria-label="Uno más">+</button></div></div>`};
   const nf=S.flNew;
-  return`<div class="fl-box" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex?"Guardado. Puedes corregirlo.":"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
+  return`<div class="fl-box" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
     ${dr.items.length?`<div class="fl-items">${dr.items.map(row).join("")}</div>`:""}
     <div class="fl-add"><span class="fl-lbl">${dr.items.length?"Añadir otro":"Añadir"}</span><div class="fl-chips">${avail.map(p=>`<button type="button" class="fl-chip" data-fladd="${esc(p.id)}"><i style="background:${(PT_T[p.t]||PT_T.food)[1]}"></i>${esc(p.n)}</button>`).join("")}${hid>0?`<button type="button" class="fl-chip fl-more" data-flall="1">Ver todos (${ranked.length})</button>`:S.flAll&&ranked.length>4?`<button type="button" class="fl-chip fl-more" data-flall="0">Ver menos</button>`:""}<button type="button" class="fl-chip fl-new" data-flnew="1" aria-expanded="${!!nf}">＋ Nuevo producto</button></div></div>
     ${nf?`<div class="fl-form"><label class="sw-f fl-wide" for="flp_n"><span>Marca y producto</span><input id="flp_n" placeholder="Ej.: Maurten Gel 100 Caf" value="${esc(nf.n||"")}" autocomplete="off"></label>
@@ -5623,21 +5632,21 @@ function phCard(m){const p=S.ph;if(!p||p.mid!==m.id||p.k!==S.day)return"";
 
 /* ---------- Avituallamiento y carrera ---------- */
 function fuelCard(t){
-  const ses=t.acts.map(a=>({id:"a"+a.id,n:SPORT_L[a.sport],sport:a.sport,min:Math.round(a.mov/60),time:(a.start||"").slice(11,16),it:actInt(a)})).concat(t.plan.map((s,i)=>({id:"p"+i,n:sessName(s),sport:s.sport,min:s.dur,time:s.time,it:s.int,race:!!s.race})));
+  const ses=t.acts.map(a=>({id:"a"+a.id,aid:a.id,n:SPORT_L[a.sport],sport:a.sport,min:Math.round(a.mov/60),time:(a.start||"").slice(11,16),it:actInt(a)})).concat(t.plan.map((s,i)=>({id:"p"+i,n:sessName(s),sport:s.sport,min:s.dur,time:s.time,it:s.int,race:!!s.race})));
   const long=ses.filter(s=>fuelTarget(s.min,s.it,s.race)>0);if(!long.length)return"";
   const k=S.day,canLog=k<=today();
   const rows=long.map(s=>{
     const h=s.min/60,cph=fuelTarget(s.min,s.it,s.race),carbs=fuelCarbs(s.min,cph);
     const T=tempAt(k,s.time,s.min),hf=heatF(T),flu=Math.round(sweatRate(s.sport)*.75*hf*h*1000/50)*50,na=Math.round(450*hf*h/50)*50,gels=Math.ceil(carbs/25),bott=Math.max(1,Math.round(flu/500));
     const gap=cph<=30?45:cph<=50?30:20,steps=[];for(let m=s.min<150?40:30;m<s.min-10;m+=gap)steps.push(m); /* v267: con poco por hora, tomas más espaciadas */const per=steps.length?Math.round(carbs/steps.length):0;
-    const key="fuel_"+s.id,done=!!((S.log[k]||{})[key]);
+    const key="fuel_"+s.id,act=s.aid!=null?S.acts.find(a=>a.id===s.aid):null,done=act?!!flEntry(act):!!((S.log[k]||{})[key]);
     return`<details class="fu2${done?" done":""}"><summary>${spIcon(s.sport)}<span class="tc-tx"><b>${esc(s.n)}</b><small>${fmtDur(s.min*60)}${s.time?" · "+esc(s.time):""}</small></span><span class="tc-meta"><b>${carbs} g</b><small>hidratos</small></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="fu2-d">
         ${T!=null?`<span class="fu2-t${T>=27?" hot":""}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/></svg>${Math.round(T)} °C${T>=27?" · bebe antes de tener sed":" a esa hora"}</span>`:""}
         <div class="fu2-k"><div style="--c:var(--amarillo);--c-v:var(--amarillo-v,var(--amarillo))"><span>Hidratos</span><b>${carbs}<small> g</small></b><em>${cph} g/h</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Líquido</span><b>${(flu/1000).toFixed(1).replace(".",",")}<small> L</small></b><em>${T!=null?(hf>1.05?"+"+Math.round((hf-1)*100)+" % calor":hf<.95?"menos por el fresco":"con sales"):"con sales"}</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Sodio</span><b>${fmtInt(na)}<small> mg</small></b><em>en total</em></div></div>
         ${steps.length?`<div class="fu2-tl" aria-label="Cuándo tomarlo">${steps.map(m=>`<span><b>${m}′</b><small>${per} g</small></span>`).join("")}</div>`:""}
         <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} ${bott>1?"bidones":"bidón"} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${T!=null&&T>=25&&cyActive()&&(cyAt(k)||{}).half===2?`<p class="cy-av">En la segunda mitad del ciclo empiezas a sudar algo más tarde: con este calor, bebe desde el principio, sin esperar a tener sed.</p>`:""}${(()=>{const tl=fuelTol();return tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
-        ${canLog?`<button class="btn sm ${done?"":"primary"}" data-fuel="${key}" data-c="${carbs}" aria-pressed="${done}">${done?"✓ Tomado · deshacer":"Marcar como tomado"}</button>`:""}
+        ${canLog?(done?`<div class="fu2-ok"><span class="cx-ok">Hecho</span><button type="button" class="chip sm" data-fuel="${key}" data-c="${carbs}">Deshacer</button></div>`:`<button class="btn sm primary" data-fuel="${key}" data-c="${carbs}">Marcar como tomado</button>`):""}
       </div></details>`}).join("");
   return`<section class="glass pad fade"><h2>Avituallamiento</h2><p class="fdesc" style="margin:2px 0 0">Para tus sesiones largas. ${canLog?"Al marcarlo, sus hidratos cuentan en lo que llevas comido.":""}</p><div class="tc-list">${rows}</div>${fuelWhy()}</section>`;
 }
@@ -6662,10 +6671,10 @@ function vPerfil(){
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
       ${pkField("store","Dónde haces la compra",[["","En cualquier súper"],["merc","Mercadona"]],p.store||"")}
       ${pkField("diet","Tipo de dieta",[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]],p.diet||"omni")}
-      <div class="f"><span>Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<label class="chip pk-c"><input type="checkbox" class="vh" id="p_${k}" ${p[k]?"checked":""}>${l}</label>`).join("")}</div></div>
+      <div class="f pfx-g" role="group" aria-labelledby="pfx-l"><span id="pfx-l">Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<button type="button" class="chip" data-pfx="${k}" aria-pressed="${!!p[k]}">${l}</button>`).join("")}</div></div>
     </div><p class="note">La asignación automática solo usa platos compatibles. En Plan › Platos, con «···», puedes dejar fuera los que no te gustan.</p></fieldset></details>
     <details class="psec" data-ps="hor" ${psOpen("hor")}><summary><span class="ps-t"><b>Horario de comidas</b><small>${psSum.hor}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Horario de comidas</legend><div class="fields">
-      <div class="fd-rows">${MEALS.map(([id,n,def])=>`<div class="fd-row"><span>${n}</span>${fdField("p_meal_"+id,"time",p["meal_"+id]||def,n)}</div>`).join("")}</div>
+      <div class="hr-g">${MEALS.map(([id,n,def])=>{const v=p["meal_"+id]||def;return`<label class="fd-f hr-r"><span>${n}</span><b>${esc(fdFmt("time",v))}</b><i aria-hidden="true">›</i><input type="time" id="p_meal_${id}" value="${esc(v)}" aria-label="${esc(n)}"></label>`}).join("")}</div>
     </div></fieldset></details>
     <details class="psec" data-ps="obj" ${psOpen("obj")}><summary><span class="ps-t"><b>Objetivo</b><small>${psSum.obj}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Objetivo</legend><div class="fields">${pkField("goal","Objetivo",Object.entries(GOALS).map(([k,g])=>[k,g.label,g.adj?`Comer un ${Math.round(Math.abs(g.adj)*100)} % ${g.adj<0?"menos":"más"} de lo que gastas${g.p>2?", con más proteína":""}`:"Comer lo que gastas"]),p.goal||"recomp")}</div></fieldset></details>
     <div class="row"><span class="note" style="margin:0">${S.db&&S.uid?"Tu perfil es privado: cada persona que abra la app ve solo el suyo.":"Esta vista no puede guardar el perfil."}</span><button class="btn primary pf-save${S.pfJust?" done":""}" type="submit" ${S.pfDirty?"":"disabled"}>${S.pfJust?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Guardado':"Guardar cambios"}</button></div>
@@ -6726,7 +6735,10 @@ document.addEventListener("click",e=>{
   const t=e.target.closest("button,[data-close]");if(!t||t.dataset.wz)return;
   if(t.dataset.tab){S.tab=t.dataset.tab;render();if(S.tab==="hoy")ensureDaySubs();window.scrollTo(0,0);return}
   if(t.dataset.close&&(e.target===t||t.tagName==="BUTTON")){if(S.sheet==="info"&&S.infoBack){S.sheet=S.infoBack;S.infoBack=null;renderModal();return}S.msh=null;S.detail=null;S.sheet=null;S.pa=null;renderModal();return}
-  if(t.dataset.fuel){const key=t.dataset.fuel,cur=(S.log[S.day]||{})[key];setLog(S.day,key,cur?null:{st:"done",P:0,C:+t.dataset.c||0,F:0,n:"Avituallamiento"});if(!cur)buzz(10);render();return}
+  if(t.dataset.fuel){const key=t.dataset.fuel,a=key.startsWith("fuel_a")?S.acts.find(x=>"fuel_a"+x.id===key):null;
+    if(a){const cur=flEntry(a),c=+t.dataset.c||0; /* v281: el mismo registro que Actividad y la pregunta de arriba */
+      flPut(a,cur?null:{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:c,caf:0,na:0,cph:Math.round(c/(a.mov/3600)),tg:fuelTarget(a.mov/60,actInt(a)),src:"plan"});if(!cur)buzz(10);render();return}
+    const cur=(S.log[S.day]||{})[key];setLog(S.day,key,cur?null:{st:"done",P:0,C:+t.dataset.c||0,F:0,n:"Avituallamiento"});if(!cur)buzz(10);render();return}
   if(t.dataset.lgr){const mid=t.dataset.lgr,tt=dayTargets(S.day),m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);if(m)setLog(S.day,mid,logEntryFor(S.day,m,"done",{r:+t.dataset.r}));render();return}
   if(t.dataset.act==="logall"){const tt=dayTargets(S.day);if(!tt)return;const prev=JSON.parse(JSON.stringify(S.log[S.day]||null));let n=0;mealPlan(tt,S.day).meals.forEach(m=>{if(!(S.log[S.day]||{})[m.id]){setLog(S.day,m.id,logEntryFor(S.day,m,"done"));n++}});render();undoToast(n+" comida"+(n>1?"s":"")+" registrada"+(n>1?"s":""),()=>{restoreLog(S.day,prev)});return}
   if(t.dataset.optopen){S.opt={k:t.dataset.optopen,q:""};S.sheet="opt";renderModal();return}
@@ -6840,7 +6852,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.flgi){if(S.flDraft)S.flDraft.gi=S.flDraft.gi===t.dataset.flgi?null:t.dataset.flgi;renderModal();return}
   if(t.dataset.flsave){const a=S.acts.find(x=>x.id===t.dataset.flsave),dr=S.flDraft;if(!a||!dr)return;const T=flTotals(dr.items);if(!T.c&&!dr.gi&&!dr.items.length){toast("Añade lo que tomaste");return}
     const e={id:a.id,items:dr.items,gi:dr.gi,d:a.day,sport:a.sport,dur:a.mov,carbs:T.c,caf:T.caf,na:T.na,cph:Math.round(T.c/(a.mov/3600)),tg:fuelTarget(a.mov/60,actInt(a))};
-    S.fuel=(S.fuel||[]).filter(x=>x.id!==a.id).concat([e]);saveFuel();buzz(12);S.flEditId=null;S.flDraft=null;renderModal();render();toast("Avituallamiento guardado · "+e.cph+" g/h");return}
+    flPut(a,e);buzz(12);S.flEditId=null;S.flDraft=null;renderModal();render();toast("Avituallamiento guardado · "+e.cph+" g/h");return}
   if(t.dataset.sweat){const a=S.acts.find(x=>x.id===t.dataset.sweat);const pre=num(($("#sw_pre")||{}).value),post=num(($("#sw_post")||{}).value),dr=num(($("#sw_drk")||{}).value)||0;
     if(!pre||!post||pre<30||post<30||pre-post>5||post-pre>2){toast("Revisa los pesos de antes y después");return}
     const h=a.mov/3600,rate=Math.max(0,((pre-post)*1000+dr)/1000/h);const w=(S.wx&&S.wx.days||[]).find(y=>y.date===a.day);
@@ -6924,13 +6936,15 @@ document.addEventListener("submit",e=>{if(e.target.id!=="pform")return;e.prevent
   const g=id=>{const el=$("#p_"+id);return el?el.value.trim():""};
   const p=Object.assign({},S.profile);
   ["name","sex","goal","level","diet","store","meal_breakfast","meal_lunch","meal_snack","meal_dinner"].forEach(k=>p[k]=g(k)||null);
-  ["noLactose","noGluten","noNuts","noShell"].forEach(k=>{const el=$("#p_"+k);p[k]=!!(el&&el.checked)});
+  ["noLactose","noGluten","noNuts","noShell"].forEach(k=>{const el=document.querySelector(`[data-pfx="${k}"]`);p[k]=!!(el&&el.getAttribute("aria-pressed")==="true")});
   ["age","height","weight","neck","waist","hip","hrmax","hrrest","lthr","neat"].forEach(k=>p[k]=num(g(k)));
   S.profile=p;S.pfDirty=false;S.pfJust=true;saveProfile(true);render();ensureDaySubs();
   clearTimeout(S.pfT);S.pfT=setTimeout(()=>{S.pfJust=false;const b=document.querySelector(".pf-save");if(b&&!S.pfDirty){b.classList.remove("done");b.textContent="Guardar cambios"}},2400);
 });
 function pfMark(e){if(!e.target.closest||!e.target.closest("#pform"))return;S.pfDirty=true;if(S.pfJust){S.pfJust=false;clearTimeout(S.pfT)}const b=document.querySelector(".pf-save");if(b){b.disabled=false;b.classList.remove("done");b.textContent="Guardar cambios"}}
 document.addEventListener("input",pfMark);document.addEventListener("change",pfMark);
+/* v281 · Excluir en Perfil: botones con acento (como el resto de opciones), sin casilla ni :has() */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pfx]");if(!b)return;b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));buzz(6);pfMark({target:b})});
 function trackMeasures(){const p=S.profile||{},n=num(p.neck),w=num(p.waist),h=num(p.hip);if(!n||!w)return;S.measures=S.measures||[];
   const last=S.measures[S.measures.length-1];if(last&&last.neck===n&&last.waist===w&&(last.hip||0)===(h||0))return;
   const e={d:today(),neck:n,waist:w,hip:h||null,kg:num(p.weight)||null};S.measures=S.measures.filter(x=>x.d!==e.d).concat([e]).sort((a,b)=>a.d<b.d?-1:1);
@@ -7570,7 +7584,7 @@ document.addEventListener("change",e=>{if(e.target.id!=="cy_last"||!e.target.val
    El campo lo dibujamos (mismo aspecto que el selector en hoja); encima, invisible, el <input> del sistema, que es el que recibe
    el toque y abre su calendario o reloj (accesible y en el idioma del teléfono). Nunca el campo nativo a la vista.
    fdField(id, "date"|"time", valor, rótulo, atributos) · fdChips(id, [[valor, texto]], actual): atajos que rellenan el campo.
-   Clases: .fd-f .fd-ch .fd-row */
+   Clases: .fd-f .fd-ch .fd-l */
 function fdFmt(type,v){if(!v)return"Elegir";if(type==="time")return v;const tk=today();if(v===tk)return"Hoy";if(v===shiftKey(tk,-1))return"Ayer";if(v===shiftKey(tk,1))return"Mañana";
   const d=new Date(v+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)+(v.slice(0,4)!==tk.slice(0,4)?" "+v.slice(0,4):"")}
 function fdField(id,type,v,label,attrs){return`<label class="fd-f"><b>${esc(fdFmt(type,v))}</b><i aria-hidden="true">›</i><input type="${type}" id="${id}" value="${esc(v||"")}" aria-label="${esc(label)}"${attrs?" "+attrs:""}></label>`}
