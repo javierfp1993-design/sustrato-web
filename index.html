@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T14:23:18.168Z">
+<meta name="sustrato-version" content="2026-10-15T14:34:41.451Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3073,7 +3073,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="287";
+const APP_VER="288";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -7967,7 +7967,7 @@ function fbTech(){const ua=navigator.userAgent,an=(ua.match(/Android [\d.]+/)||[
     `${dev?dev.trim()+" · ":""}${innerWidth}×${innerHeight} · ${dk?"modo claro":"modo oscuro"}`,
     `${navigator.language||"es"} · ${d.getDate()} ${MON[d.getMonth()]} ${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`].join("\n")}
 /* v283 · Política de privacidad (sustrato-web, en GitHub Pages; se abre en el navegador) */
-const PRIV_URL="https://javierfp1993-design.github.io/sustrato-web/privacidad.html";
+const PRIV_URL="https://sustrato.app/privacidad"; /* v288: la web ya vive en sustrato.app (la app abre fuera sus páginas) */
 function fbCard(){const I=(d,c)=>`<span class="fb-ic" style="--c:var(--${c});--c-v:var(--${c}-v,var(--${c}))"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg></span>`,
   ch='<svg class="fb-ch" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',q=fbQueue().length;
   return`<section class="glass pad fade fb-card"><span class="pkk">Ayuda y sugerencias</span><p class="fb-sub">Lo leo todo. Si algo falla, cuanto más concreto, antes lo arreglo.</p>
