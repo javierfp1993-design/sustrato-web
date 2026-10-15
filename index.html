@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T11:03:34.568Z">
+<meta name="sustrato-version" content="2026-10-15T12:35:02.462Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -37,6 +37,7 @@ if(mq&&mq.addEventListener)mq.addEventListener("change",function(){if(m==="auto"
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
+html{-webkit-tap-highlight-color:transparent} /* sin el recuadro azul del toque en Android; la respuesta al toque la dan los :active */
 body{color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:20px 120px;min-height:100vh}
 .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 .glass{position:relative;overflow:hidden}
@@ -1969,7 +1970,7 @@ html[data-theme="dark"] .ac-g{background:#fff!important;color:#1f1f1f!important;
 .meals.meals{gap:0;margin-top:8px}
 .mr2+.mr2{border-top:1px solid var(--edge-soft,rgba(127,127,127,.15))}
 .mline{display:flex;align-items:center;gap:12px}
-.mbody{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mbody{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer}
 div.mbody{cursor:default}
 .mw-in:not(.mw-sr):not(.mw-sl) .mbody:active{opacity:.6}
 .mb-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
@@ -2154,7 +2155,6 @@ html[data-theme="light"] .pf-cti{color:color-mix(in srgb,var(--c) 70%,#000)}
 .isl-lb button[aria-pressed="true"]{color:var(--fg);font-weight:600}
 .isl-d{display:flex;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;border-radius:14px;background:var(--fill2);font-size:14px}
 .isl-d i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;transition:background .2s}
-.isl-f,.isl-f *{-webkit-tap-highlight-color:transparent}
 .isl:focus,.isl:focus-visible{outline:none}
 /* v186 · Tipografía única (Geist, incluida en la app) y cifras de ancho fijo */
 body{font-family:var(--font);font-variant-numeric:tabular-nums}
@@ -2202,7 +2202,7 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .tc-row.done .tc-tx small{white-space:normal;overflow:visible;text-overflow:clip}
 /* v190 · Tercera tanda: explicaciones plegadas, cifras en recuadros, leyendas y etiquetas uniformes */
 .inote{margin-top:10px}
-.inote summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;padding:4px 0;-webkit-tap-highlight-color:transparent}
+.inote summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;padding:4px 0}
 .inote summary::-webkit-details-marker{display:none}
 .inote[open] summary{color:var(--fg)}
 .inote>p{margin:6px 0 0!important}
@@ -2238,7 +2238,7 @@ div.pg-p{cursor:default}
 .pg-pb{padding:0 0 12px}.pg-pb>.row:first-child h2,.pg-pb>h2:first-child,.pg-pb>.pkk:first-child{display:none}
 
 .tt{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px;scroll-behavior:smooth}.tt::-webkit-scrollbar{display:none}
-.tt button{appearance:none;border:0;background:none;padding:0;font:inherit;letter-spacing:inherit;color:var(--faint);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s}
+.tt button{appearance:none;border:0;background:none;padding:0;font:inherit;letter-spacing:inherit;color:var(--faint);white-space:nowrap;cursor:pointer;transition:color .2s}
 .tt button[aria-selected="true"]{color:var(--fg)}
 
 /* Tarjetas internas (v197): una cifra principal por tarjeta a 28 px; variaciones sin caja; color solo en el punto */
@@ -2275,13 +2275,13 @@ div.pg-p{cursor:default}
 [data-vzread]{transition:opacity .12s}
 .vz-sel g.vb:not(.on) path,.vz-sel g.vb:not(.on) rect:not([fill="transparent"]){opacity:.28;transition:opacity .15s}
 .vz-sel g.vb.on text.ax{font-weight:700;fill:var(--fg)}
-.vz-leg button{appearance:none;border:0;background:none;padding:6px 8px;margin:-6px -2px;font:inherit;color:inherit;display:inline-flex;align-items:center;gap:6px;border-radius:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.vz-leg button{appearance:none;border:0;background:none;padding:6px 8px;margin:-6px -2px;font:inherit;color:inherit;display:inline-flex;align-items:center;gap:6px;border-radius:8px;cursor:pointer;transition:opacity .15s}
 .vz-leg button i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .vz-leg button.off{opacity:.35}
 .vz-leg button[aria-pressed="true"]{background:var(--fill2);color:var(--fg);font-weight:600}
 .vzl-l{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 .rh-v.up{color:var(--fg);font-weight:600;--pc:var(--verde)}.rh-v.dn{color:var(--fg);font-weight:600;--pc:var(--naranja)}
-.vz-go{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:600 13px var(--font);padding:6px 10px;border-radius:999px;margin-left:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vz-go{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:600 13px var(--font);padding:6px 10px;border-radius:999px;margin-left:8px;cursor:pointer}
 .vhead .vz-go{flex:none}
 /* la lectura en vivo nunca cambia la altura de la tarjeta */
 .vz-live{flex-wrap:nowrap!important}.vz-live span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -2849,7 +2849,7 @@ span.ia-ic{flex:none;width:32px;height:32px;border-radius:10px;display:grid;plac
 .ss-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:15px;font-weight:600;color:var(--muted)}
 .ss-h small{font-size:12px;font-weight:500;color:var(--faint)}
 .ss-v{color:var(--fg);font-weight:700}.ss-v em{font-style:normal;font-weight:500;font-size:13px;color:var(--muted)}
-.ss-t{position:relative;height:44px;touch-action:pan-y;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.ss-t{position:relative;height:44px;touch-action:pan-y;cursor:pointer;outline:none}
 .ss-t::before{content:"";position:absolute;left:calc(12.5% - 5px);right:calc(12.5% - 5px);top:17px;height:10px;border-radius:999px;background:var(--fill)}
 .ss-f{position:absolute;left:calc(12.5% - 5px);top:17px;height:10px;width:calc(var(--p) * .75 + 10px);border-radius:999px;background:var(--c);opacity:0;transition:width .25s cubic-bezier(.3,.7,.2,1),background .2s}
 .ss-s{position:absolute;top:18px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--sc)}
@@ -3063,7 +3063,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="283";
+const APP_VER="284";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
