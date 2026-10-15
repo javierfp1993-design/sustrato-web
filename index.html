@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T12:35:02.462Z">
+<meta name="sustrato-version" content="2026-10-15T12:49:10.916Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3063,7 +3063,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="284";
+const APP_VER="285";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3215,7 +3215,11 @@ const sameKind=(a,b)=>a===b||(a==="run"&&b==="trail")||(a==="trail"&&b==="run");
 function plannedFor(k){return(S.plan&&S.plan[k])||[]}
 function planMatch(k){
   const tk=today(),real=S.acts.filter(a=>a.day===k&&a.sport!=="oth"),used=new Set();
-  const pl=plannedFor(k).map((s,i)=>{const j=real.findIndex((a,jj)=>!used.has(jj)&&sameKind(a.sport,s.sport));if(j>=0){used.add(j);return{s,i,st:"done",a:real[j]}}return{s,i,st:null}});
+  /* v285: una actividad solo cumple lo previsto si dura al menos la mitad; entre varias, la de hora más cercana.
+     Antes, un rodaje de 30 min daba por hecha una tirada de 3 h y se perdían su avituallamiento, su gasto y sus comidas. */
+  const pl=plannedFor(k).map((s,i)=>{const t=toMin(s.time);let j=-1,best=1e9;
+    real.forEach((a,jj)=>{if(used.has(jj)||!sameKind(a.sport,s.sport)||(s.dur&&a.mov<s.dur*30))return;const ta=toMin((a.start||"").slice(11,16)),d=t!=null&&ta!=null?Math.abs(ta-t):0;if(d<best){best=d;j=jj}});
+    if(j>=0){used.add(j);return{s,i,st:"done",a:real[j]}}return{s,i,st:null}});
   const extra=real.filter((a,j)=>!used.has(j));let ex=extra.slice();
   pl.forEach(x=>{if(x.st)return;if(x.s.skip)x.st="skip";else if(k<tk&&ex.length){x.st="chg";x.a=ex.shift()}else x.st=k<tk?"miss":"pend"});
   return{pl,extra,matched:new Set(pl.filter(x=>x.st==="done").map(x=>x.a.id)),swapped:new Set(pl.filter(x=>x.st==="chg").map(x=>x.a.id))};
