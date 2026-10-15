@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-15T13:17:00.119Z">
+<meta name="sustrato-version" content="2026-10-15T14:23:18.168Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3073,7 +3073,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="286";
+const APP_VER="287";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
@@ -3257,7 +3257,13 @@ function dayTargets(k,raw){
   let choBurn=0,fatBurn=0,pending=0;
   acts.forEach(a=>{const s=S.subs[a.id];if(s){choBurn+=s.cho/4;fatBurn+=s.fat/9}else if(a.kcal)pending++});
   plan.forEach(x=>{choBurn+=x.cho/4;fatBurn+=x.fat/9});
-  const P=g.p*w;let F=g.f*w;
+  /* v287: la proteína sube con la carga del día (horas ponderadas por intensidad, hecho y previsto): +0,15 g/kg por hora,
+     hasta +0,4 g/kg y nunca más de 2,4 g/kg. Las kcal no cambian: lo que sube de proteína sale de los hidratos. */
+  const INTW={s:.7,m:1,i:1.3},noLoad=sp=>sp==="walk"||sp==="oth";
+  const loadH=acts.reduce((h,a)=>h+(noLoad(a.sport)?0:(a.mov||0)/3600*(a.sport==="str"?1:INTW[actInt(a)]||1)),0)
+    +plan.reduce((h,x)=>h+(noLoad(x.sport)?0:(x.dur||0)/60*(x.sport==="str"?1:INTW[x.int]||1)),0);
+  const pBonus=Math.max(0,Math.min(.4,.15*loadH,2.4-g.p));
+  const P=(g.p+pBonus)*w;let F=g.f*w;
   let C=(kcal-4*P-9*F)/4;
   const floor=g.cmin*w+0.8*choBurn;let adjusted=false;
   if(C<floor){C=floor;F=Math.max(0.6*w,(kcal-4*P-4*C)/9);kcal=4*P+4*C+9*F;adjusted=true}
@@ -3267,7 +3273,10 @@ function dayTargets(k,raw){
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
   /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
   let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
-  return{b,neat,ex,tdee,kcal,eaFloor,P,F,C,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
+  /* v287: hidratos como mucho 12 g/kg (techo de la ACSM para los días más largos); la energía que sobre pasa a grasas,
+     así las kcal del día no cambian. Antes, 3 h intensas pedían 938 g (12,5 g/kg). */
+  let choCap=0;if(C>12*w){choCap=C-12*w;F+=choCap*4/9;C=12*w}
+  return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
 }
 
 /* ---------- Reparto por comidas ---------- */
@@ -6296,7 +6305,9 @@ function vHoy(){
     <div class="hero-r">
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
         <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos":"Día a día"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
-        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.eaFloor?" · +"+fmtInt(t.eaFloor)+" kcal para no bajar de "+eaThr().lo+" de disponibilidad energética":""}${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}</p>
+        <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.eaFloor?" · +"+fmtInt(t.eaFloor)+" kcal para no bajar de "+eaThr().lo+" de disponibilidad energética":""}${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}${t.pBonus?` Proteína +${fmtInt(t.pBonus*kg)} g por la carga de hoy.`:""}${t.choCap?` Hidratos en su máximo (12 g/kg): el resto de la energía, en grasas.`:""}</p>
+        <p class="note">Cómo se reparte. Proteína: parte de tu objetivo (1,6 g/kg en mantenimiento, 1,8 en hipertrofia, 2,2 en pérdida de grasa y recomposición) y sube con la carga del día: +0,15 g/kg por hora de entreno ponderada por la intensidad, hasta +0,4 y como mucho 2,4 g/kg. Hidratos: el resto de la energía, con un mínimo según tu objetivo y lo que gastas entrenando, y como mucho 12 g/kg.</p>
+        <p class="note">De dónde sale. Deportistas: 1,4–2,0 g/kg de proteína, y 2,3–3,1 g/kg en déficit para conservar músculo (ISSN, 2017). Tras 20 km de carrera, 1,65–1,83 g/kg (Kato y col., 2016). Hidratos: 8–12 g/kg en los días de 4–5 h o más (posición conjunta ACSM, AND y DC, 2016). El aumento por horas es una aproximación de Sustrato dentro de esos rangos.</p>
       </details>
     </div>
   </section>
