@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T21:22:09.338Z">
+<meta name="sustrato-version" content="2026-10-16T21:41:05.795Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2180,6 +2180,16 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .dr-r:first-child{border-top:0}
 .dr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.dr-t b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dr-t small{font-size:12px;color:var(--muted)}
 .dr-v{display:flex;flex-direction:column;align-items:flex-end;gap:2px}.dr-v b{font-size:15px;font-variant-numeric:tabular-nums} /* v277: el tramo (estable, moderada, alta) va en el punto, como las sensaciones */.dr-v small{font-size:12px;font-weight:600;color:var(--muted)}
+/* v308 · Deriva cardiaca con gráfico: barras por salida (la elegida entera, el resto atenuadas) y comparación por lo que comiste */
+.dr-ctx{margin:0 0 6px}
+.dr-ch{display:block;width:100%;height:auto;margin:4px 0 2px}
+.dr-b{cursor:pointer;outline:none}.dr-b path{opacity:.4;transition:opacity .2s}.dr-b.on path,.dr-b:focus-visible path{opacity:1}
+.dr-cmp{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.dr-cr{display:grid;grid-template-columns:minmax(0,1fr) 96px 52px;align-items:center;gap:10px;font-size:13px}
+.dr-cr small{color:var(--muted)}.dr-cr b{text-align:right;font-variant-numeric:tabular-nums}
+.dr-cb{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}.dr-cb i{display:block;height:100%;border-radius:4px}
+.dr-cmp .note,.dr-hint{margin:2px 0 0}
+.dr-dt{margin-top:22px}.dr-ax{margin:2px 0 0}
 
 /* Progreso por secciones (v193) */
 .pwrap .ax{font:11px var(--font);font-variant-numeric:tabular-nums}
@@ -3074,7 +3084,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="307";
+const APP_VER="308";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5466,23 +5476,55 @@ function durab(st,run,kg,ph){const P=driftPrep(st,run,kg,ph);if(!P)return null;c
   const ok=i=>t[i]>=600&&sm[i]!=null&&out[i]!=null&&h[i]>60&&sm[i]>=lo;const ref={};
   for(let i=0;i<n;i++)if(ok(i)&&t[i]<2400){const b=Math.floor(sm[i]/bw);const o=ref[b]=ref[b]||[0,0];o[0]+=h[i];o[1]++}
   if(Object.values(ref).reduce((a,o)=>a+o[1],0)<15)return null;const end=t[n-1];if(end<4500)return null;
+  /* v308: se recorren todos los tramos y se guarda cuánto sube el pulso en cada uno (ser: [minuto, %]), para el gráfico del detalle */
+  let at=null;const ser=[];
   for(let w0=2400;w0+900<=end;w0+=900){const B={};for(let i=0;i<n;i++)if(ok(i)&&t[i]>=w0&&t[i]<w0+900){const b=Math.floor(sm[i]/bw);const o=B[b]=B[b]||[0,0];o[0]+=h[i];o[1]++}
     let d=0,base=0,w=0;Object.keys(B).forEach(b=>{const r=ref[b],o=B[b];if(!r||r[1]<3||o[1]<3)return;const ww=Math.min(r[1],o[1]);d+=(o[0]/o[1]-r[0]/r[1])*ww;base+=r[0]/r[1]*ww;w+=ww});
-    if(w>=8&&base>0&&d/base>.05)return{at:Math.round(w0/60),tot:Math.round(end/60)}}
-  return{at:null,tot:Math.round(end/60)}}
+    if(w>=8&&base>0){const pc=Math.round(d/base*1000)/10;ser.push([Math.round(w0/60),pc]);if(at==null&&pc>5)at=Math.round(w0/60)}}
+  return{at,tot:Math.round(end/60),ser}}
 /* Hidratos por hora que tomaste en una sesión: lo apuntado en «¿Qué tomaste?» o el avituallamiento marcado */
 function cphOf(a){const f=(S.fuel||[]).find(x=>x.id===a.id);if(f&&f.cph!=null)return f.cph;const l=(S.log[a.day]||{})["fuel_a"+a.id];return l&&a.mov?Math.round((l.C||0)/(a.mov/3600)):null}
 const drC=v=>v==null?"var(--muted)":v<5?"var(--verde)":v<10?"var(--naranja)":"var(--rojo)",drL=v=>v<5?"Estable":v<10?"Moderada":"Alta";
-function driftCard(){const L=S.acts.filter(a=>a.mov>=4500&&(S.pmx||{})[a.id]&&S.pmx[a.id].dr!=null&&!S.pmx[a.id].err&&!hrSuspect(a.id)).slice(0,10);if(L.length<1)return"";
-  const rows=L.map(a=>({a,dr:S.pmx[a.id].dr,c:cphOf(a),du:S.pmx[a.id].du}));
-  const D=rows.filter(r=>r.du),cut=D.filter(r=>r.du.at!=null).map(r=>r.du.at).sort((x,y)=>x-y),med=cut.length?Math.round(cut.reduce((x,y)=>x+y,0)/cut.length/5)*5:null,full=D.length-cut.length;
-  const aguante=D.length>=2?(cut.length?`Aguante: a igual esfuerzo, tu pulso se mantiene estable hasta ${fmtDur(med*60)} de media${full?` (en ${full===1?"una salida":full+" salidas"} aguantaste hasta el final)`:""}.`:`Aguante: en tus ${D.length} últimas salidas largas el pulso se mantiene estable de principio a fin.`):"";const hi=rows.filter(r=>r.c!=null&&r.c>=45),lo=rows.filter(r=>r.c!=null&&r.c<45),avg=x=>x.reduce((s,r)=>s+r.dr,0)/x.length;
-  let ins="";if(hi.length>=2&&lo.length>=2){const dh=avg(hi),dl=avg(lo);ins=dh<dl-1?`Con 45 g/h o más de hidratos tu pulso deriva un ${dh.toFixed(1).replace(".",",")} % de media; con menos, un ${dl.toFixed(1).replace(".",",")} %. Comer durante las salidas largas te sienta bien.`:`De momento comer más no cambia tu deriva (${dh.toFixed(1).replace(".",",")} % frente a ${dl.toFixed(1).replace(".",",")} %). Mira el calor y cómo llegas.`}
-  else ins=rows.some(r=>r.c!=null)?"Cuando tengas al menos dos salidas largas comiendo 45 g/h o más y otras dos comiendo menos, te diré cómo te afecta.":"Apunta lo que tomas en tus salidas largas («¿Qué tomaste?») y te diré si comer más te ayuda a mantener el ritmo.";
-  return`<section class="glass pad fade"><span class="pkk">Deriva cardiaca en salidas largas</span>
-    <div class="dr-l">${rows.map(r=>`<button class="dr-r" data-open="${r.a.id}">${spIcon(r.a.sport,"sm")}<span class="dr-t"><b>${esc(r.a.name)}</b><small>${esc(dateLabel(r.a.day))} · ${fmtDur(r.a.mov)}${r.c!=null?" · "+r.c+" g/h":""}${r.du?(r.du.at!=null?" · estable hasta "+fmtDur(r.du.at*60):" · estable toda la salida"):""}</small></span><span class="dr-v"><b>${r.dr>0?"+":""}${String(r.dr).replace(".",",")} %</b><small><i class="ss-dot" style="--c:${drC(r.dr)}" aria-hidden="true"></i>${drL(r.dr)}</small></span></button>`).join("")}</div>
-    ${aguante?`<p class="note" style="margin:10px 0 0">${aguante}</p>`:""}<p class="note" style="margin:10px 0 0">${ins}</p>
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">A igual esfuerzo (mismo ritmo en carrera; misma potencia, real o estimada, en bici), compara tu pulso en la primera y en la segunda mitad, sin los 10 primeros minutos. Por debajo del 5 % es estable; por encima del 10 %, el cansancio, el calor o la falta de hidratos y líquido se están notando. El aguante es el momento en que, a igual esfuerzo, tu pulso pasa a ser más de un 5 % más alto que en la primera media hora (mirado cada 15 minutos): cuanto más tarde, más resistente eres a la fatiga.</p></details></section>`}
+/* v308 · Deriva cardiaca: la cifra es la media de tus salidas largas recientes; debajo, una barra por salida (90 días, 12 como mucho)
+   en el color de su estado y las referencias de 5 % y 10 %. Tocar una barra enseña esa salida en una sola fila (por defecto, la última).
+   Si hay datos, la comparación con lo que comiste (≥ 45 g/h frente a menos) en dos barras. Clases dr- */
+function driftCard(){const from=shiftKey(today(),-90),L=S.acts.filter(a=>a.day>=from&&a.mov>=4500&&(S.pmx||{})[a.id]&&S.pmx[a.id].dr!=null&&!S.pmx[a.id].err&&!hrSuspect(a.id)).slice(0,12);if(L.length<1)return"";
+  const rows=L.map(a=>({a,dr:S.pmx[a.id].dr,c:cphOf(a),du:S.pmx[a.id].du})).reverse(),n=rows.length,sel=Math.min(S.drSel==null?n-1:S.drSel,n-1),r=rows[sel];
+  const m6=rows.slice(-6),avg=m6.reduce((x,y)=>x+y.dr,0)/m6.length,f1=v=>(v>0?"+":"")+v.toFixed(1).replace(".",",");
+  const D=rows.filter(x=>x.du),cut=D.filter(x=>x.du.at!=null).map(x=>x.du.at),med=cut.length?Math.round(cut.reduce((x,y)=>x+y,0)/cut.length/5)*5:null;
+  const ctx=D.length>=2?(cut.length?`A igual esfuerzo, tu pulso aguanta estable hasta ${fmtDur(med*60)} de media.`:`En tus ${D.length} últimas salidas largas el pulso se mantiene estable de principio a fin.`):`Media de tus ${m6.length===1?"última salida larga":m6.length+" últimas salidas largas"}.`;
+  /* gráfico: eje a la izquierda, referencias discontinuas a la derecha, barras con el extremo redondeado */
+  const W=VZ.w,H=150,PL=30,R=W-44,T=10,B=H-22,mx=Math.max(12,...rows.map(x=>x.dr))*1.1,mn=Math.min(0,...rows.map(x=>x.dr)),Y=v=>T+(mx-v)/(mx-mn)*(B-T),slot=(R-PL)/Math.max(n,6),bw=Math.min(22,slot*.6);
+  const bars=rows.map((x,i)=>{const cx=PL+slot*(i+.5),y0=Y(0),y1=Y(Math.max(x.dr,.4));return`<g class="dr-b${i===sel?" on":""}" data-drsel="${i}" role="button" tabindex="0" aria-label="${esc(x.a.name)}, ${esc(dateLabel(x.a.day))}: ${f1(x.dr)} %"><rect x="${(cx-slot/2).toFixed(1)}" y="${T}" width="${slot.toFixed(1)}" height="${B-T}" fill="transparent"/><path d="${VZ.bar(cx-bw/2,y1,bw,y0-y1,4)}" fill="${drC(x.dr)}"/></g>`}).join("");
+  const svg=`<svg class="dr-ch" viewBox="0 0 ${W} ${H}" role="group" aria-label="Deriva de cada salida larga">${VZ.grid([0,5,10].filter(v=>v<=mx),Y,PL,R,v=>v+" %")}${VZ.ref(Y(5),PL,R,"estable")}${mx>10?VZ.ref(Y(10),PL,R,"alta"):""}${bars}
+    <text class="ax" x="${PL}" y="${H-4}">${VZ.sd(rows[0].a.day)}</text><text class="ax" x="${R}" y="${H-4}" text-anchor="end">${VZ.sd(rows[n-1].a.day)}</text></svg>`;
+  const one=`<button class="dr-r" data-open="${r.a.id}">${spIcon(r.a.sport,"sm")}<span class="dr-t"><b>${esc(r.a.name)}</b><small>${esc(dateLabel(r.a.day))} · ${fmtDur(r.a.mov)}${r.c!=null?" · "+r.c+" g/h":""}${r.du?(r.du.at!=null?" · estable hasta "+fmtDur(r.du.at*60):" · estable toda la salida"):""}</small></span><span class="dr-v"><b>${f1(r.dr)} %</b><small><i class="ss-dot" style="--c:${drC(r.dr)}" aria-hidden="true"></i>${drL(r.dr)}</small></span></button>`;
+  const hi=rows.filter(x=>x.c!=null&&x.c>=45),lo=rows.filter(x=>x.c!=null&&x.c<45),av=x=>x.reduce((t,y)=>t+y.dr,0)/x.length;let cmp="";
+  if(hi.length>=2&&lo.length>=2){const dh=av(hi),dl=av(lo),top=Math.max(dh,dl,1);
+    cmp=`<div class="dr-cmp"><span class="pkk">Comer durante la salida</span>${[["45 g/h o más",dh,hi.length],["Menos de 45 g/h",dl,lo.length]].map(([l,v,c])=>`<div class="dr-cr"><span>${l} <small>· ${c} salidas</small></span><span class="dr-cb"><i style="width:${Math.max(4,v/top*100).toFixed(0)}%;background:${drC(v)}"></i></span><b>${f1(v)} %</b></div>`).join("")}
+      <p class="note">${dh<dl-1?"Cuando comes más, tu pulso deriva menos: te sienta bien.":"De momento comer más no cambia tu deriva. Mira también el calor y cómo llegas."}</p></div>`}
+  else cmp=`<p class="note dr-hint">${rows.some(x=>x.c!=null)?"Con dos salidas largas comiendo 45 g/h o más y otras dos comiendo menos, verás si comer te ayuda.":"Apunta lo que tomas en tus salidas largas («¿Qué tomaste?») y verás si comer más te ayuda a mantener el pulso."}</p>`;
+  return`<section class="glass pad fade"><h2>Deriva cardiaca</h2><div class="vhead"><b>${f1(avg)} %</b><span><i class="ss-dot" style="--c:${drC(avg)}" aria-hidden="true"></i>${drL(avg)}</span></div>
+    <p class="note dr-ctx">${ctx}</p>${svg}<div class="dr-l">${one}</div>${cmp}
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">A igual esfuerzo (mismo ritmo en carrera; misma potencia, real o estimada, en bici), compara tu pulso en la primera y en la segunda mitad de cada salida de 75 minutos o más, sin los 10 primeros minutos. Por debajo del 5 % es estable; por encima del 10 %, el cansancio, el calor o la falta de hidratos y líquido se están notando. La cifra grande es la media de tus 6 últimas salidas largas. El aguante es el momento en que, a igual esfuerzo, tu pulso pasa a ser más de un 5 % más alto que en la primera media hora: cuanto más tarde, más resistente eres a la fatiga.</p></details></section>`}
+document.addEventListener("click",e=>{const g=e.target.closest&&e.target.closest("[data-drsel]");if(!g)return;S.drSel=+g.dataset.drsel;render()});
+document.addEventListener("keydown",e=>{const g=(e.key==="Enter"||e.key===" ")&&e.target.closest&&e.target.closest("[data-drsel]");if(!g)return;e.preventDefault();S.drSel=+g.dataset.drsel;render()});
+/* v308 · Deriva en el detalle de una salida larga: cifra y estado; gráfico del aguante (cuánto sube el pulso a igual esfuerzo en cada
+   tramo de 15 min frente a la primera media hora, con la referencia del 5 %); y una frase con lo que comiste. Sin tramos guardados, solo la cifra */
+function drBlock(a){const p=(S.pmx||{})[a.id];if(!p||p.dr==null||p.err||a.mov<4500)return"";const f1=v=>(v>0?"+":"")+v.toFixed(1).replace(".",","),du=p.du,c=cphOf(a);
+  let svg="";if(du&&du.ser&&du.ser.length>=2){const L=du.ser,W=VZ.w,H=140,PL=30,R=W-44,T=10,B=H-22,mx=Math.max(8,...L.map(x=>x[1]))*1.1,mn=Math.min(0,...L.map(x=>x[1])),Y=v=>T+(mx-v)/(mx-mn)*(B-T),slot=(R-PL)/L.length,bw=Math.min(26,slot*.62);
+    svg=`<svg class="dr-ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Subida del pulso a igual esfuerzo cada 15 minutos">${VZ.grid([0,5].concat(mx>10?[10]:[]),Y,PL,R,v=>v+" %")}${VZ.ref(Y(5),PL,R,"")}
+      ${L.map(([m,v],i)=>{const cx=PL+slot*(i+.5),y0=Y(0),y1=Y(Math.max(v,.3));return`<path d="${VZ.bar(cx-bw/2,y1,bw,y0-y1,4)}" fill="${v>5?drC(Math.max(v,5)):"var(--verde)"}"/>`}).join("")}
+      <text class="ax" x="${PL}" y="${H-4}">${fmtDur(L[0][0]*60)}</text><text class="ax" x="${R}" y="${H-4}" text-anchor="end">${fmtDur(L[L.length-1][0]*60)}</text></svg>`}
+  const ag=du?(du.at!=null?`A igual esfuerzo, tu pulso empezó a subir a partir de ${fmtDur(du.at*60)}.`:"A igual esfuerzo, tu pulso aguantó estable hasta el final."):"";
+  const eat=c!=null?` Tomaste ${c} g/h de hidratos${c>=45?"":", menos de lo que suele ayudar (45 g/h o más)"}.`:"";
+  return`<div class="dr-dt"><h2>Deriva cardiaca</h2><div class="vhead"><b>${f1(p.dr)} %</b><span><i class="ss-dot" style="--c:${drC(p.dr)}" aria-hidden="true"></i>${drL(p.dr)}</span></div>
+    ${ag||eat?`<p class="note dr-ctx">${ag}${eat}</p>`:""}${svg}${svg?`<p class="note dr-ax">Cuánto sube tu pulso en cada tramo de 15 minutos frente a tu primera media hora.</p>`:""}</div>`}
+/* Al abrir una salida larga sin los tramos guardados, se calculan con una sola petición (lo que abres tú; nunca todo el historial) */
+async function drEnsure(a){const p=(S.pmx||{})[a.id];S._drAsk=S._drAsk||{};if(!p||p.err||a.mov<4500||(p.du&&p.du.ser)||S._drAsk[a.id])return;S._drAsk[a.id]=1;
+  const run=p.sp==="run",kg=num((S.profile||{}).weight)||75,sid=a.sid||a.id;
+  try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
+    const du=durab(st,run,kg,bikePh(a));if(du){p.du=du;S.pmxRev=(S.pmxRev||0)+1;savePerf();if(S.detail===a.id)renderModal()}}catch(e){}}
 async function savePerf(){const c=userCol();if(!c)return;try{await c.doc("pmx").set({kind:"pmx",map:S.pmx})}catch(e){}}
 function perfHk(){const hp=hrParams(S.profile||{});return hp?Math.round(hp.max)+"-"+Math.round(hp.rest):""}
 const perfRun=a=>(a.sport==="run"||a.sport==="trail")&&a.dist>=3000&&a.mov>=900&&(a.elev||0)/a.dist<.015;
@@ -5582,7 +5624,7 @@ function progSection(sec){
   const L={
     res:()=>[weekCard(),weightHero(),computeAdapt().ok?adaptTile():""],
     ene:()=>{const fl=fuelLogCard(),dr=driftCard(),sw=(S.sweat||[]).length?sweatCard():E("Tasa de sudor","Una prueba sencilla de pesarte antes y después",sweatCard());
-      return[gastoCard(),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 45 minutos o más con pulso"),sw]},
+      return[gastoCard(),fuelCard2(),fl||E("Avituallamiento en carrera","Apunta qué tomas en una salida de más de una hora"),dr||E("Deriva cardiaca","Una salida de 75 minutos o más con pulso"),sw]},
     for:()=>{const pr=predCard(),ef=effCard();return[perfCard(),curveCard(),fitCard(),pr||E("Marca estimada","Dos carreras en los últimos 60 días"),ef.includes("Hacen falta al menos")?E("Forma aeróbica","Dos carreras con tramos a un mismo pulso",ef):ef,rhrCard(),yoyCard()]},
     ent:()=>[volCard(),bandsCard(),heatCard(),strSumCard()||E("Fuerza","Registra una sesión en Fuerza con peso y repeticiones"),recordsCard()], /* v269: el detalle de fuerza está en Fuerza › Progreso */
     com:()=>{const mi=comMicroCard(),ma=comMacroCard(),ea=eatCard(),P=x=>typeof x==="string"?x:E(x.t,x.need); /* v278: «Comer según el plan» viene de Energía */
@@ -6641,7 +6683,6 @@ function vDetail(){
   else if(a.sport!=="str")st.push(["Distancia",(a.dist/1000).toFixed(1).replace(".",",")+" km"],[isBike(a.sport)?"Velocidad":"Ritmo",isBike(a.sport)?fmtSpeed(a.speed):fmtPace(a.speed)],["Desnivel",fmtInt(a.elev)+" m"]);
   if(pf&&pf.average_heartrate)st.push(["FC media",r0(pf.average_heartrate)+" ppm"],["FC máxima",r0(pf.max_heartrate)+" ppm"]);
   if(a.cad&&(a.sport==="run"||a.sport==="trail"))st.push(["Cadencia",r0(a.cad*2)+" ppm"]);
-  {const p=(S.pmx||{})[a.id];if(p&&p.dr!=null)st.push(["Deriva cardiaca",(p.dr>0?"+":"")+String(p.dr).replace(".",",")+" % · "+drL(p.dr).toLowerCase()])}
   const hp=hrParams(S.profile||{});
   let subHtml;
   if(!hp)subHtml='<p class="note">Indica tu FC máxima y en reposo (o tu edad) en el perfil para calcular el sustrato.</p>';
@@ -6656,8 +6697,8 @@ function vDetail(){
     ${(()=>{const pk=["run","trail","walk","hike","swim"].includes(a.sport)?["Distancia","Ritmo"]:a.sport==="indoor"?["Duración","Energía"]:isBike(a.sport)?["Distancia",a.elev?"Desnivel":"Velocidad"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+(?: \S+)?)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
       /* v208: rejilla de 3 × 2 a todo el ancho; «Sensaciones» es una casilla más y las caritas solo salen al editar */
-      const RN={"FC media":"Pulso medio","FC máxima":"Pulso máx.","Deriva cardiaca":"Deriva"};
-      let it=sec.filter(([k,v])=>!(k==="Desnivel"&&!a.elev)).map(([k,v])=>[RN[k]||k,k==="Deriva cardiaca"?String(v).split(" · ")[0]:v]);
+      const RN={"FC media":"Pulso medio","FC máxima":"Pulso máx."}; /* v308: la deriva tiene su propio bloque */
+      let it=sec.filter(([k,v])=>!(k==="Desnivel"&&!a.elev)).map(([k,v])=>[RN[k]||k,v]);
       /* v210/v271: sin casilla de sensaciones; el deslizador sale arriba mientras no se valore, y la elegida queda como etiqueta junto a la fecha */
       const fe=a.sport!=="oth";it=it.slice(0,it.length>=6?6:3);
       const rv=rpeOf(a.id);
@@ -6666,6 +6707,7 @@ function vDetail(){
     ${routeBlock(a)}
     <div class="row"><h2>Energía por sustrato</h2>${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}</div><div style="height:8px"></div>${subHtml}
     ${(()=>{const su=hrSuspect(a.id);return su?`<p class="note hr-sus"><b>Pulso dudoso.</b> Para tu ${isBike(a.sport)?"potencia o velocidad":"ritmo"} te correspondían unas ${r0(su.exp)} ppm y el sensor marcó ${r0(su.exp*su.ratio)}: el reparto se ha calculado con el pulso esperado, y esta sesión no cuenta para tu umbral, tu VO2máx ni la deriva.</p>`:""})()}
+    ${drBlock(a)}
     ${fuelBlock(a)}
     ${sweatBlock(a)}
   </div></div>`;
@@ -6676,7 +6718,7 @@ function subAnchor(a,hp){if(!hp)return"";const aj=["a tu nivel"];if(S.profile&&S
 async function openDetail(id,focusFuel){
   S.flDraft=null;S.flNew=null;if(!focusFuel)S.flEditId=null;S.detail=id;renderModal();
   if(focusFuel)setTimeout(()=>{const b=$("#flbox");if(b)b.scrollIntoView({behavior:"smooth",block:"start"})},120);const a=S.acts.find(x=>x.id===id);if(!a)return;
-  ensureSub(a).then(renderModal);
+  ensureSub(a).then(renderModal);drEnsure(a);
   S.alt=S.alt||{};if(!S.alt[id]&&a.sport!=="str"&&(a.sid||a.poly)){const sid=a.sid||a.id;
     (window.__native&&window.__native.stravaGet&&String(sid).startsWith("s")?window.__native.stravaGet(`/activities/${String(sid).slice(1)}/streams?keys=distance,altitude,latlng&key_by_type=true`).then(r=>r&&r.altitude?{altitude:r.altitude.data,distance:r.distance&&r.distance.data,latlng:r.latlng&&r.latlng.data}:null)
       :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude","latlng"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
