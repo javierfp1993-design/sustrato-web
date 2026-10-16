@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T10:18:51.269Z">
+<meta name="sustrato-version" content="2026-10-16T10:20:03.615Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -433,7 +433,9 @@ nav.tabs button[aria-selected="true"]{background:rgba(255,255,255,.14);color:var
 .toast{border-radius:14px}
 
 /* ===== Cabecera ===== */
-header.top{display:grid!important;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;flex-wrap:nowrap;position:sticky;top:0;z-index:40;height:calc(56px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 0 0!important;margin:-16px 0 -4px} /* iPhone: deja el hueco de la isla y la barra de estado (en Android lo deja la app nativa: 0) */
+header.top{display:grid!important;grid-template-columns:40px 1fr 40px;align-items:center;gap:8px;flex-wrap:nowrap;position:sticky;top:0;z-index:40;height:56px;padding:0!important;margin:-16px 0 -4px}
+/* v292 · Solo iPhone (html.ios, en 000-inicio): el hueco de la isla y la barra de estado. En Android lo deja la app nativa */
+html.ios header.top{height:calc(56px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 0 0!important}
 header.top::before{content:"";position:absolute;inset:0 -50vw;z-index:-1;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:.5px solid rgba(255,255,255,0);transition:border-color .2s}
 header.top.scrolled::before{border-bottom-color:rgba(255,255,255,.1)}
 header.top .brand{justify-self:center;gap:8px}
@@ -3082,9 +3084,10 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="291";
+const APP_VER="292";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
+document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
   acts:[],actsState:"loading",actsErr:null,subs:{},fasted:{},perf:{},pmx:{},plan:{},menu:{},dishes:[],weights:[],eff:{},log:{},adaptF:null,period:"day",anchor:null,planWeek:null,str:[],strRoutine:"A",strDate:null,detail:null};
 
