@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T12:08:24.149Z">
+<meta name="sustrato-version" content="2026-10-16T20:25:39.099Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3001,6 +3001,17 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .pf-st{flex:none;font-size:13px;color:var(--muted);white-space:nowrap}
 .pf-est{opacity:.45}
 .tbody .af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* v305 · Ficha resumida de los entrenos hechos en Plan (afMini): misma casilla gris, dos líneas, punto de sensación y barra fina */
+.am{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:4px;padding:10px 12px;min-height:44px;border-radius:14px;background:var(--card2);cursor:pointer;transition:transform .15s}
+.am:active{transform:scale(.985)}
+.am-r{display:flex;align-items:center;gap:8px;min-width:0}.am-r svg{flex:none;color:var(--faint)}
+.am-n{flex:1;min-width:0;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.am-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--pc)}
+.am-l,.am .af-zbar{margin-left:26px}
+.am-l{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
+.am-l b{font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}.am-l b i{font-style:normal;font-size:12px;color:var(--muted);margin-left:2px}
+.am-sep{font-size:12px;color:var(--faint)}
+.am .af-zbar{height:3px;margin-top:4px}
 
 </style>
 
@@ -3081,7 +3092,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="304";
+const APP_VER="305";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6292,7 +6303,7 @@ function vPlanTrain(wk){
     const d=new Date(k+"T12:00:00"),real=S.acts.filter(a=>a.day===k),pl=plannedFor(k),pm=planMatch(k);
     pm.pl.forEach(x=>{if(x.st!=="pend"){comp.n++;if(x.st==="done"||x.st==="chg")comp.ok++}});
     real.forEach(a=>{tot.n++;tot.min+=a.mov/60;tot.kcal+=a.kcal||0});pendingPlanned(k).forEach(s=>{tot.n++;tot.min+=s.dur||0;tot.kcal+=estSession(s,kg).kcal});
-    const realH=real.length?`<div class="treal af-list">${real.map(a=>afCard(a,false)).join("")}</div>`:""; /* v304: la misma ficha que en Hoy */
+    const realH=real.length?`<div class="treal af-list">${real.map(afMini).join("")}</div>`:""; /* v305: ficha resumida (el detalle, en Actividad) */
     let edit="";
     if(k>=tk){
       edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);
@@ -8467,6 +8478,11 @@ function afCard(a,ask,day){const hh=(day?afDay(a.day)+(a.start?", ":""):"")+(a.s
   return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
     <span class="af-name">${esc(a.name||SPORT_L[a.sport])}</span>
     <span class="af-st af-c${st.length}">${st.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>${afZones(a)}</button>`}
+/* v305 · Ficha resumida para los entrenos hechos en Plan (vista previa B aprobada el 16-10): dos líneas, icono y nombre con la sensación
+   como punto; debajo distancia y tiempo; barra de sustrato fina. El detalle completo sigue en Actividad. Clase am- */
+function afMini(a){const st=afStats(a).filter(x=>x[0]!=="Hidratos"&&x[0]!=="Energía").slice(0,2),v=rpeOf(a.id),nm=esc(a.name||SPORT_L[a.sport]);
+  return`<button type="button" class="am" data-open="${a.id}" aria-label="${nm}"><span class="am-r">${spSvg(a.sport)}<span class="am-n">${nm}</span>${v?`<i class="am-dot" style="--pc:var(--rpe${v})" title="${RPE_L[v-1]}"></i>`:""}</span>
+    <span class="am-l">${st.map(([,x,u])=>`<b>${x}${u?`<i>${u}</i>`:""}</b>`).join('<span class="am-sep">·</span>')}</span>${afZones(a,false)}</button>`}
 /* v303 · Ficha de entreno previsto (vista previa aprobada el 16-10): la misma ficha, con borde en vez de relleno y el estado arriba
    (Previsto, Saltado, No hecho…). Cifras del plan y sustrato estimado (barra más suave). Fuerza, sin barra. Clase pf- */
 function pfBody(s,st,kg){const es=estSession(s,kg),L=[],ft=s.sport==="str"?0:fuelTarget(s.dur||0,s.int,s.race),stc=s.steps&&s.steps.length&&s.sport!=="str";
