@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T21:05:29.004Z">
+<meta name="sustrato-version" content="2026-10-16T21:22:09.338Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -746,34 +746,32 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .sghost{margin:10px 0 12px}
 .sdot-h.tip-on{fill:var(--rojo);r:4.5px}
 
-/* ===== Acciones rápidas (hoja) ===== */
+/* ===== Acciones rápidas (hoja) · v307: tokens de la paleta, iconos en gris, lo diario arriba y el resto en lista ===== */
 #radial{position:fixed;inset:0;z-index:75}
 #radial[hidden]{display:none}
-.qa-ov{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;animation:qaOv .2s ease both}
-.qa{width:100%;max-width:560px;background:rgba(28,28,30,.92);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border-radius:16px 16px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.4);border-top:.5px solid rgba(255,255,255,.1);animation:qaIn .32s cubic-bezier(.2,.9,.3,1) both}
-.qa-grab{width:36px;height:5px;border-radius:3px;background:rgba(255,255,255,.22);margin:2px auto 10px}
-.qa-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.qa-h b{font-size:17px;font-weight:600}
-.qa-x{width:30px!important;height:30px!important;border-radius:50%!important;background:var(--card2)!important;color:var(--muted)!important;margin:0!important}
-.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.qa-it{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);background:var(--card2);border-radius:16px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;transition:transform .15s,background .2s;animation:qaIt .35s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i) * 30ms + 60ms)}
-.qa-it:hover{background:color-mix(in srgb,var(--c-v,var(--c)) 14%,var(--card2))}
-.qa-it:active{transform:scale(.96)}
-.qa-it:focus-visible{outline:2px solid var(--c);outline-offset:2px}
-.qa-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c-v,var(--c)) 16%,transparent);margin-bottom:4px}
-.qa-it b{font-size:14px;font-weight:600;line-height:1.2}
-.qa-it small{font-size:11px;color:var(--muted);line-height:1.25}
-@media (min-width:700px){.qa-ov{align-items:flex-start;justify-content:flex-end;background:rgba(0,0,0,.25);padding:64px max(16px,calc((100vw - 1080px)/2)) 0}.qa{max-width:380px;border-radius:16px;padding:8px 14px 14px;border:.5px solid rgba(255,255,255,.1);box-shadow:0 20px 50px rgba(0,0,0,.45);animation:qaPop .22s cubic-bezier(.2,.9,.3,1) both;transform-origin:top right}.qa-grab{display:none}.qa-h{margin:6px 2px 12px}}
-html[data-theme="light"] .qa{background:rgba(255,255,255,.94);border-color:rgba(0,0,0,.08);box-shadow:0 -10px 40px rgba(0,0,0,.12)}
-html[data-theme="light"] .qa-ov{background:rgba(0,0,0,.25)}
-html[data-theme="light"] .qa-grab{background:rgba(0,0,0,.15)}
-html[data-theme="light"] .qa-it{background:#f2f2f7}
-html[data-theme="light"] .qa-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
-@media (prefers-reduced-motion:reduce){.qa,.qa-it,.qa-ov{animation:none}}
+.qa-ov{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;animation:qaOv .2s ease both}
 @keyframes qaOv{from{opacity:0}}
 @keyframes qaIn{from{transform:translateY(100%)}}
 @keyframes qaPop{from{opacity:0;transform:scale(.92)}}
-@keyframes qaIt{from{opacity:0;transform:translateY(8px)}}
+.qa{width:100%;max-width:560px;background:var(--card);border-radius:16px 16px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.25);animation:qaIn .32s cubic-bezier(.2,.9,.3,1) both}
+.qa-grab{width:36px;height:5px;border-radius:3px;background:var(--fill);margin:2px auto 10px}
+.qa-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.qa-h b{font-size:17px;font-weight:600}
+.qa-x{width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--muted)}
+.qa-top{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-big{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);background:var(--card2);border-radius:14px;min-height:88px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:10px;text-align:left;transition:transform .15s}
+.qa-big svg{color:var(--muted)}.qa-big b{font-size:15px;font-weight:600}
+.qa-big:active,.qa-row:active{transform:scale(.98)}
+.qa-row{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);background:none;width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;gap:12px;text-align:left;transition:transform .15s}
+.qa-row svg{flex:none;color:var(--muted)}
+.qa-t{flex:1;min-width:0;font-size:15px;display:flex;flex-direction:column}.qa-t small{font-size:13px;color:var(--muted)}
+.qa-go{color:var(--faint);font-size:20px}
+.qa-ask{margin-top:10px;background:var(--card2);border-radius:14px;min-height:56px}
+.qa-list{margin-top:10px;background:var(--card2);border-radius:14px;overflow:hidden}
+.qa-list .qa-row+.qa-row{border-top:.5px solid var(--sep)}
+.qa-big:focus-visible,.qa-row:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
+@media (min-width:700px){.qa-ov{align-items:flex-start;justify-content:flex-end;background:rgba(0,0,0,.2);padding:64px max(16px,calc((100vw - 1080px)/2)) 0}.qa{max-width:380px;border-radius:16px;padding:8px 14px 14px;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:qaPop .22s cubic-bezier(.2,.9,.3,1) both;transform-origin:top right}.qa-grab{display:none}.qa-h{margin:6px 2px 12px}}
+@media (prefers-reduced-motion:reduce){.qa,.qa-ov{animation:none}}
 
 /* ===== Tira de días: 7 enteros ===== */
 .daystrip{gap:0!important;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -919,7 +917,7 @@ html[data-theme="light"] .stp .stp-ring{filter:drop-shadow(0 8px 20px rgba(0,0,0
 h2{font-size:var(--fs-h2)!important;font-weight:600!important;letter-spacing:-.01em}
 .note{font-size:var(--fs-note)}
 button:active:not(:disabled){transform:scale(.98)}
-.btn,.chip,.qa-it,.rec{transition:transform .12s ease,background .2s,color .2s}
+.btn,.chip,.rec{transition:transform .12s ease,background .2s,color .2s}
 .meal.st-skip .mbar,.meal.st-skip .mnums,.meal.st-skip .mdish{opacity:.4}
 /* avituallamiento */
 .fu2{border-radius:14px;background:var(--card2)}
@@ -2000,11 +1998,7 @@ html[data-theme="light"] #hatchG rect{fill:rgba(60,60,67,.05)}
 html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 /* v174 · Resumen «lo que te queda», cámara por comida, micros y suplementos separados */
 .ls2{margin-top:12px;padding:16px 16px 18px;border-radius:16px;background:var(--card2)}
-.ls-l{font-size:14px;color:var(--muted)}
-.ls-k{font-size:15px;color:var(--muted);margin-top:2px}
-.ls-k b{font-size:34px;font-weight:700;letter-spacing:-.02em;color:var(--fg);font-variant-numeric:tabular-nums;margin-right:2px}
-.ls-l.over{--pc:var(--naranja)}
-.ls-ms{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.ls-ms{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .ls-m{font-size:12px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ls-m i{display:block;height:5px;border-radius:3px;background:var(--fill);margin-bottom:6px}
 .ls-m.on{color:var(--fg)}.ls-m.on i{background:var(--verde)}
@@ -2580,10 +2574,10 @@ html[data-theme="light"]{--amarillo:#f0a800;--naranja:#e86518;--rojo:#d70015;--v
 html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,transparent)}
 
 /* Texto sin color (guía 2.2): el estado lo marca un punto de 8 px delante, del color que pone --pc en cada pieza.
-   Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
+   Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
    pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok); v254: comida con otra cosa (.mw-chg). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before,.pf-miss::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before,.pf-miss::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
@@ -3080,7 +3074,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="306";
+const APP_VER="307";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5679,17 +5673,16 @@ function weekCopyPlan(kind,wk){const tk=today(),src=kind==="train"?(S.plan||{}):
 function weekCopyBtn(kind,wk){const n=weekCopyPlan(kind,wk).length;return n?`<button class="btn" data-wkcopy="${kind}">Repetir semana anterior</button>`:""}
 function restoreLog(k,prev){if(prev)S.log[k]=prev;else delete S.log[k];saveLog();render()}
 function logSummary(t,k){
-  if(k>today())return"";const l=S.log[k]||{},v=Object.values(l),e=v.reduce((a,x)=>({P:a.P+(x.P||0),C:a.C+(x.C||0),F:a.F+(x.F||0)}),{P:0,C:0,F:0});
-  const left0=t.kcal-kcOf(e),left=Math.abs(left0)<15?0:left0,over=left<0,mp=mealPlan(t,k).meals,pend=mp.filter(m=>!l[m.id]);
+  if(k>today())return"";const l=S.log[k]||{};
+  const mp=mealPlan(t,k).meals,pend=mp.filter(m=>!l[m.id]);
   const seg=MEALS.map(([id,n])=>{const x=l[id],c=!x?"":x.st==="skip"?"skip":"on";return`<span class="ls-m ${c}"><i></i>${n}</span>`}).join("");
   let cta="";
   if(pend.length){const nm=pend.map((m,i)=>i?m.n.toLowerCase():m.n),masc=pend.some(m=>m.id==="breakfast"),pl=pend.length>1;
     const q=pend.length>=3?`¿Apuntar las ${pend.length} como planeadas?`:`¿${nm.join(" y ")} como planead${masc?"o":"a"}${pl?"s":""}?`;
     const kc=pend.reduce((a,m)=>a+kcOf(logEntryFor(k,m,"done")),0),y=S.log[shiftKey(k,-1)]||{},hasY=!Object.keys(l).filter(x=>!x.startsWith("fuel_")).length&&Object.keys(y).some(x=>!x.startsWith("fuel_"));
     cta=`<div class="ls-cta"><span class="ls-q"><b>${esc(q)}</b><small>Suma${pl?"n":""} ${fmtInt(kc)} kcal${hasY?' · <button class="ls-y" data-act="logyday">Lo mismo que ayer</button>':""}</small></span><button class="ls-go" data-act="logall">Apuntar</button></div>`}
-  return`<div class="ls2"><span class="ls-l${over?" over":""}">${left===0?"Objetivo del día":over?"Te has pasado":"Te quedan"}</span><div class="ls-k${over?" over":""}">${left===0?"<b>Cumplido</b>":`<b>${fmtInt(Math.abs(left))}</b> kcal`}</div>
-    <div class="ls-ms">${seg}</div>
-    ${macroRows([["P","var(--prot)","Proteína",e.P,t.P],["C","var(--carb)","Hidratos",e.C,t.C],["F","var(--fat)","Grasas",e.F,t.F]].map(([m,c,n,g,tg])=>({m,c,n,g,tg})),false)}${cta}</div>`;
+  /* v307 (opción A): solo la línea de las cuatro comidas y «Apuntar»; las kcal que quedan y los macros ya están en Qué comer */
+  return`<div class="ls2"><div class="ls-ms">${seg}</div>${cta}</div>`;
 }
 /* Foto de la comida: analizar → confirmar en la propia comida → apuntar. Sin abrir editores. */
 function phThumb(file){return new Promise(res=>{const fr=new FileReader();fr.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.8))};i.onerror=()=>res(null);i.src=fr.result};fr.onerror=()=>res(null);fr.readAsDataURL(file)})}
@@ -5868,13 +5861,19 @@ const RAD_IC={
   dish:'<path d="M3.8 11.5h16.4a8.2 8.2 0 0 1-16.4 0z"/><path d="M9 20.4h6"/><path d="M9.8 8.2c0-1.4.9-1.9.9-3.3M13.8 8.2c0-1.4.9-1.9.9-3.3"/>',
   routine:'<path d="M6.5 7.5v9M17.5 7.5v9M3.8 10v4M20.2 10v4M6.5 12h11"/>'
 };
-const QA=[["weigh","Pesarme","Peso de hoy","var(--morado)"],["log","Registrar comida","Lo que has comido","var(--verde)"],["train","Planificar entreno","Semana de entrenos","var(--azul)"],["menu","Crear menú","Platos de la semana","var(--amarillo)"],["dish","Crear plato","Con macros automáticos","var(--cian)"],["routine","Crear rutina","Ejercicios de fuerza","var(--rojo)"]];
-function quickHtml(){return`<div class="qa-ov" data-radclose="1"><div class="qa" role="dialog" aria-modal="true" aria-label="Acciones rápidas"><div class="qa-grab" aria-hidden="true"></div>
+/* v307 · Acciones rápidas según la guía: lo diario arriba, en grande (registrar comida y pesarse); «¿Qué como ahora?» con su marca
+   de IA si hay una comida pendiente; el resto en lista de filas de 44 px. Iconos en gris: el color no significa nada aquí. Clases qa- */
+const QA_TOP=[["log","Registrar comida"],["weigh","Pesarme"]],QA_LIST=[["train","Planificar entreno"],["menu","Crear menú"],["dish","Crear plato"],["routine","Crear rutina"]];
+const qaSvg=(k,z)=>`<svg viewBox="0 0 24 24" width="${z}" height="${z}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RAD_IC[k]}</svg>`;
+function quickHtml(){const m=S.sample&&typeof qnMeal==="function"?qnMeal():null;
+  return`<div class="qa-ov" data-radclose="1"><div class="qa" role="dialog" aria-modal="true" aria-label="Acciones rápidas"><div class="qa-grab" aria-hidden="true"></div>
   <div class="qa-h"><b>Acciones rápidas</b><button class="hbtn qa-x" data-radclose="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-  <div class="qa-grid">${QA.map(([k,l,sub,c],i)=>`<button class="qa-it" data-rad="${k}" style="--c:${c};--c-v:${vivo(c)};--i:${i}"><span class="qa-ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${RAD_IC[k]}</svg></span><b>${l}</b><small>${sub}</small></button>`).join("")}</div></div></div>`}
+  <div class="qa-top">${QA_TOP.map(([k,l])=>`<button class="qa-big" data-rad="${k}">${qaSvg(k,26)}<b>${l}</b></button>`).join("")}</div>
+  ${m?`<button class="qa-row qa-ask" data-rad="ask"><span class="ia-ic">${IC_SPARK}</span><span class="qa-t">¿Qué como ahora?<small>Ideas para ${esc(m.n.toLowerCase())}</small></span><span class="qa-go" aria-hidden="true">›</span></button>`:""}
+  <div class="qa-list">${QA_LIST.map(([k,l])=>`<button class="qa-row" data-rad="${k}">${qaSvg(k,22)}<span class="qa-t">${l}</span><span class="qa-go" aria-hidden="true">›</span></button>`).join("")}</div></div></div>`}
 document.addEventListener("pointerover",e=>{const g=e.target.closest&&e.target.closest(".rs");const cap=$("#radcap");if(!cap)return;cap.textContent=g?g.getAttribute("aria-label"):"Pesarme · Registrar comida · Planificar entreno · Crear menú · Crear plato"});
 document.addEventListener("focusin",e=>{const g=e.target.closest&&e.target.closest(".rs");const cap=$("#radcap");if(cap&&g)cap.textContent=g.getAttribute("aria-label")});
-function openRadial(on){const el=$("#radial"),fab=$("#fab");if(on){el.innerHTML=quickHtml();el.hidden=false;fab.setAttribute("aria-expanded","true");fab.classList.add("open");const b=el.querySelector(".qa-it");if(b)b.focus({preventScroll:true})}else{el.hidden=true;el.innerHTML="";fab.setAttribute("aria-expanded","false");fab.classList.remove("open")}}
+function openRadial(on){const el=$("#radial"),fab=$("#fab");if(on){el.innerHTML=quickHtml();el.hidden=false;fab.setAttribute("aria-expanded","true");fab.classList.add("open");const b=el.querySelector(".qa-big");if(b)b.focus({preventScroll:true})}else{el.hidden=true;el.innerHTML="";fab.setAttribute("aria-expanded","false");fab.classList.remove("open")}}
 document.addEventListener("click",e=>{
   const f=e.target.closest("#fab");if(f){openRadial($("#radial").hidden);return}
   const o=e.target.closest("[data-rad]");
@@ -5884,6 +5883,7 @@ document.addEventListener("click",e=>{
     else if(k==="weigh"){S.tab="hoy";S.period="day";S.day=today();S.wtEdit=true;S.wtSkip=false;render();window.scrollTo(0,0);setTimeout(()=>{const el=$("#wt");if(el)el.focus()},50)}
     else if(k==="log"){S.tab="hoy";S.period="day";S.day=today();render();setTimeout(()=>{const el=document.querySelector(".meals");if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},60)}
     else if(k==="train"){paOpen(null)}
+    else if(k==="ask"){S.tab="hoy";S.period="day";S.day=today();render();S.qn={have:"",res:null};S.sheet="qn";renderModal()}
     else{S.tab="plan";S.planView="week";S.planWeek=S.planWeek||mondayOf(today());render();window.scrollTo(0,0)}
     return}
   if(!$("#radial").hidden&&e.target.closest("[data-radclose]")&&(e.target.classList.contains("qa-ov")||e.target.closest(".qa-x")))openRadial(false);
@@ -6336,7 +6336,9 @@ function vHoy(){
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
       ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,mq=macroQuality(t,S.day),mv=macroVerdicts(t,mq),qq=mv?{C:mv.C,P:mv.P,F:mv.F}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1));
-        return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0?ek:t.kcal)}</b><span>${ek>0?"de "+fmtInt(t.kcal)+" kcal":(S.day===today()?"kcal para hoy":S.day===shiftKey(today(),1)?"kcal para mañana":S.day===shiftKey(today(),-1)?"kcal de ayer":"kcal · "+esc(dateLabel(S.day)))}</span></div></div>
+        /* v307 (opción A): con algo comido, la gota dice lo que queda (antes lo repetía «Te quedan» en Reparto por comidas) */
+        const lf=t.kcal-ek,lz=Math.abs(lf)<15;
+        return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0&&!lz?Math.abs(lf):t.kcal)}</b><span>${ek>0?(lz?"kcal · objetivo cumplido":lf>0?"te quedan de "+fmtInt(t.kcal)+" kcal":"kcal de más · objetivo "+fmtInt(t.kcal)):(S.day===today()?"kcal para hoy":S.day===shiftKey(today(),1)?"kcal para mañana":S.day===shiftKey(today(),-1)?"kcal de ayer":"kcal · "+esc(dateLabel(S.day)))}</span></div></div>
         ${macroRows([["P","var(--prot)","Proteína",e.P,t.P],["C","var(--carb)","Hidratos",e.C,t.C],["F","var(--fat)","Grasas",e.F,t.F]].map(([m,c,n,g,tg])=>({m,c,n,g:ek>0?g:0,tg,gk:(tg/kg).toFixed(1).replace(".",","),q:qq&&qq[m]})),true)}
         ${t.glySug?`<div class="gly-sug"><span>¿Subir <b>${fmtInt(t.glySug)} g</b> de hidratos para rellenar tu glucógeno? Es una estimación: ayer no apuntaste comidas.</span><button type="button" class="chip sm" data-glyapply="1">Aplicar</button></div>`:t.glyAdd?`<p class="gly-in">Hidratos +${fmtInt(t.glyAdd)} g para rellenar tu glucógeno.</p>`:""}
         ${mq?"":`<button class="qhint" data-gomenu="1">Asigna el menú de hoy para ver de qué tipo son tus macros<span aria-hidden="true">›</span></button>`}
