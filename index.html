@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T21:41:05.795Z">
+<meta name="sustrato-version" content="2026-10-16T21:54:03.929Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2339,7 +2339,8 @@ html body .pf-sw button{justify-content:center;background:transparent;border-rad
 .mw-sec>.chip{width:100%;margin:0;justify-content:center;text-align:center}
 .mw-sec.odd>.chip:first-child{grid-column:1/-1}
 .dl-ib{border-radius:50%!important}
-.dl-bar{max-width:none!important}
+.dl-bar{max-width:none!important}.mw-sub,.mw-past{margin:8px 0 0;text-align:center}
+
 /* v206: hojas opacas (antes dejaban ver la página de detrás) */
 html body .sheet{background:var(--card)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html[data-theme="dark"] body .sheet,html:not([data-theme="light"]) body .sheet{background:#1c1c1e!important}
@@ -3084,7 +3085,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="308";
+const APP_VER="309";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3570,14 +3571,18 @@ const SCALES=[.5,.75,1,1.25,1.5,1.75,2,2.5];
 function fitErr(d,s,m){const e=(a,b,w)=>w*Math.pow((a-b)/Math.max(b,8),2);return e(d.P*s,m.P,1.2)+e(d.C*s,m.C,1)+e(d.F*s,m.F,.8)}
 function bestScale(d,m){let best=1,be=1e9;SCALES.forEach(s=>{const x=fitErr(d,s,m);if(x<be){be=x;best=s}});return{s:best,err:be}}
 function pickDish(m,avoid){let best=null;let pool=allDishes().filter(d=>d.meals.includes(m.id)&&dishAllowed(d));if(!pool.length)pool=allDishes().filter(d=>d.meals.includes(m.id));const merc=(S.profile||{}).store==="merc";pool.forEach(d=>{const b=bestScale(d,m);const err=b.err+(avoid.includes(d.id)?.35:0)-(merc&&d.merc?.06:0);if(!best||err<best.err)best={d:d.id,s:b.s,err}});return best}
-function autoAssignDay(k,force){
+/* alt (v309): «Proponer otros platos» evita también el plato automático que ya había */
+function autoAssignDay(k,force,alt){
   const t=dayTargets(k);if(!t)return false;const mp=mealPlan(t,k);
   S.menu[k]=Object.assign({},S.menu[k]);const p1=S.menu[shiftKey(k,-1)]||{},p2=S.menu[shiftKey(k,-2)]||{},used=[];
   mp.meals.forEach(m=>{const cur=S.menu[k][m.id];if(cur&&cur.lock&&!force){used.push(cur.d);return}
-    const avoid=[p1[m.id]&&p1[m.id].d,p2[m.id]&&p2[m.id].d].concat(used).filter(Boolean);
+    const avoid=[p1[m.id]&&p1[m.id].d,p2[m.id]&&p2[m.id].d,alt&&cur&&cur.d].concat(used).filter(Boolean);
     const p=pickDish(m,avoid);if(p){S.menu[k][m.id]={d:p.d,s:p.s,lock:false};used.push(p.d)}});
   return true;
 }
+/* v309 · Menú: estado de un día (platos puestos de los 4) y días de la semana que se pueden rellenar (de hoy en adelante) */
+function mdFull(k){const t=dayTargets(k);if(!t)return false;const m=S.menu[k]||{};return mealPlan(t,k).meals.every(x=>m[x.id])}
+function mdFuture(wk){const tk=today(),L=[];for(let i=0;i<7;i++){const k=shiftKey(wk,i);if(k>=tk)L.push(k)}return L}
 const fmtS=s=>("×"+String(s).replace(".",","));
 async function saveMenu(){const c=userCol();if(!c)return;try{await c.doc("menu").set({kind:"menu",days:S.menu})}catch(e){toast(e&&e.code==="quota_exceeded"?"No queda espacio para guardar":"No se ha podido guardar el menú")}}
 async function saveDishes(){const c=userCol();if(!c)return;try{await c.doc("dishes").set({kind:"dishes",list:S.dishes})}catch(e){toast("No se han podido guardar tus platos")}}
@@ -6574,11 +6579,11 @@ function vPlan(){
           <div class="pmsel"><button type="button" class="pmpick${ds?"":" pm-nil"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<span class="pill">${fmtS(a.s)}${a.lock?"":" · auto"}</span>`:""}</div>
           <div class="pmm"><span class="pm-o">Objetivo<i style="--c:var(--prot)"></i>P ${fmtInt(m.P)}<i style="--c:var(--carb)"></i>H ${fmtInt(m.C)}<i style="--c:var(--fat)"></i>G ${fmtInt(m.F)}</span>${got?`<span class="pmgot">Plato P ${fmtInt(got.P)} · H ${fmtInt(got.C)} · G ${fmtInt(got.F)} · ${fmtInt(gk)} kcal</span>`:""}${got?complement(m,got):""}</div></div>`}).join("");
     }else body='<p class="empty">Completa el perfil para calcular este día.</p>';
-    return`<section class="glass pad fade wk-card">${wkStrip(wk,"menu")}<div class="wk-det" data-wkdet="${k}">${wkDayHead(k,t?`${fmtInt(t.kcal)} kcal · ${nAs}/4 platos`:"")}
+    return`<section class="glass pad fade wk-card">${wkStrip(wk,"menu")}<div class="wk-det" data-wkdet="${k}">${wkDayHead(k,(t?`${nAs}/4 platos`:"")+(t&&k>=tk?`<button class="dl-ib" data-mdmo="${k}" aria-haspopup="dialog" aria-label="Opciones del menú de este día"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button>`:""))}
       ${chips?`<div class="pchips wk-sp">${chips}${pl.length&&!real.length?`<small>previsto ${pl.reduce((x,s)=>x+(+s.dur||0),0)} min</small>`:""}</div>`:""}
-      ${t?`<div class="mbar" style="height:6px"><i style="width:${(4*t.P/t.kcal*100).toFixed(1)}%;background:var(--prot)"></i><i style="width:${(4*t.C/t.kcal*100).toFixed(1)}%;background:var(--carb)"></i><i style="width:${(9*t.F/t.kcal*100).toFixed(1)}%;background:var(--fat)"></i></div><div class="pm-o wk-mac"><i style="--c:var(--prot)"></i>P ${fmtInt(t.P)} g<i style="--c:var(--carb)"></i>H ${fmtInt(t.C)} g<i style="--c:var(--fat)"></i>G ${fmtInt(t.F)} g</div>`:""}
+      ${t?`<div class="mbar" style="height:6px"><i style="width:${(4*t.P/t.kcal*100).toFixed(1)}%;background:var(--prot)"></i><i style="width:${(4*t.C/t.kcal*100).toFixed(1)}%;background:var(--carb)"></i><i style="width:${(9*t.F/t.kcal*100).toFixed(1)}%;background:var(--fat)"></i></div><div class="pm-o wk-mac">${fmtInt(t.kcal)} kcal<i style="--c:var(--prot)"></i>P ${fmtInt(t.P)} g<i style="--c:var(--carb)"></i>H ${fmtInt(t.C)} g<i style="--c:var(--fat)"></i>G ${fmtInt(t.F)} g</div>`:""}
       ${body}
-      <div class="mw-sec">${k>=tk?`<button class="chip" data-gotoplan="${k}">Editar entrenos</button>`:""}<button class="chip" data-autoday="${k}">Asignar menú de este día</button></div></div></section>`;
+      ${k>=tk?`<div class="mw-sec"><button class="chip" data-gotoplan="${k}">Editar entrenos</button></div>`:""}</div></section>`;
   }).join("");
   const dlRow=x=>`<div class="spark"><span style="min-width:0">${esc(x.n)}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
   const ds=allDishes(),custom=ds.filter(x=>x.custom).map(dlRow).join(""),baseL=ds.filter(x=>!x.custom).map(dlRow).join("");
@@ -6591,9 +6596,10 @@ function vPlan(){
   ${custom?`<section class="glass pad fade"><h2>Tuyos · ${(S.dishes||[]).length}</h2>${custom}</section>`:""}
   <section class="glass pad fade"><h2>Base · ${ds.filter(x=>!x.custom).length}</h2>${baseL}</section>`;
   return pseg+`${cards}
-  <section class="glass pad fade"><button class="btn primary big mw-main" data-act="autoweek">Asignar menú de la semana</button>
+  <section class="glass pad fade">${(()=>{const F=mdFuture(wk);if(!F.length)return'<p class="note mw-past">Semana pasada: el menú automático rellena de hoy en adelante.</p>';const full=F.every(mdFull);
+    return`<button class="btn primary big mw-main" data-act="autoweek">${full?"Proponer otros platos":"Rellenar mi semana"}</button><p class="note mw-sub">${full?"Cambia los platos automáticos de hoy en adelante. Los que elegiste tú se quedan.":"De hoy en adelante, con platos que cuadran con tus macros. Los que elegiste tú se quedan."}</p>`})()}
     ${(()=>{const L=[weekCopyBtn("menu",wk).replace('class="btn"','class="chip"'),'<button class="chip" data-act="shop">Lista de la compra</button>',S.dl?'<button class="chip" data-act="exportmenu">Exportar menú</button>':""].filter(Boolean);return`<div class="mw-sec${L.length%2?" odd":""}">${L.join("")}</div>`})()}
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">La asignación automática elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Los platos que elijas tú se respetan.</p></details></section>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">El menú automático elige el plato y la ración que mejor cuadran con los macros de cada comida, sin repetir el mismo plato dos días seguidos. Solo toca de hoy en adelante y nunca cambia los platos que eliges tú. «Proponer otros platos» busca alternativas para los automáticos. Para un día suelto, usa «···» junto a su fecha.</p></details></section>
   ${prof?"":'<p class="note">Completa el perfil para ver los objetivos de cada día.</p>'}`;
 }
 
@@ -6628,6 +6634,13 @@ function vActs(){
     ${list.length?`<div class="kv akv" style="margin:0 0 18px"><div><span>Actividades</span><b>${list.length}</b></div><div><span>Distancia</span><b>${fmtInt(sum.d/1000)}<small> km</small></b></div><div><span>Tiempo</span><b>${fmtInt(sum.t/3600)}<small> h</small></b></div></div>`:""}
     ${body}</section>`;
 }
+/* v309 · «···» del día en Plan › Menú: rellenar, proponer otros platos o vaciar, siempre con «Deshacer» */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mdmo]");if(!b)return;const k=b.dataset.mdmo,full=mdFull(k),has=Object.keys(S.menu[k]||{}).length;
+  const O=[full?["alt","Proponer otros platos"]:["fill","Rellenar este día"]].concat(has?[["clear","Vaciar este día"]]:[]);
+  pkSheet(dateLabel(k),O,"",a=>{const prev=JSON.parse(JSON.stringify(S.menu));
+    if(a==="clear")delete S.menu[k];else autoAssignDay(k,false,a==="alt");
+    saveMenu();render();undoToast(a==="clear"?"Día vaciado":a==="alt"?"Otros platos propuestos":"Día rellenado",()=>{S.menu=prev;saveMenu();render()})},b)});
+
 /* ---------- Ruta: mapa GPS y perfil de altitud ---------- */
 function polyDecode(str){const pts=[];let i=0,lat=0,lng=0;while(i<str.length){let b,sh=0,r=0;do{b=str.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);lat+=r&1?~(r>>1):r>>1;sh=0;r=0;do{b=str.charCodeAt(i++)-63;r|=(b&31)<<sh;sh+=5}while(b>=32);lng+=r&1?~(r>>1):r>>1;pts.push([lat/1e5,lng/1e5])}return pts}
 function routeMap(a){if(!a.poly)return"";let pts;try{pts=polyDecode(a.poly)}catch(e){return""}if(pts.length<2)return"";
@@ -7019,8 +7032,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.pnav){S.anchor=shiftAnchor(S.period,S.anchor||S.day,+t.dataset.pnav);render();return}
   if(t.dataset.plweek){S.planWeek=shiftKey(S.planWeek||mondayOf(today()),7*+t.dataset.plweek);render();return}
   if(t.dataset.editday){S.day=t.dataset.editday;S.period="day";S.tab="hoy";S.planEdit=true;render();window.scrollTo(0,0);return}
-  if(t.dataset.autoday){autoAssignDay(t.dataset.autoday,false);saveMenu();render();toast("Menú asignado");return}
-  if(t.dataset.act==="autoweek"){const wk=S.planWeek||mondayOf(today());let n=0;for(let i=0;i<7;i++)if(autoAssignDay(shiftKey(wk,i),false))n++;saveMenu();render();toast(n?"Menú de la semana asignado":"Completa el perfil para asignar");return}
+  if(t.dataset.act==="autoweek"){const F=mdFuture(S.planWeek||mondayOf(today())),full=F.every(mdFull),prev=JSON.parse(JSON.stringify(S.menu));let n=0;F.forEach(k=>{if(autoAssignDay(k,false,full))n++});
+    if(!n){toast("Completa el perfil para rellenar el menú");return}saveMenu();render();undoToast(full?"Otros platos propuestos":"Semana rellenada",()=>{S.menu=prev;saveMenu();render()});return}
   if(t.dataset.act==="dishnew"){pbOpen();return}
   if(t.dataset.dishedit||t.dataset.dishdup){const d=dishById(t.dataset.dishedit||t.dataset.dishdup);if(d){if((d.ing||[]).every(r=>INGR_BY[r[0]])&&!(d.ov&&Object.keys(d.ov).length))pbOpen(d);else{S.wiz=newWiz(d);renderWiz()}}return}
   if(t.dataset.dishdel){const prev=(S.dishes||[]).slice(),d=prev.find(x=>x.id===t.dataset.dishdel);S.dishes=prev.filter(x=>x.id!==t.dataset.dishdel);saveDishes();render();undoToast("Plato «"+(d?d.n:"")+"» quitado",()=>{S.dishes=prev;saveDishes();render()});return}
