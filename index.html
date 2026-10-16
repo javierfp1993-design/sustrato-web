@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T20:25:39.099Z">
+<meta name="sustrato-version" content="2026-10-16T21:05:29.004Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -98,7 +98,6 @@ h3{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
 .subtabs button[aria-selected="true"]{background:rgba(255,255,255,.13);color:var(--fg);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
 .ico{flex:0 0 auto;width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--edge-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
 .eltile{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;position:relative;font:600 15px var(--font);color:var(--c)}
-.eltile small{position:absolute;top:3px;left:5px;font:500 11px var(--font);color:var(--muted)}
 .mi{display:flex;gap:12px;align-items:flex-start}
 .supt{flex:1;min-width:0}
 .seg{display:inline-flex;gap:3px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--edge-soft)}
@@ -786,11 +785,11 @@ html[data-theme="light"] .qa-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
 .ibtn span{font-size:17px}
 .isheet{max-width:640px}
 .ihead{display:flex;flex-direction:column;gap:6px}
-.itag{align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;color:var(--fg);background:color-mix(in srgb,var(--c-v,var(--c)) 18%,transparent)}
+.itag{font-size:13px;color:var(--muted)} /* v306: rótulo en gris, sin pastilla de color */
 .ihead h3{margin:0;font-size:24px;letter-spacing:-.02em}
 .ione{font-size:17px;line-height:1.45;margin:12px 0 4px;color:var(--fg)}
-.ime{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:12px 0 2px;padding:12px 14px;border-radius:14px;background:var(--card2)}
-.ime span{font-size:13px;color:var(--muted)}.ime b{font-size:15px;text-align:right}
+.ime{display:flex;flex-direction:column;gap:2px;margin:12px 0 2px;padding:12px 14px;border-radius:14px;background:var(--card2)} /* v306: casilla gris; la cifra debajo del rótulo, a la izquierda */
+.ime span{font-size:13px;color:var(--muted)}.ime b{font-size:17px;font-weight:600;line-height:1.35}
 .isec{margin-top:16px}
 .isec h4{margin:0 0 4px;font-size:12px;font-weight:600;color:var(--muted)}
 .isec p{margin:0;font-size:15px;line-height:1.55}
@@ -808,13 +807,13 @@ html[data-theme="light"] .qa-ic{color:color-mix(in srgb,var(--c) 78%,#000)}
 .xb summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px;min-height:66px}
 .xb summary::-webkit-details-marker{display:none}
 .xb .ico,.xb .eltile{width:42px;height:42px;border:0;border-radius:10px;box-shadow:none;background:color-mix(in srgb,currentColor 16%,transparent)}
-.xb .eltile{padding-top:12px;font-size:15px}.xb .eltile small{top:5px;left:7px;font-size:11px;line-height:1}
+.xb .eltile{font-size:15px}
 .xlist~.note{margin:0 4px 10px;line-height:1.5}
 .xb-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xb-t b{font-size:15px;font-weight:600}
 .xb-t small{font-size:13px;color:var(--muted)}
 .xb-t small.xb-x{color:var(--muted)}
-.xb-v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
+.xb-v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}.xb-v i{font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-left:2px} /* v306: unidad pequeña y en gris (guía) */
 .xb .ev{flex:0 0 auto}
 .xb-ev{display:flex;margin-top:3px}
 .xb-ch{width:16px;height:16px;flex:0 0 auto;opacity:.5;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform .2s}
@@ -1360,28 +1359,19 @@ html[data-theme="light"] .str-step{background:#fff}
 .wc-p .wc-in input{background:rgba(255,255,255,.16)!important}
 .wc-p .wc-in input:focus{background:rgba(255,255,255,.24)!important}
 
-/* filas informativas de micros y suplementos */
-.xbr{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;margin:6px -10px 0;padding:10px;border-radius:14px}
-.xbr-ic{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c-v,var(--c)) 15%,transparent)}
-.xbr-l{display:block;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--fg);margin:1px 0 2px}
-.xbr p{margin:0!important;font-size:15px;line-height:1.45;color:var(--fg)}
-.xbr-src{--c:var(--verde);--c-v:var(--verde-v,var(--verde))}.xbr-dose{--c:var(--azul);--c-v:var(--azul-v,var(--azul))}.xbr-warn{--c:var(--naranja);--c-v:var(--naranja-v,var(--naranja))}
-html[data-theme="light"] .xbr-src{--c:var(--verde);--c-v:var(--verde-v,var(--verde))}html[data-theme="light"] .xbr-dose{--c:var(--azul);--c-v:var(--azul-v,var(--azul))}html[data-theme="light"] .xbr-warn{--c:var(--naranja);--c-v:var(--naranja-v,var(--naranja))}
-.xbr-warn{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 10%,transparent)}
-.xbr-warn .xbr-ic{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 22%,transparent)}
+/* filas informativas de micros y suplementos (v306, guía: color solo con significado): icono gris y sin fondo,
+   rótulo en gris de 13 px y el texto a 15 px. Solo «Con cuidado» lleva su icono en naranja, porque avisa */
+.xbr{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;margin-top:8px}
+.xbr-ic{width:20px;height:20px;display:grid;place-items:center;color:var(--faint)}
+.xbr-l{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:1px 0 2px}
+.xbr p{margin:0;font-size:15px;line-height:1.5;color:var(--fg)}
+.xbr-warn .xbr-ic{color:var(--naranja)}
 
 /* fichas divulgativas */
 .isheet .ione{font-size:17px;line-height:1.5;color:var(--muted);margin:10px 0 6px}
-.isecs{display:flex;flex-direction:column;gap:6px;margin-top:14px}
-.isr{margin-top:0!important}
-.isr p{font-size:15px!important;line-height:1.55!important}
-.isr .xbr-l{font-size:13px}
-.xbr-what{--c:var(--c0,var(--morado))}.xbr-sport{--c:var(--rojo);--c-v:var(--rojo-v,var(--rojo))}
-html[data-theme="light"] .xbr-sport{--c:var(--rojo);--c-v:var(--rojo-v,var(--rojo))}html[data-theme="light"] .xbr-what{--c:var(--morado);--c-v:var(--morado-v,var(--morado))}
-.isheet{--c0:var(--c);--c0-v:var(--c-v,var(--c))}
-.isheet .xbr-what{--c:var(--c0);--c-v:var(--c0-v,var(--c0))}
-.ibib{margin-top:22px!important;padding-top:16px;border-top:.5px solid var(--sep,var(--edge-soft))}
-.ibib h4{display:flex;align-items:center;gap:6px;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;color:var(--muted)}
+.isecs{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.ibib{margin-top:22px;padding-top:16px;border-top:.5px solid var(--sep,var(--edge-soft))}
+.ibib h4{display:flex;align-items:center;gap:6px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--muted)}
 .irefs li::marker{color:var(--faint);font-variant-numeric:tabular-nums}
 
 .pst-tx b .pill{font-size:11px;vertical-align:1px;margin-left:4px}
@@ -2171,7 +2161,6 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .fu2-k span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
 .fu2-k b{font-size:20px;font-weight:700;letter-spacing:-.01em}
 .frace-box{background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 12%,var(--card2))}
-.ime{background:color-mix(in srgb,var(--c-v,var(--c)) 12%,var(--card2))}
 /* v189 · La carita de «¿Cómo fue?» se queda en la actividad */
 .tc-icw{position:relative;flex:0 0 auto;display:grid}
 /* v253: la cara de «¿Cómo fue?» va dentro de la etiqueta de deporte, a la derecha: así no la tapa un nombre largo. Icono con su color (tinte de icono) */
@@ -2326,7 +2315,6 @@ html body .pf-sw button{justify-content:center;background:transparent;border-rad
 .rg-k{font-size:13px;color:var(--muted);margin:0}
 .rg-x h4{font-size:20px;font-weight:700;margin:2px 0 0!important;letter-spacing:-.01em;line-height:1.2;color:var(--fg)}
 .rg-w{font-size:13px;color:var(--muted);margin:4px 0 0;line-height:1.35}
-.rg-w b{color:var(--fg);font-weight:600}
 .rg-wk{display:flex;gap:4px;margin:14px 0 0}
 .rg-wk button{flex:1;appearance:none;border:0;background:none;padding:8px 0 6px;border-radius:8px;font:400 11px var(--font);color:var(--muted);cursor:pointer;min-height:38px;transition:background .2s}
 .rg-wk button i{display:block;height:6px;border-radius:3px;margin:0 4px 6px}
@@ -3092,7 +3080,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="305";
+const APP_VER="306";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3351,7 +3339,7 @@ const IC={
   vit:'<rect x="4" y="9" width="16" height="6" rx="3" transform="rotate(-35 12 12)"/><path d="M12 7.5l-2.6 8.8" transform="rotate(-35 12 12)"/>'
 };
 function icon(name,col){return`<span class="ico" style="color:${col||"var(--fg)"}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]||""}</svg></span>`}
-function elTile(sym,z,col){return`<span class="eltile" style="--c:${col};--c-v:${vivo(col)}" aria-hidden="true"><small>${z}</small>${sym}</span>`}
+function elTile(sym,col){return`<span class="eltile" style="--c:${col};--c-v:${vivo(col)}" aria-hidden="true">${sym}</span>`}
 
 /* ---------- Micronutrientes ---------- */
 const SWEAT={walk:0.4,hike:0.7,run:1.0,trail:1.0,road:0.8,gravel:0.8,mtb:0.8,indoor:1.1,swim:0.4,str:0.5,oth:0.6}; /* litros de sudor por hora, estimación media */
@@ -3365,15 +3353,15 @@ function micros(t){
   const runWeek=S.acts.some(a=>(a.sport==="run"||a.sport==="trail")&&a.day>keyOf(new Date(Date.now()-7*864e5)));
   const kcalF=t.kcal/2500;
   return[
-    {ic:icon("drop","var(--cian)"),n:"Agua",v:(35*w/1000+sweat).toFixed(1).replace(".",","),u:"L",x:sweat?"+"+sweat.toFixed(1).replace(".",",")+" L por el sudor":"",src:"Agua, leche, fruta, caldos. Bebe hasta que la orina sea clara."},
-    {ic:elTile("Na",11,"var(--cian)"),key:"na",tv:1500+sweat*900,n:"Sodio",v:fmtInt(1500+sweat*900),u:"mg",x:sweat?"+"+fmtInt(sweat*900)+" mg perdidos sudando":"",src:"Sal en las comidas (1 g de sal ≈ 400 mg de sodio), pan, queso, caldo."},
-    {ic:elTile("K",19,"var(--cian)"),key:"k",tv:3500+sweat*200,n:"Potasio",v:fmtInt(3500+sweat*200),u:"mg",x:sweat?"+"+fmtInt(sweat*200)+" mg por el sudor":"",src:"Plátano (≈420 mg), patata (≈600 mg en 150 g), legumbres, tomate, aguacate."},
-    {ic:elTile("Mg",12,"var(--verde)"),key:"mg",tv:(fem?300:350)*(ses.length?1.15:1),n:"Magnesio",v:fmtInt((fem?300:350)*(ses.length?1.15:1)),u:"mg",x:ses.length?"+15 % los días de entreno":"",src:"Frutos secos (30 g ≈ 80 mg), avena, legumbres, chocolate negro, espinacas."},
-    {ic:elTile("Fe",26,"var(--verde)"),key:"fe",tv:(fem?16:11)*(runWeek?1.3:1),n:"Hierro",v:fmtInt((fem?16:11)*(runWeek?1.3:1)),u:"mg",x:runWeek?"+30 % por el impacto de correr":"",src:"Carne roja, mejillones, lentejas. Tómalo con vitamina C (pimiento, cítricos) y lejos del café."},
-    {ic:elTile("Ca",20,"var(--verde)"),key:"ca",tv:1000,n:"Calcio",v:fmtInt(1000),u:"mg",x:"",src:"Lácteos (250 ml de leche ≈ 300 mg), queso, yogur, almendras, sardinas con espina."},
+    {ic:icon("drop","var(--cian)"),n:"Agua",v:(35*w/1000+sweat).toFixed(1).replace(".",","),u:"L",x:sweat?"Incluye "+sweat.toFixed(1).replace(".",",")+" L por el sudor":"",src:"Agua, leche, fruta, caldos. Bebe hasta que la orina sea clara."},
+    {ic:elTile("Na","var(--cian)"),key:"na",tv:1500+sweat*900,n:"Sodio",v:fmtInt(1500+sweat*900),u:"mg",x:sweat?"Incluye "+fmtInt(sweat*900)+" mg por el sudor":"",src:"Sal en las comidas (1 g de sal ≈ 400 mg de sodio), pan, queso, caldo."},
+    {ic:elTile("K","var(--cian)"),key:"k",tv:3500+sweat*200,n:"Potasio",v:fmtInt(3500+sweat*200),u:"mg",x:sweat?"Incluye "+fmtInt(sweat*200)+" mg por el sudor":"",src:"Plátano (≈420 mg), patata (≈600 mg en 150 g), legumbres, tomate, aguacate."},
+    {ic:elTile("Mg","var(--verde)"),key:"mg",tv:(fem?300:350)*(ses.length?1.15:1),n:"Magnesio",v:fmtInt((fem?300:350)*(ses.length?1.15:1)),u:"mg",x:ses.length?"Un 15 % más por entrenar":"",src:"Frutos secos (30 g ≈ 80 mg), avena, legumbres, chocolate negro, espinacas."},
+    {ic:elTile("Fe","var(--verde)"),key:"fe",tv:(fem?16:11)*(runWeek?1.3:1),n:"Hierro",v:fmtInt((fem?16:11)*(runWeek?1.3:1)),u:"mg",x:runWeek?"Un 30 % más porque corres":"",src:"Carne roja, mejillones, lentejas. Tómalo con vitamina C (pimiento, cítricos) y lejos del café."},
+    {ic:elTile("Ca","var(--verde)"),key:"ca",tv:1000,n:"Calcio",v:fmtInt(1000),u:"mg",x:"",src:"Lácteos (250 ml de leche ≈ 300 mg), queso, yogur, almendras, sardinas con espina."},
     {ic:icon("sun","var(--verde)"),key:"vd",tv:15,n:"Vitamina D",v:"15",u:"µg",x:"",src:"Sol en brazos y cara 15–20 min, pescado azul, huevo. En invierno cuesta llegar solo con la dieta."},
     {ic:icon("leaf","var(--verde)"),key:"fib",tv:30,n:"Fibra",v:"30",u:"g",x:"",src:"Legumbres, verduras, fruta con piel, integrales y frutos secos."},
-    {ic:icon("vit","var(--verde)"),n:"Vitaminas B (B1, B2, B6)",v:"",u:"",x:"Suben con el gasto: unos "+r0(kcalF*100)+" % de lo habitual",src:"Cereales integrales, carne, huevos, legumbres. Si cubres tus hidratos con alimentos integrales, llegas."}
+    {ic:icon("vit","var(--verde)"),n:"Vitaminas B (B1, B2, B6)",v:"",u:"",x:(d=>d>2?"Un "+d+" % más por el gasto de hoy":d<-2?"Un "+(-d)+" % menos por el gasto de hoy":"Lo habitual para tu gasto")(r0(kcalF*100)-100),src:"Cereales integrales, carne, huevos, legumbres. Si cubres tus hidratos con alimentos integrales, llegas."}
   ];
 }
 /* ---------- Suplementos (evidencia: AIS grupo A y posturas ISSN) ---------- */
@@ -3390,7 +3378,7 @@ function supplements(t){
   out.push({ic:icon("shaker","var(--rojo)"),n:"Proteína en polvo (whey)",ev:"Alta como alimento",why:"Útil si no llegas a tus "+fmtInt(t.P)+" g de proteína con comida.",dose:"20–40 g después de entrenar o en la merienda.",note:"Es comida práctica, no un extra mágico: si llegas con la dieta, no hace falta."});
   if(winter)out.push({ic:icon("sun","var(--verde)"),n:"Vitamina D",ev:"Alta si hay déficit",why:"De octubre a marzo se sintetiza poca vitamina D con el sol.",dose:"1.000–2.000 UI al día, idealmente tras un análisis.",note:"Pide en tu analítica la 25-OH vitamina D; si está bien, no hace falta."});
   out.push({ic:icon("fish","var(--verde)"),n:"Omega-3 (EPA + DHA)",ev:"Moderada",why:"Salud cardiovascular y recuperación si comes poco pescado azul.",dose:"1–2 g de EPA+DHA al día, con comida.",note:"Si comes pescado azul 2–3 veces por semana, ya lo cubres."});
-  out.push({ic:elTile("Fe",26,"var(--verde)"),n:"Hierro",ev:"Solo con análisis",why:"Corredores y mujeres tienen más riesgo de ferritina baja.",dose:"Solo si una analítica confirma ferritina baja, con pauta médica.",note:"Tomarlo sin déficit no mejora el rendimiento y puede ser perjudicial."});
+  out.push({ic:elTile("Fe","var(--verde)"),n:"Hierro",ev:"Solo con análisis",why:"Corredores y mujeres tienen más riesgo de ferritina baja.",dose:"Solo si una analítica confirma ferritina baja, con pauta médica.",note:"Tomarlo sin déficit no mejora el rendimiento y puede ser perjudicial."});
   return out;
 }
 
@@ -4280,7 +4268,7 @@ function readiness(tk,FSc){tk=tk||today();const M=cyMap("rhr"),f=[];let sc=70,n=
   const sl=(S.sleep||{})[tk];if(sl){n++;const v={good:10,ok:-5,bad:-20}[sl];sc+=v;f.push({k:"sleep",c:v,l:"Sueño",v:{good:"Bien",ok:"Regular",bad:"Mal"}[sl],s:v>0?"ok":v>-10?"mid":"hi"})}
   if(tk===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs){n++;const v=Math.round((gs.pct>=75?4:gs.pct>=55?-8:-18)*(gs.est?.5:1));sc+=v;f.push({k:"gly",c:v,l:"Glucógeno",v:(gs.est?"≈ ":"")+gs.pct+" %",s:v>0?"ok":v>-10?"mid":"hi"})}}finally{S._glyBusy=false}}
   sc=Math.max(5,Math.min(98,sc));
-  const vd=sc>=78?["Día para apretar","Buen momento para un entreno clave o de calidad.","var(--verde)","var(--verde)"]:sc>=58?["Mantén el plan","Estás en condiciones de hacer lo previsto.","var(--fg)","var(--fg)"]:sc>=38?["Mejor suave","Rebaja la intensidad: rodaje cómodo o técnica.","var(--naranja)","var(--naranja)"]:["Toca recuperar","Descanso o actividad muy suave. Prioriza dormir y comer bien.","var(--rojo)","var(--rojo)"];
+  const vd=sc>=78?["Día para apretar","Buen día para un entreno clave o de calidad.","var(--verde)","var(--verde)"]:sc>=58?["Mantén el plan","Puedes hacer lo que tenías previsto.","var(--fg)","var(--fg)"]:sc>=38?["Mejor suave","Mejor un rodaje cómodo o un día de técnica.","var(--naranja)","var(--naranja)"]:["Toca recuperar","Hoy, descanso o algo muy suave. Duerme y come bien.","var(--rojo)","var(--rojo)"];
   return{sc,n,f,vd,sl}}
 /* Disposición de los últimos días (solo días con algún dato de la mañana) */
 function readinessTrend(days){const FS=S.acts.length?fitnessSeries():null,out=[];
@@ -6238,8 +6226,8 @@ const SUPP_KEY={"Creatina monohidrato":"creatina","Cafeína":"cafeina","Electrol
 function suppKey(n){return SUPP_KEY[n]||(/^Hidratos durante/.test(n)?"cho":null)}
 function infoHtml(){
   const k=S.info&&S.info.k,d=INFO[k];if(!d)return"";const v=S.info.v;
-  const sec=(k,t,x)=>{if(!x)return"";const ic=XBR[k][1];return`<div class="xbr isr xbr-${k}"><span class="xbr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ic}</svg></span><div><span class="xbr-l">${t}</span><p>${esc(x)}</p></div></div>`};
-  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade isheet" role="dialog" aria-modal="true" aria-label="${esc(d.t)}" style="--c:${d.c};--c-v:${vivo(d.c)}">
+  const sec=(k,t,x)=>{if(!x)return"";const ic=XBR[k][1];return`<div class="xbr xbr-${k}"><span class="xbr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ic}</svg></span><div><span class="xbr-l">${t}</span><p>${esc(x)}</p></div></div>`};
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade isheet" role="dialog" aria-modal="true" aria-label="${esc(d.t)}">
     <div class="row"><div class="ihead"><span class="itag">${esc(d.tag)}</span><h3>${esc(d.t)}</h3></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="ione">${esc(d.one)}</p>
     ${v?`<div class="ime"><span>${S.info.n!=null?"Tu dosis":"Tu objetivo de hoy"}</span><b>${esc(v)}</b></div>`:""}${S.info.n?`<p class="inote">${esc(S.info.n)}</p>`:""}
@@ -6254,7 +6242,7 @@ function microCard(t){
   const rows=micros(t).map(m=>{const got=mm&&m.key?mm[m.key]:null,pc=got!=null?Math.min(100,got/m.tv*100):0;
     const ik=m.key||(m.n==="Agua"?"agua":/^Vitaminas B/.test(m.n)?"vb":null),d=INFO[ik];
     const cov=got!=null?`<div class="mcov"><i style="width:${pc.toFixed(0)}%;background:${pc>=90?"var(--ok)":pc>=60?"var(--warn)":"var(--err)"}"></i></div>`:"";
-    return`<details class="xb"><summary>${m.ic||""}<span class="xb-t"><b>${m.n}</b>${m.x?`<small class="xb-x">${esc(m.x)}</small>`:got!=null?`<small>El menú cubre el ${fmtInt(pc)} %</small>`:""}</span><span class="xb-v">${m.v?m.v+" "+m.u:""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
+    return`<details class="xb"><summary>${m.ic||""}<span class="xb-t"><b>${m.n}</b>${m.x?`<small class="xb-x">${esc(m.x)}</small>`:got!=null?`<small>El menú cubre el ${fmtInt(pc)} %</small>`:""}</span><span class="xb-v">${m.v?m.v+"<i>"+m.u+"</i>":""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="xb-d">${got!=null?`${cov}<p class="xb-s">El menú aporta ${got<10&&got%1?got.toFixed(1).replace(".",","):fmtInt(got)} ${m.u} de ${m.v} ${m.u}.</p>`:""}${xbRow("src",m.src)}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(m.v?m.v+" "+m.u:"")}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
   return`<section class="glass pad fade hue-health"><h2>Micronutrientes del día</h2><div class="xlist">${rows}</div>
   ${mm?"":'<p class="note">Asigna platos en la pestaña Plan y verás aquí cuánto cubre tu menú de cada uno.</p>'}<p class="note">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
@@ -6262,7 +6250,7 @@ function microCard(t){
 function suppCard(t){
   const evc=e=>/^Alta/.test(e)?"ev-hi":/^Moderada-alta/.test(e)?"ev-mh":/^Moderada/.test(e)?"ev-md":"ev-lo";
   const rows=supplements(t).map(s=>{const ik=suppKey(s.n),d=INFO[ik];
-    return`<details class="xb"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev)}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
+    return`<details class="xb"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev.replace(/^(Alta|Moderada-alta|Moderada)/,m=>"Evidencia "+m.toLowerCase()))}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="xb-d"><p>${esc(s.why)}</p>${xbRow("dose",s.dose)}${s.note?xbRow("warn",s.note):""}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note)}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
   return`<section class="glass pad fade hue-health"><h2>Suplementos del día</h2><div class="xlist">${rows}</div>
   <p class="note">Solo suplementos con evidencia sólida (Instituto Australiano del Deporte, grupo A, y posturas de la ISSN). No sustituyen a la dieta. Consulta con tu médico si tomas medicación, tienes hipertensión o problemas renales.</p></section>`;
@@ -7072,6 +7060,7 @@ S.day=today();render();
 var T0=Date.now();function hideSplash(){const sp=document.getElementById("splash");if(!sp||sp.dataset.out)return;sp.dataset.out=1;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>sp.remove(),450)},Math.max(0,1300-(Date.now()-T0)))}
 setTimeout(hideSplash,4000);
 (async function boot(){
+  await 0; /* v306: arranca cuando ya está cargado todo el código (sin la app nativa pintaba antes de que existieran las constantes de los módulos siguientes) */
   const cl=window.claude;
   if(!cl||!cl.use){S.storeLoaded=true;S.actsState="err";S.actsErr={code:"capability_disabled"};$("#status").textContent="Sin conexión";render();return}
   const [user,db,mcp,sample,dl]=await Promise.all([cl.use("user"),cl.use("db"),cl.use("mcp"),cl.use("sample"),cl.use("downloads")]);
@@ -7137,24 +7126,25 @@ function rgItems(k){const r=readiness(k),F={};r.f.forEach(x=>F[x.k]=x);const o=(
   const H=cyMap("hrv"),hv=(S.hrv||{})[k],hp=[];for(let i=1;i<=7;i++){const x=H[shiftKey(k,-i)];if(x)hp.push(x)}const hb=hp.length>=3?hp.reduce((a,b)=>a+b,0)/hp.length:null,hpc=hv&&hb?Math.round((H[k]/hb-1)*100):null;const hs=hv?hrvStat(k,H):null,cyA=cyAdj(k)?" · ajustada por el ciclo":"";
   const RM=cyMap("rhr"),rv=(S.rhr||{})[k],base=rhrAvg(shiftKey(k,-1),7,RM),dd=rv&&base?Math.round(RM[k]-base):null,it=[];
   it.push({k:"hrv",l:"VFC",has:!!hv,c:cv(F.hrv),v:hv?Math.round(hv):"—",u:hv?"ms":"",sub:hv?(hs?(hs.st==="in"?(cyA?"En tu rango":`En tu rango · media 7 días ${Math.round(hs.m)}`):hs.st==="lo"?`Bajo tu rango · ${hs.run===1?"1 día":hs.run+" días"}`:"Por encima de tu rango"):hpc!=null?(hpc?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media`:"En tu media"):`${hp.length}/3 noches para tu media`)+(hb||hs?cyA:""):"Sin dato",
-    ph:F.hrv?{"Alta":"la VFC alta","Normal":"la VFC normal","Baja":"la VFC algo baja","Muy baja":"la VFC muy baja"}[F.hrv.v]||"":"",
+    ph:F.hrv?{"Alta":"tu VFC está alta","Normal":"tu VFC está normal","Baja":"tu VFC está algo baja","Muy baja":"tu VFC está muy baja"}[F.hrv.v]||"":"",
     why:hs?(hs.st==="in"?`Tu media de 7 días (${Math.round(hs.m)} ms) está dentro de tu rango normal (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms). Esta noche, ${Math.round(hv)} ms.${hv<hs.lo*.9?" Una noche baja suelta pesa poco.":""}`:hs.st==="lo"?`Tu media de 7 días (${Math.round(hs.m)} ms) lleva ${hs.run===1?"1 día":hs.run+" días"} por debajo de tu rango (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms). Suele pasar con carga acumulada, estrés o mal sueño${hs.run>=3?": mejor un día suave.":"."}`:`Tu media de 7 días (${Math.round(hs.m)} ms) está por encima de tu rango (${Math.round(hs.lo)}–${Math.round(hs.hi)} ms): buena recuperación.`)
       :hpc!=null?`${Math.abs(hpc)} % ${hpc<0?"por debajo":"por encima"} de tu media de 7 días. ${cv(F.hrv)<0?"Baja con cansancio, estrés o mal sueño.":"Señal de buena recuperación."}${hrvN(k)<14?` Con 14 noches (llevas ${hrvN(k)}) verás tu rango normal.`:""}`:"Con 3 noches registradas tendrás tu media."});
   const cr=cv(F.rhr);
   it.push({k:"rhr",l:"Pulso en reposo",has:!!rv,c:cr,v:rv||"—",u:rv?"ppm":"",sub:dd!=null?`${sg(dd)}${Math.abs(dd)} vs tu media${cyA?" · ajustado por el ciclo":""}`:rv?"En reposo":"Sin dato",
-    ph:cr==null?"":cr>=10?"el pulso bajo":cr>0?"el pulso en tu media":cr>-20?"el pulso algo alto":"el pulso alto",
+    ph:cr==null?"":cr>=10?"el pulso está bajo":cr>0?"el pulso está en tu media":cr>-20?"el pulso está algo alto":"el pulso está alto",
     why:dd==null?"Con unos días de datos tendrás tu media.":dd>3?"Algo alto: puede ser fatiga, calor o un catarro que empieza.":dd<=-3?"Más bajo que tu media: buena señal de recuperación.":"En tu media: el corazón no trabaja de más."});
-  if(F.tsb){const c=F.tsb.c;it.push({k:"tsb",l:"Carga de entreno",has:true,c,v:F.tsb.v.charAt(0).toUpperCase()+F.tsb.v.slice(1),u:"",sub:"Frente a lo habitual",ph:c>0?"llegas fresc"+o:c<0?"llegas cargad"+o:"",
+  if(F.tsb){const c=F.tsb.c;it.push({k:"tsb",l:"Carga de entreno",has:true,c,v:F.tsb.v.charAt(0).toUpperCase()+F.tsb.v.slice(1),u:"",sub:"Frente a lo habitual",ph:c>0?"llegas fresc"+o:c<0?"vienes cargad"+o+" de los últimos días":"",
     why:c>0?"Días más suaves que tu media de semanas: tienes margen.":c<0?"Vienes de días más duros que tu media: aún los asimilas.":"Carga reciente parecida a la habitual."})}
   const sl=(S.sleep||{})[k];if(sl&&F.sleep)it.push({k:"sleep",l:"Sueño",has:true,c:F.sleep.c,v:F.sleep.v,u:"",sub:"Cómo has dormido",ph:{good:"has dormido bien",ok:"has dormido regular",bad:"has dormido mal"}[sl],
     why:{good:"Dormir bien es lo que más acelera la recuperación.",ok:"Una noche regular resta poco; si se repite, pesa.",bad:"Una mala noche baja la VFC y sube el pulso: tómatelo con calma."}[sl]});
-  if(F.gly){const gs=glyState(),c=F.gly.c;it.push({k:"gly",l:"Glucógeno",has:true,c,v:(gs&&gs.est?"≈ ":"")+(gs?gs.pct:""),u:"%",sub:gs&&gs.est?"Estimado · ayer sin apuntar":"Frente a tu nivel habitual",ph:c>0?"el glucógeno lleno":c>-10?"el glucógeno algo bajo":"el glucógeno bajo",
+  if(F.gly){const gs=glyState(),c=F.gly.c;it.push({k:"gly",l:"Glucógeno",has:true,c,v:(gs&&gs.est?"≈ ":"")+(gs?gs.pct:""),u:"%",sub:gs&&gs.est?"Estimado · ayer sin apuntar":"Frente a tu nivel habitual",ph:c>0?"tienes el glucógeno lleno":c>-10?"el glucógeno está algo bajo":"el glucógeno está bajo",
     why:gs?(gs.need?`Te faltan unos ${fmtInt(gs.need)} g para tu nivel habitual. ${c<-10?"Para una sesión intensa, empieza con hidratos o toma durante.":"Los hidratos de hoy ya lo tienen en cuenta."}`:"Depósito en tu nivel habitual: listo para una sesión larga o intensa."):""})}
   return{r,it}}
 function rgWhy(it,fb){const L=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" y "+a[a.length-1],cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
   const neg=it.filter(x=>x.c<0&&x.ph).map(x=>x.ph),pos=it.filter(x=>x.c>0&&x.ph).map(x=>x.ph);
-  if(neg.length)return`<b>${cap(L(neg))}</b> ${neg.length>1?"restan":"resta"}${pos.length?`, pero <b>${L(pos)}</b>`:""}.`;
-  return pos.length?`A favor: <b>${L(pos)}</b>.`:esc(fb)}
+  /* v306: una frase natural y de un solo tono (gris, 13 px): lo que pesa en contra y, si lo hay, lo que compensa */
+  if(neg.length)return cap(L(neg))+(pos.length?", aunque "+L(pos):"")+".";
+  return pos.length?cap(L(pos))+".":esc(fb)}
 function rgDayK(tk){return S.rgDay&&S.rgDay<tk&&S.rgDay>=shiftKey(tk,-6)?S.rgDay:tk}
 /* v273 · Un anillo con la nota (0–100) en el color del veredicto y, debajo, una fila por factor: cuánto suma o resta,
    con su dato y una barra de lo que pesa. Tocar una fila abre su porqué y, si se puede, su edición. Clases rf- */
