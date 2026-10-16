@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T11:51:25.628Z">
+<meta name="sustrato-version" content="2026-10-16T12:03:37.972Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -889,11 +889,6 @@ html[data-theme="light"] .stp .stp-ring{filter:drop-shadow(0 8px 20px rgba(0,0,0
 
 /* ===== Tarjeta de entreno ===== */
 .tc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.tc-row{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:var(--card2);min-height:68px;transition:background .2s,transform .15s}
-button.tc-row,.tc-row.go{cursor:pointer}
-button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,var(--card2))}
-.tc-row:active{transform:scale(.99)}
-.tc-row.off>*{opacity:.65}
 .tc-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .tc-tx b{font-size:17px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tc-tx small{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -901,13 +896,11 @@ button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,v
 .tc-meta b{font-size:15px;font-weight:600}.tc-meta small{font-size:12px;color:var(--muted)}
 .tc-meta small.ok{color:var(--fg);font-weight:600;--pc:var(--verde)}
 .tc-foot .chip{white-space:nowrap}
-.tc-row .pst{flex:0 0 auto}
 .tc-empty{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;border-radius:14px;background:var(--card2)}
 .tc-empty>span:not(.tc-ic){display:flex;flex-direction:column;gap:2px} /* v268: sin tocar la tesela (también es un span): la luna quedaba arriba */.tc-empty b{font-size:17px}.tc-empty small{font-size:13px;color:var(--muted)}
 .tc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
 .tcard .wxa{margin-top:10px}
 .tcard .row .wxp{font-size:13px;padding:4px 10px 4px 7px}
-@media (max-width:420px){.tc-row .pst{display:none}}
 
 /* ===== Tanda 1 ===== */
 .lsub-t{margin-left:6px;color:var(--muted);font-size:.92em}
@@ -927,7 +920,7 @@ button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,v
 h2{font-size:var(--fs-h2)!important;font-weight:600!important;letter-spacing:-.01em}
 .note{font-size:var(--fs-note)}
 button:active:not(:disabled){transform:scale(.98)}
-.btn,.chip,.tc-row,.qa-it,.rec{transition:transform .12s ease,background .2s,color .2s}
+.btn,.chip,.qa-it,.rec{transition:transform .12s ease,background .2s,color .2s}
 .meal.st-skip .mbar,.meal.st-skip .mnums,.meal.st-skip .mdish{opacity:.4}
 /* avituallamiento */
 .fu2{border-radius:14px;background:var(--card2)}
@@ -1115,8 +1108,8 @@ html.is-loading header.top .logo .dcover{animation:dloop 2s cubic-bezier(.5,0,.3
   .tabbar button.tbnew .tb-ic svg{animation:tbin .35s cubic-bezier(.3,1.6,.5,1)}
   @keyframes tbin{from{transform:scale(.8)}to{transform:none}}
   .xb-ch{transition:transform .25s cubic-bezier(.2,.8,.3,1)}
-  .act,.tc-row,.tchip,.dd,.tadd{transition:transform .15s ease,background .2s}
-  .act:active,.tc-row:active,.tchip:active,.dd:active{transform:scale(.985)}
+  .tchip,.dd,.tadd{transition:transform .15s ease,background .2s}
+  .tchip:active,.dd:active{transform:scale(.985)}
 }
 
 /* onboarding */
@@ -1296,7 +1289,6 @@ html[data-theme="light"] .str-step{background:#fff}
 .str-blk{border-radius:14px;padding:4px 0 2px 14px;background:var(--card2)}
 .str-bh{display:flex;align-items:center;gap:10px}.str-bh span{flex:1;font-size:13px;color:var(--muted)}
 .str-add{display:flex;gap:8px}
-.pst-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:10px;border-radius:14px;background:var(--card2,rgba(127,127,127,.12))}
 .pst-tx{display:flex;flex-direction:column;gap:4px;min-width:0}.pst-tx b{font-size:15px}.pst-tx small{font-size:13px;color:var(--muted)}
 .pst-tx .stprof{height:22px;margin-top:4px}
 .pst-act{grid-column:1/-1;display:flex;gap:8px}
@@ -1396,7 +1388,6 @@ html[data-theme="light"] .xbr-sport{--c:var(--rojo);--c-v:var(--rojo-v,var(--roj
 .ibib h4{display:flex;align-items:center;gap:6px;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;color:var(--muted)}
 .irefs li::marker{color:var(--faint);font-variant-numeric:tabular-nums}
 
-.pst-row{grid-template-columns:auto minmax(0,1fr)!important}
 .pst-tx b .pill{font-size:11px;vertical-align:1px;margin-left:4px}
 
 /* cómo llegas hoy */
@@ -1955,8 +1946,6 @@ html[data-theme="dark"] .ac-g{background:#fff!important;color:#1f1f1f!important;
 .pst-src{display:block;font-size:12px;color:var(--muted);opacity:.85;margin-top:1px}
 
 /* v172 · hora delante en los entrenos de Hoy */
-.tc-time{flex:none;width:40px;font:600 13px var(--round,var(--font));font-variant-numeric:tabular-nums;color:var(--muted)}.tc-time.tc-nt{opacity:.5}
-.tc-row.go{cursor:pointer}
 /* v173 · Comidas: fila de un gesto + hoja de registro */
 .meals.meals{gap:0;margin-top:8px}
 .mr2+.mr2{border-top:1px solid var(--edge-soft,rgba(127,127,127,.15))}
@@ -2190,14 +2179,12 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 /* v189 · La carita de «¿Cómo fue?» se queda en la actividad */
 .tc-icw{position:relative;flex:0 0 auto;display:grid}
 /* v253: la cara de «¿Cómo fue?» va dentro de la etiqueta de deporte, a la derecha: así no la tapa un nombre largo. Icono con su color (tinte de icono) */
-.tc-row.done .tc-tx small{white-space:normal;overflow:visible;text-overflow:clip}
 /* v190 · Tercera tanda: explicaciones plegadas, cifras en recuadros, leyendas y etiquetas uniformes */
 .inote{margin-top:10px}
 .inote summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;padding:4px 0}
 .inote summary::-webkit-details-marker{display:none}
 .inote[open] summary{color:var(--fg)}
 .inote>p{margin:6px 0 0!important}
-.pst-row[data-paedit]{cursor:pointer}
 .pa-ex{display:flex;justify-content:space-between;margin-top:2px}
 /* cifras de resumen: siempre en recuadros (como Resumen semanal, Rendimiento o Avituallamiento) */
 .kv{gap:8px!important;border-top:0!important;padding-top:0!important}
@@ -2612,7 +2599,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
    pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok); v254: comida con otra cosa (.mw-chg). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before,.pf-miss::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
@@ -2701,7 +2688,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .tchip .tc-ic{margin-right:2px}
 .pa-sp[aria-pressed="true"] .tc-ic{background:var(--ac);color:var(--ac-on)}
 /* sobre filas ya rellenas, la tesela neutra va en el color de la tarjeta, como en las listas agrupadas de iOS */
-.tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
+.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -3004,13 +2991,20 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .af-sens{flex:none;font-size:13px;font-weight:600;white-space:nowrap}
 .af-ask{flex:none;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--card)}
 .af-name{font-size:17px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.af-st{display:grid;gap:4px 12px}.af-c1{grid-template-columns:minmax(0,1fr)}.af-c2{grid-template-columns:repeat(2,minmax(0,1fr))}.af-c3{grid-template-columns:repeat(3,minmax(0,1fr))}.af-c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.af-st{display:grid;gap:4px 12px}.af-c1{grid-template-columns:minmax(0,1fr)}.af-c2{grid-template-columns:repeat(2,minmax(0,1fr))}.af-c3{grid-template-columns:repeat(3,minmax(0,1fr))}.af-c4{grid-template-columns:repeat(4,auto);justify-content:space-between} /* v303: cada columna a su contenido («Moderado» no pisa a la siguiente) */
 .af-s{display:flex;flex-direction:column;min-width:0}.af-s small{font-size:12px;color:var(--muted)}
 .af-s b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.af-s b i{font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-left:2px}
 .af-zbar{display:flex;gap:2px;height:4px;border-radius:2px;overflow:hidden;margin-top:8px}.af-zbar i{display:block}
 .af-zlab{font-size:12px;color:var(--muted)}
 @media (max-width:360px){.af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .af-list{display:flex;flex-direction:column;gap:10px}
+/* v303 · Ficha prevista: borde en vez de relleno, estado arriba, barra estimada más suave */
+.af.pf{background:transparent;box-shadow:inset 0 0 0 1px var(--sep);cursor:default}
+.af.pf[data-paedit],.af.pf[data-strgo]{cursor:pointer}
+.af.pf.off .af-name{color:var(--muted)}
+.pf-st{flex:none;font-size:13px;color:var(--muted);white-space:nowrap}
+.pf-est{opacity:.45}
+.tbody .af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}
 
 </style>
 
@@ -3091,7 +3085,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="302";
+const APP_VER="303";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4167,18 +4161,17 @@ function trainCard(t){
   if(S.actsState==="loading"&&!S.acts.length)return`<section class="glass pad fade tcard" aria-busy="true" aria-label="Cargando entrenos"><i class="sk sk-t"></i>${skRows(1)}</section>`;
   const k=S.day,tk=today(),pm=planMatch(k),fut=k>=tk;
   /* Cada fila con su hora delante: dentro del día, el orden es la hora */
-  const G=[],kg=num((S.profile||{}).weight)||70,tm=v=>v?`<span class="tc-time">${esc(v)}</span>`:`<span class="tc-time tc-nt">—</span>`;
+  const G=[],kg=num((S.profile||{}).weight)||70;
   t.acts.forEach(a=>{const hh=(a.start||"").slice(11,16),h=[];
     /* v295: ficha de entreno (af-, en …ficha-de-entreno.js). ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar
        "cómo llegas" a cada persona; en los 3 últimos días el deslizador va debajo y la ficha no repite la pregunta */
     const ssIn=k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id);h.push(afCard(a,!ssIn));
     if(ssIn)h.push(ssHtml("act|"+a.id+"|"+k,0,{cls:"ss-in"}));
     G.push({t:hh||"99",h})});
-  pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go,es=estSession(s,kg);
-    const meta=`<b>${fmtDur((s.dur||0)*60)}</b><small>≈ ${fmtInt(es.kcal)} kcal</small>`;
+  pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go; /* v303: ficha prevista (pfBody, 091) */
     const sw=x.st==="pend"||x.st==="skip"||x.st==="miss"; /* v255: sin ✕; se desliza ← (070-deslizar-comidas.js) */
     const tap=go?` data-strgo="${esc(s.routine||"")}" data-k="${k}" role="button" tabindex="0"`:ed?` data-paedit="${k}|${x.i}" role="button" tabindex="0" aria-label="Editar ${esc(sessName(s))}"`:"";
-    G.push({t:s.time||"99",h:[`${sw?`<div class="mw-in tc-mw" data-mwt="${x.i}|${k}"><div class="mw-r"><button type="button" data-mwq="t:${x.i}|${k}" aria-label="${x.st==="skip"?"Recuperar":"Saltar"} ${esc(sessName(s))}">${x.st==="skip"?"Recuperar":"Saltar"}</button></div>`:""}<div class="tc-row${x.st==="pend"?" pend":" off"}${go||ed?" go":""}${sw?" mw-fg":""}" title="${go?"Abrir en Fuerza para registrar":ed?"Toca para editar":""}"${tap}>${tm(s.time)}${spIcon(s.sport)}<span class="tc-tx"><b>${esc(sessName(s))}</b><small>${x.st==="pend"?(s.steps?Z_L[{s:2,m:3,i:4}[s.int]]+" · estructurado":INT_L[s.int])+(s.race?" · carrera":""):pst(x.st)}</small>${s.steps&&x.st==="pend"?stProfile(s.steps,16):""}</span><span class="tc-meta">${meta}</span></div>${sw?"</div>":""}`]})});
+    G.push({t:s.time||"99",h:[`${sw?`<div class="mw-in tc-mw" data-mwt="${x.i}|${k}"><div class="mw-r"><button type="button" data-mwq="t:${x.i}|${k}" aria-label="${x.st==="skip"?"Recuperar":"Saltar"} ${esc(sessName(s))}">${x.st==="skip"?"Recuperar":"Saltar"}</button></div>`:""}<div class="af pf${x.st==="pend"?"":" off"}${sw?" mw-fg":""}" title="${go?"Abrir en Fuerza para registrar":ed?"Toca para editar":""}"${tap}>${pfBody(s,x.st,kg)}</div>${sw?"</div>":""}`]})});
   G.sort((x,y)=>x.t<y.t?-1:x.t>y.t?1:0);const rows=[].concat(...G.map(g=>g.h));
   const tot=t.acts.reduce((s,a)=>s+(a.kcal||0),0)+t.plan.reduce((s,x)=>s+(x.kcal||0),0);
   return`<section class="glass pad fade tcard"><div class="row"><h2>Entreno · ${esc(dateLabel(k))}</h2>${fut?wxPill(k):""}</div>
@@ -6306,9 +6299,8 @@ function vPlanTrain(wk){
     const realH=real.length?`<div class="treal">${real.map(a=>`<button class="tchip trc" data-open="${a.id}">${spIcon(a.sport,"sm")}<span class="tci"><b>${fmtDur(a.mov)}</b><small>${ssDot(a.id)}${fmtInt(a.kcal)} kcal · ${pm.matched.has(a.id)?"según plan":pm.swapped.has(a.id)?"en lugar de lo previsto":pl.length?"extra":"hecho"}</small></span></button>`).join("")}</div>`:"";
     let edit="";
     if(k>=tk){
-      edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);const stc=s.steps&&s.steps.length&&s.sport!=="str";
-        const es=estSession(s,kg),meta=[s.km&&!s.steps?pdFmtD(s.sport,s.km):null,fmtDur((s.dur||0)*60),stc?null:(s.sport==="str"?null:INT_L[s.int]),s.time||null,"≈ "+fmtInt(es.kcal)+" kcal"].filter(Boolean).join(" · ");
-        return`<div class="pst-row" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${spIcon(s.sport)}<div class="pst-tx"><b>${esc(sessName(s))}${s.race?' <span class="pill tag-pre">Carrera</span>':""}</b><small>${esc(meta)}</small>${stc?stProfile(s.steps,22):""}</div></div>`}).join("");
+      edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);
+        return`<div class="af pf" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${pfBody(s,"pend",kg)}</div>`}).join(""); /* v303: ficha prevista */
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
@@ -8479,6 +8471,18 @@ function afCard(a,ask,day){const hh=(day?afDay(a.day)+(a.start?", ":""):"")+(a.s
   return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
     <span class="af-name">${esc(a.name||SPORT_L[a.sport])}</span>
     <span class="af-st af-c${st.length}">${st.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>${afZones(a)}</button>`}
+/* v303 · Ficha de entreno previsto (vista previa aprobada el 16-10): la misma ficha, con borde en vez de relleno y el estado arriba
+   (Previsto, Saltado, No hecho…). Cifras del plan y sustrato estimado (barra más suave). Fuerza, sin barra. Clase pf- */
+function pfBody(s,st,kg){const es=estSession(s,kg),L=[],ft=s.sport==="str"?0:fuelTarget(s.dur||0,s.int,s.race),stc=s.steps&&s.steps.length&&s.sport!=="str";
+  if(s.km&&!stc&&s.sport!=="str")L.push(["Distancia",String(s.km).replace(".",","),s.sport==="swim"?"":"km"]);
+  L.push(["Duración",fmtDur((s.dur||0)*60),""]);
+  if(s.sport==="str")L.push(["Energía","~"+fmtInt(es.kcal),"kcal"]);
+  else{L.push(["Intensidad",stc?Z_L[{s:2,m:3,i:4}[s.int]]||INT_L[s.int]:INT_L[s.int],""]);L.push(["Hidratos","~"+fmtInt(es.cho/4),"g"]);if(ft)L.push(["En ruta",String(ft),"g/h"])}
+  const st4=L.slice(0,4),lab=(PST[st]||PST.pend)[1],pc=s.sport!=="str"&&es.kcal>0?r0(es.cho/es.kcal*100):null;
+  return`<span class="af-top"><span class="af-sp">${spSvg(s.sport)}${SPORT_L[s.sport]||""}${s.time?" · "+esc(s.time):""}</span><span class="pf-st${st==="miss"?" pf-miss":""}">${s.race&&st==="pend"?"Carrera":lab}</span></span>
+    <span class="af-name">${esc(sessName(s))}</span>${stc?stProfile(s.steps,16):""}
+    <span class="af-st af-c${st4.length}">${st4.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>
+    ${pc!=null?`<span class="af-zbar pf-est" role="img" aria-label="Estimado: ${pc} % hidratos, ${100-pc} % grasas"><i style="flex:${pc};background:var(--carb)"></i><i style="flex:${100-pc};background:var(--fat)"></i></span><span class="af-zlab">~${pc} % hidratos · ${100-pc} % grasas · estimado</span>`:""}`}
 
 })();
 </script>
