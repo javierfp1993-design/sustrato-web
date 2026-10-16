@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T12:03:37.972Z">
+<meta name="sustrato-version" content="2026-10-16T12:08:24.149Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1022,10 +1022,6 @@ html[data-theme="light"] .tskip{background:rgba(0,0,0,.06)}
 /* plan › entrenos: filas */
 .tbody{gap:8px}
 .treal{flex-direction:column;gap:6px}
-.tchip.trc{display:flex;width:100%;padding:7px 12px 7px 7px;gap:12px;text-align:left}
-.tci{display:flex;flex-direction:column;gap:1px;min-width:0}
-.tci b{font-size:14px;font-weight:600;white-space:nowrap}
-.tci small{font-size:12px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tadd{appearance:none;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:40px;border-radius:10px;border:1px dashed var(--edge,rgba(127,127,127,.35));background:transparent;color:var(--muted);font:500 14px var(--font);cursor:pointer;margin-top:0!important;grid-column:auto!important}
 .tadd:hover{color:var(--fg);border-color:var(--muted)}
 .tadd:active{transform:scale(.98)}
@@ -3085,7 +3081,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="303";
+const APP_VER="304";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6296,7 +6292,7 @@ function vPlanTrain(wk){
     const d=new Date(k+"T12:00:00"),real=S.acts.filter(a=>a.day===k),pl=plannedFor(k),pm=planMatch(k);
     pm.pl.forEach(x=>{if(x.st!=="pend"){comp.n++;if(x.st==="done"||x.st==="chg")comp.ok++}});
     real.forEach(a=>{tot.n++;tot.min+=a.mov/60;tot.kcal+=a.kcal||0});pendingPlanned(k).forEach(s=>{tot.n++;tot.min+=s.dur||0;tot.kcal+=estSession(s,kg).kcal});
-    const realH=real.length?`<div class="treal">${real.map(a=>`<button class="tchip trc" data-open="${a.id}">${spIcon(a.sport,"sm")}<span class="tci"><b>${fmtDur(a.mov)}</b><small>${ssDot(a.id)}${fmtInt(a.kcal)} kcal · ${pm.matched.has(a.id)?"según plan":pm.swapped.has(a.id)?"en lugar de lo previsto":pl.length?"extra":"hecho"}</small></span></button>`).join("")}</div>`:"";
+    const realH=real.length?`<div class="treal af-list">${real.map(a=>afCard(a,false)).join("")}</div>`:""; /* v304: la misma ficha que en Hoy */
     let edit="";
     if(k>=tk){
       edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);
