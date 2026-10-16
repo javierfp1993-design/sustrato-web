@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T10:35:42.565Z">
+<meta name="sustrato-version" content="2026-10-16T10:52:24.633Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -273,13 +273,6 @@ nav.tabs button{padding:10px 13px}
 .empty{color:var(--muted);font-size:14px;padding:6px 0}
 .alert{padding:12px 14px;border-radius:14px;border:1px solid color-mix(in srgb,var(--rojo-v,var(--rojo)) 35%,transparent);background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 8%,transparent);font-size:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .acts{display:flex;flex-direction:column;gap:8px}
-.act{appearance:none;width:100%;text-align:left;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.035);color:var(--fg);font:inherit;cursor:pointer;min-height:56px}
-.act:hover{background:rgba(255,255,255,.07)}
-.act .t,.act .s{display:block}
-.act .t{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.act .s{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.act .m{text-align:right;font-variant-numeric:tabular-nums;font-size:14px}
-.act .m small{display:block;color:var(--muted);font-size:12px}
 .month{font-size:12px;color:var(--faint);margin:12px 4px 2px}
 form .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:520px){form .fields{grid-template-columns:minmax(0,1fr)}}
@@ -400,9 +393,6 @@ legend.lg,.month,.trainbar .tl{text-transform:none;letter-spacing:0;font-size:13
 .sup.warn{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo-v,var(--rojo)) 35%,transparent)}
 /* filas de lista */
 .acts{gap:0}
-.act{background:none;border:0;border-radius:0;border-bottom:.5px solid var(--sep);padding:12px 2px}
-.act:last-child{border-bottom:0}
-.act:hover{background:rgba(255,255,255,.03)}
 .mi,.spark,.pm,.rstep,.shop,table.bands td,.strtab td{border-color:var(--sep)}
 /* controles tipo iOS */
 input,select{background:var(--card2);border:0;border-radius:10px}
@@ -909,7 +899,6 @@ button.tc-row:hover,.tc-row.go:hover{background:color-mix(in srgb,var(--fg) 5%,v
 .tc-tx small{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tc-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tc-meta b{font-size:15px;font-weight:600}.tc-meta small{font-size:12px;color:var(--muted)}
-.tc-go{font-size:20px;color:var(--faint);margin-left:-2px}
 .tc-meta small.ok{color:var(--fg);font-weight:600;--pc:var(--verde)}
 .tc-foot .chip{white-space:nowrap}
 .tc-row .pst{flex:0 0 auto}
@@ -2320,7 +2309,6 @@ small.u{font-size:max(12px,.6em);font-weight:500;color:var(--muted);letter-spaci
 .tag-pre::before,.tag-post::before,.tag-load::before{display:none!important}
 .xclose{width:38px!important;height:38px!important;border-radius:50%!important;background:var(--fill2)!important;display:grid!important;place-items:center!important}
 .pnav .chip{min-width:38px;min-height:38px;justify-content:center}
-.act .m small.u{display:inline;font-size:12px}
 
 
 
@@ -2624,7 +2612,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
    pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok); v254: comida con otra cosa (.mw-chg). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before,.al-sens::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
@@ -2702,10 +2690,9 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .cy-card .tg-r+.tg-r{border-top:.5px solid var(--sep)}
 .cy-sh{border-top:.5px solid var(--sep)}
 
-/* v260 · Deporte (guía: «Deporte»): una sola pieza. v277: la tesela toma el color de la familia del deporte (--f, lo pone spIcon); sin familia (descanso), neutra.
+/* v260 · Deporte (guía: «Deporte»): una sola pieza. v277 tomaba el color de la familia; v295: neutra para todos los deportes (el color de familia queda para las gráficas).
    spIcon(deporte, "sm"|"xs"|"plan") en 013. Clases sp- */
-.tc-ic{flex:0 0 auto;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--f,var(--fg));background:color-mix(in srgb,var(--f,var(--fg)) 16%,var(--card))}
-.tc-ic:not([style]){background:var(--fill2)}
+.tc-ic{flex:0 0 auto;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--fg);background:var(--fill2)}
 .tc-ic.sp-sm{width:32px;height:32px}.tc-ic.sp-sm svg{width:18px;height:18px}
 .tc-ic.sp-xs{width:24px;height:24px;border-radius:8px}.tc-ic.sp-xs svg{width:15px;height:15px}
 .tc-ic.sp-plan{opacity:.45}
@@ -2714,7 +2701,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .tchip .tc-ic{margin-right:2px}
 .pa-sp[aria-pressed="true"] .tc-ic{background:var(--ac);color:var(--ac-on)}
 /* sobre filas ya rellenas, la tesela neutra va en el color de la tarjeta, como en las listas agrupadas de iOS */
-.tc-row .tc-ic:not([style]),.pst-row .tc-ic:not([style]),.tchip .tc-ic:not([style]),.pa-sp .tc-ic:not([style]),.tc-empty .tc-ic:not([style]){background:var(--card)}
+.tc-row .tc-ic,.pst-row .tc-ic,.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -2965,7 +2952,7 @@ a.fb-row{text-decoration:none}
 
 /* v282 · Icono del deporte principal en el calendario (en vez del punto «hecho»). Clase cal- */
 .daystrip{align-items:flex-start} /* con o sin icono, los números a la misma altura */
-.day .cal-ic{display:block;width:16px;height:16px;margin:3px auto 0;color:var(--f,var(--fg))}
+.day .cal-ic{display:block;width:16px;height:16px;margin:3px auto 0;color:var(--fg)} /* v295: un solo color para todos los deportes */
 .day .cal-ic svg{display:block;width:16px;height:16px;stroke-width:2.1}
 .cm-c .cal-ic{width:13px;height:13px;margin-top:2px}
 .cm-c .cal-ic svg{width:13px;height:13px}
@@ -3007,6 +2994,25 @@ a.fb-row{text-decoration:none}
 .ap-btn:active{opacity:.8}
 html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .cx-ap svg{width:17px;height:20px;fill:currentColor} /* cuenta de Apple en Perfil › Conexiones */
+
+/* v295 · Ficha de entreno (Hoy) y fila de Actividad: ver codigo/…ficha-de-entreno.js. Clases af- y al- */
+.af{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;padding:14px 14px 12px;border-radius:14px;background:var(--card2);cursor:pointer;transition:transform .15s}
+.af:active{transform:scale(.985)}
+.af-top,.al-1,.al-2{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.af-sp,.al-sp{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-sp svg,.al-sp svg{flex:none;color:var(--faint)}
+.af-sens,.al-sens{flex:none;font-size:13px;font-weight:600;white-space:nowrap}
+.af-ask{flex:none;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--card)}
+.af-name{font-size:17px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.af-st{display:grid;gap:4px 12px}.af-c1{grid-template-columns:minmax(0,1fr)}.af-c2{grid-template-columns:repeat(2,minmax(0,1fr))}.af-c3{grid-template-columns:repeat(3,minmax(0,1fr))}.af-c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.af-s{display:flex;flex-direction:column;min-width:0}.af-s small{font-size:12px;color:var(--muted)}
+.af-s b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.af-s b i{font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-left:2px}
+.af-zbar{display:flex;gap:2px;height:4px;border-radius:2px;overflow:hidden;margin-top:8px}.af-zbar i{display:block}
+.af-zlab{font-size:12px;color:var(--muted)}
+.al{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:3px;padding:12px 2px;background:none;border-bottom:.5px solid var(--sep);cursor:pointer}
+.al:last-child{border-bottom:0}
+.al-1 b{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.al-1 .al-m{flex:none;font-variant-numeric:tabular-nums}
+@media (max-width:360px){.af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
 
@@ -3087,7 +3093,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="294";
+const APP_VER="295";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3762,7 +3768,7 @@ const SP_IC={run:'<g transform="translate(0.8 -0.35)"><circle cx="13.5" cy="4" r
 SP_IC.bike=SP_IC.road;SP_IC.foot=SP_IC.walk; /* v266: carretera, gravel, rodillo y natación; bike y foot para los filtros por familia */
 /* v263: cada icono lleva su corrección de centro óptico (la masa del dibujo, no su caja), medida a 480 px */
 /* tesela neutra (guía: «Deporte»): spIcon(deporte, "sm"|"xs"|"plan") */
-function spIcon(sp,cls){const f=typeof FAMC!=="undefined"&&FAMC[famOf(sp)];return`<span class="tc-ic${cls?" "+cls.split(" ").map(c=>"sp-"+c).join(" "):""}"${f?` style="--f:${f}"`:""} aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${SP_IC[sp]||SP_IC.oth}</svg></span>`}
+function spIcon(sp,cls){return`<span class="tc-ic${cls?" "+cls.split(" ").map(c=>"sp-"+c).join(" "):""}" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${SP_IC[sp]||SP_IC.oth}</svg></span>`}
 function buzz(ms){try{if(navigator.vibrate&&!matchMedia("(prefers-reduced-motion:reduce)").matches)navigator.vibrate(ms)}catch(e){}}
 document.addEventListener("toggle",e=>{const d=e.target;if(d.tagName==="DETAILS"&&d.open&&d.matches(".xb,.fu2,.psec,.dishlib")){d.classList.remove("dop");void d.offsetWidth;d.classList.add("dop");setTimeout(()=>d.classList.remove("dop"),400)}},true);
 
@@ -4164,10 +4170,11 @@ function trainCard(t){
   const k=S.day,tk=today(),pm=planMatch(k),fut=k>=tk;
   /* Cada fila con su hora delante: dentro del día, el orden es la hora */
   const G=[],kg=num((S.profile||{}).weight)||70,tm=v=>v?`<span class="tc-time">${esc(v)}</span>`:`<span class="tc-time tc-nt">—</span>`;
-  t.acts.forEach(a=>{const m=pm.pl.find(x=>x.a&&x.a.id===a.id),hh=(a.start||"").slice(11,16),h=[];
-    const rv=rpeOf(a.id);h.push(`<button class="tc-row done" data-open="${a.id}" title="${esc(a.name)}">${tm(hh)}<span class="tc-icw">${spIcon(a.sport)}</span><span class="tc-tx"><b>${esc(m?sessName(m.s):SPORT_L[a.sport])}</b><small>${a.dist?(a.dist/1000).toFixed(1).replace(".",",")+" km · ":""}${fmtInt(a.kcal)} kcal</small></span><span class="tc-meta"><b>${fmtDur(a.mov).replace(/ h (\d+) min$/," h $1")}</b>${rv?`<small>${ssDot(a.id)}${RPE_L[rv-1]}</small>`:'<small class="ok">✓ Hecho</small>'}</span><span class="tc-go" aria-hidden="true">›</span></button>`);
-    /* ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar "cómo llegas" a cada persona */
-    if(k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id))h.push(ssHtml("act|"+a.id+"|"+k,0,{cls:"ss-in"}));
+  t.acts.forEach(a=>{const hh=(a.start||"").slice(11,16),h=[];
+    /* v295: ficha de entreno (af-, en …ficha-de-entreno.js). ¿Cómo fue? Un toque tras cada entreno: es la referencia para afinar
+       "cómo llegas" a cada persona; en los 3 últimos días el deslizador va debajo y la ficha no repite la pregunta */
+    const ssIn=k>=shiftKey(tk,-3)&&k<=tk&&!rpeOf(a.id);h.push(afCard(a,!ssIn));
+    if(ssIn)h.push(ssHtml("act|"+a.id+"|"+k,0,{cls:"ss-in"}));
     G.push({t:hh||"99",h})});
   pm.pl.filter(x=>x.st!=="done").forEach(x=>{const s=x.s,go=s.sport==="str",ed=x.st==="pend"&&!go,es=estSession(s,kg);
     const meta=`<b>${fmtDur((s.dur||0)*60)}</b><small>≈ ${fmtInt(es.kcal)} kcal</small>`;
@@ -5361,7 +5368,7 @@ function vzlHtml(){const v=S.vzl,e=shiftKey(v.wk,6),L=S.acts.filter(a=>a.sport!=
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade vzl" role="dialog" aria-modal="true" aria-label="Semana del ${esc(VZ.sd(v.wk))}">
     <div class="row"><h3>${esc(periodLabel("week",v.wk))}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="ms-sub">${L.length} ${L.length===1?"sesión":"sesiones"}${v.iso?" de "+FAM_L[v.iso]:""} · ${fmtDur(t)}</p>
-    <div class="vzl-l">${L.length?L.map(actRow).join(""):'<p class="empty">Sin entrenos esa semana.</p>'}</div></div></div>`}
+    <div class="vzl-l">${L.length?L.map(alRow).join(""):'<p class="empty">Sin entrenos esa semana.</p>'}</div></div></div>`}
 document.addEventListener("click",e=>{if(e.target.closest(".vzl .act")){S.sheet=null;S.vzl=null}},true);
 document.addEventListener("click",e=>{const b=e.target.closest("[data-vziso]");if(!b)return;S.vzIso=S.vzIso===b.dataset.vziso?null:b.dataset.vziso;render()});
 function bigWeightChart(W){
@@ -6567,11 +6574,6 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
   const K={"Run":"Carrera","Trail Run":"Trail","Ride":"Ruta en bici","Mountain Bike Ride":"Ruta en MTB","Gravel Ride":"Ruta gravel","Virtual Ride":"Rodillo","E-Bike Ride":"Ruta en e-bike","Swim":"Natación","Walk":"Caminata","Hike":"Senderismo","Weight Training":"Fuerza","Workout":"Entreno"};
   if(m&&K[m[2]])return K[m[2]]+" "+T[m[1]];if(K[n])return K[n];
   if(/^[A-Z][a-zA-Z]+$/.test(n)&&n===n.replace(/\s/g,"")&&/Ride|Run|Walk|Hike|Training|Swim/.test(n))return base;return n}
-function actRow(a){
-  const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+"\u00a0m":(a.dist/1000).toFixed(1).replace(".",",")+" km";
-  const sec=a.sport==="run"||a.sport==="trail"?fmtPace(a.speed):isBike(a.sport)?fmtSpeed(a.speed):a.sport==="swim"?fmtP100(a.speed):a.sport==="str"?(a.kcal?fmtInt(a.kcal)+"\u00a0kcal":""):fmtDur(a.mov);
-  return `<button class="act" data-open="${a.id}"><span class="tc-icw" title="${SPORT_L[a.sport]||""}">${spIcon(a.sport)}</span><span style="min-width:0"><span class="t">${esc(a.name)}</span><span class="s">${rpeOf(a.id)?ssDot(a.id)+esc(dateLabel(a.day).replace(/^[a-zé]{3} /,"")):esc(dateLabel(a.day))}${a.sport==="str"?"":" · "+fmtDur(a.mov)}</span></span><span class="m">${main}<small>${sec}</small></span></button>`;
-}
 function vActs(){
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["bike","Bici"],["swim","Natación"],["foot","A pie"],["str","Fuerza"]]; /* v266: por familia */
   const rg=S.actRange||"all",tk=today();
@@ -6588,7 +6590,7 @@ function vActs(){
     const tw=mondayOf(tk),pw=shiftKey(tw,-7),sd=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)};
     body=G.map(g=>{const e=shiftKey(g.w,6),lab=g.w===tw?"Esta semana":g.w===pw?"Semana pasada":sd(g.w)+" – "+sd(e)+(g.w.slice(0,4)!==tk.slice(0,4)?" "+g.w.slice(0,4):"");
       const km=g.a.reduce((x,a)=>x+(a.sport==="str"?0:a.dist),0)/1000,tm=g.a.reduce((x,a)=>x+a.mov,0);
-      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts">${g.a.map(actRow).join("")}</div></div>`}).join("")}
+      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts">${g.a.map(alRow).join("")}</div></div>`}).join("")}
   const sum=list.reduce((s,a)=>({d:s.d+a.dist,t:s.t+a.mov,k:s.k+a.kcal}),{d:0,t:0,k:0});
   return `<section class="glass pad fade">
     <div class="row"><h2>Historial</h2></div>
@@ -8098,7 +8100,7 @@ function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k
 /* v282 · Día con entreno hecho: en vez del punto, el icono del deporte principal (el más largo) en el color de su familia.
    Previsto y saltado siguen con su aro. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
 function calMark(o,k,tag){const d=o.dot(k);if(d==="on"&&o.dot===calDotTrain){const L=S.acts.filter(a=>a.day===k);if(L.length){const sp=L.reduce((m,a)=>(a.mov||0)>(m.mov||0)?a:m).sport;
-  return`<${tag} class="cal-ic" style="--f:${FAMC[famOf(sp)]||"var(--fg)"}" title="${esc(SPORT_L[sp]||"")}">${spSvg(sp)}</${tag}>`}}return`<${tag} class="dot ${d}"></${tag}>`}
+  return`<${tag} class="cal-ic" title="${esc(SPORT_L[sp]||"")}">${spSvg(sp)}</${tag}>`}}return`<${tag} class="dot ${d}"></${tag}>`}
 function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
   const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b>${calMark(o,k,"span")}</button>`}).join("");
@@ -8450,6 +8452,37 @@ document.addEventListener("change",async e=>{const m=/^ntf_(eve|week|morn)$/.exe
   if(t!==e.target.value)toast("Entre las 7:00 y las 21:59");c[m[1]].t=t;S.notif=c;render();await ntfSave();ntfSoon()});
 /* Al tocar un aviso, la app nativa trae aquí su destino */
 window.__ntfGo=function(d){if(!d||!d.go)return;document.querySelectorAll(".overlay .xclose").forEach(x=>x.click());S.tab=d.go==="plan"?"plan":"hoy";if(d.day)S.day=d.day;else if(S.tab==="hoy")S.day=today();render();window.scrollTo(0,0)};
+
+/* v295 · Ficha de entreno hecho (Hoy) y fila de Actividad (vista previa aprobada el 16-10): un solo color para todos los deportes,
+   el icono suelto en gris, la sensación escrita con su punto (084, --pc) y las cifras en columnas. Debajo, la intensidad que calcula
+   Sustrato con el pulso (suave · medio · intenso, colores de «Reparto de intensidad»). Clases af- (ficha) y al- (lista) */
+function afDur(s){s=r0(s||0);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+" h "+pad(m):m+":"+pad(s%60)}
+function afPace(ms,per){if(!ms)return"—";const s=per/ms;return Math.floor(s/60)+":"+pad(r0(s%60))}
+/* Día corto: Hoy, Ayer, el día de la semana en los últimos 6 días y, si no, «16 oct» */
+function afDay(k){const tk=today();if(k===tk)return"Hoy";if(k===shiftKey(tk,-1))return"Ayer";const d=new Date(k+"T12:00:00");
+  if(k>=shiftKey(tk,-6))return DOW_L[d.getDay()];return d.getDate()+" "+MON[d.getMonth()].slice(0,3)}
+const DOW_L=["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+function afSens(a,cls){const v=rpeOf(a.id);return v?`<span class="${cls}" style="--pc:var(--rpe${v})">${RPE_L[v-1]}</span>`:""}
+/* Cifras de la ficha según el deporte: [etiqueta, valor, unidad] */
+function afStats(a){const sp=a.sport,u=S.subs[a.id],L=[],cho=u&&u.cho>0?["Hidratos",fmtInt(u.cho/4),"g"]:null;
+  if(sp==="str"){L.push(["Tiempo",fmtDur(a.mov),""]);if(a.kcal)L.push(["Energía",fmtInt(a.kcal),"kcal"])}
+  else{if(a.dist>=50)L.push(["Distancia",sp==="swim"?fmtInt(a.dist):(a.dist/1000).toFixed(1).replace(".",","),sp==="swim"?"m":"km"]);
+    L.push(["Tiempo",afDur(a.mov),""]);
+    if(a.speed&&a.dist>=50){if(isBike(sp))L.push(["Velocidad",(a.speed*3.6).toFixed(1).replace(".",","),"km/h"]);
+      else if(sp==="swim")L.push(["Ritmo",afPace(a.speed,100),"/100 m"]);else L.push(["Ritmo",afPace(a.speed,1000),"/km"])}}
+  if(cho)L.push(cho);return L.slice(0,4)}
+function afZones(a){const u=S.subs[a.id],z=u&&u.zt,t=z?z.e+z.m+z.h:0;if(!t||a.sport==="str")return"";
+  const p=[z.e,z.m,z.h].map(x=>r0(x/t*100)),seg=(n,c)=>n?`<i style="flex:${n};background:${c}"></i>`:"";
+  return`<span class="af-zbar" aria-hidden="true">${seg(p[0],Z_C[2])}${seg(p[1],Z_C[3])}${seg(p[2],Z_C[5])}</span><span class="af-zlab">${p[0]} % suave · ${p[1]} % medio · ${p[2]} % intenso</span>`}
+/* Ficha de Hoy. ask: enseña «¿Qué tal fue?» si no hay sensación (no cuando el deslizador ya está debajo) */
+function afCard(a,ask){const hh=(a.start||"").slice(11,16),st=afStats(a),sens=afSens(a,"af-sens")||(ask?'<span class="af-ask">¿Qué tal fue?</span>':"");
+  return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
+    <span class="af-name">${esc(a.name||SPORT_L[a.sport])}</span>
+    <span class="af-st af-c${st.length}">${st.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>${afZones(a)}</button>`}
+/* Fila de la lista de Actividad: nombre y cifra principal; deporte, día y hora, duración y sensación */
+function alRow(a){const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+" m":(a.dist/1000).toFixed(1).replace(".",",")+" km",hh=(a.start||"").slice(11,16);
+  return`<button type="button" class="al" data-open="${a.id}"><span class="al-1"><b>${esc(a.name||SPORT_L[a.sport])}</b><b class="al-m">${main}</b></span>
+    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+afDur(a.mov)}</span>${afSens(a,"al-sens")}</span></button>`}
 
 })();
 </script>
