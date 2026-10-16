@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T10:20:03.615Z">
+<meta name="sustrato-version" content="2026-10-16T10:25:17.025Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3084,7 +3084,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="292";
+const APP_VER="293";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4500,9 +4500,9 @@ async function ensureProgSubs(){
   const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&subNeeds(a));
   const loc=pend.filter(a=>{const o=S.subs[a.id];return o&&o.hasHr&&o.series&&o.series.length}),net=pend.filter(a=>!loc.includes(a)).slice(0,12);
   if(!pend.length)return;S.progSubBusy=true;let i=0;
-  for(const a of loc)await ensureSub(a);if(loc.length&&S.tab==="prog")render();
-  for(const a of net){await ensureSub(a);i++;if(i%4===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
-  S.progSubBusy=false;if(S.tab==="prog")render();
+  for(const a of loc)await ensureSub(a);if(loc.length&&S.tab==="prog")quietRender();
+  for(const a of net){await ensureSub(a);i++;if(i%4===0&&S.tab==="prog")quietRender();await new Promise(r=>setTimeout(r,700))}
+  S.progSubBusy=false;if(S.tab==="prog")quietRender();
 }
 function bodyCard(){
   const p=S.profile||{},M=(S.measures||[]).slice();const be=bfEst(p),bf=be&&be.src==="med"?be.bf:null,kg=num(p.weight);
@@ -4715,11 +4715,22 @@ function mergeActs(got,prev,cut,full){const stravaOk=got.some(a=>a.sid)||!prev.s
   const keep=prev.filter(a=>!ids.has(a.id)&&!(a.sid&&sids.has(a.sid))&&(!(full&&stravaOk)&&(!stravaOk||a.day<cut)));
   const pb={};prev.forEach(a=>pb[a.id]=a);const g2=stravaOk?got:got.map(a=>pb[a.id]&&pb[a.id].sid?pb[a.id]:a); /* sin Strava, se conserva la versión completa (nombre, ruta) */
   return{list:g2.concat(keep).sort((x,y)=>x.start<y.start?1:-1),stravaOk}}
+/* v293: un entreno que llegó primero por Strava (id «s…») y luego se une al del reloj (id del reloj, sid «s…») cambia de id:
+   lo que marcó el deportista (sensación, en ayunas, avituallamiento, sudor, lo tomado en el registro) pasa al id nuevo. */
+async function actIdMove(){const c=userCol();let rpe=0,fuel=0,sweat=0,log=0;
+  for(const a of S.acts){const o=a.sid;if(!o||o===a.id)continue;
+    if(S.rpe&&S.rpe[o]){if(!S.rpe[a.id])S.rpe[a.id]=S.rpe[o];delete S.rpe[o];rpe++}
+    if(S.fasted[o]){if(!S.fasted[a.id]){S.fasted[a.id]=true;if(c){try{await c.doc("fast_"+a.id).set({kind:"fast",on:true})}catch(e){}}}delete S.fasted[o];if(c){try{await c.doc("fast_"+o).delete()}catch(e){}}}
+    (S.fuel||[]).forEach(x=>{if(x.id===o){if(!S.fuel.some(y=>y.id===a.id))x.id=a.id;fuel++}});if(fuel)S.fuel=S.fuel.filter(x=>x.id!==o);
+    (S.sweat||[]).forEach(x=>{if(x.id===o){if(!S.sweat.some(y=>y.id===a.id))x.id=a.id;sweat++}});if(sweat)S.sweat=S.sweat.filter(x=>x.id!==o);
+    const L=(S.log||{})[a.day];if(L&&L["fuel_a"+o]){if(!L["fuel_a"+a.id])L["fuel_a"+a.id]=L["fuel_a"+o];delete L["fuel_a"+o];log++}
+    if(S.subs[o])delete S.subs[o]}
+  if(rpe)saveRpe();if(fuel)saveFuel();if(sweat)saveSweat();if(log)saveLog()}
 /* v236: puesta al día completa en silencio (arrastrar para actualizar): sin estado de carga ni esqueletos */
 /* En el móvil se trae todo el historial (la app nativa lo guarda); en la web, 370 días */
 function actsStart(){if(window.__native)return"2000-01-01T00:00:00";const d=new Date();d.setDate(d.getDate()-370);return keyOf(d)+"T00:00:00"}
 async function syncActs(){const sig0=actsSig(S.acts);
-  try{const got=await fetchActs(actsStart(),true),m=mergeActs(got,S.acts,"0000",true);S.acts=m.list;S.actsState="ok";S.actsErr=null;actsCacheWrite(m.stravaOk);svPurge();
+  try{const got=await fetchActs(actsStart(),true),m=mergeActs(got,S.acts,"0000",true);S.acts=m.list;S.actsState="ok";S.actsErr=null;actsCacheWrite(m.stravaOk);svPurge();actIdMove();
     if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}return true}catch(e){return false}}
 async function loadActs(force){
   const start370=actsStart();
@@ -4731,13 +4742,13 @@ async function loadActs(force){
     const full=Date.now()-(cached.full||0)>864e5,newest=S.acts.length?S.acts[0].day:start370.slice(0,10),from=full?start370:shiftKey(newest,-3)+"T00:00:00";
     S.actsSync=true;
     try{const got=await fetchActs(from,false),sig0=actsSig(S.acts),m=mergeActs(got,S.acts,from.slice(0,10),full);
-      S.acts=m.list;actsCacheWrite(full&&m.stravaOk);if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}}
+      S.acts=m.list;actsCacheWrite(full&&m.stravaOk);actIdMove();if(actsSig(S.acts)!==sig0){quietRender();ensureDaySubs()}}
     catch(e){/* sin conexión: se queda lo guardado */}
     S.actsSync=false;return}
   S.actsState="loading";S.actsErr=null;render();
   try{
     const got=await fetchActs(start370,force),prev=S.acts.length?S.acts:((actsCacheRead()||{}).list||[]),m=mergeActs(got,prev,"0000",true);
-    S.acts=m.list;S.actsState="ok";$("#status").textContent="Strava conectado";actsCacheWrite(m.stravaOk);
+    S.acts=m.list;S.actsState="ok";$("#status").textContent="Strava conectado";actsCacheWrite(m.stravaOk);actIdMove();
   }catch(e){S.actsState="err";S.actsErr=e;$("#status").textContent="Sin datos del reloj"}
   render();ensureDaySubs();setTimeout(ensurePerf,4000);
 }
@@ -4774,7 +4785,7 @@ async function ensureSub(a){
 async function ensureDaySubs(){
   if(S.actsState!=="ok")return;
   const k=S.day,acts=S.acts.filter(a=>a.day===k);
-  for(const a of acts){if(subNeeds(a)){await ensureSub(a);if(S.tab==="hoy")render()}}
+  for(const a of acts){if(subNeeds(a)){await ensureSub(a);if(S.tab==="hoy")quietRender()}} /* v293: en segundo plano, sin animaciones (antes parpadeaba) */
 }
 async function toggleFasted(id){
   S.fasted[id]=!S.fasted[id];renderModal();
