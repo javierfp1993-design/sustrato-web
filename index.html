@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T11:46:30.059Z">
+<meta name="sustrato-version" content="2026-10-16T11:49:39.095Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3011,7 +3011,8 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .af-zlab{font-size:12px;color:var(--muted)}
 .al{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:3px;padding:12px 2px;background:none;border-bottom:.5px solid var(--sep);cursor:pointer}
 .al:last-child{border-bottom:0}
-.al .af-zbar{height:3px;margin-top:6px}
+.al-r{flex:none;display:inline-flex;align-items:center;gap:10px}
+.al .af-zbar{width:56px;height:5px;margin:0;border-radius:3px}
 .al-1 b{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.al-1 .al-m{flex:none;font-variant-numeric:tabular-nums}
 @media (max-width:360px){.af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -3094,7 +3095,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="300";
+const APP_VER="301";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -8485,7 +8486,7 @@ function afCard(a,ask){const hh=(a.start||"").slice(11,16),st=afStats(a),sens=af
 /* Fila de la lista de Actividad: nombre y cifra principal; deporte, día y hora, duración y sensación */
 function alRow(a){const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+" m":(a.dist/1000).toFixed(1).replace(".",",")+" km",hh=(a.start||"").slice(11,16);
   return`<button type="button" class="al" data-open="${a.id}"><span class="al-1"><b>${esc(a.name||SPORT_L[a.sport])}</b><b class="al-m">${main}</b></span>
-    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+(a.mov<3600?r0(a.mov/60)+" min":afDur(a.mov))}</span>${afSens(a,"al-sens")}</span>${afZones(a,false)}</button>`}
+    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+(a.mov<3600?r0(a.mov/60)+" min":afDur(a.mov))}</span><span class="al-r">${afZones(a,false)}${afSens(a,"al-sens")}</span></span></button>`} /* v301: la barra, corta y a la derecha (a lo ancho parecía un separador) */
 
 })();
 </script>
