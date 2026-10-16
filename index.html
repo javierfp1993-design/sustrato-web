@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T10:52:24.633Z">
+<meta name="sustrato-version" content="2026-10-16T11:25:58.052Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3093,7 +3093,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="295";
+const APP_VER="296";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -8482,7 +8482,7 @@ function afCard(a,ask){const hh=(a.start||"").slice(11,16),st=afStats(a),sens=af
 /* Fila de la lista de Actividad: nombre y cifra principal; deporte, día y hora, duración y sensación */
 function alRow(a){const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+" m":(a.dist/1000).toFixed(1).replace(".",",")+" km",hh=(a.start||"").slice(11,16);
   return`<button type="button" class="al" data-open="${a.id}"><span class="al-1"><b>${esc(a.name||SPORT_L[a.sport])}</b><b class="al-m">${main}</b></span>
-    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+afDur(a.mov)}</span>${afSens(a,"al-sens")}</span></button>`}
+    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+(a.mov<3600?r0(a.mov/60)+" min":afDur(a.mov))}</span>${afSens(a,"al-sens")}</span></button>`}
 
 })();
 </script>
