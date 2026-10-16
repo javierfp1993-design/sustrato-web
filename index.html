@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T11:49:39.095Z">
+<meta name="sustrato-version" content="2026-10-16T11:51:25.628Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2612,7 +2612,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía), .ls-l.over (te has pasado),
    .tc-meta small.ok (entreno hecho), .rd-tx h3 (detalle del anillo); v248: variaciones de pulso y semana (.rh-v, .rh-dl, .ws-g em),
    pastillas de tendencia (.ppill), nivel de evidencia (.ev-*), copia hecha (.cl-ok); v254: comida con otra cosa (.mw-chg). */
-.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before,.al-sens::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
+.mr-q::before,.mprot::before,.en-q::before,.en-al::before,.ls-l.over::before,.tc-meta small.ok::before,.rd-tx h3::before,.rh-v.up::before,.rh-v.dn::before,.rh-dl.good b::before,.rh-dl.bad b::before,.ws-g em.up::before,.ws-g em.dn::before,.ppill.good::before,.ppill.bad::before,.ev-hi::before,.ev-mh::before,.ev-md::before,.ev-lo::before,.cl-ok::before,.cx-ok::before,.cy-av::before,.mw-chg::before,.ob-err:not(:empty)::before,.af-sens::before{content:"";display:inline-block;flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--pc,var(--k));margin-right:6px;vertical-align:.1em}
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
@@ -2995,13 +2995,13 @@ a.fb-row{text-decoration:none}
 html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .cx-ap svg{width:17px;height:20px;fill:currentColor} /* cuenta de Apple en Perfil › Conexiones */
 
-/* v295 · Ficha de entreno (Hoy) y fila de Actividad: ver codigo/…ficha-de-entreno.js. Clases af- y al- */
+/* v295 · Ficha de entreno (Hoy y Actividad): ver codigo/…ficha-de-entreno.js. Clases af- */
 .af{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;padding:14px 14px 12px;border-radius:14px;background:var(--card2);cursor:pointer;transition:transform .15s}
 .af:active{transform:scale(.985)}
-.af-top,.al-1,.al-2{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
-.af-sp,.al-sp{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.af-sp svg,.al-sp svg{flex:none;color:var(--faint)}
-.af-sens,.al-sens{flex:none;font-size:13px;font-weight:600;white-space:nowrap}
+.af-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.af-sp{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.af-sp svg{flex:none;color:var(--faint)}
+.af-sens{flex:none;font-size:13px;font-weight:600;white-space:nowrap}
 .af-ask{flex:none;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--card)}
 .af-name{font-size:17px;font-weight:600;letter-spacing:-.01em;margin:2px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .af-st{display:grid;gap:4px 12px}.af-c1{grid-template-columns:minmax(0,1fr)}.af-c2{grid-template-columns:repeat(2,minmax(0,1fr))}.af-c3{grid-template-columns:repeat(3,minmax(0,1fr))}.af-c4{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -3009,12 +3009,8 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .af-s b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.af-s b i{font-style:normal;font-size:12px;font-weight:500;color:var(--muted);margin-left:2px}
 .af-zbar{display:flex;gap:2px;height:4px;border-radius:2px;overflow:hidden;margin-top:8px}.af-zbar i{display:block}
 .af-zlab{font-size:12px;color:var(--muted)}
-.al{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:3px;padding:12px 2px;background:none;border-bottom:.5px solid var(--sep);cursor:pointer}
-.al:last-child{border-bottom:0}
-.al-r{flex:none;display:inline-flex;align-items:center;gap:10px}
-.al .af-zbar{width:56px;height:5px;margin:0;border-radius:3px}
-.al-1 b{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.al-1 .al-m{flex:none;font-variant-numeric:tabular-nums}
 @media (max-width:360px){.af-c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.af-list{display:flex;flex-direction:column;gap:10px}
 
 </style>
 
@@ -3095,7 +3091,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="301";
+const APP_VER="302";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5370,7 +5366,7 @@ function vzlHtml(){const v=S.vzl,e=shiftKey(v.wk,6),L=S.acts.filter(a=>a.sport!=
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade vzl" role="dialog" aria-modal="true" aria-label="Semana del ${esc(VZ.sd(v.wk))}">
     <div class="row"><h3>${esc(periodLabel("week",v.wk))}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="ms-sub">${L.length} ${L.length===1?"sesión":"sesiones"}${v.iso?" de "+FAM_L[v.iso]:""} · ${fmtDur(t)}</p>
-    <div class="vzl-l">${L.length?L.map(alRow).join(""):'<p class="empty">Sin entrenos esa semana.</p>'}</div></div></div>`}
+    <div class="vzl-l">${L.length?`<div class="af-list">${L.map(x=>afCard(x,false,true)).join("")}</div>`:'<p class="empty">Sin entrenos esa semana.</p>'}</div></div></div>`}
 document.addEventListener("click",e=>{if(e.target.closest(".vzl .act")){S.sheet=null;S.vzl=null}},true);
 document.addEventListener("click",e=>{const b=e.target.closest("[data-vziso]");if(!b)return;S.vzIso=S.vzIso===b.dataset.vziso?null:b.dataset.vziso;render()});
 function bigWeightChart(W){
@@ -6592,7 +6588,7 @@ function vActs(){
     const tw=mondayOf(tk),pw=shiftKey(tw,-7),sd=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)};
     body=G.map(g=>{const e=shiftKey(g.w,6),lab=g.w===tw?"Esta semana":g.w===pw?"Semana pasada":sd(g.w)+" – "+sd(e)+(g.w.slice(0,4)!==tk.slice(0,4)?" "+g.w.slice(0,4):"");
       const km=g.a.reduce((x,a)=>x+(a.sport==="str"?0:a.dist),0)/1000,tm=g.a.reduce((x,a)=>x+a.mov,0);
-      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts">${g.a.map(alRow).join("")}</div></div>`}).join("")}
+      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts af-list">${g.a.map(x=>afCard(x,false,true)).join("")}</div></div>`}).join("")}
   const sum=list.reduce((s,a)=>({d:s.d+a.dist,t:s.t+a.mov,k:s.k+a.kcal}),{d:0,t:0,k:0});
   return `<section class="glass pad fade">
     <div class="row"><h2>Historial</h2></div>
@@ -8457,7 +8453,7 @@ window.__ntfGo=function(d){if(!d||!d.go)return;document.querySelectorAll(".overl
 
 /* v295 · Ficha de entreno hecho (Hoy) y fila de Actividad (vista previa aprobada el 16-10): un solo color para todos los deportes,
    el icono suelto en gris, la sensación escrita con su punto (084, --pc) y las cifras en columnas. Debajo, el sustrato del entreno
-   (hidratos en amarillo y grasas en azul; v300). Clases af- (ficha) y al- (lista) */
+   (hidratos en amarillo y grasas en azul; v300). Clase af- (v302: la misma ficha en Hoy y en Actividad) */
 function afDur(s){s=r0(s||0);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+" h "+pad(m):m+":"+pad(s%60)}
 function afPace(ms,per){if(!ms)return"—";const s=per/ms;return Math.floor(s/60)+":"+pad(r0(s%60))}
 /* Día corto: Hoy, Ayer, el día de la semana en los últimos 6 días y, si no, «16 oct» */
@@ -8478,15 +8474,11 @@ function afStats(a){const sp=a.sport,u=S.subs[a.id],L=[],cho=u&&u.cho>0?["Hidrat
 function afZones(a,lab=true){const u=S.subs[a.id],t=u?u.cho+u.fat:0;if(!(t>0))return"";
   const pc=r0(u.cho/t*100),est=!u.hasHr&&!u.avg?" · estimado":"";
   return`<span class="af-zbar" role="img" aria-label="${pc} % hidratos, ${100-pc} % grasas"><i style="flex:${u.cho};background:var(--carb)"></i><i style="flex:${u.fat};background:var(--fat)"></i></span>${lab?`<span class="af-zlab">${pc} % hidratos · ${100-pc} % grasas${est}</span>`:""}`}
-/* Ficha de Hoy. ask: enseña «¿Qué tal fue?» si no hay sensación (no cuando el deslizador ya está debajo) */
-function afCard(a,ask){const hh=(a.start||"").slice(11,16),st=afStats(a),sens=afSens(a,"af-sens")||(ask?'<span class="af-ask">¿Qué tal fue?</span>':"");
+/* Ficha de entreno (Hoy y, desde la v302, Actividad con day: el día delante de la hora). ask: enseña «¿Qué tal fue?» si no hay sensación (no cuando el deslizador ya está debajo) */
+function afCard(a,ask,day){const hh=(day?afDay(a.day)+(a.start?", ":""):"")+(a.start||"").slice(11,16),st=afStats(a),sens=afSens(a,"af-sens")||(ask?'<span class="af-ask">¿Qué tal fue?</span>':"");
   return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
     <span class="af-name">${esc(a.name||SPORT_L[a.sport])}</span>
     <span class="af-st af-c${st.length}">${st.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>${afZones(a)}</button>`}
-/* Fila de la lista de Actividad: nombre y cifra principal; deporte, día y hora, duración y sensación */
-function alRow(a){const main=a.sport==="str"?fmtDur(a.mov):a.sport==="swim"?fmtInt(a.dist)+" m":(a.dist/1000).toFixed(1).replace(".",",")+" km",hh=(a.start||"").slice(11,16);
-  return`<button type="button" class="al" data-open="${a.id}"><span class="al-1"><b>${esc(a.name||SPORT_L[a.sport])}</b><b class="al-m">${main}</b></span>
-    <span class="al-2"><span class="al-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""} · ${afDay(a.day)}${hh?", "+hh:""}${a.sport==="str"?"":" · "+(a.mov<3600?r0(a.mov/60)+" min":afDur(a.mov))}</span><span class="al-r">${afZones(a,false)}${afSens(a,"al-sens")}</span></span></button>`} /* v301: la barra, corta y a la derecha (a lo ancho parecía un separador) */
 
 })();
 </script>
