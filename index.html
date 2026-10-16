@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T10:15:48.396Z">
+<meta name="sustrato-version" content="2026-10-16T10:18:51.269Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3082,7 +3082,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="290";
+const APP_VER="291";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 const S={tab:"hoy",filter:"all",day:null,uid:null,db:null,mcp:null,profile:null,profileSaved:false,
@@ -4494,7 +4494,7 @@ function bandsCard(){
 async function ensureProgSubs(){
   if(S.progSubBusy||S.actsState!=="ok"||!hrParams(S.profile||{}))return;const from=shiftKey(today(),-185);
   /* v232: las que ya tienen su curva guardada se rehacen todas aquí mismo; solo las que necesitan a Strava van en tandas de 12 con pausa */
-  const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&!(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id)));
+  const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&subNeeds(a));
   const loc=pend.filter(a=>{const o=S.subs[a.id];return o&&o.hasHr&&o.series&&o.series.length}),net=pend.filter(a=>!loc.includes(a)).slice(0,12);
   if(!pend.length)return;S.progSubBusy=true;let i=0;
   for(const a of loc)await ensureSub(a);if(loc.length&&S.tab==="prog")render();
@@ -4691,7 +4691,7 @@ async function callRaw(tool,input,opts){
 const ACTS_LS="sustrato-acts-v1";
 function mapAct(a){const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
   start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
-  speed:s.avg_speed||0,kcal:s.total_calories||0,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,hrx:(a.raw&&a.raw.max_heartrate)||s.max_heartrate||null,
+  speed:s.avg_speed||0,kcal:s.total_calories||0,hra:s.avg_heartrate||(a.raw&&a.raw.average_heartrate)||null,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,hrx:(a.raw&&a.raw.max_heartrate)||s.max_heartrate||null,
   poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}
 function actsCacheRead(){try{const v=JSON.parse(localStorage.getItem(ACTS_LS)||"null");if(!(v&&Array.isArray(v.list)&&v.list.length&&v.uid===(S.uid||"")))return null;
   if(!svCacheOk(v)){localStorage.removeItem(ACTS_LS);return null}return v}catch(e){return null}}
@@ -4747,8 +4747,12 @@ function reSub(o,a,hp){if(!o||!o.hasHr||!o.series||!o.series.length||!o.dur||!(o
   const series=o.series.map((b,i)=>{if(b.h==null)return b;const h=b.h*hf,k=(b.c+b.f)*bs/60*sc,f=choFrac(h,hp,{t:(i+.5)*bs,fasted});cho+=k*f;fat+=k*(1-f);
     bands[bandOf(f).id]+=bs;zt[h<0.85*lt?"e":h<lt?"m":"h"]+=bs;const m=bs/60;return{c:+(k*f/m).toFixed(2),f:+(k*(1-f)/m).toFixed(2),h:+h.toFixed(1)}});
   const r={cho:+cho.toFixed(1),fat:+fat.toFixed(1),bands,zt,series,dur:o.dur,hasHr:true};if(o.t)r.t=o.t;if(su)r.hrFix=+su.ratio.toFixed(2);return r}
+/* v291: un reparto plano guardado antes de la v291 pudo salir de un fallo de Strava (se tomaba por «sin pulso» y el entreno quedaba
+   como suave): se repasa una vez. Los nuevos llevan chk. subNeeds dice si hay que (re)hacer el reparto de un entreno. */
+const flatOld=s=>!!s&&s.hasHr===false&&!s.chk;
+const subNeeds=a=>{const s=S.subs[a.id];return!s||s.key!==subKey(a.id)||flatOld(s)};
 async function ensureSub(a){
-  if(S.subs[a.id]&&S.subs[a.id].key===subKey(a.id))return S.subs[a.id];
+  if(!subNeeds(a))return S.subs[a.id];
   const hp=hrParams(S.profile||{});
   if(!a.kcal)return null;
   if(!hp){return null}
@@ -4757,14 +4761,17 @@ async function ensureSub(a){
     const st=await call("get_activity_streams",{activity_id:a.id,streams:["time","heart_rate"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
     const su=hrSuspect(a.id),hrs=st&&st.heart_rate&&su?st.heart_rate.map(x=>x/su.ratio):st&&st.heart_rate;
     let sub=(hrs&&st.time)?computeSub(hrs,st.time,a.kcal,hp,!!S.fasted[a.id]):null;if(sub&&su)sub.hrFix=+su.ratio.toFixed(2);
-    if(!sub)sub=flatSub(a.kcal,a.sport==="str"?0.7:(S.fasted[a.id]?0.5:0.6));
+    /* Sin curva de pulso: con el pulso medio del entreno, si lo hay, para no darlo por suave; si no, el reparto fijo de siempre */
+    if(!sub){const avg=a.sport!=="str"&&a.hra?choFrac(su?a.hra/su.ratio:a.hra,hp,{fasted:!!S.fasted[a.id]}):null;
+      sub=flatSub(a.kcal,avg!=null?avg:a.sport==="str"?0.7:(S.fasted[a.id]?0.5:0.6));if(avg!=null)sub.avg=true}
+    if(a.hra!==undefined)sub.chk=1; /* listas guardadas antes de la v291 no traen el pulso medio: se repasa cuando lleguen al día */
     sub.key=subKey(a.id);sub.t=Date.now();S.subs[a.id]=sub;persistSub(a.id,sub);return sub;
   }catch(e){return null}
 }
 async function ensureDaySubs(){
   if(S.actsState!=="ok")return;
   const k=S.day,acts=S.acts.filter(a=>a.day===k);
-  for(const a of acts){if(!S.subs[a.id]||S.subs[a.id].key!==subKey(a.id)){await ensureSub(a);if(S.tab==="hoy")render()}}
+  for(const a of acts){if(subNeeds(a)){await ensureSub(a);if(S.tab==="hoy")render()}}
 }
 async function toggleFasted(id){
   S.fasted[id]=!S.fasted[id];renderModal();
