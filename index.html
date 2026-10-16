@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T11:45:36.471Z">
+<meta name="sustrato-version" content="2026-10-16T11:46:30.059Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3094,7 +3094,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="299";
+const APP_VER="300";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -8455,8 +8455,8 @@ document.addEventListener("change",async e=>{const m=/^ntf_(eve|week|morn)$/.exe
 window.__ntfGo=function(d){if(!d||!d.go)return;document.querySelectorAll(".overlay .xclose").forEach(x=>x.click());S.tab=d.go==="plan"?"plan":"hoy";if(d.day)S.day=d.day;else if(S.tab==="hoy")S.day=today();render();window.scrollTo(0,0)};
 
 /* v295 · Ficha de entreno hecho (Hoy) y fila de Actividad (vista previa aprobada el 16-10): un solo color para todos los deportes,
-   el icono suelto en gris, la sensación escrita con su punto (084, --pc) y las cifras en columnas. Debajo, la intensidad por el pulso
-   (suave · medio · intenso en verde, amarillo y rojo, como en la vista previa aprobada; v299). Clases af- (ficha) y al- (lista) */
+   el icono suelto en gris, la sensación escrita con su punto (084, --pc) y las cifras en columnas. Debajo, el sustrato del entreno
+   (hidratos en amarillo y grasas en azul; v300). Clases af- (ficha) y al- (lista) */
 function afDur(s){s=r0(s||0);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+" h "+pad(m):m+":"+pad(s%60)}
 function afPace(ms,per){if(!ms)return"—";const s=per/ms;return Math.floor(s/60)+":"+pad(r0(s%60))}
 /* Día corto: Hoy, Ayer, el día de la semana en los últimos 6 días y, si no, «16 oct» */
@@ -8472,10 +8472,11 @@ function afStats(a){const sp=a.sport,u=S.subs[a.id],L=[],cho=u&&u.cho>0?["Hidrat
     if(a.speed&&a.dist>=50){if(isBike(sp))L.push(["Velocidad",(a.speed*3.6).toFixed(1).replace(".",","),"km/h"]);
       else if(sp==="swim")L.push(["Ritmo",afPace(a.speed,100),"/100 m"]);else L.push(["Ritmo",afPace(a.speed,1000),"/km"])}}
   if(cho)L.push(cho);return L.slice(0,4)}
-/* Intensidad del entreno por el pulso. lab: con la línea de texto (ficha); sin ella, solo la barra (lista) */
-function afZones(a,lab=true){const u=S.subs[a.id],z=u&&u.zt,t=z?z.e+z.m+z.h:0;if(!t||a.sport==="str")return"";
-  const p=[z.e,z.m,z.h].map(x=>r0(x/t*100)),seg=(n,c)=>n?`<i style="flex:${n};background:${c}"></i>`:"";
-  return`<span class="af-zbar" role="img" aria-label="${p[0]} % suave, ${p[1]} % medio, ${p[2]} % intenso">${seg(p[0],"var(--verde)")}${seg(p[1],"var(--amarillo)")}${seg(p[2],"var(--rojo)")}</span>${lab?`<span class="af-zlab">${p[0]} % suave · ${p[1]} % medio · ${p[2]} % intenso</span>`:""}`}
+/* Sustrato del entreno: hidratos (amarillo, --carb) y grasas (azul, --fat) quemados. lab: con la línea de texto (ficha); sin ella, solo la barra (lista).
+   Sin curva de pulso el reparto es una estimación y se dice */
+function afZones(a,lab=true){const u=S.subs[a.id],t=u?u.cho+u.fat:0;if(!(t>0))return"";
+  const pc=r0(u.cho/t*100),est=!u.hasHr&&!u.avg?" · estimado":"";
+  return`<span class="af-zbar" role="img" aria-label="${pc} % hidratos, ${100-pc} % grasas"><i style="flex:${u.cho};background:var(--carb)"></i><i style="flex:${u.fat};background:var(--fat)"></i></span>${lab?`<span class="af-zlab">${pc} % hidratos · ${100-pc} % grasas${est}</span>`:""}`}
 /* Ficha de Hoy. ask: enseña «¿Qué tal fue?» si no hay sensación (no cuando el deslizador ya está debajo) */
 function afCard(a,ask){const hh=(a.start||"").slice(11,16),st=afStats(a),sens=afSens(a,"af-sens")||(ask?'<span class="af-ask">¿Qué tal fue?</span>':"");
   return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
