@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T21:54:03.929Z">
+<meta name="sustrato-version" content="2026-10-16T22:13:12.151Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1223,18 +1223,7 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-f{display:flex;flex-direction:column;gap:10px;min-width:0}
 .pa-l{font-size:13px;font-weight:600;color:var(--muted)}
 .pa-lr{display:flex;justify-content:space-between;align-items:center}
-.pa-other{position:relative;cursor:pointer}.pa-other svg{width:15px;height:15px;flex:0 0 15px}
-.pa-other input{position:absolute;inset:0;opacity:0;width:100%;height:100%;min-height:0;cursor:pointer}
-.pa-days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -4px;padding:2px 4px}
-.pa-days::-webkit-scrollbar{display:none}
-.pa-day{appearance:none;flex:0 0 46px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;border-radius:14px;border:0;background:var(--card2,rgba(127,127,127,.14));color:var(--fg);font:inherit;cursor:pointer}
-.pa-day small{font-size:11px;color:var(--muted)}.pa-day b{font-size:17px;font-weight:600}
-.pa-day i{width:4px;height:4px;border-radius:50%;background:transparent}.pa-day i.on{background:var(--azul)}
-.pa-day[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}.pa-day[aria-pressed="true"] small{color:inherit;opacity:.7}
 .pa-note{margin:0;font-size:13px;color:var(--faint)}
-.pa-sps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.pa-sp{appearance:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 2px 8px;border-radius:14px;border:1.5px solid transparent;background:var(--card2,rgba(127,127,127,.14));color:var(--fg);font:500 11px var(--font);cursor:pointer;min-width:0;white-space:nowrap}
-.pa-sp[aria-pressed="true"]{border-color:transparent;font-weight:600;background:var(--ac-soft)}
 .pa-two{display:grid!important;grid-template-columns:1fr;gap:20px}
 .pa-two input[type=time]{max-width:170px}
 .pa-two label{display:flex;flex-direction:column;gap:10px}
@@ -1245,6 +1234,28 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 
 /* selector de duración tipo rueda */
 .pa-dv{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+/* v310 · Calendario de días del planificador (varios a la vez, hasta 2 meses vista) */
+.pa-cal{background:var(--card2);border-radius:14px;padding:10px 10px 8px}
+.pa-ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.pa-ch b{font-size:15px;font-weight:600;text-transform:capitalize}
+.pa-cn{appearance:none;border:0;background:none;color:var(--fg);font-size:22px;width:44px;height:36px;border-radius:10px;cursor:pointer}.pa-cn:disabled{color:var(--faint);cursor:default}
+.pa-cw,.pa-cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.pa-cw span{text-align:center;font-size:12px;color:var(--muted);padding:2px 0 4px}
+.pa-cd{appearance:none;border:0;background:none;color:var(--fg);font:500 15px var(--font);height:40px;border-radius:50%;position:relative;cursor:pointer;font-variant-numeric:tabular-nums}
+.pa-cd.tk{font-weight:700}
+.pa-cd i{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--muted)}
+.pa-cd[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}.pa-cd[aria-pressed="true"] i{background:var(--ac-on)}
+.pa-cd:disabled{color:var(--faint);cursor:default}
+.pa-cd:active:not(:disabled){transform:scale(.92)}
+.pa-cal+.pa-note{margin-top:6px}
+/* v310 · Rueda de deportes */
+.pa-wh{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 -16px}
+.pa-wheel{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:14px calc(50% - 28px);width:100%;box-sizing:border-box}
+.pa-wheel::-webkit-scrollbar{display:none}
+.pa-wi{appearance:none;flex:0 0 56px;height:56px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--card2);color:var(--muted);scroll-snap-align:center;cursor:pointer;transform-origin:center;will-change:transform}
+.pa-wi svg{width:24px;height:24px}
+.pa-wi[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
+.pa-wn{font-size:17px;font-weight:600}
+@media (prefers-reduced-motion:no-preference){.pa-wi{transition:background .2s,color .2s}}
 
 /* constructor de entrenos */
 .pa-mode{display:flex}.pa-mode button{flex:1;min-height:36px}
@@ -1326,7 +1337,7 @@ html[data-theme="light"] .str-step{background:#fff}
 .rh-in div{display:flex;gap:8px}.rh-in input{max-width:110px}
 
 .pa-sheet .seg button[aria-pressed="true"]{font-weight:600}
-@media (prefers-reduced-motion:no-preference){.pa-sheet .chip,.pa-sheet .seg button,.pa-day,.pa-sp,.stz{transition:background .18s,color .18s,border-color .18s,transform .12s}.pa-sheet button:active{transform:scale(.96)}}
+@media (prefers-reduced-motion:no-preference){.pa-sheet .chip,.pa-sheet .seg button,.pa-cd,.stz{transition:background .18s,color .18s,border-color .18s,transform .12s}.pa-sheet button:active{transform:scale(.96)}}
 
 /* tarjeta de la mañana */
 .wcard{gap:18px!important;padding:20px!important}
@@ -2140,12 +2151,11 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .dd-ic{display:grid;place-items:center;color:var(--fg)}
 .dd.dd-in{width:auto;min-height:36px;padding:6px 32px 6px 12px;border-radius:10px;background:var(--fill)}
 .dd.dd-in .dv{font-size:14px}
-.opt-l{display:flex;flex-direction:column}
-.opt-i{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 2px;border-bottom:1px solid var(--edge-soft,rgba(127,127,127,.15));cursor:pointer}
-.opt-i .tc-ic{width:34px;height:34px;border-radius:10px}
-.opt-t{flex:1;min-width:0;font-size:15px}
-.opt-i.on .opt-t{font-weight:600}
-.opt-ck{color:var(--fg);flex:none}
+.opt-l{display:flex;flex-direction:column;gap:8px;margin-top:14px} /* v310: como la hoja de opciones (acento, sin ✓) */
+.opt-i{appearance:none;border:0;background:var(--fill2);font:inherit;color:var(--fg);text-align:left;display:flex;align-items:center;gap:12px;min-height:48px;padding:12px 14px;border-radius:14px;cursor:pointer}
+.opt-i svg{flex:none;width:20px;height:20px;color:var(--muted)}
+.opt-t{flex:1;min-width:0;font-size:17px;font-weight:500}
+.opt-i.on,.opt-i.on svg{background:var(--ac);color:var(--ac-on)}
 .opt-i:active{opacity:.6}
 /* v188 · Sin bordes de color: cifras como en el resto de la app (punto de color + etiqueta, valor grande) */
 .fu2-k div{padding:10px 10px 11px;gap:3px}
@@ -2675,9 +2685,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .sp-lab{display:inline-flex;align-items:center;gap:8px;font-weight:500}
 .sp-rest{font-size:13px;color:var(--muted);line-height:24px}
 .tchip .tc-ic{margin-right:2px}
-.pa-sp[aria-pressed="true"] .tc-ic{background:var(--ac);color:var(--ac-on)}
 /* sobre filas ya rellenas, la tesela neutra va en el color de la tarjeta, como en las listas agrupadas de iOS */
-.tchip .tc-ic,.pa-sp .tc-ic,.tc-empty .tc-ic{background:var(--card)}
+.tchip .tc-ic,.tc-empty .tc-ic{background:var(--card)}
 
 /* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 12px;border-radius:10px;background:var(--card2);color:var(--fg);font:500 15px var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
@@ -3085,7 +3094,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="309";
+const APP_VER="310";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3893,7 +3902,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
 },true);
 
 /* ---------- Planificar entreno (hoja) ---------- */
-function paOpen(k){const tk=today(),d=k&&k>=tk?k:shiftKey(tk,1);S.pa={date:d,sport:"run",dur:45,int:"s",time:"18:00",routine:"",mode:"simple",steps:null};S.sheet="planadd";renderModal()}
+function paOpen(k){const tk=today(),d=k&&k>=tk?k:shiftKey(tk,1);S.pa={date:d,dates:[d],vm:d.slice(0,8)+"01",sport:"run",dur:45,int:"s",time:"18:00",routine:"",mode:"simple",steps:null};S.sheet="planadd";renderModal()}
 function paEdit(k,i){const s=plannedFor(k)[i];if(!s)return;S.pa=Object.assign({routine:"",time:"18:00"},JSON.parse(JSON.stringify(s)),{date:k,editIdx:i,origDate:k,mode:s.steps?"struct":"simple",sby:s.steps&&stFlat(s.steps).some(x=>x.km>0)?"d":"t"});S.sheet="planadd";renderModal()}
 function stGet(path){const st=S.pa.steps;const [a,b]=path.split(".").map(Number);return b==null?st[a]:st[a].s[b]}
 function stRow(x,path,inner){const z=[1,2,3,4,5].map(n=>`<button type="button" class="stz" style="--c:${Z_C[n]};--c-v:${vivo(Z_C[n])};--h:${8+n*4}px" data-sx="${path}|z|${n}" aria-pressed="${x.z===n}" aria-label="Intensidad ${Z_L[n].toLowerCase()}" title="${Z_L[n]}"><i></i></button>`).join("");
@@ -3923,26 +3932,46 @@ function stBuilder(p){stSync(p);const st=p.steps||[],T=stTotal(st),kg=num((S.pro
     ${fm.length?`<p class="str-fuel">Avisos de avituallamiento en el min ${fm.join("′, ")}′</p>`:""}</div>
   <div class="str-list">${st.map((x,i)=>x.rep?`<div class="str-blk"><div class="str-bh"><div class="str-step"><button type="button" data-sx="${i}|rep|-1" aria-label="Menos repeticiones">−</button><b>${x.rep} ×</b><button type="button" data-sx="${i}|rep|1" aria-label="Más repeticiones">+</button></div><span>repeticiones</span><button type="button" class="str-del" data-sx="${i}|del|0" aria-label="Quitar series">✕</button></div>${x.s.map((y,j)=>stRow(y,i+"."+j,true)).join("")}</div>`:stRow(x,String(i),false)).join("")}</div>
   <div class="str-add"><button type="button" class="chip sm" data-sx="add|step|0">＋ Tramo</button><button type="button" class="chip sm" data-sx="add|rep|0">＋ Series</button></div>`}
+/* v310 · Días del planificador: calendario de mes con varios días (seguidos o sueltos), desde hoy hasta 2 meses vista.
+   Al editar un entreno ya puesto, un solo día. Los días con algo previsto llevan su punto. Clases pa-c */
+const PA_MAX=60;
+function paDates(p){return p.dates&&p.dates.length?p.dates:[p.date]}
+function paDaysTxt(D){const f=k=>{const d=new Date(k+"T12:00:00");return DOW[d.getDay()]+" "+d.getDate()};return D.length+" días: "+(D.length>5?D.slice(0,5).map(f).join(", ")+" y "+(D.length-5)+" más":D.slice(0,-1).map(f).join(", ")+" y "+f(D[D.length-1]))}
+function paCal(p){const tk=today(),last=shiftKey(tk,PA_MAX),D=paDates(p),v=new Date((p.vm||paDates(p)[0].slice(0,8)+"01")+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
+  const prev=keyOf(new Date(y,mo-1,1,12)),next=keyOf(new Date(y,mo+1,1,12)),canP=prev.slice(0,7)>=tk.slice(0,7),canN=next<=last;let cells="";
+  for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const k=keyOf(d),out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;
+    if(out){cells+='<span class="pa-cx" aria-hidden="true"></span>';continue}const off=k<tk||k>last,n=plannedFor(k).length;
+    cells+=`<button type="button" class="pa-cd${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}">${d.getDate()}${n?"<i></i>":""}</button>`}
+  return`<div class="pa-cal"><div class="pa-ch"><button type="button" class="pa-cn" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><button type="button" class="pa-cn" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></div>
+    <div class="pa-cw" aria-hidden="true">${["L","M","X","J","V","S","D"].map(x=>`<span>${x}</span>`).join("")}</div><div class="pa-cg" role="group" aria-label="Días">${cells}</div></div>`}
+/* v310 · Rueda de deportes: fila de círculos que se desliza; el del centro es el elegido (grande, en acento y con su nombre),
+   los demás se encogen y se atenúan según se alejan. Tocar uno lo lleva al centro. Clases pa-w */
+const PA_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"]; /* Running en medio: a pie, agua y fuerza a un lado; bici al otro */
+function paWheelFx(w){const r=w.getBoundingClientRect(),c=r.left+r.width/2;w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),d=Math.min(1,Math.abs(q.left+q.width/2-c)/150);
+  b.style.transform=`scale(${(1.3-d*.55).toFixed(3)})`;b.style.opacity=(1-d*.6).toFixed(2)})}
+function paWheelSync(){const w=document.querySelector(".pa-wheel");if(!w||w._on)return;w._on=1;const sel=w.querySelector('[aria-pressed="true"]');
+  const to=sel?sel.offsetLeft+sel.offsetWidth/2-w.clientWidth/2:0,from=S.pa&&S.pa._wl;
+  if(from!=null&&Math.abs(from-to)>2&&!matchMedia("(prefers-reduced-motion: reduce)").matches){w.scrollLeft=from;requestAnimationFrame(()=>w.scrollTo({left:to,behavior:"smooth"}))}else w.scrollLeft=to;paWheelFx(w);let tm=null;
+  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;const r=w.getBoundingClientRect(),c=r.left+r.width/2;let best=null,bd=1e9;
+    w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),d=Math.abs(q.left+q.width/2-c);if(d<bd){bd=d;best=b}});
+    const v=best&&best.dataset.sp;if(v&&v!==S.pa.sport){S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";buzz(6);renderModal()}},140)},{passive:true})}
 function paHtml(){const p=S.pa,tk=today();
-  const days=Array.from({length:14},(_,i)=>shiftKey(tk,i));
-  const inStrip=days.includes(p.date);
-  const dchips=days.map(k=>{const d=new Date(k+"T12:00:00"),n=plannedFor(k).length;return`<button type="button" class="pa-day" data-pa="date:${k}" aria-pressed="${p.date===k}" aria-label="${esc(dateLabel(k))}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b><i class="${n?"on":""}"></i></button>`}).join("");
-  const sp=["run","trail","walk","hike","str","road","gravel","mtb","indoor","swim"].map(x=>`<button type="button" class="pa-sp" data-pa="sport:${x}" aria-pressed="${p.sport===x}" aria-label="${SPORT_L[x]}">${spIcon(x)}<span>${SPORT_S[x]}</span></button>`) /* v266: 5 × 2, a pie y fuerza arriba, bici y agua abajo */.join("");
+  const D=paDates(p);
+  const sp=PA_SPS.map(x=>`<button type="button" class="pa-wi" data-pa="sport:${x}" data-sp="${x}" aria-pressed="${p.sport===x}" aria-label="${SPORT_L[x]}">${spSvg(x)}</button>`).join("");setTimeout(paWheelSync,0);
   const rts=p.sport==="str"?`<div class="pa-f"><span class="pa-l">Rutina</span><div class="chips">${allRoutines().map(r=>`<button type="button" class="chip sm" data-pa="routine:${esc(r.id)}" aria-pressed="${p.routine===r.id}">${esc(routineShort(r))}</button>`).join("")}</div></div>`:"";
-  const ex=plannedFor(p.date);
+  const ex=D.length===1?plannedFor(D[0]):[];
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.pa._sh?"":" fade"} pa-sheet" role="dialog" aria-modal="true" aria-label="Planificar entreno">
     <div class="row"><h3 style="margin:0">Planificar entreno</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <div class="pa-f"><div class="pa-lr"><span class="pa-l">Día</span><label class="chip sm pa-other"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span>${inStrip?"Otra fecha":esc(dateLabel(p.date))}</span><input type="date" id="pa_date" min="${tk}" value="${p.date}" aria-label="Elegir otra fecha"></label></div>
-      <div class="pa-days" role="group" aria-label="Día">${dchips}</div>
-      ${ex.length?`<p class="pa-note">Ese día ya tienes: ${esc(ex.map(sessName).join(", "))}</p>`:""}</div>
-    <div class="pa-f"><span class="pa-l">Deporte</span><div class="pa-sps">${sp}</div></div>
+    <div class="pa-f"><span class="pa-l">${p.editIdx!=null?"Día":"Días"}</span>${paCal(p)}
+      <p class="pa-note">${p.editIdx!=null?"":D.length>1?esc(paDaysTxt(D)):"Toca varios días para repetir el entreno, seguidos o sueltos. "}${ex.length?`Ese día ya tienes: ${esc(ex.map(sessName).join(", "))}`:""}</p></div>
+    <div class="pa-f"><span class="pa-l">Deporte</span><div class="pa-wh"><div class="pa-wheel" role="radiogroup" aria-label="Deporte">${sp}</div><b class="pa-wn" aria-hidden="true">${SPORT_L[p.sport]||""}</b></div></div>
     ${rts}
     ${p.sport!=="str"?`<div class="seg pa-mode" role="tablist" aria-label="Tipo de sesión"><button role="tab" type="button" data-pa="mode:simple" aria-selected="${p.mode!=="struct"}" aria-pressed="${p.mode!=="struct"}">Sencilla</button><button role="tab" type="button" data-pa="mode:struct" aria-selected="${p.mode==="struct"}" aria-pressed="${p.mode==="struct"}">Estructurada</button></div>`:""}
     ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`${p.sport!=="str"?pdBlock(p):`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>`}
     ${intSlider(p.int||"s")}`}
     <div class="pa-f pa-time"><span class="pa-l">Hora</span>${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div>
     <div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>Tarjeta de carrera en Hoy los días previos y cuenta atrás en Progreso</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div>
-    <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":"Añadir el "+esc(dateLabel(p.date))}</button>
+    <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":(D.length>1?"Añadir en "+D.length+" días":"Añadir el "+esc(dateLabel(D[0])))}</button>
     ${p.editIdx!=null?`<div class="pa-ex"><button type="button" class="ms-link" data-plskip="${p.editIdx}" data-k="${p.origDate}">No lo voy a hacer</button><button type="button" class="ms-link red" data-pldel="${p.editIdx}" data-k="${p.origDate}">Quitar entreno</button></div>`:""}
   </div></div>`}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-sx]");if(!t||!S.pa)return;const [path,a,v]=t.dataset.sx.split("|"),st=S.pa.steps=S.pa.steps||[];
@@ -3967,16 +3996,19 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.paopen!=null){paOpen(t.dataset.paopen||null);return}
   if(!S.pa)return;
   if(t.dataset.pa&&t.dataset.pa==="mode:struct"&&!(S.pa.steps&&S.pa.steps.length)){const tk2=S.pa.sport==="walk"||S.pa.sport==="hike"?"rodaje":"series";S.pa.steps=JSON.parse(JSON.stringify(ST_TPL[tk2][1]));S.pa.tpl=tk2}
-  if(t.dataset.pa){const i=t.dataset.pa.indexOf(":"),k=t.dataset.pa.slice(0,i),v=t.dataset.pa.slice(i+1);S.pa[k]=k==="dur"?+v:v;if(k==="sport"&&v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal();return}
+  if(t.dataset.pa){const i=t.dataset.pa.indexOf(":"),k=t.dataset.pa.slice(0,i),v=t.dataset.pa.slice(i+1);
+    if(k==="day"){const p=S.pa;let D=paDates(p).slice();if(p.editIdx!=null)D=[v];else if(D.includes(v)){if(D.length>1)D=D.filter(x=>x!==v)}else D.push(v);D.sort();p.dates=D;p.date=D[0];buzz(6);renderModal();return}
+    if(k==="vm"){S.pa.vm=v;renderModal();return}
+    S.pa[k]=k==="dur"?+v:v;if(k==="sport"&&v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal();return}
   if(t.dataset.paok){const p=S.pa,s0={sport:p.sport,dur:+p.dur||45,int:p.int||"s",time:p.time||"18:00"};if(p.sport==="str"&&p.routine)s0.routine=p.routine;if(p.race)s0.race=true;
     if(p.by==="d"&&p.mode!=="struct"&&p.sport!=="str"&&p.km>0){s0.km=p.km;s0.by="d";if(p.spd)s0.spd=p.spd}
     if(p.mode==="struct"&&p.sport!=="str"&&p.steps&&p.steps.length){s0.steps=p.steps;s0.dur=stTotal(p.steps);s0.int=stInt(p.steps);if(p.pw&&isBike(p.sport))s0.pw=true}
     S.plan=S.plan||{};if(p.editIdx!=null&&S.plan[p.origDate]){S.plan[p.origDate].splice(p.editIdx,1);if(!S.plan[p.origDate].length)delete S.plan[p.origDate]}
-    if(p.editIdx!=null&&p.origDate===p.date){(S.plan[p.date]=S.plan[p.date]||[]).splice(p.editIdx,0,s0)}else (S.plan[p.date]=S.plan[p.date]||[]).push(s0);savePlan();buzz(10);
-    const k=p.date;S.pa=null;S.sheet=null;renderModal();S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();
-    toast((t.textContent.indexOf("Guardar")===0?"Entreno actualizado · ":"Entreno añadido el ")+dateLabel(k));setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
+    const DD=paDates(p);if(p.editIdx!=null&&p.origDate===p.date){(S.plan[p.date]=S.plan[p.date]||[]).splice(p.editIdx,0,s0)}else DD.forEach(k1=>(S.plan[k1]=S.plan[k1]||[]).push(JSON.parse(JSON.stringify(s0))));savePlan();buzz(10);
+    const k=DD[0];S.pa=null;S.sheet=null;renderModal();S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();
+    toast(t.textContent.indexOf("Guardar")===0?"Entreno actualizado · "+dateLabel(k):DD.length>1?"Entreno añadido en "+DD.length+" días":"Entreno añadido el "+dateLabel(k));setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
 });
-document.addEventListener("change",e=>{if(!S.pa)return;if(e.target.id==="pa_date"&&e.target.value){S.pa.date=e.target.value<today()?today():e.target.value;renderModal()}if(e.target.id==="pa_time")S.pa.time=e.target.value});
+document.addEventListener("change",e=>{if(!S.pa)return;if(e.target.id==="pa_time")S.pa.time=e.target.value});
 
 const XBR={what:["Para qué sirve",'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>'],sport:["Si haces deporte",'<circle cx="14.5" cy="4.6" r="1.9"/><path d="M8.5 20.5l2.8-5.6 3 2.4.9 3.7M11.3 14.9l1.3-5.3 3.4 2 3-.9M12.6 9.6l-3.8.9-2 3"/>'],src:["Dónde lo encuentras",'<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 3c-1.7 1.2-2.5 3.5-2.5 6.5 0 1.4.8 2.5 2.5 2.5v9"/>'],
   dose:["Cuánto y cuándo",'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'],
@@ -5682,7 +5714,7 @@ function optHtml(){const o=S.opt,d=optDef(o.k);if(!d)return"";const q=normQ(o.q|
     <div class="row"><h3>${esc(d.t)}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${d.q?`<label class="ms-q">${IC_SRCH}<input id="optq" type="search" placeholder="Buscar…" autocomplete="off" value="${esc(o.q||"")}" aria-label="Buscar"></label>`:""}
     <div class="opt-l" id="optl">${optList(d,L)}</div></div></div>`}
-function optList(d,L){return L.map(x=>`<button type="button" class="opt-i${x.v===d.cur?" on":""}" data-optv="${esc(x.v)}">${x.sp?`${spIcon(x.sp)}`:""}<span class="opt-t">${esc(x.l)}</span>${x.v===d.cur?'<svg class="opt-ck" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':""}</button>`).join("")||'<p class="ms-none">Nada con ese nombre.</p>'}
+function optList(d,L){return L.map(x=>`<button type="button" class="opt-i${x.v===d.cur?" on":""}" data-optv="${esc(x.v)}" aria-pressed="${x.v===d.cur}">${x.sp?spSvg(x.sp):""}<span class="opt-t">${esc(x.l)}</span></button>`).join("")||'<p class="ms-none">Nada con ese nombre.</p>'}
 function mealOpen(mid){S.msh={mid,k:S.day,q:""};S.sheet="meal";renderModal()}
 function mshMeal(){const p=S.msh;if(!p)return null;const t=dayTargets(p.k);return t&&mealPlan(t,p.k).meals.find(x=>x.id===p.mid)}
 function mshList(m){const p=S.msh,q=normQ(p.q).trim();let xs,lbl;
