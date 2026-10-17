@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-16T22:13:12.151Z">
+<meta name="sustrato-version" content="2026-10-17T15:04:46.822Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1240,7 +1240,7 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-cn{appearance:none;border:0;background:none;color:var(--fg);font-size:22px;width:44px;height:36px;border-radius:10px;cursor:pointer}.pa-cn:disabled{color:var(--faint);cursor:default}
 .pa-cw,.pa-cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
 .pa-cw span{text-align:center;font-size:12px;color:var(--muted);padding:2px 0 4px}
-.pa-cd{appearance:none;border:0;background:none;color:var(--fg);font:500 15px var(--font);height:40px;border-radius:50%;position:relative;cursor:pointer;font-variant-numeric:tabular-nums}
+.pa-cd{appearance:none;border:0;padding:0;background:none;color:var(--fg);font:500 15px var(--font);width:100%;max-width:40px;aspect-ratio:1;justify-self:center;border-radius:50%;position:relative;cursor:pointer;font-variant-numeric:tabular-nums} /* v311: círculo exacto de 40 px como mucho (antes el ancho era el de la columna) */
 .pa-cd.tk{font-weight:700}
 .pa-cd i{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--muted)}
 .pa-cd[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}.pa-cd[aria-pressed="true"] i{background:var(--ac-on)}
@@ -3094,7 +3094,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="310";
+const APP_VER="311";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3947,14 +3947,17 @@ function paCal(p){const tk=today(),last=shiftKey(tk,PA_MAX),D=paDates(p),v=new D
 /* v310 · Rueda de deportes: fila de círculos que se desliza; el del centro es el elegido (grande, en acento y con su nombre),
    los demás se encogen y se atenúan según se alejan. Tocar uno lo lleva al centro. Clases pa-w */
 const PA_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"]; /* Running en medio: a pie, agua y fuerza a un lado; bici al otro */
-function paWheelFx(w){const r=w.getBoundingClientRect(),c=r.left+r.width/2;w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),d=Math.min(1,Math.abs(q.left+q.width/2-c)/150);
-  b.style.transform=`scale(${(1.3-d*.55).toFixed(3)})`;b.style.opacity=(1-d*.6).toFixed(2)})}
+/* v311: mientras deslizas, el del centro ya es el elegido (acento, nombre y un toque de vibración); el resto del formulario se pone al día al parar */
+function paWheelFx(w){const r=w.getBoundingClientRect(),c=r.left+r.width/2;let best=null,bd=1e9;w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),dx=Math.abs(q.left+q.width/2-c),d=Math.min(1,dx/150);
+  b.style.transform=`scale(${(1.3-d*.55).toFixed(3)})`;b.style.opacity=(1-d*.6).toFixed(2);if(dx<bd){bd=dx;best=b}});
+  if(best&&best.dataset.sp!==w._cur){const first=w._cur==null;w._cur=best.dataset.sp;w.querySelectorAll(".pa-wi").forEach(b=>b.setAttribute("aria-pressed",b===best));
+    const n=w.parentNode.querySelector(".pa-wn");if(n)n.textContent=SPORT_L[w._cur]||"";if(!first)buzz(4)}
+  return best}
 function paWheelSync(){const w=document.querySelector(".pa-wheel");if(!w||w._on)return;w._on=1;const sel=w.querySelector('[aria-pressed="true"]');
   const to=sel?sel.offsetLeft+sel.offsetWidth/2-w.clientWidth/2:0,from=S.pa&&S.pa._wl;
   if(from!=null&&Math.abs(from-to)>2&&!matchMedia("(prefers-reduced-motion: reduce)").matches){w.scrollLeft=from;requestAnimationFrame(()=>w.scrollTo({left:to,behavior:"smooth"}))}else w.scrollLeft=to;paWheelFx(w);let tm=null;
-  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;const r=w.getBoundingClientRect(),c=r.left+r.width/2;let best=null,bd=1e9;
-    w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),d=Math.abs(q.left+q.width/2-c);if(d<bd){bd=d;best=b}});
-    const v=best&&best.dataset.sp;if(v&&v!==S.pa.sport){S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";buzz(6);renderModal()}},140)},{passive:true})}
+  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;const best=paWheelFx(w),v=best&&best.dataset.sp;
+    if(v&&v!==S.pa.sport){S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal()}},140)},{passive:true})}
 function paHtml(){const p=S.pa,tk=today();
   const D=paDates(p);
   const sp=PA_SPS.map(x=>`<button type="button" class="pa-wi" data-pa="sport:${x}" data-sp="${x}" aria-pressed="${p.sport===x}" aria-label="${SPORT_L[x]}">${spSvg(x)}</button>`).join("");setTimeout(paWheelSync,0);
