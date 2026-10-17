@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T20:49:43.424Z">
+<meta name="sustrato-version" content="2026-10-17T22:00:19.768Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3075,6 +3075,68 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .cr-w{margin:14px 0 0;font-size:15px;line-height:1.4}
 .cr-go{width:100%;margin-top:14px;background:color-mix(in srgb,currentColor 14%,transparent);color:inherit}
 
+/* v319 · Entrenar el intestino: nota en la sesión y progreso hacia la cifra de la carrera */
+.gt-n{margin:8px 0 0;padding:10px 12px;border-radius:14px;background:var(--fill2);font-size:13px;line-height:1.4;color:var(--fg)}
+.gt-n b{display:block;font-size:14px;margin-bottom:2px}
+.gt{margin-top:14px;padding-top:14px;border-top:1px solid var(--sep)}
+.gt-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.gt-h b{font-size:15px}.gt-h span{font-size:13px;color:var(--muted)}
+.gt-tr{position:relative;height:10px;border-radius:999px;background:var(--fill2);margin:10px 0 8px}
+.gt-tr i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--amarillo)} /* hidratos, como .fl-track */
+.gt-tr em{position:absolute;top:-3px;width:3px;height:16px;margin-left:-1.5px;border-radius:2px;background:var(--fg)}
+.gt-l{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}.gt-l b{color:var(--fg);font-weight:600}
+.gt .note{margin:8px 0 0}
+.pkk+.gt{margin-top:6px;padding-top:0;border-top:0}
+
+/* v319 · Avisos de tomas durante el entreno: fila con conmutador */
+.fr-r{margin-top:6px;border-top:.5px solid var(--sep)}.fr-r .tg-t b{font-size:15px;font-weight:600}
+
+/* v319 · Sudor salado: tres preguntas Sí/No en la tarjeta de tasa de sudor */
+.sl{margin-top:14px;padding-top:14px;border-top:.5px solid var(--sep)}.sl-t{display:block;font-size:15px;margin-bottom:4px}
+.sl-r{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}.sl-r>span{font-size:14px;line-height:1.35}
+.sl-r .seg{flex:0 0 auto}.sl-r .seg button{min-width:52px;min-height:36px}
+.sl-n{margin:6px 0 0}
+
+/* v319 · Balance de la carrera: previsto frente a hecho */
+.rb{margin-top:4px}
+.rb-r{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:baseline;padding:11px 0;border-top:.5px solid var(--sep);font-size:15px}
+.rb-r em{font-style:normal;color:var(--muted);text-align:right}.rb-r b{text-align:right;font-weight:600}
+.rb-r b.ok::after,.rb-r b.no::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:6px;vertical-align:2px;background:var(--ok)}
+.rb-r b.no::after{background:var(--warn)}
+.rb-hd{border-top:0;padding-top:0;font-size:12px}.rb-hd b{color:var(--muted);font-weight:500}
+/* Pestañas del plan de carrera: cada una en una línea, también con cuatro en móviles estrechos */
+.seg.rp-tabs{display:flex}.seg.rp-tabs button{flex:1 1 auto;white-space:nowrap;padding:6px 6px}
+@media (max-width:340px){.seg.rp-tabs button{padding:6px 3px;font-size:12px}}
+
+/* v319 · Alcohol: hoja con contadores */
+.al-l{margin-top:12px}
+.al-r{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:6px 0;border-top:.5px solid var(--sep)}
+.al-r:first-child{border-top:0}.al-t b{display:block;font-size:17px;font-weight:500}.al-t small{display:block;font-size:13px;color:var(--muted)}
+.al-r .str-step b{min-width:24px;text-align:center}.al-r .str-step button:disabled{color:var(--faint);cursor:default}
+.al-s{margin:12px 0 0;font-size:15px;font-weight:600}.al-n{margin:6px 0 0}
+
+/* v319 · Importar plan (iCal) */
+.ic-u{display:grid;gap:6px;margin:14px 0 8px}.ic-u input{width:100%;min-height:44px}
+.ic .inote{margin:4px 0 12px}.ic-e{margin:0 0 12px;font-size:14px}
+.ic-s{margin:12px 0 4px;font-size:14px;color:var(--muted)}
+.ic-l{max-height:46vh;overflow:auto;margin:0 -4px 12px}
+.ic-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 4px;border-top:.5px solid var(--sep);cursor:pointer}.ic-r:first-child{border-top:0}
+.ic-r input{width:22px;height:22px;accent-color:var(--ac);flex:0 0 auto}
+.ic-ic{flex:0 0 auto;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--fill2)}
+.ic-t{min-width:0}.ic-t b{display:block;font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ic-t small{display:block;font-size:13px;color:var(--muted)}
+.ic-a{display:grid;gap:8px;justify-items:center}.ic-a .btn{width:100%}
+
+/* v319 · Código de barras en la hoja de una comida */
+.bc-open{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;margin-top:8px;padding:10px 12px;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:500 15px var(--font);cursor:pointer}
+.bc{display:grid;gap:10px;margin-top:8px}
+.bc-v{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;background:#000}.bc-h{margin:0;text-align:center;font-size:13px;color:var(--muted)}
+.bc-m{display:flex;gap:8px}.bc-m input{flex:1;min-width:0;min-height:44px}
+.bc-e{margin:0;font-size:14px}
+.bc-r{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.bc-r span{font-size:13px;color:var(--muted);margin-right:4px}
+.bc-p b{display:block;font-size:17px}.bc-p small{display:block;font-size:13px;color:var(--muted)}
+.bc-g{display:flex;align-items:center;justify-content:space-between}.bc-g>span{font-size:15px}.bc-g .str-step b{min-width:64px;text-align:center}
+.bc-s{margin:0;font-size:15px;font-weight:600}
+.bc-a{display:flex;gap:8px;align-items:center}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3154,7 +3216,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="318";
+const APP_VER="319";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4409,7 +4471,7 @@ function sweatBlock(a){if(a.sport==="str"||a.mov<1800)return"";const ex=(S.sweat
     <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button>${ex?`<button class="chip sm danger" data-sweatdel="${a.id}">Borrar</button>`:""}</div></div>`}
 function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   const how=`<ol class="sw-how"><li>Pésate justo antes de una sesión de al menos 45 minutos.</li><li>Apunta lo que bebas durante.</li><li>Sécate y vuelve a pesarte al terminar.</li><li>Abre la actividad en Sustrato y rellena "Tu tasa de sudor".</li></ol>`;
-  if(!L.length)return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span><div class="sw-empty"><span class="sw-ic big" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><b>Hidratación a tu medida</b><p>Cada persona suda distinto. Con una prueba sencilla, el avituallamiento y el agua del día usan tus litros por hora reales en lugar de una media.</p></div></div>${how}</section>`;
+  if(!L.length)return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span><div class="sw-empty"><span class="sw-ic big" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><b>Hidratación a tu medida</b><p>Cada persona suda distinto. Con una prueba sencilla, el avituallamiento y el agua del día usan tus litros por hora reales en lugar de una media.</p></div></div>${how}${saltBlock()}</section>`;
   const by={};L.forEach(x=>{(by[x.sport]=by[x.sport]||[]).push(x)});
   const wx=d=>{const w=(S.wx&&S.wx.days||[]).find(y=>y.date===d);return w?w.hi:null};
   const mx=Math.max(1.6,...L.map(x=>x.rate))*1.1,W=400,H=120;
@@ -4421,7 +4483,7 @@ function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span>
     ${Object.keys(by).length===1?(()=>{const sp=Object.keys(by)[0],r=sweatRate(sp),n=by[sp].length;return`<div class="vhead"><b>${r.toFixed(2).replace(".",",")}</b><span>L/h en ${esc(SPORT_L[sp])} · ${n} ${n===1?"prueba":"pruebas"}</span></div>`})():`<div class="sw-sp">${Object.entries(by).map(([sp,xs])=>{const r=sweatRate(sp);return`<div class="sw-t">${spIcon(sp)}<div><b>${r.toFixed(2).replace(".",",")} <small>L/h</small></b><span>${SPORT_L[sp]} · ${xs.length} ${xs.length===1?"prueba":"pruebas"}</span></div></div>`}).join("")}</div>`}
     <div class="sw-ch" style="${L.length<3?"display:none":""}"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pruebas de sudor${hasT?" según temperatura":""}"><line x1="0" x2="${W}" y1="${H-14}" y2="${H-14}" stroke="var(--sep,rgba(127,127,127,.3))"/>${dots}</svg><div class="sw-ax"><span>${hasT?r0(tmin+2)+" °C":esc(dateLabel(L[0].d))}</span><span>${hasT?"temperatura":""}</span><span>${hasT?r0(tmax-2)+" °C":esc(dateLabel(L[L.length-1].d))}</span></div></div>
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:10px 0 0">Peso antes menos peso después, más lo bebido, entre las horas de la sesión. Ya se usa en tu avituallamiento y en el agua del día. Repite la prueba con calor y con frío: la tasa cambia mucho con la temperatura.</p></details></section>`}
+    ${saltBlock()}<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:10px 0 0">Peso antes menos peso después, más lo bebido, entre las horas de la sesión. Ya se usa en tu avituallamiento y en el agua del día. Repite la prueba con calor y con frío: la tasa cambia mucho con la temperatura.</p></details></section>`}
 
 /* ---------- Recuperación tras entrenar ---------- */
 function flPrompt(){if(S.day!==today())return"";let hid={};try{hid=JSON.parse(localStorage.getItem("sustrato-flask")||"{}")}catch(e){}
@@ -4497,7 +4559,7 @@ function ptSub(p){return[p.c+" g hidratos",p.caf?p.caf+" mg cafeína":null,p.na?
    leen y escriben el mismo registro (S.fuel). «Tomado» en Hoy crea uno con lo previsto (src:"plan"); al detallarlo se sustituye.
    Las marcas antiguas en el registro del día (fuel_a…) se leen como si fueran ese registro. */
 function flEntry(a){const ex=(S.fuel||[]).find(x=>x.id===a.id);if(ex)return ex;const l=((S.log||{})[a.day]||{})["fuel_a"+a.id];
-  return l?{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:l.C||0,caf:0,na:0,cph:a.mov?Math.round((l.C||0)/(a.mov/3600)):0,tg:fuelTarget(a.mov/60,actInt(a)),src:"plan"}:null}
+  return l?{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:l.C||0,caf:0,na:0,cph:a.mov?Math.round((l.C||0)/(a.mov/3600)):0,tg:fuelFor(a.day,a.mov/60,actInt(a)),src:"plan"}:null}
 function flPut(a,e){S.fuel=(S.fuel||[]).filter(x=>x.id!==a.id);if(e)S.fuel.push(e);saveFuel();
   if(((S.log||{})[a.day]||{})["fuel_a"+a.id])setLog(a.day,"fuel_a"+a.id,null)}
 function fuelTol(){const L=(S.fuel||[]).filter(x=>x.gi==="good"&&x.cph>0);return L.length?Math.max(...L.map(x=>x.cph)):null}
@@ -4511,7 +4573,7 @@ function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c
 function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a);
   if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
-  const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelTarget(a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
+  const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelFor(a.day,a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
   const used=new Set(dr.items.map(i=>i.pid)),uses={},last={};(S.fuel||[]).forEach(f=>(f.items||[]).forEach(it=>{uses[it.pid]=(uses[it.pid]||0)+1;if(!last[it.pid]||f.d>last[it.pid])last[it.pid]=f.d}));
   const own=new Set((S.pantry||[]).map(p=>p.id)),ranked=pantry().filter(p=>!used.has(p.id)).map((p,i)=>({p,i})).sort((x,y)=>(uses[y.p.id]||0)-(uses[x.p.id]||0)||(last[y.p.id]||"").localeCompare(last[x.p.id]||"")||(own.has(y.p.id)-own.has(x.p.id))||x.i-y.i).map(x=>x.p);
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
@@ -4529,7 +4591,7 @@ function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a
     <div class="fl-gi"><span>¿Cómo te sentó?</span><div class="seg sm" role="group" aria-label="Cómo te sentó">${[["good","Bien"],["meh","Regular"],["bad","Molestias"]].map(([k,l])=>`<button type="button" data-flgi="${k}" aria-pressed="${dr.gi===k}">${l}</button>`).join("")}</div></div>
     <div class="sw-a"><button class="btn sm primary" data-flsave="${a.id}">${ex?"Guardar cambios":"Guardar"}</button>${ex?'<button type="button" class="chip sm" data-fledit="">Cancelar</button>':""}</div></div>`}
 function flReadNew(){const nf=S.flNew;if(!nf)return;const g=id=>($("#"+id)||{}).value;const n=g("flp_n");if(n!=null)nf.n=n;["c","caf","na"].forEach(k=>{const v=g("flp_"+k);if(v!=null)nf[k]=v===""?null:num(v)})}
-function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if(!L.length)return"";const tol=fuelTol();
+function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if(!L.length){const g=gutProgress();return g?`<section class="glass pad fade fl-card"><span class="pkk">Avituallamiento en carrera</span>${g}</section>`:""} /* v319: con carrera a la vista, el plan de estómago sale aunque aún no haya tomas */const tol=fuelTol();
   const W=400,H=130,mx=Math.max(90,...L.map(x=>x.cph))*1.08,X=i=>56+(L.length>1?i/(L.length-1):.5)*(W-72),Y=v=>H-16-v/mx*(H-30);
   const gc={good:"var(--verde)",meh:"color-mix(in srgb,var(--naranja) 55%,var(--card))",bad:"var(--naranja)"};
   const dots=L.map((x,i)=>`<line x1="${X(i).toFixed(1)}" x2="${X(i).toFixed(1)}" y1="${Y(x.tg||0).toFixed(1)}" y2="${Y(x.cph).toFixed(1)}" stroke="rgba(127,127,127,.35)" stroke-width="2"/>${x.tg?`<rect x="${(X(i)-6).toFixed(1)}" y="${(Y(x.tg)-1).toFixed(1)}" width="12" height="2" fill="var(--fg)" opacity=".5"/>`:""}<circle cx="${X(i).toFixed(1)}" cy="${Y(x.cph).toFixed(1)}" r="6" fill="${gc[x.gi]||"#8e8e93"}" data-tip="${esc(dateLabel(x.d))} · ${esc(SPORT_L[x.sport])}|${x.cph} g/h${x.tg?" (objetivo "+x.tg+")":""} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}"/>`).join("");
@@ -4538,7 +4600,7 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
     ${VZ.bars({id:"fl",label:"Hidratos por hora en tus sesiones largas",cols:L.map(x=>({x:VZ.sd(x.d),segs:[{v:x.cph,c:gc[x.gi]||"var(--vz-n2)"}],read:`<b>${x.cph}</b><span>g/h el ${esc(dateLabel(x.d))} · ${{good:"sin molestias",meh:"regular",bad:"con molestias"}[x.gi]||"sin valorar"}</span>`})),refs:[]})}
     <svg class="fl-ch" style="display:none" viewBox="0 0 ${W} ${H}" role="img" aria-hidden="true">${[30,60,90].filter(v=>v<mx).map(v=>`<line x1="34" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(127,127,127,.18)" stroke-dasharray="2 4"/><text x="0" y="${(Y(v)+4).toFixed(1)}" class="ax" font-size="11" fill="currentColor" opacity=".55">${v} g/h</text>`).join("")}${dots}</svg>
     <div class="ws-lg"><span><i style="background:var(--verde)"></i>Bien</span><span><i style="background:color-mix(in srgb,var(--naranja) 55%,var(--card))"></i>Regular</span><span><i style="background:var(--naranja)"></i>Molestias</span></div>
-    <p class="note" style="margin:8px 0 0">Si preparas una carrera larga, el estómago se entrena: sube unos 10 g/h por semana en tus salidas largas y practica lo que tomarás ese día.</p></section>`}
+    ${gutProgress()||`<p class="note" style="margin:8px 0 0">Si preparas una carrera larga, el estómago se entrena: con una carrera de 90 min o más en el plan, cada sesión larga te pedirá un poco más.</p>`}</section>`}
 function fitCard(){
   if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
   const st=tsbState(now.tsb),w=400,h=230,PL=34,PR=4,PT=22,H1=128,G=14,H2=46,iw=w-PL-PR,n=pts.length;
@@ -5320,7 +5382,7 @@ async function exportMenuPng(){const lg=await shLogo();
 /* ---------- Peso, gasto adaptativo y eficiencia ---------- */
 function daysBetween(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
 function linreg(pts){const n=pts.length;if(n<2)return null;let sx=0,sy=0,sxx=0,sxy=0;pts.forEach(([x,y])=>{sx+=x;sy+=y;sxx+=x*x;sxy+=x*y});const d=n*sxx-sx*sx;if(!d)return null;const m=(n*sxy-sx*sy)/d;return{m,b:(sy-m*sx)/n}}
-function loggedKcal(k){const l=S.log&&S.log[k];if(!l)return null;const v=Object.values(l);if(v.length<2)return null;return v.reduce((s,x)=>s+(x.st==="skip"?0:4*(x.P||0)+4*(x.C||0)+9*(x.F||0)),0)}
+function loggedKcal(k){const l=S.log&&S.log[k];if(!l)return null;const v=Object.values(l);if(v.length<2)return null;return v.reduce((s,x)=>s+(x.st==="skip"?0:4*(x.P||0)+4*(x.C||0)+9*(x.F||0)+alKcal(x)),0)}
 function computeAdapt(){
   const W=(S.weights||[]).slice().sort((a,b)=>a.d<b.d?-1:1),end=today(),start=shiftKey(end,-28);
   const xs=W.filter(w=>w.d>=start);
@@ -5765,7 +5827,7 @@ const IC_INFO='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" strok
 const IC_CAM='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg>';
 const IC_SRCH='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>';
 const MS_RAT=[[.5,"½"],[.75,"¾"],[1,"1"],[1.25,"1¼"],[1.5,"1½"]];
-const kcOf=x=>4*(x.P||0)+4*(x.C||0)+9*(x.F||0);
+const kcOf=x=>4*(x.P||0)+4*(x.C||0)+9*(x.F||0)+alKcal(x); /* v319: con el alcohol apuntado */
 const normQ=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 function dpkHtml(){const p=S.dpk,t=dayTargets(p.k),m=t&&mealPlan(t,p.k).meals.find(x=>x.id===p.mid);if(!m)return"";const a=(S.menu[p.k]||{})[p.mid],q=normQ(p.q).trim();
   let xs=allDishes().filter(x=>x.meals.includes(m.id)||(a&&x.id===a.d));if(q)xs=allDishes().filter(x=>normQ(x.n).includes(q));
@@ -5811,8 +5873,9 @@ function mealSheetHtml(){const p=S.msh,m=mshMeal();if(!m)return"";const k=p.k,e=
     ${other}
     <div class="ms-opt${st==="done"?" on":""}"><button class="ms-oh" data-msr="1"><b>Lo planeado</b><span>${ds?esc(ds.n):"Según objetivo"} · ${fmtInt(kcOf(base)*(r||1))} kcal</span></button>${seg("data-msr",r)}</div>
     <div class="ms-lbl">${st==="chg"?"Cambiar por otro plato":"O comí otra cosa"}</div>
-    <label class="ms-q">${IC_SRCH}<input id="msq" type="search" placeholder="Buscar plato…" autocomplete="off" value="${esc(p.q||"")}" aria-label="Buscar plato"></label>
-    <div class="ms-list" id="msl">${mshList(m)}</div>
+    ${p.bc?bcHtml():`<label class="ms-q">${IC_SRCH}<input id="msq" type="search" placeholder="Buscar plato…" autocomplete="off" value="${esc(p.q||"")}" aria-label="Buscar plato"></label>
+    <button type="button" class="bc-open" data-bcopen="1"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2M8 8v8M11 8v8M14 8v8M17 8v8"/></svg>Escanear código de barras</button>
+    <div class="ms-list" id="msl">${mshList(m)}</div>`}
     ${S.sampleImg?`<label class="ms-photo ia">${IC_CAM}<span>Hacer foto de lo que comí</span><input type="file" id="lgf_${m.id}" accept="image/*" hidden></label>`:""}
     <div class="ms-foot"><button class="ms-link" data-msskip="1" aria-pressed="${st==="skip"}">${st==="skip"?"Desmarcar «me la salté»":"Me la salté"}</button>${st?'<button class="ms-link red" data-msdel="1">Quitar registro</button>':""}</div>
   </div></div>`}
@@ -5871,23 +5934,23 @@ function phCard(m){const p=S.ph;if(!p||p.mid!==m.id||p.k!==S.day)return"";
 
 /* ---------- Avituallamiento y carrera ---------- */
 /* v313 · Cálculo del avituallamiento de una sesión (compartido por la tarjeta de Avituallamiento y el plan de carrera) */
-function fuelCalc(k,sport,min,it,race,time){const h=min/60,cph=fuelTarget(min,it,race),carbs=fuelCarbs(min,cph);
-  const T=tempAt(k,time,min),hf=heatF(T),flu=Math.round(sweatRate(sport)*.75*hf*h*1000/50)*50,na=Math.round(450*hf*h/50)*50,gels=Math.ceil(carbs/25),bott=Math.max(1,Math.round(flu/500));
+function fuelCalc(k,sport,min,it,race,time){const h=min/60,cph=fuelFor(k,min,it,race), /* v319: con plan de estómago, su escalón */carbs=fuelCarbs(min,cph);
+  const T=tempAt(k,time,min),hf=heatF(T),flu=Math.round(sweatRate(sport)*.75*hf*h*1000/50)*50,na=saltNa(flu,hf,h), /* v319: según lo salado de tu sudor */gels=Math.ceil(carbs/25),bott=Math.max(1,Math.round(flu/500));
   const gap=cph<=30?45:cph<=50?30:20,steps=[];for(let m=min<150?40:30;m<min-10;m+=gap)steps.push(m); /* v267: con poco por hora, tomas más espaciadas */
   return{cph,carbs,T,hf,flu,na,gels,bott,steps,per:steps.length?Math.round(carbs/steps.length):0}}
 function fuelCard(t){
   const ses=t.acts.map(a=>({id:"a"+a.id,aid:a.id,n:SPORT_L[a.sport],sport:a.sport,min:Math.round(a.mov/60),time:(a.start||"").slice(11,16),it:actInt(a)})).concat(t.plan.map((s,i)=>({id:"p"+i,n:sessName(s),sport:s.sport,min:s.dur,time:s.time,it:s.int,race:!!s.race})));
-  const long=ses.filter(s=>fuelTarget(s.min,s.it,s.race)>0);if(!long.length)return"";
-  const k=S.day,canLog=k<=today();
+  const k=S.day,canLog=k<=today(),long=ses.filter(s=>fuelFor(k,s.min,s.it,s.race)>0);if(!long.length)return"";
   const rows=long.map(s=>{
     const{cph,carbs,T,hf,flu,na,gels,bott,steps,per}=fuelCalc(k,s.sport,s.min,s.it,s.race,s.time);
     const key="fuel_"+s.id,act=s.aid!=null?S.acts.find(a=>a.id===s.aid):null,done=act?!!flEntry(act):!!((S.log[k]||{})[key]);
-    return`<details class="fu2${done?" done":""}"><summary>${spIcon(s.sport)}<span class="tc-tx"><b>${esc(s.n)}</b><small>${fmtDur(s.min*60)}${s.time?" · "+esc(s.time):""}</small></span><span class="tc-meta"><b>${carbs} g</b><small>hidratos</small></span><span class="xb-ch" aria-hidden="true"></span></summary>
+    return`<details class="fu2${done?" done":""}"${S._frOpen===s.id+"-"+k?" open":""}><summary>${spIcon(s.sport)}<span class="tc-tx"><b>${esc(s.n)}</b><small>${fmtDur(s.min*60)}${s.time?" · "+esc(s.time):""}</small></span><span class="tc-meta"><b>${carbs} g</b><small>hidratos</small></span><span class="xb-ch" aria-hidden="true"></span></summary>
       <div class="fu2-d">
         ${T!=null?`<span class="fu2-t${T>=27?" hot":""}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M10 13.5V5a2 2 0 0 1 4 0v8.5a4 4 0 1 1-4 0z"/><path d="M12 9v6"/></svg>${Math.round(T)} °C${T>=27?" · bebe antes de tener sed":" a esa hora"}</span>`:""}
         <div class="fu2-k"><div style="--c:var(--amarillo);--c-v:var(--amarillo-v,var(--amarillo))"><span>Hidratos</span><b>${carbs}<small> g</small></b><em>${cph} g/h</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Líquido</span><b>${(flu/1000).toFixed(1).replace(".",",")}<small> L</small></b><em>${T!=null?(hf>1.05?"+"+Math.round((hf-1)*100)+" % calor":hf<.95?"menos por el fresco":"con sales"):"con sales"}</em></div><div style="--c:var(--cian);--c-v:var(--cian-v,var(--cian))"><span>Sodio</span><b>${fmtInt(na)}<small> mg</small></b><em>en total</em></div></div>
         ${steps.length?`<div class="fu2-tl" aria-label="Cuándo tomarlo">${steps.map(m=>`<span><b>${m}′</b><small>${per} g</small></span>`).join("")}</div>`:""}
-        <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} ${bott>1?"bidones":"bidón"} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${T!=null&&T>=25&&cyActive()&&(cyAt(k)||{}).half===2?`<p class="cy-av">En la segunda mitad del ciclo empiezas a sudar algo más tarde: con este calor, bebe desde el principio, sin esperar a tener sed.</p>`:""}${(()=>{const tl=fuelTol();return tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
+        <p>Unos ${gels} geles de 25 g (o plátano y barritas) y ${bott} ${bott>1?"bidones":"bidón"} de 500 ml con electrolitos. Bebe a sorbos cada 15–20 min.</p>${T!=null&&T>=25&&cyActive()&&(cyAt(k)||{}).half===2?`<p class="cy-av">En la segunda mitad del ciclo empiezas a sudar algo más tarde: con este calor, bebe desde el principio, sin esperar a tener sed.</p>`:""}${gutNote(k,s.min,s.race)}${(()=>{const tl=fuelTol();return!gutFor(k,s.min,s.race)&&tl!=null&&tl<cph?`<p class="fl-warn">Hasta ahora has tolerado ${tl} g/h sin molestias. Si notas el estómago, quédate cerca de esa cifra y súbela poco a poco.</p>`:""})()}
+        ${frBlock(k,s.id+"-"+k,{steps,per},s.min)}
         ${canLog?(done?`<div class="fu2-ok"><span class="cx-ok">Hecho</span><button type="button" class="chip sm" data-fuel="${key}" data-c="${carbs}">Deshacer</button></div>`:`<button class="btn sm primary" data-fuel="${key}" data-c="${carbs}">Marcar como tomado</button>`):""}
       </div></details>`}).join("");
   return`<section class="glass pad fade"><h2>Avituallamiento</h2><p class="fdesc" style="margin:2px 0 0">Para tus sesiones largas. ${canLog?"Al marcarlo, sus hidratos cuentan en lo que llevas comido.":""}</p><div class="tc-list">${rows}</div>${fuelWhy()}</section>`;
@@ -5909,8 +5972,8 @@ function raceCard(t){if(S.day!==today())return"";const r=raceAhead(S.day);if(!r)
   return`<section class="glass pad fade cr"><div class="cr-h"><span class="cr-k"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6"/></svg>Carrera</span><span class="cr-d">${esc(dateLabel(r.d))}${s.time?" · "+esc(s.time):""}</span></div>
     <b class="cr-cd">${cd}</b><span class="cr-n">${esc(sessName(s))} · ${fmtDur(dur*60)}</span>
     <div class="cr-ph" role="list" aria-label="Fases">${ph.map((x,j)=>`<span role="listitem" class="${j===ci?"on":ci>=0&&j<ci?"past":""}"><i></i>${x[1]}</span>`).join("")}</div>
-    <p class="cr-w">${esc(what)}</p>
-    <button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">Ver el plan</button></section>`}
+    <p class="cr-w">${esc(what)}</p>${r.inD>=0&&raceHeat(r)?`<p class="cr-w">${esc(raceHeat(r))}</p>`:""}
+    <button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">${r.inD<0?"Ver el balance":"Ver el plan"}</button></section>`}
 /* Fases de la carrera (v313: compartidas por la tarjeta de Hoy y el plan completo). inD: días que faltan (0, 1 o 2) */
 function racePhase(s,inD){const kg=num((S.profile||{}).weight)||70,dur=s.dur||30,st=toMin(s.time)||600;let title,items;
   if(inD===0){
@@ -5941,9 +6004,9 @@ const RP_IC={meal:'<path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M8 20.5h8"/>',be
 function rpIc(k){return`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RP_IC[k]}</svg>`}
 function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=s.dur||30,kg=num((S.profile||{}).weight)||70,st=toMin(s.time)||600,f=fuelCalc(k,s.sport,dur,s.int||"i",true,s.time);
   const left=daysBetween(tk,k),load=dur>=60;
-  const T=[[ "c2","Carga",dur>=90],["c1","Víspera",true],["day","El día",true],["route","En ruta",true]].filter(t=>t[2]);
+  const T=[[ "c2","Carga",dur>=90&&left>0],["c1","Víspera",left>0], /* v319: desde el día de la carrera, sin las fases que ya pasaron (caben las pestañas) */["day","El día",true],["route","En ruta",true],["bal","Balance",left<=0]].filter(t=>t[2]);
   /* v318: la pestaña por defecto tiene que existir (sin «Carga» en carreras de menos de 90 min, empieza en «Víspera») */
-  const def=left>=2&&dur>=90?"c2":left>=1?"c1":"day",tab=T.some(t=>t[0]===S.rplan.tab)?S.rplan.tab:def;
+  const def=left>=2&&dur>=90?"c2":left>=1?"c1":left<0?"bal":"day",tab=T.some(t=>t[0]===S.rplan.tab)?S.rplan.tab:def;
   const head=`<div class="rp-h"><div><span class="rp-cd">${left>1?"Faltan "+left+" días":left===1?"Es mañana":left===0?"Es hoy":"Ya pasó"}</span><b>${esc(sessName(s))}</b><small>${esc(dateLabel(k))}${s.time?" · "+esc(s.time):""} · ${fmtDur(dur*60)}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="seg rp-tabs" role="tablist" aria-label="Fases">${T.map(([id,l])=>`<button type="button" role="tab" data-rptab="${id}" aria-selected="${tab===id}" aria-pressed="${tab===id}">${l}</button>`).join("")}</div>`;
   let body="";
@@ -5957,7 +6020,9 @@ function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=
   else if(tab==="day"){const nowM=k===tk?new Date().getHours()*60+new Date().getMinutes():-1;
     const L=[[st-180,"meal","Comida previa",`${fmtInt(kg)}–${fmtInt(2*kg)} g de hidratos, poca fibra y grasa`],[st-150,"beet","Remolacha","Opcional: 70 ml de concentrado"],[st-60,"coffee","Cafeína",`${fmtInt(3*kg)}–${fmtInt(4*kg)} mg si la toleras`],[st-25,"warm","Calentamiento","15 min suave y 3–4 progresivos"],[st,"start","Salida",dur>=60?`${f.cph} g/h desde el minuto ${f.steps[0]||30}`:"Sin comer durante la carrera"],[st+dur+30,"rec","Recuperación",`${fmtInt(kg)} g de hidratos y 25–30 g de proteína`]];
     const nx=L.findIndex(z=>z[0]>=nowM);
-    body=`<div class="rp-tl">${L.map(([m,ic,a,b],i)=>`<div class="rp-st${nowM>=0&&i===nx?" now":""}${nowM>=0&&i<nx?" past":""}"><span class="rp-t">${fromMin(Math.max(0,m))}</span><span class="rp-ic">${rpIc(ic)}</span><div><b>${a}</b><span>${b}</span></div></div>`).join("")}</div>`}
+    const ht=raceHeat({d:k,s,inD:left}); /* v319 */
+    body=`${ht?`<p class="note rp-n rp-heat">${esc(ht)}</p>`:""}<div class="rp-tl">${L.map(([m,ic,a,b],i)=>`<div class="rp-st${nowM>=0&&i===nx?" now":""}${nowM>=0&&i<nx?" past":""}"><span class="rp-t">${fromMin(Math.max(0,m))}</span><span class="rp-ic">${rpIc(ic)}</span><div><b>${a}</b><span>${b}</span></div></div>`).join("")}</div>`}
+  else if(tab==="bal")body=raceBal(k,s,f); /* v319 */
   else{const W=320,H=112,PL=12,R=W-12,X=m=>PL+(R-PL)*m/dur;
     const svg=`<svg class="rp-rt" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tomas durante la carrera: ${f.steps.map(m=>m+" min").join(", ")}"><rect x="${PL}" y="60" width="${R-PL}" height="10" rx="5" class="rp-trk"/>
       ${f.steps.map(m=>`<g><text class="rp-m" x="${X(m).toFixed(1)}" y="22" text-anchor="middle">${m}′</text><text class="rp-g" x="${X(m).toFixed(1)}" y="40" text-anchor="middle">${f.per} g</text><circle cx="${X(m).toFixed(1)}" cy="65" r="9" class="rp-dot"/></g>`).join("")}
@@ -6088,11 +6153,12 @@ const RAD_IC={
   train:'<path d="M2.5 12.5h4.2l2.4-5.8 4.2 11.6 2.6-7.2 1.3 1.4h4.3"/>',
   menu:'<rect x="4" y="5.5" width="16" height="14.5" rx="3.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M9.2 15.1l2 2 3.8-3.8"/>',
   dish:'<path d="M3.8 11.5h16.4a8.2 8.2 0 0 1-16.4 0z"/><path d="M9 20.4h6"/><path d="M9.8 8.2c0-1.4.9-1.9.9-3.3M13.8 8.2c0-1.4.9-1.9.9-3.3"/>',
+  alc:'<path d="M7 3.5h10l-1 7.5a4 4 0 0 1-8 0z"/><path d="M12 15v5.5M8.5 20.5h7M7.6 7.5h8.8"/>',
   routine:'<path d="M6.5 7.5v9M17.5 7.5v9M3.8 10v4M20.2 10v4M6.5 12h11"/>'
 };
 /* v307 · Acciones rápidas según la guía: lo diario arriba, en grande (registrar comida y pesarse); «¿Qué como ahora?» con su marca
    de IA si hay una comida pendiente; el resto en lista de filas de 44 px. Iconos en gris: el color no significa nada aquí. Clases qa- */
-const QA_TOP=[["log","Registrar comida"],["weigh","Pesarme"]],QA_LIST=[["train","Planificar entreno"],["menu","Crear menú"],["dish","Crear plato"],["routine","Crear rutina"]];
+const QA_TOP=[["log","Registrar comida"],["weigh","Pesarme"]],QA_LIST=[["train","Planificar entreno"],["menu","Crear menú"],["dish","Crear plato"],["routine","Crear rutina"],["alc","Apuntar alcohol"]];
 const qaSvg=(k,z)=>`<svg viewBox="0 0 24 24" width="${z}" height="${z}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RAD_IC[k]}</svg>`;
 function quickHtml(){const m=S.sample&&typeof qnMeal==="function"?qnMeal():null;
   return`<div class="qa-ov" data-radclose="1"><div class="qa" role="dialog" aria-modal="true" aria-label="Acciones rápidas"><div class="qa-grab" aria-hidden="true"></div>
@@ -6112,6 +6178,7 @@ document.addEventListener("click",e=>{
     else if(k==="weigh"){S.tab="hoy";S.period="day";S.day=today();S.wtEdit=true;S.wtSkip=false;render();window.scrollTo(0,0);setTimeout(()=>{const el=$("#wt");if(el)el.focus()},50)}
     else if(k==="log"){S.tab="hoy";S.period="day";S.day=today();render();setTimeout(()=>{const el=document.querySelector(".meals");if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},60)}
     else if(k==="train"){paOpen(null)}
+    else if(k==="alc"){S.tab="hoy";S.period="day";S.day=today();render();S.sheet="alc";renderModal()}
     else if(k==="ask"){S.tab="hoy";S.period="day";S.day=today();render();S.qn={have:"",res:null};S.sheet="qn";renderModal()}
     else{S.tab="plan";S.planView="week";S.planWeek=S.planWeek||mondayOf(today());render();window.scrollTo(0,0)}
     return}
@@ -6532,7 +6599,7 @@ function vPlanTrain(wk){
   /* v278: calendario arriba y, en la misma tarjeta, el resumen de la semana y debajo planificar; luego el tiempo y la semana en lista */
   return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
     <div class="kv kv4 pl-kv"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div>
-    <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}</section>
+    <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return`<div class="mw-sec odd">${c}<button type="button" class="chip" data-icopen="1">Importar plan</button></div>`})()}</section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
@@ -6565,7 +6632,7 @@ function vHoy(){
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
-      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,mq=macroQuality(t,S.day),mv=macroVerdicts(t,mq),qq=mv?{C:mv.C,P:mv.P,F:mv.F}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1));
+      ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F+alKcal(alOf(S.day)),mq=macroQuality(t,S.day),mv=macroVerdicts(t,mq),qq=mv?{C:mv.C,P:mv.P,F:mv.F}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1));
         /* v307 (opción A): con algo comido, la gota dice lo que queda (antes lo repetía «Te quedan» en Reparto por comidas) */
         const lf=t.kcal-ek,lz=Math.abs(lf)<15;
         return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0&&!lz?Math.abs(lf):t.kcal)}</b><span>${ek>0?(lz?"kcal · objetivo cumplido":lf>0?"te quedan de "+fmtInt(t.kcal)+" kcal":"kcal de más · objetivo "+fmtInt(t.kcal)):(S.day===today()?"kcal para hoy":S.day===shiftKey(today(),1)?"kcal para mañana":S.day===shiftKey(today(),-1)?"kcal de ayer":"kcal · "+esc(dateLabel(S.day)))}</span></div></div>
@@ -6602,7 +6669,7 @@ function barChart(bk){
 `<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:var(--amarillo)"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i style="background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 40%,transparent)"></i>Previsto</span>':""}</div>`;
 }
 /* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
-function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});const fc=fuelCho(k);if(fc){C+=fc;n=n||1}return n?{P,C,F,kcal:4*P+4*C+9*F,fuel:fc}:null}
+function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||id==="alc"||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});const fc=fuelCho(k);if(fc){C+=fc;n=n||1}return n?{P,C,F,kcal:4*P+4*C+9*F,fuel:fc}:null}
 function constCard(p,T,tk){
   const g=(S.profile||{}).goal||"recomp",tol=g==="loss"?0.10:g==="recomp"?0.10:0.12;
   const st=r=>r==null?"none":r>1+tol?"over":r<1-tol?"under":"ok";
@@ -7075,7 +7142,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7086,7 +7153,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.close&&(e.target===t||t.tagName==="BUTTON")){if(S.sheet==="info"&&S.infoBack){S.sheet=S.infoBack;S.infoBack=null;renderModal();return}S.msh=null;S.detail=null;S.sheet=null;S.pa=null;renderModal();return}
   if(t.dataset.fuel){const key=t.dataset.fuel,a=key.startsWith("fuel_a")?S.acts.find(x=>"fuel_a"+x.id===key):null;
     if(a){const cur=flEntry(a),c=+t.dataset.c||0; /* v281: el mismo registro que Actividad y la pregunta de arriba */
-      flPut(a,cur?null:{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:c,caf:0,na:0,cph:Math.round(c/(a.mov/3600)),tg:fuelTarget(a.mov/60,actInt(a)),src:"plan"});if(!cur)buzz(10);render();return}
+      flPut(a,cur?null:{id:a.id,items:[],gi:null,d:a.day,sport:a.sport,dur:a.mov,carbs:c,caf:0,na:0,cph:Math.round(c/(a.mov/3600)),tg:fuelFor(a.day,a.mov/60,actInt(a)),src:"plan"});if(!cur)buzz(10);render();return}
     const cur=(S.log[S.day]||{})[key];setLog(S.day,key,cur?null:{st:"done",P:0,C:+t.dataset.c||0,F:0,n:"Avituallamiento"});if(!cur)buzz(10);render();return}
   if(t.dataset.lgr){const mid=t.dataset.lgr,tt=dayTargets(S.day),m=tt&&mealPlan(tt,S.day).meals.find(x=>x.id===mid);if(m)setLog(S.day,mid,logEntryFor(S.day,m,"done",{r:+t.dataset.r}));render();return}
   if(t.dataset.act==="logall"){const tt=dayTargets(S.day);if(!tt)return;const prev=JSON.parse(JSON.stringify(S.log[S.day]||null));let n=0;mealPlan(tt,S.day).meals.forEach(m=>{if(!(S.log[S.day]||{})[m.id]){setLog(S.day,m.id,logEntryFor(S.day,m,"done"));n++}});render();undoToast(n+" comida"+(n>1?"s":"")+" registrada"+(n>1?"s":""),()=>{restoreLog(S.day,prev)});return}
@@ -7202,7 +7269,7 @@ document.addEventListener("click",e=>{
     S.pantry=(S.pantry||[]).concat([p]);savePantry();if(S.flDraft)S.flDraft.items.push({pid:p.id,q:1});S.flNew=null;renderModal();toast("Añadido a tu despensa");return}
   if(t.dataset.flgi){if(S.flDraft)S.flDraft.gi=S.flDraft.gi===t.dataset.flgi?null:t.dataset.flgi;renderModal();return}
   if(t.dataset.flsave){const a=S.acts.find(x=>x.id===t.dataset.flsave),dr=S.flDraft;if(!a||!dr)return;const T=flTotals(dr.items);if(!T.c&&!dr.gi&&!dr.items.length){toast("Añade lo que tomaste");return}
-    const e={id:a.id,items:dr.items,gi:dr.gi,d:a.day,sport:a.sport,dur:a.mov,carbs:T.c,caf:T.caf,na:T.na,cph:Math.round(T.c/(a.mov/3600)),tg:fuelTarget(a.mov/60,actInt(a))};
+    const e={id:a.id,items:dr.items,gi:dr.gi,d:a.day,sport:a.sport,dur:a.mov,carbs:T.c,caf:T.caf,na:T.na,cph:Math.round(T.c/(a.mov/3600)),tg:fuelFor(a.day,a.mov/60,actInt(a))};
     flPut(a,e);buzz(12);S.flEditId=null;S.flDraft=null;renderModal();render();toast("Avituallamiento guardado · "+e.cph+" g/h");return}
   if(t.dataset.sweat){const a=S.acts.find(x=>x.id===t.dataset.sweat);const pre=num(($("#sw_pre")||{}).value),post=num(($("#sw_post")||{}).value),dr=num(($("#sw_drk")||{}).value)||0;
     if(!pre||!post||pre<30||post<30||pre-post>5||post-pre>2){toast("Revisa los pesos de antes y después");return}
@@ -8501,7 +8568,7 @@ function miParse(x){if(!x||typeof x!=="object")return null;const o={};for(const 
 function miScale(mi,f){if(!mi)return null;const o={};MI_K.forEach(k=>o[k]=Math.round(mi[k]*f*10)/10);return o}
 /* micros de un día apuntado: {o: totales, ok: comidas con micros, n: comidas comidas} */
 function logMicros(k){const L=S.log[k]||{},o={};MI_K.forEach(x=>o[x]=0);let ok=0,n=0;
-  Object.entries(L).forEach(([mid,e])=>{if(!e||e.st==="skip"||mid.startsWith("fuel_"))return;n++;
+  Object.entries(L).forEach(([mid,e])=>{if(!e||e.st==="skip"||mid.startsWith("fuel_")||mid==="alc")return;n++;
     let mi=e.mi||null;
     if(!mi){const a=!e.d&&e.st==="done"?(S.menu[k]||{})[mid]:null,d=dishById(e.d||(a&&a.d)),s=e.d?(e.s||1):a?a.s*(e.r||1):0;
       if(d&&s)mi=miScale(Object.fromEntries(MI_K.map(x=>[x,d[x]||0])),s)}
@@ -8679,8 +8746,8 @@ const ntfClamp=t=>{const m=toMin(t);return m==null?null:fromMin(Math.min(21*60+5
 const ntfAt=(k,t)=>new Date(k+"T"+t+":00").getTime();
 /* Víspera: el día antes de un entreno de los que piden avituallamiento, o de una carrera */
 function ntfEve(k,t){const L=plannedFor(k).filter(s=>!s.skip&&s.sport!=="str"),kg=num((S.profile||{}).weight)||70;
-  const s=L.filter(x=>x.race||fuelTarget(x.dur,x.int,x.race)>0).sort((a,b)=>(b.race?1e4:0)+b.dur-(a.race?1e4:0)-a.dur)[0];if(!s)return null;
-  const cph=fuelTarget(s.dur,s.int,s.race),carbs=fuelCarbs(s.dur,cph),hr=s.time?" a las "+s.time:"";
+  const s=L.filter(x=>x.race||fuelFor(k,x.dur,x.int,x.race)>0).sort((a,b)=>(b.race?1e4:0)+b.dur-(a.race?1e4:0)-a.dur)[0];if(!s)return null;
+  const cph=fuelFor(k,s.dur,s.int,s.race),carbs=fuelCarbs(s.dur,cph),hr=s.time?" a las "+s.time:"";
   const title=s.race?"Mañana es la carrera":"Mañana: "+sessName(s)+", "+fmtMin(s.dur)+hr;
   /* la carga, como en la tarjeta de carrera (raceCard) */
   const load=s.dur>=90?"Hoy, carga de hidratos: entre "+fmtInt(8*kg)+" y "+fmtInt(10*kg)+" g en el día.":s.dur>=60?"Hoy, día alto en hidratos: unos "+fmtInt(7*kg)+" g.":"Hoy, hidratos en cada comida; no hace falta cargar.";
@@ -8768,6 +8835,228 @@ function pfBody(s,st,kg){const es=estSession(s,kg),L=[],ft=s.sport==="str"?0:fue
     <span class="af-name">${esc(sessName(s))}</span>${stc?stProfile(s.steps,16):""}
     <span class="af-st af-c${st4.length}">${st4.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>
     ${pc!=null?`<span class="af-zbar pf-est" role="img" aria-label="Estimado: ${pc} % hidratos, ${100-pc} % grasas"><i style="flex:${pc};background:var(--carb)"></i><i style="flex:${100-pc};background:var(--fat)"></i></span><span class="af-zlab">~${pc} % hidratos · ${100-pc} % grasas · estimado</span>`:""}`}
+
+/* ---------- Entrenar el intestino (v319) ----------
+   Con una carrera de 90 min o más en el calendario, cada sesión larga (75 min o más) hasta dos días antes
+   pide un poco más de hidratos por hora que la anterior, según cómo sentó la última toma apuntada:
+   bien, +10 g/h; regular, la misma; con molestias, 10 menos. Empieza en lo tolerado + 10 (40 sin registros),
+   nunca baja de 30 y se para en lo que pide la carrera. Clases gt- */
+function gutPlan(k){k=k||today();const r=raceAhead(k);if(!r||r.inD<2||(r.s.dur||0)<90)return null;
+  const goal=fuelTarget(r.s.dur,r.s.int||"i",true);if(!goal)return null;
+  const L=(S.fuel||[]).filter(x=>x.cph>0&&x.d<k&&x.d>=shiftKey(k,-90)).sort((a,b)=>a.d<b.d?-1:1),last=L[L.length-1],tol=fuelTol();
+  let next=last?(last.gi==="bad"?last.cph-10:last.gi==="meh"?last.cph:Math.max(last.cph,tol||0)+10):tol!=null?tol+10:40;
+  next=Math.max(30,Math.min(goal,Math.round(next/5)*5));
+  return{r,goal,tol,last,next,done:tol!=null&&tol>=goal}}
+/* Hidratos por hora de una sesión ese día: lo de siempre o, si toca, el escalón del plan de estómago */
+function gutFor(k,min,race){if(race||!k||min<75)return null;const g=gutPlan(k);return g&&!g.done?g:null}
+function fuelFor(k,min,it,race){const g=gutFor(k,min,race);return g?g.next:fuelTarget(min,it,race)}
+/* De dónde sale el escalón: lo tolerado o, si no hay toma sin molestias, cómo fue la última */
+function gutLast(g){if(g.last&&g.last.gi!=="good"&&g.last.gi)return`La última, a ${g.last.cph} g/h, ${g.last.gi==="bad"?"te dio molestias":"te sentó regular"}`;
+  return g.tol!=null?`Llevas ${g.tol} g/h sin molestias`:g.last?`La última fue a ${g.last.cph} g/h`:"Aún no hay tomas apuntadas"}
+/* Nota en la sesión (Hoy › Avituallamiento) */
+function gutNote(k,min,race){const g=gutFor(k,min,race);if(!g)return"";
+  return`<p class="gt-n"><b>Entreno de estómago · ${g.next} g/h</b>${gutLast(g)}; la carrera del ${esc(dateLabel(g.r.d))} pedirá ${g.goal} g/h. Apunta luego qué tomaste y cómo te sentó: la próxima sesión larga se ajusta sola.</p>`}
+/* Progreso hacia la cifra de la carrera (Progreso › Avituallamiento en carrera) */
+function gutProgress(){const g=gutPlan(today());if(!g)return"";const lo=30,pc=v=>Math.max(0,Math.min(100,(v-lo)/(g.goal-lo)*100)).toFixed(1);
+  const tk=today(),end=shiftKey(g.r.d,-2),long=[];for(let d=tk;d<=end;d=shiftKey(d,1))plannedFor(d).forEach(s=>{if(!s.race&&(s.dur||0)>=75)long.push(d)});
+  const need=g.done?0:g.tol!=null?Math.ceil((g.goal-g.tol)/10):Math.ceil((g.goal-g.next)/10)+1;
+  const msg=g.done?`Ya toleras lo que pide la carrera. Mantenlo en tus salidas largas y practica con lo que tomarás ese día.`
+    :`${g.tol!=null?`Te faltan ${g.goal-g.tol} g/h`:`Aún sin una toma sin molestias; empieza en ${g.next} g/h`}: ${need===1?"una sesión larga":"unas "+need+" sesiones largas"} subiendo 10 cada vez. ${long.length?`Tienes ${long.length} ${long.length===1?"prevista":"previstas"} hasta la carrera${long.length<need?"; añade alguna más o sube con calma":""}.`:"Planifica alguna de 75 min o más para practicar."}`;
+  return`<div class="gt"><div class="gt-h"><b>Carrera · ${esc(sessName(g.r.s))}</b><span>${esc(dateLabel(g.r.d))} · pide ${g.goal} g/h</span></div>
+    <div class="gt-tr" role="img" aria-label="Toleras ${g.tol!=null?g.tol:0} de ${g.goal} g/h"><i style="width:${pc(g.tol||lo)}%"></i>${g.done?"":`<em style="left:${pc(g.next)}%"></em>`}</div>
+    <div class="gt-l"><span>Toleras <b>${g.tol!=null?g.tol+" g/h":"—"}</b></span>${g.done?"":`<span>Próxima sesión larga <b>${g.next} g/h</b></span>`}</div>
+    <p class="note">${msg}</p></div>`}
+
+/* ---------- Avisos de tomas durante el entreno (v319) ----------
+   En Hoy › Avituallamiento, «Avisarme de las tomas» al salir a entrenar: el móvil programa un aviso en cada toma
+   (minuto 40, 70…) con los gramos de esa toma; el reloj lo recibe si refleja las notificaciones del móvil.
+   Se cuentan desde que se pulsa (la hora prevista no sirve: se sale tarde). Lo pide el usuario en ese momento,
+   así que no entra en el tope de una notificación al día. Ids fr-…; ntfSync no los toca. Clases fr- */
+const FR_LS="sustrato-fuelrun";
+function frGet(){try{const v=JSON.parse(localStorage.getItem(FR_LS)||"null");return v&&v.end>Date.now()?v:null}catch(e){return null}}
+function frSet(v){try{v?localStorage.setItem(FR_LS,JSON.stringify(v)):localStorage.removeItem(FR_LS)}catch(e){}}
+const frHm=t=>{const d=new Date(t);return pad(d.getHours())+":"+pad(d.getMinutes())};
+/* v319: un conmutador, como los de Notificaciones (encendido, en el acento) */
+function frBlock(k,sid,f,min){if(k!==today()||!ntfOk()||!f.steps.length)return"";const r=frGet(),on=!!(r&&r.sid===sid),nx=on?r.at.find(t=>t>Date.now()):null;
+  const sub=on?(nx?"Próxima toma a las "+frHm(nx)+" · "+r.per+" g":"Ya no quedan tomas"):"Actívalo al empezar: te avisa en cada toma, también en el reloj si recibe las notificaciones del móvil.";
+  return`<div class="tg-r fr-r"><span class="tg-t"><b>Avisos de tomas</b><small>${sub}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${on}" aria-label="Avisos de tomas" ${on?'data-frstop="1"':`data-frgo="${esc(sid)}|${f.steps.join(",")}|${f.per}|${min}"`}></button></div>`}
+async function frStop(){const r=frGet()||JSON.parse((()=>{try{return localStorage.getItem(FR_LS)}catch(e){return null}})()||"null");frSet(null);
+  if(r&&ntfOk())for(const id of r.ids||[])try{await window.__native.notif.cancel(id)}catch(e){}}
+document.addEventListener("click",async e=>{const go=e.target.closest&&e.target.closest("[data-frgo]"),st=e.target.closest&&e.target.closest("[data-frstop]");if(!go&&!st)return;e.stopPropagation();
+  S._frOpen=(frGet()||{}).sid; /* la ficha sigue abierta tras el render */
+  if(st){await frStop();buzz(6);toast("Avisos parados");render();return}
+  let ok=false;try{ok=await window.__native.notif.perm()}catch(err){}
+  if(!ok){toast("Activa las notificaciones de Sustrato en los ajustes del teléfono");try{window.__native.notif.settings()}catch(err){}return}
+  await frStop();const[sid,ms,per,min]=go.dataset.frgo.split("|");S._frOpen=sid;const now=Date.now(),M=ms.split(",").map(Number),ids=[],at=[];
+  for(let i=0;i<M.length;i++){const id="fr-"+i,t=now+M[i]*6e4;ids.push(id);at.push(t);
+    try{await window.__native.notif.set({id,at:t,title:`Minuto ${M[i]} · toca comer`,body:`${per} g de hidratos${i===M.length-1?" · última toma":""}. Y un trago de bebida.`,data:{go:"hoy"}})}catch(err){}}
+  frSet({sid,ids,at,per:+per,end:now+(+min)*6e4});buzz(10);toast(`Te aviso en ${M.length} ${M.length===1?"toma":"tomas"}, la primera a las ${frHm(at[0])}`);render()},true);
+
+/* ---------- Sudor salado (v319) ----------
+   Tres señales en Progreso › Tasa de sudor: marcas blancas en la ropa o la gorra, sudor que escuece en los ojos
+   y calambres en sesiones largas. Ninguna, sudor poco salado (~600 mg de sodio por litro); una, medio (~900);
+   dos o tres, muy salado (~1300). Con respuesta, el sodio del avituallamiento es lo que bebes × esa concentración;
+   sin ella, la cifra media de siempre (450 mg/h con el ajuste por calor). Se guarda en el perfil (salt). Clases sl- */
+const SL_Q=[["m","¿Te quedan marcas blancas de sal en la ropa o la gorra?"],["e","¿El sudor te escuece en los ojos?"],["c","¿Tienes calambres en las sesiones largas?"]];
+const SL_L=[["poco salado",600],["medio en sal",900],["muy salado",1300]];
+function saltLvl(){const q=(S.profile||{}).salt;if(!q||SL_Q.some(([k])=>q[k]==null))return null;const n=SL_Q.filter(([k])=>q[k]).length;return n>=2?2:n}
+function saltNa(fluMl,hf,h){const l=saltLvl();return l==null?Math.round(450*hf*h/50)*50:Math.round(fluMl/1000*SL_L[l][1]/50)*50}
+function saltBlock(){const q=(S.profile||{}).salt||{},l=saltLvl();
+  return`<div class="sl"><b class="sl-t">¿Sudas salado?</b>${SL_Q.map(([k,t])=>`<div class="sl-r"><span>${t}</span><div class="seg sm" role="group" aria-label="${esc(t)}">${[[1,"Sí"],[0,"No"]].map(([v,x])=>`<button type="button" data-salt="${k}|${v}" aria-pressed="${q[k]===v}">${x}</button>`).join("")}</div></div>`).join("")}
+    <p class="note sl-n">${l==null?"Con las tres respuestas, el sodio de tu avituallamiento se ajusta a tu sudor.":`Sudor ${SL_L[l][0]}: unos ${fmtInt(SL_L[l][1])} mg de sodio por litro. Ya se usa en tu avituallamiento.`}</p></div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-salt]");if(!b)return;e.stopPropagation();const[k,v]=b.dataset.salt.split("|");
+  S.profile=S.profile||{};S.profile.salt=Object.assign({},S.profile.salt||{},{[k]:+v});buzz(6);render();saveProfile(true)},true);
+
+/* ---------- Balance de la carrera (v319) ----------
+   Pestaña «Balance» del plan de carrera desde el día de la carrera (al día siguiente se abre en ella; la tarjeta dice «Ver el balance»).
+   Compara lo previsto (fuelCalc) con lo apuntado de la actividad que cumple la carrera (flEntry: hidratos y cómo sentó;
+   la prueba de sudor: lo bebido y el peso perdido) y deja una recomendación para la próxima.
+   Lo apuntado entra además en el plan de estómago (092), así que la próxima carrera parte de ahí. Clases rb- */
+function raceBal(k,s,f){const m=planMatch(k).pl.find(x=>x.s===s),a=m&&m.a;
+  if(!a)return`<p class="note rp-n">${k===today()?"Cuando termines y se sincronice la carrera, aquí verás cómo fue el avituallamiento frente a lo previsto.":"Aún no hay una actividad de ese día que cumpla la carrera. Cuando se sincronice, aquí verás el balance."}</p>`;
+  const e=flEntry(a),sw=(S.sweat||[]).find(x=>x.id===a.id),h=a.mov/3600,kg=num((S.profile||{}).weight)||70;
+  const flh=Math.round(f.flu/(s.dur/60)/50)*50,row=(l,pl,re,ok)=>`<div class="rb-r"><span>${l}</span><em>${pl}</em><b class="${ok==null?"":ok?"ok":"no"}">${re}</b></div>`;
+  const loss=sw&&sw.pre&&sw.post?(sw.pre-sw.post)/sw.pre*100:null,drk=sw&&sw.drank!=null?Math.round(sw.drank/h/50)*50:null;
+  const rows=[row("Hidratos",f.cph+" g/h",e?e.cph+" g/h":"—",e?e.cph>=f.cph-5:null),
+    row("Bebida",fmtInt(flh)+" ml/h",drk!=null?fmtInt(drk)+" ml/h":"—",drk!=null?drk>=flh*.8:null),
+    row("Peso perdido","< 2 %",loss!=null?loss.toFixed(1).replace(".",",")+" %":"—",loss!=null?loss<2:null),
+    row("Estómago","sin molestias",e&&e.gi?{good:"Bien",meh:"Regular",bad:"Molestias"}[e.gi]:"—",e&&e.gi?e.gi==="good":null)].join("");
+  const T=[];
+  if(!e)T.push("Apunta en Actividad lo que tomaste en la carrera y cómo te sentó: con eso se ajusta la próxima.");
+  else if(e.gi==="bad")T.push(`Tuviste molestias a ${e.cph} g/h. La próxima, empieza en ${Math.max(30,Math.round((e.cph-10)/5)*5)} g/h y entrena el estómago en las salidas largas.`);
+  else if(e.gi==="meh")T.push(`A ${e.cph} g/h te sentó regular: mantén esa cifra y practícala más antes de subir.`);
+  else if(e.gi==="good"&&e.cph<f.cph-5)T.push(`Tomaste ${e.cph} g/h, menos de lo previsto, y te sentó bien: hay margen para llegar a ${f.cph}.`);
+  else if(e.gi==="good")T.push(`${e.cph} g/h sin molestias: repite la estrategia.`);
+  else T.push("Di cómo te sentó lo que tomaste para afinar la próxima.");
+  if(loss!=null&&loss>=2&&sw.pre){const ml=Math.round(((sw.pre-sw.post)-.02*sw.pre)*1000/h/50)*50;if(ml>0)T.push(`Perdiste el ${loss.toFixed(1).replace(".",",")} % de tu peso: bebe unos ${ml} ml más por hora.`)}
+  else if(loss==null)T.push("Si te pesas antes y después, el balance incluye también la bebida.");
+  return`<div class="rb"><div class="rb-r rb-hd"><span></span><em>Previsto</em><b>Hecho</b></div>${rows}</div><div class="rp-tips">${T.map(t=>`<div><span>${esc(t)}</span></div>`).join("")}</div>`}
+/* v319 · Calor en carrera: con la previsión a 25 °C o más, aclimatación (a una semana o más) o pautas del día */
+function raceHeat(r){const T=tempAt(r.d,r.s.time,r.s.dur||60);if(T==null||T<25)return"";const t=Math.round(T);
+  return r.inD>=7?`Se esperan unos ${t} °C. Aclimátate: 7–10 días con 60–90 min suaves en las horas de calor, o 20–30 min de sauna después de entrenar.`
+    :`Se esperan unos ${t} °C: sal bien hidratado, lleva bebida con sales y empieza a beber desde el principio, sin esperar a tener sed.`}
+
+/* ---------- Alcohol (v319) ----------
+   Acciones rápidas › «Apuntar alcohol»: cerveza, copa de vino o combinado, con contador, en el registro del día (clave alc).
+   Sus hidratos cuentan en lo comido; las kcal del alcohol (7 por gramo) cuentan en las calorías del día y en el gasto adaptativo (kcOf, loggedKcal).
+   El consejo depende del momento: carrera a dos días o menos, entreno largo o carrera hoy o ayer, o un día normal. Clases al- */
+const AL_T=[["beer","Cerveza","330 ml",13,13],["wine","Copa de vino","150 ml",14,1],["mix","Combinado","50 ml con refresco",16,20]];
+const alOf=k=>((S.log||{})[k]||{}).alc||null;
+const alKcal=x=>7*((x&&x.alc)||0);
+function alPut(k,n){const N=Object.assign({},n);let g=0,c=0,t=0;AL_T.forEach(([id,,,a,ch])=>{const q=N[id]||0;g+=a*q;c+=ch*q;t+=q});
+  setLog(k,"alc",t?{n:N,alc:g,P:0,C:c,F:0,st:"alc"}:null)}
+function alAdvice(k){const r=raceAhead(k),y=shiftKey(k,-1),hard=[k,y].some(d=>S.acts.some(a=>a.day===d&&a.mov>=5400)||plannedFor(d).some(s=>s.race&&d<=k));
+  if(r&&r.inD>=0&&r.inD<=2)return`Con la carrera ${r.inD===0?"hoy":r.inD===1?"mañana":"pasado mañana"}, mejor evitarlo: empeora el sueño y la hidratación justo cuando más cuentan.`;
+  if(hard)return"Tras un esfuerzo largo, el alcohol frena la recarga de glucógeno y la reparación muscular. Come antes hidratos y proteína, y alterna cada bebida con un vaso de agua.";
+  return"Alterna cada bebida con un vaso de agua. A partir de dos, el sueño y el entreno del día siguiente se resienten.";}
+function alHtml(){const k=S.day||today(),x=alOf(k)||{},n=x.n||{},g=x.alc||0,t=Object.values(n).reduce((a,b)=>a+b,0);
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade al" role="dialog" aria-modal="true" aria-label="Alcohol"><div class="rp-h"><div><b>Alcohol</b><small>${esc(dateLabel(k))}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="al-l">${AL_T.map(([id,l,sub,a])=>`<div class="al-r"><span class="al-t"><b>${l}</b><small>${sub} · ${a} g de alcohol</small></span><div class="str-step"><button type="button" data-al="${id}|-1" aria-label="Una menos" ${n[id]?"":"disabled"}>−</button><b>${n[id]||0}</b><button type="button" data-al="${id}|1" aria-label="Una más">+</button></div></div>`).join("")}</div>
+    <p class="al-s">${t?`${t} ${t===1?"bebida":"bebidas"} · ${g} g de alcohol · unas ${fmtInt(alKcal(x)+4*(x.C||0))} kcal`:"Nada apuntado"}</p>
+    <p class="note al-n">${esc(alAdvice(k))}</p></div></div>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-al]");if(!b||b.disabled)return;e.stopPropagation();const[id,d]=b.dataset.al.split("|"),k=S.day||today(),n=Object.assign({},(alOf(k)||{}).n);
+  n[id]=Math.max(0,(n[id]||0)+(+d));alPut(k,n);buzz(6);const m=$("#modal");if(m)m.innerHTML=alHtml()},true);
+
+/* ---------- Importar el plan de TrainingPeaks o intervals.icu (v319) ----------
+   Plan › Entrenos › «Importar plan»: pegas el enlace iCal de tu calendario (es privado: solo se guarda en este móvil),
+   el servidor lo lee (/ical, solo esos dominios) y aquí se interpreta: deporte, duración e intensidad por palabras clave.
+   Ves la lista y eliges qué añadir; lo importado lleva su uid, así que reimportar actualiza en vez de duplicar.
+   Solo de hoy a 2 meses vista. Lo que no se entiende (sin deporte o sin duración) se cuenta y se deja fuera. Clases ic- */
+const IC_LS="sustrato-ical";
+const IC_SP=[[/\b(swim|natac|nadar|piscina)/i,"swim"],[/\b(strength|weight|gym|fuerza|pesas)/i,"str"],[/\b(trail)/i,"trail"],[/\b(mtb|mountain ?bike)/i,"mtb"],[/\bgravel/i,"gravel"],
+  [/\b(virtual|zwift|indoor|trainer|rodillo|turbo)/i,"indoor"],[/\b(ride|bike|cycl|bici|ciclis)/i,"road"],[/\b(hike|senderis)/i,"hike"],[/\b(walk|caminat)/i,"walk"],[/\b(run|running|correr|carrera a pie|rodaje)/i,"run"]];
+function icUnfold(t){return t.replace(/\r?\n[ \t]/g,"").split(/\r?\n/)}
+function icDate(v){const m=/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})(Z)?)?/.exec(v||"");if(!m)return null;
+  if(!m[4])return{k:`${m[1]}-${m[2]}-${m[3]}`,t:null,ms:null};
+  const d=m[7]?new Date(Date.UTC(+m[1],m[2]-1,+m[3],+m[4],+m[5])):new Date(+m[1],m[2]-1,+m[3],+m[4],+m[5]);return{k:keyOf(d),t:pad(d.getHours())+":"+pad(d.getMinutes()),ms:d.getTime()}}
+function icDur(ev,txt){const p=/^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?/.exec(ev.DURATION||"");if(p&&(p[1]||p[2]||p[3]))return(+p[1]||0)*1440+(+p[2]||0)*60+(+p[3]||0);
+  const a=icDate(ev.DTSTART),b=icDate(ev.DTEND);if(a&&b&&a.ms&&b.ms&&b.ms>a.ms&&b.ms-a.ms<12*36e5)return Math.round((b.ms-a.ms)/6e4);
+  let m=/(\d{1,2}):(\d{2}):(\d{2})/.exec(txt);if(m)return+m[1]*60+(+m[2]);
+  m=/(\d{1,2})\s*h(?:oras?|rs?)?\s*(\d{1,2})?\s*(?:m|min)?\b/i.exec(txt);if(m)return+m[1]*60+(+m[2]||0);
+  m=/(\d{2,3})\s*(?:min|minutos|mins|')/i.exec(txt);if(m)return+m[1];return null}
+function icInt(txt){return/(recover|recuper|easy|suave|z1|z2|endurance|fondo|base)/i.test(txt)?"s":/(interval|vo2|threshold|umbral|tempo|series|sweet ?spot|fartlek|z4|z5|race pace|ritmo)/i.test(txt)?"i":"m"}
+function icParse(t){const L=icUnfold(t),E=[];let ev=null;
+  L.forEach(l=>{if(l==="BEGIN:VEVENT"){ev={};return}if(l==="END:VEVENT"){if(ev)E.push(ev);ev=null;return}if(!ev)return;const i=l.indexOf(":");if(i<0)return;
+    const key=l.slice(0,i).split(";")[0].toUpperCase(),v=l.slice(i+1).replace(/\\n/gi,"\n").replace(/\\([,;\\])/g,"$1");if(!(key in ev))ev[key]=v});
+  const tk=today(),last=shiftKey(tk,60),out=[];let skip=0;
+  E.forEach(ev=>{const d=icDate(ev.DTSTART);if(!d||d.k<tk||d.k>last)return;const txt=(ev.SUMMARY||"")+"\n"+(ev.DESCRIPTION||"");
+    const sp=(IC_SP.find(([re])=>re.test(txt))||[])[1],dur=icDur(ev,txt);if(!sp||!dur||dur<10||dur>900){skip++;return}
+    out.push({uid:ev.UID||d.k+"|"+(ev.SUMMARY||""),k:d.k,time:d.t,sport:sp,dur:Math.round(dur/5)*5,int:icInt(txt),name:(ev.SUMMARY||"").slice(0,80)})});
+  out.sort((a,b)=>a.k<b.k?-1:a.k>b.k?1:0);return{L:out,skip}}
+function icHas(x){return Object.values(S.plan||{}).some(arr=>(arr||[]).some(s=>s.uid===x.uid))}
+function icHtml(){const q=S.ic||{},u=(()=>{try{return localStorage.getItem(IC_LS)||""}catch(e){return""}})();
+  const list=q.res?q.res.L.map((x,i)=>`<label class="ic-r"><input type="checkbox" data-icsel="${i}" ${q.sel[i]?"checked":""}><span class="ic-ic">${spIcon(x.sport)}</span><span class="ic-t"><b>${esc(x.name||SPORT_L[x.sport])}</b><small>${esc(dateLabel(x.k))}${x.time?" · "+x.time:""} · ${fmtDur(x.dur*60)} · ${{s:"suave",m:"moderado",i:"intenso"}[x.int]}${icHas(x)?" · ya importado":""}</small></span></label>`).join(""):"";
+  const n=q.res?q.sel.filter(Boolean).length:0;
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade ic" role="dialog" aria-modal="true" aria-label="Importar plan"><div class="rp-h"><div><b>Importar plan</b><small>TrainingPeaks o intervals.icu</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    ${q.res?`<p class="ic-s">${q.res.L.length?`${q.res.L.length} ${q.res.L.length===1?"entreno":"entrenos"} de hoy a 2 meses vista`:"No hay entrenos de hoy a 2 meses vista"}${q.res.skip?` · ${q.res.skip} sin deporte o duración reconocibles, fuera`:""}</p>
+      <div class="ic-l">${list}</div>
+      <div class="ic-a"><button type="button" class="btn primary big" data-icadd="1" ${n?"":"disabled"}>${n?`Añadir ${n} ${n===1?"entreno":"entrenos"}`:"Elige alguno"}</button><button type="button" class="chip" data-icback="1">Otro enlace</button></div>`
+    :`<label class="sw-f ic-u" for="ic_u"><span>Enlace del calendario (iCal)</span><input id="ic_u" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://… .ics" value="${esc(u)}"></label>
+      <details class="inote"><summary>${IC_INFO}Dónde está el enlace</summary><p class="note"><b>TrainingPeaks:</b> en la web, en los ajustes de tu cuenta, busca la sincronización de calendario (iCal) y copia el enlace.<br><b>intervals.icu:</b> en los ajustes, busca el calendario en formato iCal (ICS) y copia el enlace.<br>Es privado: solo se guarda en este móvil.</p></details>
+      ${q.err?`<p class="ic-e">${esc(q.err)}</p>`:""}
+      <button type="button" class="btn primary big" data-icread="1" ${q.busy?"disabled":""}>${q.busy?"Leyendo…":"Leer calendario"}</button>`}</div></div>`}
+async function icRead(){const el=$("#ic_u"),u=(el&&el.value||"").trim();if(!u){S.ic={err:"Pega el enlace de tu calendario."};renderModal();return}
+  try{localStorage.setItem(IC_LS,u)}catch(e){}S.ic={busy:true};renderModal();
+  try{const c=await cloudCfg(),r=await fetch(c.api.replace(/\/$/,"")+"/ical",{method:"POST",headers:{"Content-Type":"application/json","X-Sustrato-Key":c.key||""},body:JSON.stringify({u})}),j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.ics)throw j.code||"x";const res=icParse(j.ics);S.ic={res,sel:res.L.map(()=>true)}}
+  catch(e){S.ic={err:e==="bad_host"||e==="bad_url"?"Ese enlace no es de TrainingPeaks ni de intervals.icu.":e==="not_ical"?"El enlace no devuelve un calendario. Revisa que sea el de iCal.":"No se ha podido leer el calendario. Revisa el enlace o inténtalo más tarde."}}
+  if(S.sheet==="ical")renderModal()}
+function icAdd(){const q=S.ic;if(!q||!q.res)return;let n=0;S.plan=S.plan||{};
+  q.res.L.forEach((x,i)=>{if(!q.sel[i])return;Object.keys(S.plan).forEach(k=>{S.plan[k]=(S.plan[k]||[]).filter(s=>s.uid!==x.uid);if(!S.plan[k].length)delete S.plan[k]});
+    (S.plan[x.k]=S.plan[x.k]||[]).push({sport:x.sport,dur:x.dur,int:x.int,time:x.time||"",uid:x.uid,src:"ical"});n++});
+  savePlan();S.sheet=null;S.ic=null;renderModal();$("#modal").hidden=true;buzz(10);toast(`${n} ${n===1?"entreno añadido":"entrenos añadidos"} al plan`);render()}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-icopen],[data-icread],[data-icadd],[data-icback]");if(!t)return;e.stopPropagation();
+  if(t.dataset.icopen!=null){S.ic=null;S.sheet="ical";renderModal()}else if(t.dataset.icread){icRead()}else if(t.dataset.icadd){icAdd()}else{S.ic=null;renderModal()}},true);
+document.addEventListener("change",e=>{const c=e.target.closest&&e.target.closest("[data-icsel]");if(!c||!S.ic||!S.ic.res)return;S.ic.sel[+c.dataset.icsel]=c.checked;const b=document.querySelector("[data-icadd]"),n=S.ic.sel.filter(Boolean).length;if(b){b.disabled=!n;b.textContent=n?`Añadir ${n} ${n===1?"entreno":"entrenos"}`:"Elige alguno"}});
+
+/* ---------- Código de barras (v319) ----------
+   En la hoja de una comida, «Escanear código de barras»: con el escáner nativo si la app lo trae (__native.scan),
+   si no con la cámara y el lector del navegador (BarcodeDetector) y, si tampoco, escribiendo el número.
+   El producto sale de Open Food Facts (solo se envía el número): nombre y macros por 100 g; eliges los gramos
+   y se apunta como «otra cosa» (st chg, sin plato). Los últimos productos quedan a mano en este móvil. Clases bc- */
+const BC_LS="sustrato-bc";
+const bcRecent=()=>{try{return JSON.parse(localStorage.getItem(BC_LS)||"[]")}catch(e){return[]}};
+function bcRemember(p){const L=bcRecent().filter(x=>x.ean!==p.ean);L.unshift(p);try{localStorage.setItem(BC_LS,JSON.stringify(L.slice(0,8)))}catch(e){}}
+let BC_STREAM=null;function bcStop(){if(BC_STREAM){BC_STREAM.getTracks().forEach(t=>t.stop());BC_STREAM=null}}
+const bcCam=()=>!!(window.BarcodeDetector&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+function bcHtml(){const b=S.msh.bc,f1=v=>String(Math.round(v*10)/10).replace(".",",");
+  if(b.p){const p=b.p,g=b.g,k=x=>x*g/100,kc=4*k(p.P)+4*k(p.C)+9*k(p.F);
+    return`<div class="bc"><div class="bc-p"><b>${esc(p.n)}</b><small>${esc(p.br||"")}${p.br?" · ":""}por 100 g: P ${f1(p.P)} · H ${f1(p.C)} · G ${f1(p.F)}</small></div>
+      <div class="bc-g"><span>Cantidad</span><div class="str-step"><button type="button" data-bcg="-10" aria-label="10 g menos">−</button><b>${g} g</b><button type="button" data-bcg="10" aria-label="10 g más">+</button></div></div>
+      ${p.sv?`<button type="button" class="chip sm" data-bcsv="1">Una ración · ${p.sv} g</button>`:""}
+      <p class="bc-s">${fmtInt(kc)} kcal · P ${fmtInt(k(p.P))} · H ${fmtInt(k(p.C))} · G ${fmtInt(k(p.F))}</p>
+      <div class="bc-a"><button type="button" class="btn primary" data-bcadd="1">Apuntar</button><button type="button" class="chip" data-bcx="1">Cancelar</button></div></div>`}
+  const R=bcRecent();
+  return`<div class="bc">${b.cam?`<video class="bc-v" id="bcv" playsinline muted aria-label="Cámara"></video><p class="bc-h">Apunta al código de barras</p>`:""}
+    <div class="bc-m"><input id="bcn" inputmode="numeric" autocomplete="off" placeholder="Número del código" value="${esc(b.ean||"")}" aria-label="Número del código de barras"><button type="button" class="btn sm primary" data-bcfind="1" ${b.busy?"disabled":""}>${b.busy?"Buscando…":"Buscar"}</button></div>
+    ${b.err?`<p class="bc-e">${esc(b.err)}</p>`:""}
+    ${R.length?`<div class="bc-r"><span>Últimos</span>${R.map((p,i)=>`<button type="button" class="chip sm" data-bcre="${i}">${esc(p.n)}</button>`).join("")}</div>`:""}
+    <button type="button" class="chip" data-bcx="1">Cancelar</button></div>`}
+async function bcFind(ean){ean=String(ean||"").replace(/\D/g,"");const b=S.msh&&S.msh.bc;if(!b)return;if(ean.length<8){b.err="El código tiene entre 8 y 14 números.";renderModal();return}
+  bcStop();b.ean=ean;b.busy=true;b.err=null;b.cam=false;renderModal();
+  try{const r=await fetch(`https://world.openfoodfacts.org/api/v2/product/${ean}.json?fields=product_name,product_name_es,brands,nutriments,serving_quantity`),j=await r.json(),p=j&&j.product,n=p&&p.nutriments;
+    if(!p||!n||n.proteins_100g==null&&n.carbohydrates_100g==null)throw 0;
+    b.p={ean,n:(p.product_name_es||p.product_name||"Producto "+ean).slice(0,60),br:(p.brands||"").split(",")[0].trim(),P:+n.proteins_100g||0,C:+n.carbohydrates_100g||0,F:+n.fat_100g||0,sv:Math.round(+p.serving_quantity)||null};b.g=b.p.sv||100}
+  catch(e){b.err="No encuentro ese producto. Prueba con otro o búscalo como plato."}
+  b.busy=false;if(S.msh&&S.msh.bc===b)renderModal()}
+async function bcStart(){const b={};S.msh.bc=b;
+  if(window.__native&&window.__native.scan){renderModal();try{const c=await window.__native.scan();if(c)return bcFind(c)}catch(e){}renderModal();return}
+  b.cam=bcCam();renderModal();if(!b.cam)return;
+  try{BC_STREAM=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});const v=$("#bcv");if(!v){bcStop();return}v.srcObject=BC_STREAM;await v.play();
+    const det=new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e"]});
+    const tick=async()=>{if(!BC_STREAM||S.msh?.bc!==b)return bcStop();try{const r=await det.detect(v);if(r&&r[0])return bcFind(r[0].rawValue)}catch(e){}setTimeout(tick,250)};tick()}
+  catch(e){b.cam=false;b.err="Sin acceso a la cámara: escribe el número del código.";bcStop();renderModal()}}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-bcopen],[data-bcfind],[data-bcg],[data-bcsv],[data-bcadd],[data-bcx],[data-bcre]");if(!t||!S.msh)return;e.stopPropagation();const b=S.msh.bc;
+  if(t.dataset.bcopen){bcStart();return}if(!b)return;
+  if(t.dataset.bcx){bcStop();S.msh.bc=null;renderModal();return}
+  if(t.dataset.bcfind){bcFind(($("#bcn")||{}).value);return}
+  if(t.dataset.bcre){const p=bcRecent()[+t.dataset.bcre];if(p){bcStop();b.cam=false;b.p=p;b.g=p.sv||100;renderModal()}return}
+  if(t.dataset.bcg){b.g=Math.max(5,Math.min(2000,b.g+(+t.dataset.bcg)));buzz(4);renderModal();return}
+  if(t.dataset.bcsv){b.g=b.p.sv;renderModal();return}
+  if(t.dataset.bcadd){const p=b.p,g=b.g,k=S.msh.k,mid=S.msh.mid,cur=(S.log[k]||{})[mid],prev=cur?JSON.parse(JSON.stringify(cur)):null;
+    setLog(k,mid,{st:"chg",n:p.n,P:p.P*g/100,C:p.C*g/100,F:p.F*g/100,r:1,portion:g+" g",bc:p.ean});bcRemember(p);mshDone(prev,"Apuntado: "+p.n)}},true);
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="bcn"){e.preventDefault();bcFind(e.target.value)}});
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-close]"))bcStop()},true); /* al cerrar la hoja, se apaga la cámara */
 
 })();
 </script>
