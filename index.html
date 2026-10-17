@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T15:04:46.822Z">
+<meta name="sustrato-version" content="2026-10-17T15:22:21.640Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3094,7 +3094,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="311";
+const APP_VER="312";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7529,8 +7529,12 @@ function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+tod
   const end=async()=>{if(y0==null)return;y0=null;if(!on){return}on=false;
     if(d<TH){set(0,true);return}
     busy=true;buzz&&buzz(8);set(56,true);const i=ind();i.classList.add("ptr-spin");
-    try{await Promise.allSettled([syncActs(),window.__hcRefresh?window.__hcRefresh():null,typeof loadWeather==="function"?loadWeather():null])}catch(e){}
-    i.classList.remove("ptr-spin");set(0,true);busy=false};
+    /* v312: 12 s como mucho. Antes, si Strava, el reloj o el tiempo no contestaban (sin red, límite de Strava, bloqueo de IP),
+       la flecha se quedaba parada abajo y los siguientes tirones no hacían nada. Lo que no llegue se pone al día solo después */
+    let late=false;
+    try{await Promise.race([Promise.allSettled([syncActs(),window.__hcRefresh?window.__hcRefresh():null,typeof loadWeather==="function"?loadWeather():null]),new Promise(r=>setTimeout(()=>{late=true;r()},12000))])}catch(e){}
+    finally{i.classList.remove("ptr-spin");set(0,true);busy=false}
+    if(late)toast("Sin respuesta por ahora: se pondrá al día solo")};
   document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})})();
 
 /* ---------- Curva de ritmo y de potencia (v240) ----------
