@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T17:56:08.493Z">
+<meta name="sustrato-version" content="2026-10-17T18:44:09.651Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -173,7 +173,6 @@ nav.tabs .fab:focus-visible{outline:2px solid var(--amarillo);outline-offset:3px
 .sempty p{margin:0 0 4px}
 .dnew-in{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .fuel{padding:14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--edge-soft)}
-.race{border-color:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 35%,transparent)}
 .rsteps{display:flex;flex-direction:column}
 .rstep{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--edge-soft)}
 .rt{font-family:var(--font);font-size:13px;color:var(--fg)}
@@ -306,7 +305,6 @@ table.bands td.num{font-variant-numeric:tabular-nums;font-family:var(--font);fon
 .spark b{font-variant-numeric:tabular-nums}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:30;padding:10px 16px;border-radius:999px;font-size:14px}
 @media (prefers-reduced-motion:no-preference){.glass{transition:background .2s}.fade{animation:fade .35s ease both}@keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}}/* v313 · Plan de carrera */
-.rp-open{width:100%;margin-top:12px}
 .rp-chip{align-self:flex-start;margin-top:4px}
 .rp-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .rp-h>div{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -449,7 +447,6 @@ nav.tabs button[aria-selected="true"]{background:rgba(255,255,255,.14);color:var
 .dnew{background:var(--card)}
 .ico,.eltile{background:var(--card2);border:0;box-shadow:none;border-radius:10px}
 .alert{background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 12%,transparent);border:0;border-radius:14px}
-.race{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--naranja-v,var(--naranja)) 35%,transparent)}
 .note{color:var(--muted)}
 .hero{padding:20px}
 .toast{border-radius:14px}
@@ -3057,6 +3054,21 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .am-sep{font-size:12px;color:var(--faint)}
 .am .af-zbar{height:3px;margin-top:4px}
 
+/* v315 · Tarjeta de carrera en Hoy: destacada (negro sobre claro, blanco sobre oscuro) (elegida el 17-10).
+   Va al final de la cascada para que su fondo mande sobre el de las tarjetas (.glass). Clases cr- */
+.glass.cr{background:var(--fg);color:var(--bg)}
+.cr-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cr-k{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;opacity:.75}
+.cr-d{font-size:13px;opacity:.75;white-space:nowrap}
+.cr-cd{display:block;margin-top:10px;font:700 28px/1.15 var(--round,var(--font));letter-spacing:-.02em}
+.cr-n{display:block;font-size:15px;opacity:.75;margin-top:2px}
+.cr-ph{display:flex;gap:6px;margin-top:16px}
+.cr-ph span{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;font-size:12px;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-ph i{display:block;height:4px;border-radius:2px;background:currentColor;opacity:.35}
+.cr-ph span.past,.cr-ph span.on{opacity:1}.cr-ph span.past i{opacity:.6}.cr-ph span.on i{opacity:1;background:var(--carb)}.cr-ph span.on{font-weight:600}
+.cr-w{margin:14px 0 0;font-size:15px;line-height:1.4}
+.cr-go{width:100%;margin-top:14px;background:color-mix(in srgb,currentColor 14%,transparent);color:inherit}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3136,7 +3148,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="314";
+const APP_VER="315";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3161,7 +3173,7 @@ function fmtP100(ms){if(!ms)return"—";const s=100/ms;return Math.floor(s/60)+"
 function fmtSpeed(ms){return ms?(ms*3.6).toFixed(1).replace(".",",")+" km/h":"—"}
 function dateLabel(k){const d=new Date(k+"T12:00:00");return DOW[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()].slice(0,3)}
 function toast(msg){const t=$("#toast");t.classList.remove("undo");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2200)}
-function undoToast(msg,fn){const t=$("#toast");t.classList.add("undo");t.innerHTML=`<span>${esc(msg)}</span><button type="button" id="undoBtn">Deshacer</button>`;t.hidden=false;toast.undo=fn;clearTimeout(toast.t);toast.t=setTimeout(()=>{t.hidden=true;toast.undo=null},5000)}
+function undoToast(msg,fn,lab){const t=$("#toast");t.classList.add("undo");t.innerHTML=`<span>${esc(msg)}</span><button type="button" id="undoBtn">${esc(lab||"Deshacer")}</button>`; /* v315: lab para otras acciones (p. ej. «Ver el plan») */t.hidden=false;toast.undo=fn;clearTimeout(toast.t);toast.t=setTimeout(()=>{t.hidden=true;toast.undo=null},5000)}
 document.addEventListener("click",e=>{const th=e.target.closest("[data-theme-set]");if(th&&window.__theme){window.__theme.set(th.dataset.themeSet);renderDrawer();render()}});
 document.addEventListener("click",e=>{const g=e.target.closest("[data-strgo]");if(g&&!e.target.closest(".tskip")){if(g.dataset.strgo)S.strRoutine=g.dataset.strgo;S.strDate=g.dataset.k;S.tab="fuerza";render();window.scrollTo(0,0)}});
 document.addEventListener("click",e=>{const i=e.target.closest("[data-info]");if(i){e.preventDefault();openInfo(i.dataset.info,i.dataset.iv||"",i.dataset.in)}});
@@ -4015,7 +4027,7 @@ function paHtml(){const p=S.pa,tk=today();
     ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`${p.sport!=="str"?pdBlock(p):`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>`}
     ${intSlider(p.int||"s")}`}
     <div class="pa-f pa-time"><span class="pa-l">Hora</span>${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div>
-    <div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>Tarjeta de carrera en Hoy los días previos y cuenta atrás en Progreso</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div>
+    <div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>${p.race?"Tendrás un plan de carrera en Hoy: la carga de hidratos, el día y la recuperación":"Activa un plan de carrera con la comida de los días previos, el día y después"}</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div>
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":(D.length>1?"Añadir en "+D.length+" días":"Añadir el "+esc(dateLabel(D[0])))}</button>
     ${p.editIdx!=null?`<div class="pa-ex"><button type="button" class="ms-link" data-plskip="${p.editIdx}" data-k="${p.origDate}">No lo voy a hacer</button><button type="button" class="ms-link red" data-pldel="${p.editIdx}" data-k="${p.origDate}">Quitar entreno</button></div>`:""}
   </div></div>`}
@@ -4051,7 +4063,8 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     S.plan=S.plan||{};if(p.editIdx!=null&&S.plan[p.origDate]){S.plan[p.origDate].splice(p.editIdx,1);if(!S.plan[p.origDate].length)delete S.plan[p.origDate]}
     const DD=paDates(p);if(p.editIdx!=null&&p.origDate===p.date){(S.plan[p.date]=S.plan[p.date]||[]).splice(p.editIdx,0,s0)}else DD.forEach(k1=>(S.plan[k1]=S.plan[k1]||[]).push(JSON.parse(JSON.stringify(s0))));savePlan();buzz(10);
     const k=DD[0];S.pa=null;S.sheet=null;renderModal();S.tab="plan";S.planView="train";S.planWeek=mondayOf(k);S.planDay=k;render();
-    toast(t.textContent.indexOf("Guardar")===0?"Entreno actualizado · "+dateLabel(k):DD.length>1?"Entreno añadido en "+DD.length+" días":"Entreno añadido el "+dateLabel(k));setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
+    const msg=t.textContent.indexOf("Guardar")===0?"Entreno actualizado · "+dateLabel(k):DD.length>1?"Entreno añadido en "+DD.length+" días":"Entreno añadido el "+dateLabel(k);
+    if(s0.race){const ri=plannedFor(k).indexOf(plannedFor(k).filter(x=>x.race).pop());undoToast("Carrera guardada · tienes su plan en Hoy",()=>{S.rplan={k,i:ri};S.sheet="rplan";renderModal()},"Ver el plan")}else toast(msg); /* v315: al guardar una carrera, acceso directo a su plan */setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
 });
 document.addEventListener("change",e=>{if(!S.pa)return;if(e.target.id==="pa_time")S.pa.time=e.target.value});
 
@@ -4105,7 +4118,10 @@ const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function sha(s){return new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)))}
 async function cloudKeys(code){const id=[...await sha("sustrato-id:"+code)].map(x=>x.toString(16).padStart(2,"0")).join(""),key=await crypto.subtle.importKey("raw",await sha("sustrato-key:"+code),"AES-GCM",false,["encrypt","decrypt"]);return{id,key}}
 async function gz(u8,mode){const cs=mode==="c"?new CompressionStream("gzip"):new DecompressionStream("gzip");return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer())}
-let CLOUD_C=null;async function cloudCfg(){if(CLOUD_C)return CLOUD_C;const r=await fetch(CLOUD_CFG+"?t="+Date.now(),{cache:"no-store"});const j=await r.json();if(!j||!j.api)throw{code:"no_server"};CLOUD_C=j;return j}
+/* v315 · Servidor de reserva: si el principal no contesta en 4 s (bloqueos de IP de Cloudflare durante el fútbol), se usa api2 (Netlify) */
+async function apiAlive(u){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),4000);const r=await fetch(u.replace(/\/$/,"")+"/health",{cache:"no-store",signal:c.signal});clearTimeout(t);return r.ok}catch(e){return false}}
+let CLOUD_C=null;async function cloudCfg(){if(CLOUD_C)return CLOUD_C;const r=await fetch(CLOUD_CFG+"?t="+Date.now(),{cache:"no-store"});let j=await r.json();if(!j||!j.api)throw{code:"no_server"};
+  if(j.api2&&!(await apiAlive(j.api))&&await apiAlive(j.api2))j=Object.assign({},j,{api:j.api2});CLOUD_C=j;return j}
 async function cloudReq(id,method,body,prev){const c=await cloudCfg();const r=await fetch(c.api.replace(/\/$/,"")+"/backup/"+id+(prev?"?v=prev":""),{method,headers:{"Content-Type":"application/json","X-Sustrato-Key":c.key||""},body});
   if(r.status===404)return null;const j=await r.json().catch(()=>null);if(!r.ok)throw{code:(j&&j.code)||"server"};return j}
 async function cloudSnapshot(){const c=userCol();if(!c)return null;const snap=await c.get(),docs={};snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id))docs[d.id]=d.data()});return docs}
@@ -5859,14 +5875,25 @@ function fuelCard(t){
       </div></details>`}).join("");
   return`<section class="glass pad fade"><h2>Avituallamiento</h2><p class="fdesc" style="margin:2px 0 0">Para tus sesiones largas. ${canLog?"Al marcarlo, sus hidratos cuentan en lo que llevas comido.":""}</p><div class="tc-list">${rows}</div>${fuelWhy()}</section>`;
 }
-function nextRace(k){for(let i=0;i<=2;i++){const d=shiftKey(k,i),r=plannedFor(d).find(s=>s.race);if(r)return{d,s:r,inD:i}}return null}
-function raceCard(t){
-  const r=nextRace(S.day);if(!r)return"";const ph=racePhase(r.s,r.inD);if(!ph)return"";const i=plannedFor(r.d).indexOf(r.s);
-  return`<section class="glass pad fade race"><div class="row"><h2>Protocolo de carrera</h2><span class="pill tag-pre">${esc(dateLabel(r.d))} · ${esc(r.s.time||"")}</span></div>
-    <h3 style="margin:8px 0 10px">${ph.title}</h3>
-    <div class="rsteps">${ph.items.map(([h,a,b])=>`<div class="rstep"><span class="rt">${esc(h)}</span><div><b>${esc(a)}</b><p>${esc(b)}</p></div></div>`).join("")}</div>
-    <button type="button" class="btn rp-open" data-rplan="${r.d}|${i}">Ver el plan completo</button></section>`;
-}
+/* v315 · Carrera que manda en Hoy: la próxima en 60 días o la de ayer (recuperación) */
+function raceAhead(k){for(let i=-1;i<=60;i++){const d=shiftKey(k,i),r=plannedFor(d).find(s=>s.race);if(r)return{d,s:r,inD:i}}return null}
+/* v315 · Tarjeta de carrera en Hoy, arriba, desde que se crea hasta el día después: cuenta atrás, la carrera, las fases
+   (Carga · Víspera · El día · Después) con la que toca marcada y qué hacer hoy, y «Ver el plan». Tarjeta destacada
+   (negro sobre claro, blanco sobre oscuro, como las destacadas de iOS); sin borde de color. Clases cr- */
+function raceCard(t){if(S.day!==today())return"";const r=raceAhead(S.day);if(!r)return"";const s=r.s,dur=s.dur||30,i=plannedFor(r.d).indexOf(s),load=dur>=90;
+  const cd=r.inD<0?"Ayer fue tu carrera":r.inD===0?"Hoy es tu carrera":r.inD===1?"Mañana es tu carrera":"Faltan "+r.inD+" días";
+  const ph=[["c2","Carga",load],["c1","Víspera",true],["day","El día",true],["rec","Después",true]].filter(x=>x[2]),cur=r.inD<0?"rec":r.inD===0?"day":r.inD===1?"c1":r.inD===2&&load?"c2":null;
+  const kg=num((S.profile||{}).weight)||70,ci=ph.findIndex(x=>x[0]===cur);
+  const what=r.inD<0?`Hoy toca recuperar: ${fmtInt(5*kg)}–${fmtInt(7*kg)} g de hidratos y proteína en cada comida.`
+    :cur==="day"?`Comida previa a las ${fromMin(Math.max(0,(toMin(s.time)||600)-180))} y salida a las ${s.time||"—"}.`
+    :cur==="c1"?`${load?"Carga de hidratos":"Día alto en hidratos"}: ${fmtInt((load?8:7)*kg)} g repartidos en el día, poca fibra y grasa.`
+    :cur==="c2"?`Empieza la carga: ${fmtInt(8*kg)}–${fmtInt(10*kg)} g de hidratos al día.`
+    :load?`La carga de hidratos empieza el ${dateLabel(shiftKey(r.d,-2))}.`:`La víspera, el ${dateLabel(shiftKey(r.d,-1))}, toca un día alto en hidratos.`;
+  return`<section class="glass pad fade cr"><div class="cr-h"><span class="cr-k"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6"/></svg>Carrera</span><span class="cr-d">${esc(dateLabel(r.d))}${s.time?" · "+esc(s.time):""}</span></div>
+    <b class="cr-cd">${cd}</b><span class="cr-n">${esc(sessName(s))} · ${fmtDur(dur*60)}</span>
+    <div class="cr-ph" role="list" aria-label="Fases">${ph.map((x,j)=>`<span role="listitem" class="${j===ci?"on":ci>=0&&j<ci?"past":""}"><i></i>${x[1]}</span>`).join("")}</div>
+    <p class="cr-w">${esc(what)}</p>
+    <button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">Ver el plan</button></section>`}
 /* Fases de la carrera (v313: compartidas por la tarjeta de Hoy y el plan completo). inD: días que faltan (0, 1 o 2) */
 function racePhase(s,inD){const kg=num((S.profile||{}).weight)||70,dur=s.dur||30,st=toMin(s.time)||600;let title,items;
   if(inD===0){
@@ -6502,8 +6529,9 @@ function vHoy(){
   S.lastT=t;
     planMatch(S.day).pl.filter(x=>x.st!=="done").map(x=>{const s=x.s;return x.st==="pend"?`<span class="tchip plan${s.sport==="str"?" tgo":""}"${s.sport==="str"?` data-strgo="${esc(s.routine||"")}" data-k="${S.day}" role="button" tabindex="0" title="Abrir en Fuerza"`:""}>${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${INT_L[s.int].toLowerCase()} · ${esc(s.time||"")}${s.race?" <small>carrera</small>":""}<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="No voy a hacer este entreno" title="Saltar">✕</button></span>`
       :`<span class="tchip plan off">${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${pst(x.st)}${x.st!=="chg"?`<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="${x.st==="skip"?"Recuperar":"Marcar saltado"}" title="${x.st==="skip"?"Recuperar":"Marcar saltado"}">${x.st==="skip"?"↺":"✕"}</button>`:""}</span>`}).join("");
-  const panel=raceCard(t)+mealsCard(t)+fuelCard(t);
+  const panel=mealsCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
   return `
+  ${raceCard(t)}
   ${weightBar()}
   ${glyCard()}
   ${recovCard()}
