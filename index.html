@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T20:26:11.368Z">
+<meta name="sustrato-version" content="2026-10-17T20:49:43.424Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1266,16 +1266,17 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-dv{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
 /* v310 · Calendario de días del planificador (varios a la vez, hasta 2 meses vista) */
 .pa-cal{background:var(--card2);border-radius:14px;padding:10px 10px 8px}
-.pa-ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.pa-ch b{font-size:15px;font-weight:600;text-transform:capitalize}
-.pa-cn{appearance:none;border:0;background:none;color:var(--fg);font-size:22px;width:44px;height:36px;border-radius:10px;cursor:pointer}.pa-cn:disabled{color:var(--faint);cursor:default}
+.pa-ch{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px 6px}.pa-ch b{font-size:17px;font-weight:700;text-transform:capitalize}.pa-ch span{display:flex;gap:4px}
 .pa-cw,.pa-cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
 .pa-cw span{text-align:center;font-size:12px;color:var(--muted);padding:2px 0 4px}
-.pa-cd{appearance:none;border:0;padding:0;background:none;color:var(--fg);font:500 15px var(--font);width:100%;max-width:40px;aspect-ratio:1;justify-self:center;border-radius:50%;position:relative;cursor:pointer;font-variant-numeric:tabular-nums} /* v311: círculo exacto de 40 px como mucho (antes el ancho era el de la columna) */
-.pa-cd.tk{font-weight:700}
-.pa-cd i{position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--muted)}
-.pa-cd[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}.pa-cd[aria-pressed="true"] i{background:var(--ac-on)}
+/* v318: la celda (44 px de alto como mínimo) lleva el número en un círculo y, debajo, el icono del entreno previsto, como en Hoy */
+.pa-cd{appearance:none;border:0;padding:2px 0 4px;background:none;color:var(--fg);font:500 15px var(--font);width:100%;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-variant-numeric:tabular-nums}
+.pa-cd b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;font-weight:inherit}
+.pa-cd.tk b{font-weight:700}
+.pa-cd .cal-ic{display:block;width:13px;height:13px;color:var(--muted);opacity:.7}.pa-cd .cal-ic svg{display:block;width:13px;height:13px;stroke-width:2.1}
+.pa-cd[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
 .pa-cd:disabled{color:var(--faint);cursor:default}
-.pa-cd:active:not(:disabled){transform:scale(.92)}
+.pa-cd:active:not(:disabled) b{transform:scale(.92)}
 .pa-cal+.pa-note{margin-top:6px}
 /* v310 · Rueda de deportes */
 .pa-wh{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 -16px}
@@ -2980,6 +2981,11 @@ a.fb-row{text-decoration:none}
 /* v314 · Entreno previsto o saltado: el icono del deporte en gris translúcido (saltado, tachado) */
 .day .cal-ic.pl,.day .cal-ic.miss{color:var(--muted);opacity:.55}
 .day .cal-ic.miss{position:relative}.day .cal-ic.miss::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:1.5px;background:currentColor;transform:rotate(-35deg)}
+/* v318 · Flechas de semana en Plan; la tira deja el gesto horizontal a nuestro deslizamiento */
+.wk .daystrip{touch-action:pan-y;overflow-x:hidden}
+.wk-nav{appearance:none;border:0;background:none;color:var(--fg);font-size:22px;line-height:1;width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center;position:relative}
+.wk-nav::after{content:"";position:absolute;inset:-4px}
+.wk-nav:active{background:var(--fill2)}.wk-nav:disabled{color:var(--faint);cursor:default}
 
 /* v278 · Progreso › Comida (087). Clases com- */
 .com-card>.row{align-items:center}
@@ -3148,7 +3154,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="317";
+const APP_VER="318";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4001,13 +4007,14 @@ function stBuilder(p){stSync(p);const st=p.steps||[],T=stTotal(st),kg=num((S.pro
 const PA_MAX=60;
 function paDates(p){return p.dates&&p.dates.length?p.dates:[p.date]}
 function paDaysTxt(D){const f=k=>{const d=new Date(k+"T12:00:00");return DOW[d.getDay()]+" "+d.getDate()};return D.length+" días: "+(D.length>5?D.slice(0,5).map(f).join(", ")+" y "+(D.length-5)+" más":D.slice(0,-1).map(f).join(", ")+" y "+f(D[D.length-1]))}
+/* v318 · Mismo formato que el calendario de Hoy: mes a la izquierda y flechas a la derecha, «lun mar…» y, bajo el número, el icono del entreno ya previsto */
 function paCal(p){const tk=today(),last=shiftKey(tk,PA_MAX),D=paDates(p),v=new Date((p.vm||paDates(p)[0].slice(0,8)+"01")+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
   const prev=keyOf(new Date(y,mo-1,1,12)),next=keyOf(new Date(y,mo+1,1,12)),canP=prev.slice(0,7)>=tk.slice(0,7),canN=next<=last;let cells="";
   for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const k=keyOf(d),out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;
     if(out){cells+='<span class="pa-cx" aria-hidden="true"></span>';continue}const off=k<tk||k>last,n=plannedFor(k).length;
-    cells+=`<button type="button" class="pa-cd${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}">${d.getDate()}${n?"<i></i>":""}</button>`}
-  return`<div class="pa-cal"><div class="pa-ch"><button type="button" class="pa-cn" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><button type="button" class="pa-cn" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></div>
-    <div class="pa-cw" aria-hidden="true">${["L","M","X","J","V","S","D"].map(x=>`<span>${x}</span>`).join("")}</div><div class="pa-cg" role="group" aria-label="Días">${cells}</div></div>`}
+    cells+=`<button type="button" class="pa-cd${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}"><b>${d.getDate()}</b>${n?calMark({dot:calDotTrain},k,"span"):""}</button>`}
+  return`<div class="pa-cal"><div class="pa-ch"><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span><button type="button" class="wk-nav" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><button type="button" class="wk-nav" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></span></div>
+    <div class="pa-cw" aria-hidden="true">${[1,2,3,4,5,6,0].map(i=>`<span>${DOW[i]}</span>`).join("")}</div><div class="pa-cg" role="group" aria-label="Días">${cells}</div></div>`}
 /* v310 · Rueda de deportes: fila de círculos que se desliza; el del centro es el elegido (grande, en acento y con su nombre),
    los demás se encogen y se atenúan según se alejan. Tocar uno lo lleva al centro. Clases pa-w */
 const PA_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"]; /* Running en medio: a pie, agua y fuerza a un lado; bici al otro */
@@ -5933,8 +5940,10 @@ function rpGet(){const r=S.rplan;if(!r)return null;const s=plannedFor(r.k)[r.i];
 const RP_IC={meal:'<path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M8 20.5h8"/>',beet:'<circle cx="12" cy="14" r="6"/><path d="M12 8c0-3 2-5 4-5M12 8c0-2-1.5-4-4-4"/>',coffee:'<path d="M5 9h11v6a5 5 0 0 1-10 0z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/>',warm:'<path d="M12 4v4M12 16v4M4 12h4M16 12h4"/><circle cx="12" cy="12" r="2.5"/>',start:'<path d="M6 21V4h11l-2 4 2 4H6"/>',rec:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'};
 function rpIc(k){return`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RP_IC[k]}</svg>`}
 function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=s.dur||30,kg=num((S.profile||{}).weight)||70,st=toMin(s.time)||600,f=fuelCalc(k,s.sport,dur,s.int||"i",true,s.time);
-  const left=daysBetween(tk,k),def=left>=2?"c2":left===1?"c1":"day",tab=S.rplan.tab||def,load=dur>=60;
+  const left=daysBetween(tk,k),load=dur>=60;
   const T=[[ "c2","Carga",dur>=90],["c1","Víspera",true],["day","El día",true],["route","En ruta",true]].filter(t=>t[2]);
+  /* v318: la pestaña por defecto tiene que existir (sin «Carga» en carreras de menos de 90 min, empieza en «Víspera») */
+  const def=left>=2&&dur>=90?"c2":left>=1?"c1":"day",tab=T.some(t=>t[0]===S.rplan.tab)?S.rplan.tab:def;
   const head=`<div class="rp-h"><div><span class="rp-cd">${left>1?"Faltan "+left+" días":left===1?"Es mañana":left===0?"Es hoy":"Ya pasó"}</span><b>${esc(sessName(s))}</b><small>${esc(dateLabel(k))}${s.time?" · "+esc(s.time):""} · ${fmtDur(dur*60)}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="seg rp-tabs" role="tablist" aria-label="Fases">${T.map(([id,l])=>`<button type="button" role="tab" data-rptab="${id}" aria-selected="${tab===id}" aria-pressed="${tab===id}">${l}</button>`).join("")}</div>`;
   let body="";
@@ -5958,7 +5967,10 @@ function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=
       :`<p class="note rp-n">Con menos de una hora no necesitas comer durante la carrera; agua si hace calor.</p>`}
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade rp" role="dialog" aria-modal="true" aria-label="Plan de carrera">${head}<div class="rp-b">${body}</div>
     <button type="button" class="btn primary big rp-share" data-act="rpshare">Compartir el plan</button></div></div>`}
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rptab]");if(!b||!S.rplan)return;e.stopPropagation();S.rplan.tab=b.dataset.rptab;buzz(6);renderModal()},true);
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rptab]");if(!b||!S.rplan)return;e.stopPropagation();S.rplan.tab=b.dataset.rptab;buzz(6);
+  /* v318: cambiar de pestaña solo cambia el contenido; antes se repintaba la hoja entera y su animación de entrada parpadeaba */
+  const m=$("#modal"),t=document.createElement("div");t.innerHTML=rplanHtml();const nb=t.querySelector(".rp-b"),ob=m.querySelector(".rp-b");if(!nb||!ob){renderModal();return}
+  m.querySelectorAll("[data-rptab]").forEach(x=>{const on=x.dataset.rptab===S.rplan.tab;x.setAttribute("aria-selected",on);x.setAttribute("aria-pressed",on)});ob.innerHTML=nb.innerHTML},true);
 /* Imagen del plan para compartir (mismo estilo que el menú de la semana) */
 async function rplanPng(){const lg=await shLogo();const x=rpGet();if(!x)return;const{k,s}=x,dur=s.dur||30,f=fuelCalc(k,s.sport,dur,s.int||"i",true,s.time),ph=[2,1,0].map(d=>[d,racePhase(s,d)]).filter(([,p])=>p),lab={2:"DOS DÍAS ANTES",1:"LA VÍSPERA",0:"EL DÍA"};
   const W=1080,c=document.createElement("canvas"),g=c.getContext("2d"),F=(w,z)=>g.font=w+" "+z+"px Geist, system-ui, sans-serif";
@@ -7226,7 +7238,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.wtdel){const d=t.dataset.wtdel,prev=(S.weights||[]).slice();S.weights=prev.filter(x=>x.d!==d);saveWeights();render();undoToast("Pesaje borrado",()=>{S.weights=prev;saveWeights();render()});return}
   if(t.dataset.period){S.period=t.dataset.period;S.anchor=S.day;render();return}
   if(t.dataset.pnav){S.anchor=shiftAnchor(S.period,S.anchor||S.day,+t.dataset.pnav);render();return}
-  if(t.dataset.plweek){S.planWeek=shiftKey(S.planWeek||mondayOf(today()),7*+t.dataset.plweek);render();return}
+  if(t.dataset.plweek){const n=shiftKey(S.planWeek||mondayOf(today()),7*+t.dataset.plweek);if(n>WK_MAX())return;S.planWeek=n;S._wkAnim=+t.dataset.plweek>0?"wk-in-l":"wk-in-r";buzz(6);render();setTimeout(()=>{S._wkAnim=""},400);return}
   if(t.dataset.editday){S.day=t.dataset.editday;S.period="day";S.tab="hoy";S.planEdit=true;render();window.scrollTo(0,0);return}
   if(t.dataset.act==="autoweek"){const F=mdFuture(S.planWeek||mondayOf(today())),full=F.every(mdFull),prev=JSON.parse(JSON.stringify(S.menu));let n=0;F.forEach(k=>{if(autoAssignDay(k,false,full))n++});
     if(!n){toast("Completa el perfil para rellenar el menú");return}saveMenu();render();undoToast(full?"Otros platos propuestos":"Semana rellenada",()=>{S.menu=prev;saveMenu();render()});return}
@@ -8339,7 +8351,7 @@ function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>
    el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando.
    calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; el tramo elegido va en una banda del acento (cómo se elige, abajo).
    Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
-   Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
+   (v318: Menú usa también la marca de entrenos; el punto de menú desapareció) */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
 /* v282 · Día con entreno hecho: en vez del punto, el icono del deporte principal (el más largo) en el color de su familia.
    v314: previsto, el icono en gris translúcido; saltado, además tachado. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
@@ -8356,7 +8368,6 @@ const CB_L=["","bajo","medio","alto"];
 function carbLvl(k){const t=dayTargets(k),kg=num((S.profile||{}).weight)||70;if(!t)return 0;const g=t.C/kg;return g>=6?3:g>=4?2:1}
 function cbLabel(k){const n=carbLvl(k),t=dayTargets(k);if(!n||!t)return"";const d=new Date(k+"T12:00:00");
   return`<p class="cb-lab"><i class="cb-r" style="--cbp:${(n/3).toFixed(4)}" aria-hidden="true"></i>${k===today()?"Hoy":DOW[d.getDay()]+" "+d.getDate()} · día ${CB_L[n]} en hidratos · ${fmtInt(t.C)} g</p>`}
-function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
   const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]+"s":""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b${cb?` class="cb" style="--cbp:${(cb/3).toFixed(4)}"`:""}>${d.getDate()}</b>${calMark(o,k,"span")}</button>`})()}`}).join("");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
@@ -8405,9 +8416,13 @@ function cmTap(k){const p=S._cmA;if(p&&p!==k){S._cmA=null;cmPick(p,k)}else{S._cm
   document.addEventListener("mousemove",e=>{if(!md)return;if(!S._cmDrag&&(Math.abs(e.clientX-x0)>4||Math.abs(e.clientY-y0)>4)){S._cmA=null;paint()}if(S._cmDrag)move(e.clientX,e.clientY)});
   document.addEventListener("mouseup",()=>{if(!md)return;md=false;const k=k0,d=!!S._cmDrag;stop();if(d){S._cmA=null;cmPick(a,b)}else cmTap(k)})})();
 /* Plan: la semana de S.planWeek con su día elegido */
-function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today());
-  return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:kind==="menu"?calDotMenu:calDotTrain,carb:kind==="menu",wk,label:periodLabel("week",wk)+". Desliza para cambiar de semana",
-    right:cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>'})}
+/* v318 · Semanas de Plan: flechas ‹ › visibles (antes solo se podía deslizar, y en el móvil el gesto se perdía) y,
+   hacia delante, hasta 2 meses vista, como el planificador. Hacia atrás, sin límite (historial) */
+const WK_MAX=()=>mondayOf(shiftKey(today(),60));
+/* v318 · Entrenos y Menú, igual que Hoy: anillo de hidratos y el icono del entreno (en Menú explica por qué el día es alto o bajo; los platos asignados ya se ven en «n/4 platos») */
+function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today()),last=wk>=WK_MAX();
+  return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:calDotTrain,carb:true,wk,label:periodLabel("week",wk),
+    right:(cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>')+`<button type="button" class="wk-nav" data-plweek="-1" aria-label="Semana anterior">‹</button><button type="button" class="wk-nav" data-plweek="1" ${last?"disabled":""} aria-label="Semana siguiente">›</button>`})}
 /* cabecera del día elegido: fecha (con el mes, ya que arriba no hay fechas) y un dato a la derecha */
 function wkDayHead(k,right){const tk=today(),d=new Date(k+"T12:00:00");
   return`<div class="wk-h"><b>${k===tk?"Hoy · ":""}${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()].slice(0,3)}</b><span>${right||""}</span></div>`}
@@ -8420,7 +8435,7 @@ document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest
   document.addEventListener("pointermove",e=>{if(!on)return;const dx=e.clientX-x0;if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(e.clientY-y0)){const s=on.querySelector(".wk-s");if(s){s.style.transition="none";s.style.transform=`translateX(${dx*.5}px)`;s.style.opacity=String(1-Math.min(.5,Math.abs(dx)/400))}}});
   const end=e=>{if(!on)return;const w=on;on=null;const dx=(e.clientX||x0)-x0,s=w.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}
     if(Math.abs(dx)<50||Math.abs(dx)<1.5*Math.abs((e.clientY||y0)-y0)||Date.now()-t0>800)return;
-    const dir=dx<0?1:-1,wk=w.dataset.wk,i=Math.round((new Date(planDayK(wk)+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5);
+    const dir=dx<0?1:-1,wk=w.dataset.wk,i=Math.round((new Date(planDayK(wk)+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5);if(dir>0&&wk>=WK_MAX())return;
     S.planWeek=shiftKey(wk,7*dir);S.planDay=shiftKey(S.planWeek,i);
     S._wkSw=true;setTimeout(()=>{S._wkSw=false},60);S._wkAnim=dir>0?"wk-in-l":"wk-in-r";buzz(8);render();setTimeout(()=>{S._wkAnim=""},400)};
   document.addEventListener("pointerup",end);document.addEventListener("pointercancel",()=>{if(on){const s=on.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}on=null}})})();
