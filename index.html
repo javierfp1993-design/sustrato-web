@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T16:21:12.579Z">
+<meta name="sustrato-version" content="2026-10-17T17:56:08.493Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2971,17 +2971,18 @@ a.fb-row{text-decoration:none}
 
 /* v282 · Icono del deporte principal en el calendario (en vez del punto «hecho»). Clase cal- */
 .daystrip{align-items:flex-start} /* con o sin icono, los números a la misma altura */
-.day .cal-ic{display:block;width:16px;height:16px;margin:3px auto 0;color:var(--fg)} /* v295: un solo color para todos los deportes */
+.day .cal-ic{display:block;width:16px;height:16px;margin:8px auto 0;color:var(--fg)} /* v314: aire bajo el anillo de hidratos */ /* v295: un solo color para todos los deportes */
 .day .cal-ic svg{display:block;width:16px;height:16px;stroke-width:2.1}
 .cm-c .cal-ic{width:13px;height:13px;margin-top:2px}
 .cm-c .cal-ic svg{width:13px;height:13px}
-/* v313 · Hidratos del día: tres rayas en el color de los hidratos (las apagadas, en gris) */
-.cal-cb{display:flex;gap:2px;justify-content:center;margin-top:3px}
-.cal-cb i{display:block;width:5px;height:3px;border-radius:2px;background:var(--fill)}
-.cal-cb i.on{background:var(--carb)}
-.day[aria-pressed="true"] .cal-cb i:not(.on){background:color-mix(in srgb,var(--ac-on) 35%,transparent)}
-.qc-cb{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap}
-.qc-cb .cal-cb{margin:0}
+/* v314 · Hidratos del día: anillo alrededor del número (también sobre el azul del día elegido) y rótulo del día */
+.day b.cb{position:relative}
+.day b.cb::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 9%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 17px,#000 17.5px);mask:radial-gradient(circle,transparent 17px,#000 17.5px);pointer-events:none}
+.cb-lab{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:13px;color:var(--muted)}
+.cb-r{flex:none;width:14px;height:14px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 12%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 4px,#000 4.5px);mask:radial-gradient(circle,transparent 4px,#000 4.5px)}
+/* v314 · Entreno previsto o saltado: el icono del deporte en gris translúcido (saltado, tachado) */
+.day .cal-ic.pl,.day .cal-ic.miss{color:var(--muted);opacity:.55}
+.day .cal-ic.miss{position:relative}.day .cal-ic.miss::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:1.5px;background:currentColor;transform:rotate(-35deg)}
 
 /* v278 · Progreso › Comida (087). Clases com- */
 .com-card>.row{align-items:center}
@@ -3135,7 +3136,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="313";
+const APP_VER="314";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5264,11 +5265,11 @@ async function saveFile(name,data){
   try{await S.dl.save({filename:name,data});}
   catch(e){if(e&&e.code==="declined")return;toast(e&&e.code==="rate_limited"?"Ya hay una descarga pendiente":"No se ha podido descargar")}
 }
-function exportMenuPng(){
+async function exportMenuPng(){const lg=await shLogo();
   const wk=S.planWeek||mondayOf(today()),days=[];for(let i=0;i<7;i++)days.push(shiftKey(wk,i));
   const W=1400,rowH=118,top=150,H=top+rowH*7+60,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d");
   g.fillStyle="#141414";g.fillRect(0,0,W,H);
-    g.fillStyle="#f4f5f7";g.font="600 44px Geist, system-ui, sans-serif";g.fillText("Sustrato",48,74);
+    if(lg)g.drawImage(lg,48,30,60,60);g.fillStyle="#f4f5f7";g.font="600 44px Geist, system-ui, sans-serif";g.fillText("Sustrato",lg?124:48,74); /* v314: con el logo */
   g.fillStyle="#aeaeb2";g.font="400 24px Geist, system-ui, sans-serif";g.fillText("Menú de la semana · "+periodLabel("week",wk),48,112);
   const cols=[48,250,530,810,1090],meals=["breakfast","lunch","snack","dinner"];
   g.font="500 18px Geist, system-ui, sans-serif";g.fillStyle="#636366";meals.forEach((m,i)=>g.fillText(MEAL_N[m].toUpperCase(),cols[i+1],top-14));
@@ -5921,14 +5922,14 @@ function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=
     <button type="button" class="btn primary big rp-share" data-act="rpshare">Compartir el plan</button></div></div>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rptab]");if(!b||!S.rplan)return;e.stopPropagation();S.rplan.tab=b.dataset.rptab;buzz(6);renderModal()},true);
 /* Imagen del plan para compartir (mismo estilo que el menú de la semana) */
-function rplanPng(){const x=rpGet();if(!x)return;const{k,s}=x,dur=s.dur||30,f=fuelCalc(k,s.sport,dur,s.int||"i",true,s.time),ph=[2,1,0].map(d=>[d,racePhase(s,d)]).filter(([,p])=>p),lab={2:"DOS DÍAS ANTES",1:"LA VÍSPERA",0:"EL DÍA"};
+async function rplanPng(){const lg=await shLogo();const x=rpGet();if(!x)return;const{k,s}=x,dur=s.dur||30,f=fuelCalc(k,s.sport,dur,s.int||"i",true,s.time),ph=[2,1,0].map(d=>[d,racePhase(s,d)]).filter(([,p])=>p),lab={2:"DOS DÍAS ANTES",1:"LA VÍSPERA",0:"EL DÍA"};
   const W=1080,c=document.createElement("canvas"),g=c.getContext("2d"),F=(w,z)=>g.font=w+" "+z+"px Geist, system-ui, sans-serif";
   const lines=[];ph.forEach(([d,p])=>{lines.push(["h",lab[d]]);p.items.forEach(it=>lines.push(["i",it]))});
   lines.push(["h","EN RUTA"]);lines.push(["t",f.cph>0?`${f.carbs} g de hidratos (${f.cph} g/h) · ${(f.flu/1000).toFixed(1).replace(".",",")} L · ${fmtInt(f.na)} mg de sodio${f.T!=null?" · "+Math.round(f.T)+" °C":""}`:"Menos de una hora: sin comer durante la carrera"]);
   if(f.steps.length)lines.push(["t","Tomas: "+f.steps.map(m=>m+"′ "+f.per+" g").join(" · ")]);
   const wrap=(txt,w)=>{const o=[];let l="";txt.split(" ").forEach(wd=>{const t=l?l+" "+wd:wd;if(g.measureText(t).width>w&&l){o.push(l);l=wd}else l=t});if(l)o.push(l);return o};
   F("400",26);let H=230;lines.forEach(([t,v])=>{H+=t==="h"?70:t==="i"?(48+wrap(v[2],760).length*34+14):wrap(v,980).length*36+10});H+=40;
-  c.width=W;c.height=H;g.fillStyle="#141414";g.fillRect(0,0,W,H);g.fillStyle="#f4f5f7";F("600",48);g.fillText("Plan de carrera",50,90);
+  c.width=W;c.height=H;g.fillStyle="#141414";g.fillRect(0,0,W,H);if(lg)g.drawImage(lg,W-50-64,44,64,64);g.fillStyle="#f4f5f7";F("600",48);g.fillText("Plan de carrera",50,90);
   g.fillStyle="#aeaeb2";F("400",26);g.fillText(sessName(s)+" · "+dateLabel(k)+(s.time?" · "+s.time:"")+" · "+fmtDur(dur*60),50,138);let y=210;
   lines.forEach(([t,v])=>{if(t==="h"){g.fillStyle="#ffd21e";F("600",22);g.fillText(v,50,y+20);y+=70;return}
     if(t==="i"){g.fillStyle="#aeaeb2";F("500",24);g.fillText(v[0],50,y);g.fillStyle="#f4f5f7";F("600",28);g.fillText(v[1],270,y);F("400",26);g.fillStyle="#c7c7cc";const L=wrap(v[2],760);L.forEach((l,j)=>g.fillText(l,270,y+44+j*34));y+=48+L.length*34+14;return}
@@ -6490,8 +6491,8 @@ function vHoy(){
   const days=[];for(let i=6;i>=-7;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
   const per=`<div class="seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-period="${k}" aria-pressed="${S.period===k}">${l}</button>`).join("")}</div>`;
   if(S.period!=="day"){S.anchor=S.anchor||S.day;
-    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button></div></div></section>`+vPeriod()}
-  const strip=calStrip({days,sel:S.day,attr:"data-day",dot:calDotTrain,carb:true,right:`${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l6 6-6 6"/><path d="M20 11h-8a7 7 0 0 0-7 7v1"/></svg></button>`});
+    return`<section class="glass pad fade"><div class="row">${per}<div class="pnav"><button class="chip" data-pnav="-1" aria-label="Anterior">‹</button><h3>${esc(periodLabel(S.period,S.anchor))}</h3><button class="chip" data-pnav="1" aria-label="Siguiente">›</button><button class="sh-btn" data-act="share" aria-label="Compartir logros">${IC_SHARE}</button></div></div></section>`+vPeriod()}
+  const strip=calStrip({days,sel:S.day,attr:"data-day",dot:calDotTrain,carb:true,right:`${per.replace('class="seg"','class="seg sm"')}<button class="sh-btn" data-act="share" aria-label="Compartir logros">${IC_SHARE}</button>`});
   const p=S.profile||{};const t=dayTargets(S.day);
   if(!t&&!S.storeLoaded)return`<section class="glass pad boot-sk" aria-label="Cargando"><i class="sk" style="height:180px;width:100%;border-radius:14px"></i></section><section class="glass pad boot-sk"><i class="sk" style="height:120px;width:100%;border-radius:14px"></i></section>`;
   if(!t){
@@ -6512,7 +6513,7 @@ function vHoy(){
   <div class="hcar${S.day<=today()?" hcar-en":""}"><div class="hcar-track">
   <section class="glass pad fade hero">
     <div class="hero-l">
-      <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2>${(()=>{const cb=carbLvl(S.day);return cb?`<span class="qc-cb">${carbTicks(cb)}Hidratos ${CB_L[cb]}</span>`:""})()}</div>
+      <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
       ${(()=>{const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F,mq=macroQuality(t,S.day),mv=macroVerdicts(t,mq),qq=mv?{C:mv.C,P:mv.P,F:mv.F}:null,tips=macroTips(t,mq),ti=Math.min(S.qTip||0,Math.max(0,tips.length-1));
         /* v307 (opción A): con algo comido, la gota dice lo que queda (antes lo repetía «Te quedan» en Reparto por comidas) */
         const lf=t.kcal-ek,lz=Math.abs(lf)<15;
@@ -6575,6 +6576,10 @@ function constCard(p,T,tk){
   return`<section class="glass pad fade"><div class="row"><h2>Constancia</h2><span class="pill">${esc((GOALS[g]||GOALS.recomp).label)}</span></div>${head}<div style="margin-top:10px">${svg}</div>${lg}${macros}</section>`}
 /* ---------- Compartir logros: imagen vertical (1080×1920) del día, semana, mes o año ----------
    Solo datos propios de Sustrato (nada de Strava): lo comido frente al objetivo, constancia y rachas. */
+/* v314 · Icono de compartir como en iOS (cuadro con la flecha hacia arriba) */
+const IC_SHARE='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11"/><path d="M8 7.5l4-4 4 4"/><path d="M8.5 10.5H7a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6.5a2 2 0 0 0-2-2h-1.5"/></svg>';
+/* v314 · El logo de Sustrato para las imágenes que se comparten: el mismo icono de la app (apple-touch-icon), no una imitación */
+function shLogo(){return new Promise(r=>{const l=document.querySelector('link[rel="apple-touch-icon"]');if(!l)return r(null);const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=l.href})}
 function shStreak(){let k=today();if(!dayEaten(k))k=shiftKey(k,-1);let n=0;while(dayEaten(k)&&n<999){n++;k=shiftKey(k,-1)}return n}
 function shTol(){const g=(S.profile||{}).goal||"recomp";return g==="loss"||g==="recomp"?0.10:0.12}
 function shData(p){const tk=today(),tol=shTol(),st=r=>r>1+tol?"over":r<1-tol?"under":"ok";
@@ -6592,48 +6597,62 @@ function shData(p){const tk=today(),tol=shTol(),st=r=>r>1+tol?"over":r<1-tol?"un
     const ms=M.map((v,i)=>[v,i]).filter(x=>x[0]!=null),first=ms[0],last=ms[ms.length-1],best=ms.slice().sort((x,y)=>y[0]-x[0])[0];
     return{p,label:a.slice(0,4),pct:Math.round(nOk/done.length*100),since:MON[first[1]],M,shares,fill,
       stats:[ms.length>=2?[(last[0]-first[0]>=0?"+":"−")+Math.abs(last[0]-first[0]),"Puntos vs "+MON[first[1]]]:[best[0]+" %","Mejor mes"],[String(done.length),"Días apuntados"],[String(shStreak()),"Días seguidos"]]}}
-  return{p,label:periodLabel(p,a),nOk,n:done.length,bars:D.map(d=>({lb:p==="week"?DOW[new Date(d.k+"T12:00:00").getDay()]:String(+d.k.slice(8)),r:d.r,fut:d.fut,s:d.r==null?null:st(d.r)})),tol,shares,fill,
-    stats:[[prot+" %","Proteína media"],[String(done.length),"Días apuntados"],[String(shStreak()),"Días seguidos"]]}}
+  /* v314 · Informe del mes: además de los días en objetivo, el peso del mes, el gasto real (o los entrenos) y la forma */
+  const stats=p!=="month"?[[prot+" %","Proteína media"],[String(done.length),"Días apuntados"],[String(shStreak()),"Días seguidos"]]:(()=>{
+    const e1=s1<tk?s1:tk,W=(S.weights||[]).filter(w=>w.d>=s0&&w.d<=e1&&w.kg).sort((x,y)=>x.d<y.d?-1:1),dw=W.length>=2?W[W.length-1].kg-W[0].kg:null;
+    const ad=computeAdapt(),A=S.acts.filter(x=>x.day>=s0&&x.day<=e1),hh=A.reduce((t,x)=>t+(x.mov||0),0)/3600;
+    const P2=S.acts.length?fitnessSeries().pts:[],c0=P2.find(x=>x.k>=s0&&x.k<=e1),c1=P2.filter(x=>x.k<=e1).pop(),dc=c0&&c1?Math.round(c1.ctl-c0.ctl):null;
+    return[[dw==null?"—":(dw>0?"+":dw<0?"−":"±")+Math.abs(dw).toFixed(1).replace(".",",")+" kg","Peso en el mes"],
+      ad.ok?[fmtInt(ad.implied),"kcal de gasto real"]:[A.length?A.length+" · "+fmtH(hh):"—","Entrenos · horas"],
+      [dc==null?"—":(dc>0?"+":dc<0?"−":"±")+Math.abs(dc),"Forma en el mes"]]})();
+  return{p,label:periodLabel(p,a),s0,nOk,n:done.length,days:D.map(d=>({k:d.k,lb:DOW[new Date(d.k+"T12:00:00").getDay()],e:d.e,t:d.t,fut:d.fut,ok:d.r!=null&&st(d.r)==="ok"})),tol,stats}}
+/* v314 · Imagen para compartir, inspirada en los anillos de Actividad de iOS: tres anillos por día (proteína, hidratos y grasas
+   frente a tu objetivo). Día: anillos grandes; semana: siete juegos; mes: calendario con anillos; año: un anillo por mes (días en objetivo).
+   Cifra protagonista arriba y tres casillas de logros abajo. Sin la gota de macros, que ahí no explicaba nada */
 async function shRender(p){const d=shData(p);if(!d)return null;
-  const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,H=1920,P=96;
-  const K=dark?{bg:"#141414",fg:"#f4f5f7",mu:"#8e8e93",ln:"rgba(255,255,255,.1)",card:"#1c1c1e",ok:"#30d158",ov:"#ff9500",un:"#5f5f64",band:"rgba(255,255,255,.06)",c:"#ffd21e",p:"#ff3b30",f:"#3b82f6",de:"#2c2c2e"}
-    :{bg:"#f4f5f7",fg:"#1c1c1e",mu:"#636366",ln:"rgba(0,0,0,.09)",card:"#ffffff",ok:"#11ab40",ov:"#e86518",un:"#aeaeb2",band:"rgba(0,0,0,.05)",c:"#f0a800",p:"#d70015",f:"#3478fb",de:"#e5e5ea"};
+  const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,H=1920,P=80;
+  const K=dark?{bg:"#000000",fg:"#f4f5f7",mu:"#8e8e93",card:"#1c1c1e",ok:"#30d158",c:"#ffd21e",p:"#ff375f",f:"#3b82f6"}
+    :{bg:"#f2f2f7",fg:"#1c1c1e",mu:"#636366",card:"#ffffff",ok:"#11ab40",c:"#f0a800",p:"#e3143c",f:"#3478fb"};
   try{await document.fonts.ready}catch(e){}
   const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
   const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
   const rr=(X,Y,w,h,r,c)=>{x.fillStyle=c;x.beginPath();x.roundRect(X,Y,w,h,Math.min(r,w/2,h/2));x.fill()};
+  const ring=(cx,cy,r,w,v,c,ghost)=>{x.lineCap="round";x.lineWidth=w;x.strokeStyle=c;x.globalAlpha=ghost?.12:.22;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();x.globalAlpha=1;
+    if(!ghost&&v>0){x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(.999,v));x.stroke()}};
+  const rings=(cx,cy,R,w,e,t,ghost)=>{const g=w*1.18,V=e&&t?[e.P/t.P,e.C/t.C,e.F/t.F]:[0,0,0];[K.p,K.c,K.f].forEach((c,i)=>ring(cx,cy,R-i*g,w,V[i],c,ghost||!e))};
   x.fillStyle=K.bg;x.fillRect(0,0,W,H);
-  /* marca: la gota del logo */
-  const drop=(X,Y,w,fill,sh)=>{const k=w/100;x.save();x.translate(X,Y);x.scale(k,k);const pth=new Path2D(DROP_D);x.clip(pth);x.fillStyle=K.de;x.fillRect(0,0,100,124);
-    const tot=sh.reduce((a,b)=>a+b,0)||1,yb=DROP_BOT,yt=DROP_TOP;let acc=0;const tops=sh.map(v=>acc+=v/tot*fill),cs=[K.f,K.p,K.c];
-    for(let i=2;i>=0;i--){const y=yb-(yb-yt)*tops[i];x.fillStyle=cs[i];x.fillRect(0,y,100,130)}x.restore()};
-  rr(P,96,76,76,18,dark?"#2c2c2e":"#1c1c1e");drop(P+14,104,48,0.62,[1,0,1.4]);T("Sustrato",P+98,150,F(700,44),K.fg);
+  {const lg=await shLogo();if(lg)x.drawImage(lg,P,90,72,72)}T("Sustrato",P+92,140,F(700,42),K.fg);
   const per=d.p==="day"?(()=>{const dt=new Date(d.k+"T12:00:00"),s=dt.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)})():d.label;
-  T(per,P,250,F(500,40),K.mu);
-  /* cifra grande + gota pequeña */
-  const big=d.p==="day"?[String(Math.round(d.r*100)),"%"]:d.p==="year"?[String(d.pct),"%"]:[String(d.nOk),"/"+d.n];
-  let fs=300;x.font=F(700,fs);const fit=()=>{x.font=F(700,fs);const a=x.measureText(big[0]).width;x.font=F(700,big[1]==="%"?fs/2:fs);return a+x.measureText(big[1]).width};while(fit()>W-2*P-210&&fs>150)fs-=10;
-  x.font=F(700,fs);const w0=x.measureText(big[0]).width;T(big[0],P-6,560,F(700,fs),K.fg);T(big[1],P-6+w0+(big[1]==="%"?6:0),560,F(700,big[1]==="%"?fs/2:fs),big[1]==="%"?K.fg:K.mu);
-  const sh=d.p==="day"?[9*d.e.F,4*d.e.P,4*d.e.C]:d.shares;drop(W-P-170,350,170,d.p==="day"?Math.min(1,d.r):d.fill,sh);
-  T(d.p==="day"?`de tu objetivo${d.final?"":" de hoy"} · ${fmtInt(d.e.kcal)} kcal`:d.p==="year"?`de tus días en objetivo desde ${d.since}`:"días en tu objetivo",P,650,F(500,46),K.mu);
-  let y=760;
-  if(d.p==="day"){[["Hidratos",K.c,d.e.C/d.t.C],["Proteína",K.p,d.e.P/d.t.P],["Grasas",K.f,d.e.F/d.t.F]].forEach(([n,c,v],i)=>{const yy=y+i*72;T(n,P,yy+14,F(500,38),K.fg);rr(360,yy-8,440,22,11,K.ln);rr(360,yy-8,Math.max(22,440*Math.min(1,v)),22,11,c);T(Math.round(v*100)+" %",W-P,yy+14,F(600,38),K.fg,"right")});
-    y=1050;T("Tu día",P,y,F(600,32),K.mu);const ms=d.meals.map(m=>m.min),bs=d.blocks;let lo=Math.min(...ms,...bs.map(b=>b.st))-30,hi=Math.max(...ms,...bs.map(b=>b.en))+30;const X=v=>P+10+(v-lo)/(hi-lo)*(W-2*P-20),ly=y+80;
-    x.strokeStyle=K.ln;x.lineWidth=4;x.lineCap="round";x.beginPath();x.moveTo(P,ly);x.lineTo(W-P,ly);x.stroke();
-    bs.forEach(b=>{x.strokeStyle=K.c;x.lineWidth=14;x.beginPath();x.moveTo(X(b.st),ly);x.lineTo(Math.max(X(b.en),X(b.st)+10),ly);x.stroke();T("Entreno",(X(b.st)+X(b.en))/2,ly-30,F(600,28),K.fg,"center")});
-    d.meals.forEach(m=>{x.fillStyle=m.on?K.ok:K.un;x.beginPath();x.arc(X(m.min),ly,15,0,7);x.fill();T(fromMin(m.min),X(m.min),ly+56,F(500,28),K.mu,"center")});
-    if(d.ok&&(d.final||d.r>=1-shTol())){x.font=F(600,36);const s="✓ Día en tu objetivo",w=x.measureText(s).width+68;rr(P,1250,w,76,38,K.card);T(s,P+34,1300,F(600,36),K.fg)}}
-  else if(d.p==="year"){const L="EFMAMJJASOND",gw=(W-2*P-66)/4;d.M.forEach((v,i)=>{const cx=P+(i%4)*(gw+22),cy=y+Math.floor(i/4)*202;
-      let c=K.card;if(v!=null){const a=Math.max(.25,Math.min(1,(v-30)/60));c=`color-mix(in srgb, ${K.ok} ${Math.round(a*100)}%, ${K.card})`}
-      x.fillStyle=K.card;rr(cx,cy,gw,180,28,K.card);if(v!=null){x.globalAlpha=Math.max(.3,Math.min(1,(v-30)/60));rr(cx,cy,gw,180,28,K.ok);x.globalAlpha=1}
-      const on=v!=null&&v>=60;T(L[i],cx+26,cy+50,F(600,34),on?"#fff":K.fg);if(v!=null)T(v+"%",cx+26,cy+152,F(700,52),on?"#fff":K.fg)})}
-  else{const Hc=440,n=d.bars.length,slot=(W-2*P)/n,bw=n>20?Math.max(10,slot*.62):Math.min(96,slot*.66),Y=r=>y+Hc-Math.min(r,1.4)/1.4*Hc;
-    x.fillStyle=K.band;x.fillRect(P,Y(1+d.tol),W-2*P,Y(1-d.tol)-Y(1+d.tol));x.strokeStyle=K.mu;x.globalAlpha=.4;x.setLineDash([8,10]);x.lineWidth=3;x.beginPath();x.moveTo(P,Y(1));x.lineTo(W-P,Y(1));x.stroke();x.setLineDash([]);x.globalAlpha=1;
-    const ev=n>20?7:1;d.bars.forEach((b,i)=>{const cx=P+slot*i+slot/2;if(b.r!=null){const yy=Y(b.r);rr(cx-bw/2,yy,bw,y+Hc-yy,n>20?6:22,b.s==="ok"?K.ok:b.s==="over"?K.ov:K.un)}else if(!b.fut){x.fillStyle=K.un;x.beginPath();x.arc(cx,y+Hc-6,6,0,7);x.fill()}
-      if(n<=20||i%ev===0)T(b.lb,cx,y+Hc+50,F(500,30),K.mu,"center")})}
-  /* logros */
-  x.fillStyle=K.ln;x.fillRect(P,1540,W-2*P,2);d.stats.forEach(([b,l],i)=>{const cx=P+i*(W-2*P)/3,cw=(W-2*P)/3-24;let f1=76,f2=32;x.font=F(700,f1);while(x.measureText(b).width>cw&&f1>40){f1-=4;x.font=F(700,f1)}x.font=F(500,f2);while(x.measureText(l).width>cw&&f2>22){f2-=1;x.font=F(500,f2)}T(b,cx,1650,F(700,f1),K.fg);T(l,cx,1700,F(500,f2),K.mu)});
-  T("Sustrato · come según entrenas",P,1830,F(500,32),K.mu);
+  T(per,W-P,140,F(500,34),K.mu,"right");
+  /* cifra protagonista */
+  const big=d.p==="day"?[String(Math.round(d.r*100))," %"]:d.p==="year"?[String(d.pct)," %"]:[String(d.nOk)," de "+d.n];
+  const sub=d.p==="day"?`de tu objetivo${d.final?"":" de hoy"} · ${fmtInt(d.e.kcal)} kcal`:d.p==="year"?`de tus días en objetivo desde ${d.since}`:"días en tu objetivo";
+  x.font=F(800,200);const bw=x.measureText(big[0]).width;T(big[0],P-6,420,F(800,200),K.fg);T(big[1],P+bw+4,420,F(700,72),K.mu);T(sub,P,490,F(500,40),K.mu);
+  /* gráfico */
+  const top=560,bot=1500;
+  if(d.p==="day"){const cx=W/2,cy=top+290,R=280,w=60;rings(cx,cy,R,w,d.e,d.t,false);
+    if(d.ok&&(d.final||d.r>=1-shTol())){x.font=F(700,36);const s="✓  Día en tu objetivo",tw=x.measureText(s).width+64;rr(cx-tw/2,cy+R+40,tw,68,34,K.card);T(s,cx,cy+R+86,F(700,36),K.fg,"center")}
+    const L=[["Proteína",K.p,d.e.P,d.t.P],["Hidratos",K.c,d.e.C,d.t.C],["Grasas",K.f,d.e.F,d.t.F]],cw=(W-2*P)/3;
+    L.forEach(([n,c,g,tg],i)=>{const X=P+i*cw;x.fillStyle=c;x.beginPath();x.arc(X+14,1420,12,0,7);x.fill();T(n,X+38,1432,F(600,34),K.fg);T(`${fmtInt(g)} / ${fmtInt(tg)} g`,X,1484,F(500,32),K.mu)})}
+  else if(d.p==="week"){const dn=d.days.filter(y=>y.e),av=f=>dn.reduce((t,y)=>t+f(y),0)/(dn.length||1);
+    /* arriba, la media de la semana en grande; debajo, los siete días */
+    rings(W/2,top+250,230,50,{P:av(y=>y.e.P/y.t.P),C:av(y=>y.e.C/y.t.C),F:av(y=>y.e.F/y.t.F)},{P:1,C:1,F:1},!dn.length);
+    T("Media de la semana",W/2,top+250+230+70,F(600,32),K.mu,"center");
+    const n=d.days.length,slot=(W-2*P)/n,R=Math.min(60,slot/2-6),w=R*.22,cy=top+680;
+    d.days.forEach((y,i)=>{const cx=P+slot*(i+.5);rings(cx,cy,R,w,y.e,y.t,y.fut);T(y.lb,cx,cy+R+56,F(600,32),y.ok?K.fg:K.mu,"center");
+      if(y.ok){x.fillStyle=K.ok;x.beginPath();x.arc(cx,cy+R+88,9,0,7);x.fill()}});
+    T("En verde, los días en tu objetivo",W/2,cy+R+150,F(500,30),K.mu,"center")}
+  else if(d.p==="month"){const first=new Date(d.s0+"T12:00:00"),off=(first.getDay()+6)%7,cw=(W-2*P)/7,R=cw/2-12,w=R*.2;
+    ["L","M","X","J","V","S","D"].forEach((l,i)=>T(l,P+cw*(i+.5),top+10,F(600,30),K.mu,"center"));
+    d.days.forEach((y,i)=>{const j=i+off,cx=P+cw*(j%7+.5),cy=top+80+Math.floor(j/7)*(cw+8)+R;rings(cx,cy,R,w,y.e,y.t,y.fut);
+      if(y.ok){x.fillStyle=K.ok;x.beginPath();x.arc(cx,cy,7,0,7);x.fill()}});
+    }
+  else{const cw=(W-2*P)/4,R=cw/2-22,L="EFMAMJJASOND";d.M.forEach((v,i)=>{const cx=P+cw*(i%4+.5),cy=top+40+Math.floor(i/4)*(cw+40)+R;
+      ring(cx,cy,R,R*.26,v==null?0:v/100,K.ok,v==null);T(L[i],cx,cy+12,F(700,40),v==null?K.mu:K.fg,"center");if(v!=null)T(v+" %",cx,cy+R+52,F(600,30),K.mu,"center")})}
+  /* logros: tres casillas como las de iOS */
+  const gw=(W-2*P-40)/3;d.stats.forEach(([b,l],i)=>{const X=P+i*(gw+20);rr(X,1560,gw,210,36,K.card);let f1=72;x.font=F(800,f1);while(x.measureText(b).width>gw-48&&f1>36){f1-=4;x.font=F(800,f1)}
+    T(b,X+28,1660,F(800,f1),K.fg);let f2=28;x.font=F(500,f2);while(x.measureText(l).width>gw-48&&f2>20){f2-=1;x.font=F(500,f2)}T(l,X+28,1720,F(500,f2),K.mu)});
+  T("sustrato.app · come según entrenas",W/2,1860,F(500,28),K.mu,"center");
   return cv.toDataURL("image/png")}
 async function shOpen(p){S.share={p:p||(S.period==="day"?"day":S.period),busy:true,url:null};shSheet();const u=await shRender(S.share.p).catch(()=>null);if(!S.share)return;S.share.busy=false;S.share.url=u;shSheet()}
 function shSheet(){let el=$("#shsheet");const s=S.share;if(!s){if(el)el.remove();document.body.classList.remove("noscroll");return}
@@ -8278,19 +8297,25 @@ function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>
    Punto de menú: lleno con las cuatro comidas asignadas, aro si faltan. */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
 /* v282 · Día con entreno hecho: en vez del punto, el icono del deporte principal (el más largo) en el color de su familia.
-   Previsto y saltado siguen con su aro. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
-function calMark(o,k,tag){const d=o.dot(k);if(d==="on"&&o.dot===calDotTrain){const L=S.acts.filter(a=>a.day===k);if(L.length){const sp=L.reduce((m,a)=>(a.mov||0)>(m.mov||0)?a:m).sport;
-  return`<${tag} class="cal-ic" title="${esc(SPORT_L[sp]||"")}">${spSvg(sp)}</${tag}>`}}return`<${tag} class="dot ${d}"></${tag}>`}
-/* v313 · Hidratos del día: tres rayas en el color de los hidratos según el objetivo del día en g/kg (bajo < 4, medio 4–6, alto ≥ 6).
-   Sale del entreno previsto o hecho; se ve en Hoy y en Menú (calStrip con carb) y en el título de Qué comer. Clase cal-cb */
-const CB_L=["","bajos","medios","altos"];
+   v314: previsto, el icono en gris translúcido; saltado, además tachado. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
+function calMark(o,k,tag){const d=o.dot(k);if(o.dot===calDotTrain&&d){const ic=(sp,c,t)=>`<${tag} class="cal-ic${c}" title="${esc(t)}">${spSvg(sp)}</${tag}>`;
+  if(d==="on"){const L=S.acts.filter(a=>a.day===k);if(L.length){const sp=L.reduce((m,a)=>(a.mov||0)>(m.mov||0)?a:m).sport;return ic(sp,"",SPORT_L[sp]||"")}}
+  /* v314: previsto, el mismo icono en gris translúcido; saltado, translúcido y tachado (antes, aros de color que no se entendían) */
+  const P=d==="pl"?pendingPlanned(k):d==="miss"?planMatch(k).pl.filter(x=>x.st==="miss").map(x=>x.s):[];
+  if(P.length){const s0=P.reduce((m,x)=>(x.dur||0)>(m.dur||0)?x:m);return ic(s0.sport,d==="pl"?" pl":" miss",(d==="pl"?"Previsto: ":"Saltado: ")+(SPORT_L[s0.sport]||""))}}
+  return`<${tag} class="dot ${d}"></${tag}>`}
+/* v314 · Hidratos del día: un anillo amarillo alrededor del número que se cierra según el objetivo del día en g/kg
+   (bajo < 4: un tercio, medio 4–6: dos tercios, alto ≥ 6: entero) y, bajo la tira, un rótulo con el día elegido.
+   Sale del entreno previsto o hecho; en Hoy y en Menú (calStrip con carb). Clases cb- */
+const CB_L=["","bajo","medio","alto"];
 function carbLvl(k){const t=dayTargets(k),kg=num((S.profile||{}).weight)||70;if(!t)return 0;const g=t.C/kg;return g>=6?3:g>=4?2:1}
-function carbTicks(n,cls){return n?`<span class="cal-cb${cls?" "+cls:""}" aria-hidden="true">${[1,2,3].map(i=>`<i${i<=n?' class="on"':""}></i>`).join("")}</span>`:""}
+function cbLabel(k){const n=carbLvl(k),t=dayTargets(k);if(!n||!t)return"";const d=new Date(k+"T12:00:00");
+  return`<p class="cb-lab"><i class="cb-r" style="--cbp:${(n/3).toFixed(4)}" aria-hidden="true"></i>${k===today()?"Hoy":DOW[d.getDay()]+" "+d.getDate()} · día ${CB_L[n]} en hidratos · ${fmtInt(t.C)} g</p>`}
 function calDotMenu(k){const n=Object.keys((S.menu||{})[k]||{}).length;return n>=4?"on":n?"pl":""}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
-  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]:""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b>${d.getDate()}</b>${calMark(o,k,"span")}${carbTicks(cb)}</button>`})()}`}).join("");
+  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]+"s":""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b${cb?` class="cb" style="--cbp:${(cb/3).toFixed(4)}"`:""}>${d.getDate()}</b>${calMark(o,k,"span")}</button>`})()}`}).join("");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
-  return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}`}
+  return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}${o.carb?cbLabel(o.sel):""}`}
 /* Mes (v278): seis filas como mucho; los días de otros meses, apagados; sin días futuros.
    Cada día lleva data-ck; el tramo va en una banda (in, y s/e en sus extremos o al cambiar de fila). cmPaint la repinta mientras se arrastra. */
 function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
