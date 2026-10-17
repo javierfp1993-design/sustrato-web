@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T19:11:16.798Z">
+<meta name="sustrato-version" content="2026-10-17T20:26:11.368Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3148,7 +3148,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="316";
+const APP_VER="317";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3330,7 +3330,9 @@ function dayTargets(k,raw){
   if(!raw&&p.adaptOn&&S.adaptF&&S.adaptF!==1){adapt=(b.bmr+neat)*(S.adaptF-1);neat+=adapt}
   const tdee=b.bmr+neat+ex;
   const g=GOALS[p.goal]||GOALS.recomp;
-  let kcal=tdee*(1+g.adj);if(kcal<b.bmr)kcal=b.bmr;
+  /* v317 · Alrededor de una carrera no se recorta: el día de la carrera y el siguiente (recuperación) van sin déficit */
+  const rcOf=d=>plannedFor(d).find(x=>x.race&&!x.skip),raceDay=rcOf(k),recRace=rcOf(shiftKey(k,-1)),recDay=recRace&&(recRace.dur||0)>=60?recRace:null;
+  let kcal=tdee*(1+(raceDay||recDay?Math.max(0,g.adj):g.adj));if(kcal<b.bmr)kcal=b.bmr;
   let eaFloor=0;{const L=eaLean();if(L){const mk=ex+eaThr().lo*L;if(kcal<mk){eaFloor=mk-kcal;kcal=mk}}}
   let choBurn=0,fatBurn=0,pending=0;
   acts.forEach(a=>{const s=S.subs[a.id];if(s){choBurn+=s.cho/4;fatBurn+=s.fat/9}else if(a.kcal)pending++});
@@ -3345,16 +3347,24 @@ function dayTargets(k,raw){
   let C=(kcal-4*P-9*F)/4;
   const floor=g.cmin*w+0.8*choBurn;let adjusted=false;
   if(C<floor){C=floor;F=Math.max(0.6*w,(kcal-4*P-4*C)/9);kcal=4*P+4*C+9*F;adjusted=true}
+  /* v317 · Carga de hidratos para una carrera (la misma regla que el protocolo de carrera): los dos días previos a una
+     de 90 min o más, al menos 8 g/kg; la víspera de una de 60–89 min, 7 g/kg. Esos días no hay déficit, la grasa baja
+     a 0,8 g/kg (como mucho) para dejar sitio y la cena no suma un extra aparte. ACSM/IOC 2016; Burke 2011 */
+  let load=null;if(k>=today()){for(const dd of [1,2]){const rk=shiftKey(k,dd),r=plannedFor(rk).find(x=>x.race&&!x.skip);if(!r)continue;const dur=r.dur||0;
+      const gk=dur>=90?8:dd===1&&dur>=60?7:0;if(gk){load={race:r,d:rk,gk,days:dd};break}}}
+  if(load){const tgt=load.gk*w;if(C<tgt){C=tgt}F=Math.max(0.6*w,Math.min(F,0.8*w));kcal=4*P+4*C+9*F}
+  /* el día después de una carrera de 60 min o más, al menos 5 g/kg para reponer (lo que dice la tarjeta de carrera) */
+  if(recDay&&C<5*w){C=5*w;kcal=4*P+4*C+9*F}
   /* Carga para mañana: si lo previsto mañana gasta mucho glucógeno, la cena de hoy sube hidratos */
   let bonus=0,tomorrow=null;const tk=nextKey(k);
-  if(tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
+  if(!load&&tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
   /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
   let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
   /* v287: hidratos como mucho 12 g/kg (techo de la ACSM para los días más largos); la energía que sobre pasa a grasas,
      así las kcal del día no cambian. Antes, 3 h intensas pedían 938 g (12,5 g/kg). */
   let choCap=0;if(C>12*w){choCap=C-12*w;F+=choCap*4/9;C=12*w}
-  return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug};
+  return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug,load,raceDay:!!raceDay,recDay:recDay?{d:shiftKey(k,-1)}:null};
 }
 
 /* ---------- Reparto por comidas ---------- */
@@ -5884,10 +5894,10 @@ function raceCard(t){if(S.day!==today())return"";const r=raceAhead(S.day);if(!r)
   const cd=r.inD<0?"Ayer fue tu carrera":r.inD===0?"Hoy es tu carrera":r.inD===1?"Mañana es tu carrera":"Faltan "+r.inD+" días";
   const ph=[["c2","Carga",load],["c1","Víspera",true],["day","El día",true],["rec","Después",true]].filter(x=>x[2]),cur=r.inD<0?"rec":r.inD===0?"day":r.inD===1?"c1":r.inD===2&&load?"c2":null;
   const kg=num((S.profile||{}).weight)||70,ci=ph.findIndex(x=>x[0]===cur);
-  const what=r.inD<0?`Hoy toca recuperar: ${fmtInt(5*kg)}–${fmtInt(7*kg)} g de hidratos y proteína en cada comida.`
+  const what=r.inD<0?`Hoy toca recuperar: ${fmtInt(((dayTargets(S.day)||{}).C)||5*kg)} g de hidratos y proteína en cada comida.`
     :cur==="day"?`Comida previa a las ${fromMin(Math.max(0,(toMin(s.time)||600)-180))} y salida a las ${s.time||"—"}.`
-    :cur==="c1"?`${load?"Carga de hidratos":"Día alto en hidratos"}: ${fmtInt((load?8:7)*kg)} g repartidos en el día, poca fibra y grasa.`
-    :cur==="c2"?`Empieza la carga: ${fmtInt(8*kg)}–${fmtInt(10*kg)} g de hidratos al día.`
+    :cur==="c1"?`${load?"Carga de hidratos":"Día alto en hidratos"}: ${fmtInt(((dayTargets(S.day)||{}).C)||(load?8:7)*kg)} g repartidos en el día, poca fibra y grasa.`
+    :cur==="c2"?`Empieza la carga: ${fmtInt(((dayTargets(S.day)||{}).C)||8*kg)} g de hidratos hoy y mañana.`
     :load?`La carga de hidratos empieza el ${dateLabel(shiftKey(r.d,-2))}.`:`La víspera, el ${dateLabel(shiftKey(r.d,-1))}, toca un día alto en hidratos.`;
   return`<section class="glass pad fade cr"><div class="cr-h"><span class="cr-k"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6"/></svg>Carrera</span><span class="cr-d">${esc(dateLabel(r.d))}${s.time?" · "+esc(s.time):""}</span></div>
     <b class="cr-cd">${cd}</b><span class="cr-n">${esc(sessName(s))} · ${fmtDur(dur*60)}</span>
@@ -5928,10 +5938,11 @@ function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=
   const head=`<div class="rp-h"><div><span class="rp-cd">${left>1?"Faltan "+left+" días":left===1?"Es mañana":left===0?"Es hoy":"Ya pasó"}</span><b>${esc(sessName(s))}</b><small>${esc(dateLabel(k))}${s.time?" · "+esc(s.time):""} · ${fmtDur(dur*60)}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="seg rp-tabs" role="tablist" aria-label="Fases">${T.map(([id,l])=>`<button type="button" role="tab" data-rptab="${id}" aria-selected="${tab===id}" aria-pressed="${tab===id}">${l}</button>`).join("")}</div>`;
   let body="";
-  if(tab==="c2"||tab==="c1"){const lo=tab==="c2"||dur>=90?8*kg:load?7*kg:5*kg,hi=tab==="c2"||dur>=90?10*kg:load?7*kg:6*kg,dk=shiftKey(k,tab==="c2"?-2:-1),e=dk===tk?eatenToday():null,pc=e?Math.min(100,e.C/hi*100):0;
+  /* v317: la cifra grande es el objetivo de hidratos de ese día en la app (la carga ya está dentro de Qué comer) */
+  if(tab==="c2"||tab==="c1"){const dk=shiftKey(k,tab==="c2"?-2:-1),dt=dk>=tk?dayTargets(dk):null,lo=dt?dt.C:(dur>=90?8:load?7:5)*kg,hi=lo,e=dk===tk?eatenToday():null,pc=e?Math.min(100,e.C/hi*100):0;
     const tips=tab==="c2"?[["Menos fibra","Pan blanco, arroz, pasta: llenan sin pesar."],["Menos grasa","Deja sitio a los hidratos sin pasarte de calorías."],["Bebe con sal","Un poco de sal ayuda a guardar el glucógeno con agua."]]
       :[["Cena conocida","Pasta o arroz con algo de proteína. Nada nuevo."],["Prepáralo todo","Dorsal, ropa, geles y desayuno, listos esta noche."],["Duerme lo que puedas","Una mala noche la víspera pesa poco si la semana fue buena."]];
-    body=`<div class="rp-big"><span>${tab==="c2"?"Hidratos al día, hoy y mañana":"Hidratos hoy"}</span><b>${fmtInt(lo)}${hi>lo?"–"+fmtInt(hi):""}<small>&nbsp;g</small></b><em>${fmtInt(lo/kg)}${hi>lo?"–"+fmtInt(hi/kg):""} g por kilo</em>
+    body=`<div class="rp-big"><span>${tab==="c2"?"Hidratos al día, hoy y mañana":"Hidratos hoy"}</span><b>${fmtInt(lo)}${hi>lo?"–"+fmtInt(hi):""}<small>&nbsp;g</small></b><em>${String((lo/kg).toFixed(1)).replace(".",",")} g por kilo · el objetivo de ese día en Qué comer</em>
       ${e?`<div class="rp-bar"><i style="width:${pc.toFixed(0)}%"></i></div><small class="rp-bl">Llevas ${fmtInt(e.C)} g</small>`:""}</div>
       <div class="rp-tips">${tips.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join("")}</div>`}
   else if(tab==="day"){const nowM=k===tk?new Date().getHours()*60+new Date().getMinutes():-1;
@@ -6547,6 +6558,8 @@ function vHoy(){
         const lf=t.kcal-ek,lz=Math.abs(lf)<15;
         return`<div class="qd2">${dropChart(t,e)}<div class="qk2"><b>${fmtInt(ek>0&&!lz?Math.abs(lf):t.kcal)}</b><span>${ek>0?(lz?"kcal · objetivo cumplido":lf>0?"te quedan de "+fmtInt(t.kcal)+" kcal":"kcal de más · objetivo "+fmtInt(t.kcal)):(S.day===today()?"kcal para hoy":S.day===shiftKey(today(),1)?"kcal para mañana":S.day===shiftKey(today(),-1)?"kcal de ayer":"kcal · "+esc(dateLabel(S.day)))}</span></div></div>
         ${macroRows([["P","var(--prot)","Proteína",e.P,t.P],["C","var(--carb)","Hidratos",e.C,t.C],["F","var(--fat)","Grasas",e.F,t.F]].map(([m,c,n,g,tg])=>({m,c,n,g:ek>0?g:0,tg,gk:(tg/kg).toFixed(1).replace(".",","),q:qq&&qq[m]})),true)}
+        ${t.recDay&&!t.load?`<p class="gly-in">Día de recuperación tras la carrera: al menos 5 g de hidratos por kilo y sin recortar calorías.</p>`:""}
+        ${t.load?`<p class="gly-in">Día de carga para la carrera del ${esc(dateLabel(t.load.d))}: al menos ${t.load.gk} g de hidratos por kilo, con poca grasa y poca fibra.</p>`:""}
         ${t.glySug?`<div class="gly-sug"><span>¿Subir <b>${fmtInt(t.glySug)} g</b> de hidratos para rellenar tu glucógeno? Es una estimación: ayer no apuntaste comidas.</span><button type="button" class="chip sm" data-glyapply="1">Aplicar</button></div>`:t.glyAdd?`<p class="gly-in">Hidratos +${fmtInt(t.glyAdd)} g para rellenar tu glucógeno.</p>`:""}
         ${mq?"":`<button class="qhint" data-gomenu="1">Asigna el menú de hoy para ver de qué tipo son tus macros<span aria-hidden="true">›</span></button>`}
         ${tips.length?`<div class="qs"><span>Sugerencia</span><p>${esc(tips[ti])}</p>${tips.length>1?`<button class="qs-n" data-qtip="1">${ti?"Ver la anterior":"Ver otra"}</button>`:""}</div>`:""}
