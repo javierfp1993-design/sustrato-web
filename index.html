@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T18:44:09.651Z">
+<meta name="sustrato-version" content="2026-10-17T19:11:16.798Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3148,7 +3148,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="315";
+const APP_VER="316";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6645,8 +6645,12 @@ async function shRender(p){const d=shData(p);if(!d)return null;
   const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
   const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
   const rr=(X,Y,w,h,r,c)=>{x.fillStyle=c;x.beginPath();x.roundRect(X,Y,w,h,Math.min(r,w/2,h/2));x.fill()};
-  const ring=(cx,cy,r,w,v,c,ghost)=>{x.lineCap="round";x.lineWidth=w;x.strokeStyle=c;x.globalAlpha=ghost?.12:.22;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();x.globalAlpha=1;
-    if(!ghost&&v>0){x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(.999,v));x.stroke()}};
+  /* v316 · Anillos con sello propio (lejos de los de Actividad de iOS): la pista es un hilo fino y el progreso un trazo medio */
+  const ring=(cx,cy,r,w,v,c,ghost)=>{x.lineCap="round";x.strokeStyle=c;x.lineWidth=Math.max(1.5,w*.22);x.globalAlpha=ghost?.18:.35;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();x.globalAlpha=1;
+    if(!ghost&&v>0){x.lineWidth=w*.62;x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(.999,v));x.stroke()}};
+  /* la gota de Sustrato (como en el logo) para el centro de los anillos grandes */
+  const gota=(cx,cy,s2)=>{const k=s2/64;x.save();x.translate(cx-s2/2,cy-s2/2);x.scale(k,k);const g=new Path2D("M32 6 Q41 18 47.4 30.5 A17.5 17.5 0 1 1 16.6 30.5 Q23 18 32 6Z");x.clip(g);
+    x.fillStyle=K.c;x.fillRect(0,0,64,64);x.fillStyle=K.f;x.beginPath();x.moveTo(0,40);x.bezierCurveTo(10,35,22,45,32,40);x.bezierCurveTo(42,35,54,35,64,40);x.lineTo(64,64);x.lineTo(0,64);x.closePath();x.fill();x.restore()};
   const rings=(cx,cy,R,w,e,t,ghost)=>{const g=w*1.18,V=e&&t?[e.P/t.P,e.C/t.C,e.F/t.F]:[0,0,0];[K.p,K.c,K.f].forEach((c,i)=>ring(cx,cy,R-i*g,w,V[i],c,ghost||!e))};
   x.fillStyle=K.bg;x.fillRect(0,0,W,H);
   {const lg=await shLogo();if(lg)x.drawImage(lg,P,90,72,72)}T("Sustrato",P+92,140,F(700,42),K.fg);
@@ -6658,13 +6662,13 @@ async function shRender(p){const d=shData(p);if(!d)return null;
   x.font=F(800,200);const bw=x.measureText(big[0]).width;T(big[0],P-6,420,F(800,200),K.fg);T(big[1],P+bw+4,420,F(700,72),K.mu);T(sub,P,490,F(500,40),K.mu);
   /* gráfico */
   const top=560,bot=1500;
-  if(d.p==="day"){const cx=W/2,cy=top+290,R=280,w=60;rings(cx,cy,R,w,d.e,d.t,false);
+  if(d.p==="day"){const cx=W/2,cy=top+290,R=280,w=60;rings(cx,cy,R,w,d.e,d.t,false);gota(cx,cy,170);
     if(d.ok&&(d.final||d.r>=1-shTol())){x.font=F(700,36);const s="✓  Día en tu objetivo",tw=x.measureText(s).width+64;rr(cx-tw/2,cy+R+40,tw,68,34,K.card);T(s,cx,cy+R+86,F(700,36),K.fg,"center")}
     const L=[["Proteína",K.p,d.e.P,d.t.P],["Hidratos",K.c,d.e.C,d.t.C],["Grasas",K.f,d.e.F,d.t.F]],cw=(W-2*P)/3;
     L.forEach(([n,c,g,tg],i)=>{const X=P+i*cw;x.fillStyle=c;x.beginPath();x.arc(X+14,1420,12,0,7);x.fill();T(n,X+38,1432,F(600,34),K.fg);T(`${fmtInt(g)} / ${fmtInt(tg)} g`,X,1484,F(500,32),K.mu)})}
   else if(d.p==="week"){const dn=d.days.filter(y=>y.e),av=f=>dn.reduce((t,y)=>t+f(y),0)/(dn.length||1);
     /* arriba, la media de la semana en grande; debajo, los siete días */
-    rings(W/2,top+250,230,50,{P:av(y=>y.e.P/y.t.P),C:av(y=>y.e.C/y.t.C),F:av(y=>y.e.F/y.t.F)},{P:1,C:1,F:1},!dn.length);
+    rings(W/2,top+250,230,50,{P:av(y=>y.e.P/y.t.P),C:av(y=>y.e.C/y.t.C),F:av(y=>y.e.F/y.t.F)},{P:1,C:1,F:1},!dn.length);gota(W/2,top+250,130);
     T("Media de la semana",W/2,top+250+230+70,F(600,32),K.mu,"center");
     const n=d.days.length,slot=(W-2*P)/n,R=Math.min(60,slot/2-6),w=R*.22,cy=top+680;
     d.days.forEach((y,i)=>{const cx=P+slot*(i+.5);rings(cx,cy,R,w,y.e,y.t,y.fut);T(y.lb,cx,cy+R+56,F(600,32),y.ok?K.fg:K.mu,"center");
