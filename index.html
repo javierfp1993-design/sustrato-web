@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T17:35:04.969Z">
+<meta name="sustrato-version" content="2026-10-18T18:38:11.258Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -230,10 +230,6 @@ nav.tabs button{padding:10px 13px}
 .supd p{margin:6px 0 0}
 .supd .k{display:inline-block;min-width:52px;color:var(--muted);font-size:calc(11px*var(--tz,1))}
 .ev{font-size:calc(11px*var(--tz,1));font-weight:600;padding:4px 8px;border-radius:10px;white-space:nowrap}
-.ev-hi{background:color-mix(in srgb,var(--verde-v,var(--verde)) 14%,transparent);color:var(--fg);--pc:var(--verde)}
-.ev-mh{background:color-mix(in srgb,var(--azul-v,var(--azul)) 14%,transparent);color:var(--fg);--pc:var(--azul)}
-.ev-md{background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 14%,transparent);color:var(--fg);--pc:var(--amarillo)}
-.ev-lo{background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 14%,transparent);color:var(--fg);--pc:var(--rojo)}
 .plist{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .prow{display:grid;grid-template-columns:minmax(0,1.2fr) 64px minmax(0,1fr) minmax(112px,auto) auto auto;gap:6px;align-items:center}
 @media (max-width:560px){.prow{grid-template-columns:repeat(2,minmax(0,1fr))}.prow .chip{justify-self:start}}
@@ -845,7 +841,6 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .xb-t small.xb-x{color:var(--muted)}
 .xb-v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:calc(15px*var(--tz,1))}.xb-v i{font-style:normal;font-size:calc(12px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px} /* v306: unidad pequeña y en gris (guía) */
 .xb .ev{flex:0 0 auto}
-.xb-ev{display:flex;margin-top:3px}
 .xb-ch{width:16px;height:16px;flex:0 0 auto;opacity:.5;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform .2s}
 .xb[open] .xb-ch{transform:rotate(180deg)}
 .xb-d{padding:0 14px 12px 66px;display:flex;flex-direction:column;gap:6px}
@@ -1521,10 +1516,6 @@ html[data-theme] .pill.tag-pre,html[data-theme] .pill.tag-post,html[data-theme] 
 html[data-theme] .ev{background:none!important;color:var(--muted)!important;padding:0!important;font-weight:500!important;font-size:calc(13px*var(--tz,1))!important;display:inline-flex;align-items:center;gap:7px}
 .ev::before{content:"";width:17px;height:9px;border-radius:2px;background:linear-gradient(90deg,var(--e1) 0 3px,transparent 3px 4.67px,var(--e2) 4.67px 7.67px,transparent 7.67px 9.33px,var(--e3) 9.33px 12.33px,transparent 12.33px 14px,var(--e4) 14px 17px)}
 .ev{--on:var(--fg);--on-v:var(--fg-v,var(--fg));--off:color-mix(in srgb,var(--fg) 20%,transparent)}
-.ev-hi{--e1:var(--on);--e1-v:var(--on-v,var(--on));--e2:var(--on);--e2-v:var(--on-v,var(--on));--e3:var(--on);--e3-v:var(--on-v,var(--on));--e4:var(--on);--e4-v:var(--on-v,var(--on))}
-.ev-mh{--e1:var(--on);--e1-v:var(--on-v,var(--on));--e2:var(--on);--e2-v:var(--on-v,var(--on));--e3:var(--on);--e3-v:var(--on-v,var(--on));--e4:var(--off);--e4-v:var(--off-v,var(--off))}
-.ev-md{--e1:var(--on);--e1-v:var(--on-v,var(--on));--e2:var(--on);--e2-v:var(--on-v,var(--on));--e3:var(--off);--e3-v:var(--off-v,var(--off));--e4:var(--off);--e4-v:var(--off-v,var(--off))}
-.ev-lo{--e1:var(--on);--e1-v:var(--on-v,var(--on));--e2:var(--off);--e2-v:var(--off-v,var(--off));--e3:var(--off);--e3-v:var(--off-v,var(--off));--e4:var(--off);--e4-v:var(--off-v,var(--off))}
 html[data-theme] .pst{background:var(--card2,rgba(127,127,127,.14))!important;color:var(--fg)!important;font-weight:500!important}
 .pst.ok::before{color:var(--verde)}.pst.chg::before{color:var(--naranja)}.pst.miss::before{content:"✕";color:var(--rojo)}.pst.skip::before{content:"–";color:var(--faint)}
 
@@ -1668,13 +1659,13 @@ html[data-theme="light"] .fl-kv{background:#fff}
 .re-addh h3{margin:6px 0 0;font-size:calc(17px*var(--tz,1));font-weight:600}
 .re-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
 .re-tabs::-webkit-scrollbar{display:none}
-.re-tabs button{appearance:none;border:0;flex:0 0 auto;min-height:38px;padding:0 14px;border-radius:14px;background:transparent;color:var(--muted);font:500 calc(15px*var(--tz,1)) var(--font);cursor:pointer;transition:background .18s,color .18s}
+.re-tabs button{appearance:none;border:0;flex:0 0 auto;min-height:36px;padding:0 14px;border-radius:10px;background:var(--fill2);color:var(--fg);font:500 calc(15px*var(--tz,1)) var(--font);cursor:pointer;transition:background .18s,color .18s}
 .re-tabs button[aria-selected="true"]{background:var(--ac);color:var(--ac-on);font-weight:600} /* v270: acento, como el resto de lo seleccionado */
 .re-lib{list-style:none;margin:0;padding:0;border-radius:16px;background:var(--card2);overflow:hidden}
-.re-lib li{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.re-lib li{display:flex;align-items:center;gap:12px;padding:12px 14px}.re-lib li+li{border-top:.5px solid var(--sep)}
 
 .re-lib .re-n{flex:1}
-.re-add{appearance:none;border:0;flex:0 0 auto;width:40px;height:40px;border-radius:16px;display:grid;place-items:center;background:var(--card);color:var(--fg);cursor:pointer;transition:background .18s,transform .12s}
+.re-add{appearance:none;border:0;flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--fg);cursor:pointer;transition:background .18s,transform .12s}
 .re-add.on{background:var(--ac);color:var(--ac-on)}
 .re-add:active{transform:scale(.92)}
 .re-custom{display:flex;gap:8px}.re-custom input{flex:1}
@@ -1686,10 +1677,10 @@ html[data-theme="light"] .fl-kv{background:#fff}
 .pb-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--fill)}
 .pb-mv{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:calc(13px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums}
 .pb-mv span{display:inline-flex;align-items:center;gap:5px}.pb-mv i{width:8px;height:8px;border-radius:50%}
-.pb-empty{margin:0;padding:14px;border-radius:14px;border:1.5px dashed var(--sep);color:var(--muted);font-size:calc(14px*var(--tz,1));line-height:1.4}
+.pb-empty{margin:0;color:var(--muted);font-size:calc(15px*var(--tz,1));line-height:1.4} /* v325: sin caja discontinua (no es un hueco que rellenar, es una pista) */
 .pb-it .re-top{align-items:center}
-.pb-st{display:flex;align-items:center;gap:2px;background:var(--card);border-radius:14px;padding:2px}
-.pb-st button{appearance:none;border:0;width:34px;height:34px;border-radius:10px;background:none;color:var(--fg);font:500 calc(20px*var(--tz,1)) var(--font);cursor:pointer}
+.pb-st{display:flex;align-items:center;gap:2px;background:var(--fill2);border-radius:10px;padding:2px}
+.pb-st button{appearance:none;border:0;width:34px;height:34px;border-radius:8px;background:none;color:var(--fg);font:500 calc(20px*var(--tz,1)) var(--font);cursor:pointer}
 .pb-st b{min-width:26px;text-align:center;font-size:calc(15px*var(--tz,1));font-variant-numeric:tabular-nums}
 .pb-meals{font-size:calc(15px*var(--tz,1));font-weight:600;color:var(--fg)}
 .pb-sheet>*{flex-shrink:0}
@@ -1734,7 +1725,7 @@ html[data-theme="light"]{--fig-base:#e5e5ea;--fig-on:var(--rojo);--fig-on-v:var(
 /* v274 · objetivo de cada comida: un punto del color de cada macro delante de su cifra; el texto sigue neutro */
 .pm-o{display:flex;align-items:center;flex-wrap:wrap}.pm-o i{width:7px;height:7px;border-radius:50%;background:var(--c);margin:0 4px 0 10px}
 /* v274 · ingrediente propio */
-.pb-new{margin-top:10px;width:100%}
+.pb-new{margin-top:10px;width:100%;min-height:44px;border-radius:14px}
 .ig-g{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ig-w{grid-column:1/-1}
 .pk-ov .ig-ok{width:100%}
 .ig-nr{display:flex;gap:8px;align-items:center}.ig-nr input{flex:1;min-width:0}.ig-ai{flex:none;min-height:44px}
@@ -2729,7 +2720,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .fd-f:active{transform:scale(.97)}
 .fd-f:has(input:focus-visible){outline:2px solid var(--fg);outline-offset:2px}
 .fd-ch{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.fd-ch button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);border-radius:999px;padding:7px 12px;min-height:32px;cursor:pointer;font-variant-numeric:tabular-nums}
+.fd-ch button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);border-radius:10px;padding:7px 12px;min-height:32px;cursor:pointer;font-variant-numeric:tabular-nums}
 .fd-ch button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .fd-l{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);margin:0 0 6px}
 /* v281 · Horario de comidas: un solo bloque como el selector en hoja, una fila por comida (nombre, hora, ›) con separador sangrado. Clases hr- */
@@ -3238,18 +3229,42 @@ table.bands{--tz:1}
 .cl-ask .cl-l{display:block}
 .cl-ask .btn.cl-del{color:var(--rojo)} /* guía 2.2: lo destructivo, en rojo */
 
-/* v324 · Suplementos bajo su comida y «Lo que hoy importa» (102) */
+/* v324 · Suplementos bajo su comida (102) */
 .msup{display:flex;gap:6px;padding:0 0 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.msup::-webkit-scrollbar{display:none}
 .msup-i{appearance:none;flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:0;border-radius:10px;background:var(--fill2);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);white-space:nowrap;cursor:pointer;transition:background .18s,color .18s}
 .msup-i small{color:var(--muted);font-size:calc(12px*var(--tz,1));font-weight:400;transition:color .18s}
 .msup-i.on{background:var(--ac);color:var(--ac-on,#fff)}.msup-i.on small{color:inherit;opacity:.8}
-.mtd{padding:0}
-.mtd-b{appearance:none;display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:inherit;padding:18px;cursor:pointer;border-radius:inherit}
-.mtd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.mtd-h h2{margin:0}
-.mtd-r{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:.5px solid var(--sep)}
-.mtd-h+.mtd-r{border-top:0}
-.mtd-t{flex:1;min-width:0}.mtd-t b{display:block;font-size:calc(15px*var(--tz,1));font-weight:600}.mtd-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
-.mtd-v{font-size:calc(20px*var(--tz,1));font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}.mtd-v small{font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px}
+
+/* v325 · Planificador al tacto (103) */
+/* Mes: se desliza con el dedo; la rejilla se recorta dentro de su caja */
+.pa-cal{overflow:hidden}
+.pa-cg{touch-action:pan-y;will-change:transform}
+/* el día, con el mismo círculo que la tira de la semana (34 px, cifra de 17 en la tipografía redonda) */
+.pa-cd b{width:34px;height:34px;font:600 calc(17px*var(--tz,1)) var(--round,var(--font))}
+.pa-cd.tk b{font-weight:600}
+/* Hoy, como el Calendario de Apple: la cifra en el acento si no es el día elegido; si lo es, el círculo y nada más */
+.pa-cd.tk:not([aria-pressed="true"]) b,.day.tk:not([aria-pressed="true"]) b{color:var(--ac)}
+/* Aire entre bloques: la hora, la carrera y el botón ya no van pegados */
+.pa-sheet .pa-time{margin-top:6px}
+.pa-race{display:flex;align-items:center;gap:12px;margin-top:10px;padding:6px 14px 6px 12px;border-radius:16px;background:var(--card2)}
+.pa-race .tg-r{flex:1;min-width:0}
+.pa-rc-i{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--fill2);color:var(--fg);transition:background .2s,color .2s}
+.pa-race.on .pa-rc-i{background:var(--ac);color:var(--ac-on)}
+.pa-sheet .pa-go{margin-top:14px}
+.pd-g1{grid-template-columns:1fr}
+/* Menú: multiplicador del mismo alto que el plato (48 px, radio 14 del campo) y la fila de raciones debajo */
+.pm-x{appearance:none;flex:none;min-height:48px;min-width:64px;padding:0 14px;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:600 calc(15px*var(--tz,1)) var(--font);font-variant-numeric:tabular-nums;cursor:pointer}
+.pm-x[aria-expanded="true"]{background:var(--ac);color:var(--ac-on)}
+.pmx-r{display:flex;margin-top:8px}.pmx-r button{flex:1}
+/* Suplementos (050): lista agrupada, una fila por suplemento con ⓘ y conmutador */
+.sp-h{margin:16px 0 6px 4px;font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}
+.sp-g{border-radius:16px;background:var(--card2);overflow:hidden}
+.sp-r{display:flex;align-items:center;gap:10px;min-height:60px;padding:10px 14px}
+.sp-r+.sp-r{border-top:.5px solid var(--sep)}
+.sp-t{flex:1;min-width:0}.sp-t b{display:block;font-size:calc(16px*var(--tz,1));font-weight:600}.sp-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
+.sp-i{appearance:none;flex:none;width:36px;height:36px;border:0;border-radius:50%;display:grid;place-items:center;background:none;color:var(--muted);cursor:pointer}
+.sp-av{flex:none;font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.sp-legal{margin-top:14px}
 
 </style>
 
@@ -3336,7 +3351,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="324";
+const APP_VER="325";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4200,21 +4215,26 @@ function paCal(p){const tk=today(),last=shiftKey(tk,PA_MAX),D=paDates(p),v=new D
   for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const k=keyOf(d),out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;
     if(out){cells+='<span class="pa-cx" aria-hidden="true"></span>';continue}const off=k<tk||k>last,n=plannedFor(k).length;
     cells+=`<button type="button" class="pa-cd${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}"><b>${d.getDate()}</b>${n?calMark({dot:calDotTrain},k,"span"):""}</button>`}
-  return`<div class="pa-cal"><div class="pa-ch"><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span><button type="button" class="wk-nav" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><button type="button" class="wk-nav" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></span></div>
+  return`<div class="pa-cal"><div class="pa-ch"><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="vh"><button type="button" class="wk-nav" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><button type="button" class="wk-nav" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></span></div>
     <div class="pa-cw" aria-hidden="true">${[1,2,3,4,5,6,0].map(i=>`<span>${DOW[i]}</span>`).join("")}</div><div class="pa-cg" role="group" aria-label="Días">${cells}</div></div>`}
 /* v310 · Rueda de deportes: fila de círculos que se desliza; el del centro es el elegido (grande, en acento y con su nombre),
    los demás se encogen y se atenúan según se alejan. Tocar uno lo lleva al centro. Clases pa-w */
 const PA_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"]; /* Running en medio: a pie, agua y fuerza a un lado; bici al otro */
 /* v311: mientras deslizas, el del centro ya es el elegido (acento, nombre y un toque de vibración); el resto del formulario se pone al día al parar */
-function paWheelFx(w){const r=w.getBoundingClientRect(),c=r.left+r.width/2;let best=null,bd=1e9;w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),dx=Math.abs(q.left+q.width/2-c),d=Math.min(1,dx/150);
+function paWheelFx(w,keep){const r=w.getBoundingClientRect(),c=r.left+r.width/2;let best=null,bd=1e9;w.querySelectorAll(".pa-wi").forEach(b=>{const q=b.getBoundingClientRect(),dx=Math.abs(q.left+q.width/2-c),d=Math.min(1,dx/150);
   b.style.transform=`scale(${(1.3-d*.55).toFixed(3)})`;b.style.opacity=(1-d*.6).toFixed(2);if(dx<bd){bd=dx;best=b}});
-  if(best&&best.dataset.sp!==w._cur){const first=w._cur==null;w._cur=best.dataset.sp;w.querySelectorAll(".pa-wi").forEach(b=>b.setAttribute("aria-pressed",b===best));
+  if(!keep&&best&&best.dataset.sp!==w._cur){const first=w._cur==null;w._cur=best.dataset.sp;w.querySelectorAll(".pa-wi").forEach(b=>b.setAttribute("aria-pressed",b===best));
     const n=w.parentNode.querySelector(".pa-wn");if(n)n.textContent=SPORT_L[w._cur]||"";if(!first)buzz(4)}
   return best}
 function paWheelSync(){const w=document.querySelector(".pa-wheel");if(!w||w._on)return;w._on=1;const sel=w.querySelector('[aria-pressed="true"]');
-  const to=sel?sel.offsetLeft+sel.offsetWidth/2-w.clientWidth/2:0,from=S.pa&&S.pa._wl;
-  if(from!=null&&Math.abs(from-to)>2&&!matchMedia("(prefers-reduced-motion: reduce)").matches){w.scrollLeft=from;requestAnimationFrame(()=>w.scrollTo({left:to,behavior:"smooth"}))}else w.scrollLeft=to;paWheelFx(w);let tm=null;
-  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;const best=paWheelFx(w),v=best&&best.dataset.sp;
+  /* v325: la rueda conserva su posición al repintarse (elegir distancia, hora…) y solo viaja si cambia el deporte. Antes el destino se
+     medía contra otro contenedor (offsetLeft), caía en otro deporte y volvía: el «va y vuelve». Ahora se mide en pantalla. */
+  const from=S.pa&&S.pa._wl;if(from!=null)w.scrollLeft=from;
+  const to=sel?(()=>{const a=sel.getBoundingClientRect(),b=w.getBoundingClientRect();return w.scrollLeft+(a.left+a.width/2)-(b.left+b.width/2)})():0;
+  const go=from!=null&&Math.abs(w.scrollLeft-to)>2&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* mientras viaja hacia el deporte tocado, la elección no cambia por el camino (antes parpadeaba el anterior) */
+  if(go){w._prog=true;w._cur=sel&&sel.dataset.sp;w.scrollTo({left:to,behavior:"smooth"})}else w.scrollLeft=to;paWheelFx(w,go);let tm=null;
+  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w,w._prog));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;w._prog=false;const best=paWheelFx(w),v=best&&best.dataset.sp;
     if(v&&v!==S.pa.sport){S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal()}},140)},{passive:true})}
 function paHtml(){const p=S.pa,tk=today();
   const D=paDates(p);
@@ -4231,7 +4251,7 @@ function paHtml(){const p=S.pa,tk=today();
     ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`${p.sport!=="str"?pdBlock(p):`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>`}
     ${intSlider(p.int||"s")}`}
     <div class="pa-f pa-time"><span class="pa-l">Hora</span>${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div>
-    <div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>${p.race?"Tendrás un plan de carrera en Hoy: la carga de hidratos, el día y la recuperación":"Activa un plan de carrera con la comida de los días previos, el día y después"}</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div>
+    <div class="pa-race${p.race?" on":""}"><span class="pa-rc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4h11l-2 4 2 4H6"/></svg></span><div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>${p.race?"Tendrás un plan de carrera en Hoy: la carga de hidratos, el día y la recuperación":"Activa un plan de carrera con la comida de los días previos, el día y después"}</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div></div>
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":(D.length>1?"Añadir en "+D.length+" días":"Añadir el "+esc(dateLabel(D[0])))}</button>
     ${p.editIdx!=null?`<div class="pa-ex"><button type="button" class="ms-link" data-plskip="${p.editIdx}" data-k="${p.origDate}">No lo voy a hacer</button><button type="button" class="ms-link red" data-pldel="${p.editIdx}" data-k="${p.origDate}">Quitar entreno</button></div>`:""}
   </div></div>`}
@@ -6393,7 +6413,7 @@ function pbHtml(){const b=S.pb,tab=PB_TABS.find(x=>x[0]===b.tab)||PB_TABS[0],T=p
   const name=b.nAuto?pbAutoName(b.items):b.n,tot=T.P*4+T.C*4+T.F*9||1;
   const opts=tab[2].filter(id=>INGR_BY[id]).sort((a,c)=>merc?((MERC_N[c]?1:0)-(MERC_N[a]?1:0)):0);
   return`<div class="overlay"><div class="sheet glass pad fade re-sheet pb-sheet" role="dialog" aria-modal="true" aria-label="${b.id?"Editar plato":"Nuevo plato"}">
-    <div class="row"><span class="pkk">${b.id?"Editar plato":"Nuevo plato"}</span><button class="hbtn xclose" data-pb="close" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
+    <div class="row"><h3 style="margin:0">${b.id?"Editar plato":"Nuevo plato"}</h3><button class="hbtn xclose" data-pb="close" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
     <input id="pb_name" class="re-name" value="${esc(name)}" placeholder="Nombre (se pone solo)" aria-label="Nombre del plato">
     <div class="pb-sum"><div class="pb-k"><b>${fmtInt(T.kcal)}</b><span>kcal</span></div>
       <div class="pb-m"><div class="pb-bar" aria-hidden="true"><i style="flex:${T.P*4/tot};background:var(--prot,var(--rojo))"></i><i style="flex:${T.C*4/tot};background:var(--carb,var(--amarillo))"></i><i style="flex:${T.F*9/tot};background:var(--fat,var(--azul))"></i></div>
@@ -6541,8 +6561,13 @@ function xLine(t){const mm=menuMicros(S.day),cap=x=>esc(x.charAt(0).toUpperCase(
   const n=supplements(t).length,su=n?n+" con evidencia para hoy":"Ninguno indicado para hoy";
   const row=(k,ic,b,sm)=>`<button class="xline" data-xs="${k}"><span class="xl-ic">${ic}</span><span class="xl-tx"><b>${b}</b><small>${cap(sm)}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`;
   const mine=supMine().length;
-  return`<div class="xgrp">${microToday(t).length?"":row("micro",IC_DROP,"Micronutrientes",mi)}${row("supl",IC_PILL,"Suplementos",mine?mine+" que tomas · "+su.toLowerCase():su)}</div>`}
-function xSheetHtml(){const t=dayTargets(S.day);if(!t)return"";const mi=S.xsKind!=="supl";
+  return`<div class="xgrp">${row("supl",IC_PILL,"Suplementos",mine?mine+" que tomas · "+su.toLowerCase():su)}</div>`}
+/* v325: los micronutrientes, en Plan › Menú, donde se ve si el menú los cubre (en Hoy solo informaban) */
+function microRow(k,t){const mm=menuMicros(k);let mi;
+  if(mm){const low=micros(t).filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6).map(m=>m.n.toLowerCase());mi=low.length?(low.length>2?low.slice(0,2).join(", ")+" y "+(low.length-2)+" más":low.join(" y "))+" por debajo":"Tu menú los cubre"}
+  else mi="Asigna platos para ver si los cubres";
+  return`<div class="xgrp"><button class="xline" data-xs="micro" data-xsk="${k}"><span class="xl-ic">${IC_DROP}</span><span class="xl-tx"><b>Micronutrientes</b><small>${esc(mi.charAt(0).toUpperCase()+mi.slice(1))}</small></span><span class="mb-go" aria-hidden="true">›</span></button></div>`}
+function xSheetHtml(){const t=dayTargets(S.xsDay||S.day);if(!t)return"";const mi=S.xsKind!=="supl";
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade xs-sheet" role="dialog" aria-modal="true" aria-label="${mi?"Micronutrientes":"Suplementos"}">
     <div class="row"><h3>${mi?"Micronutrientes del día":"Suplementos del día"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="xs-one">${mi?microCard(t):suppCard(t)}</div></div></div>`}
@@ -6679,7 +6704,7 @@ function infoHtml(){
 function openInfo(k,v,n){if(!INFO[k])return;S.infoBack=S.sheet==="xs"?"xs":null;const t=document.getElementById("ctip");if(t)t.hidden=true;S.info={k,v,n};S.sheet="info";renderModal()}
 
 function microCard(t){
-  const mm=menuMicros(S.day);
+  const mm=menuMicros(S.xsDay||S.day);
   const rows=micros(t).map(m=>{const got=mm&&m.key?mm[m.key]:null,pc=got!=null?Math.min(100,got/m.tv*100):0;
     const ik=m.key||(m.n==="Agua"?"agua":/^Vitaminas B/.test(m.n)?"vb":null),d=INFO[ik];
     const cov=got!=null?`<div class="mcov"><i style="width:${pc.toFixed(0)}%;background:${pc>=90?"var(--ok)":pc>=60?"var(--warn)":"var(--err)"}"></i></div>`:"";
@@ -6688,13 +6713,21 @@ function microCard(t){
   return`<section class="glass pad fade hue-health"><h2>Micronutrientes del día</h2><div class="xlist">${rows}</div>
   ${mm?"":'<p class="note">Asigna platos en la pestaña Plan y verás aquí cuánto cubre tu menú de cada uno.</p>'}<p class="note">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
 }
+/* v325 · Suplementos sin desplegables (menos es más): una fila por suplemento con el nombre, la dosis de hoy en una línea,
+   la ⓘ (abre la ficha: qué es, qué dice la ciencia, dosis y precauciones) y el conmutador «Lo tomo». El nivel de evidencia
+   no va en etiquetas de color: la lista se agrupa en «Evidencia alta» y «Según tu caso» (depende de un análisis o de tu dieta). */
 function suppCard(t){
-  const evc=e=>/^Alta/.test(e)?"ev-hi":/^Moderada-alta/.test(e)?"ev-mh":/^Moderada/.test(e)?"ev-md":"ev-lo";
-  const rows=supplements(t).map(s=>{const ik=suppKey(s.n),d=INFO[ik];
-    return`<details class="xb"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev.replace(/^(Alta|Moderada-alta|Moderada)/,m=>"Evidencia "+m.toLowerCase()))}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
-      <div class="xb-d"><p>${esc(s.why)}</p>${xbRow("dose",s.dose)}${s.note?xbRow("warn",s.note):""}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note)}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}${ik?supMeRow(ik):""}</div></details>`}).join("");
-  return`<section class="glass pad fade hue-health"><h2>Suplementos del día</h2><div class="xlist">${rows}</div>
-  <p class="note">Solo suplementos con evidencia sólida (Instituto Australiano del Deporte, grupo A, y posturas de la ISSN). No sustituyen a la dieta. Consulta con tu médico si tomas medicación, tienes hipertensión o problemas renales.</p></section>`;
+  const IC_I='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg>';
+  const short=(k,s)=>k==="cafeina"?s.dose.split(" (")[0]+", 45–60 min antes":SUP_DOSE[k]?SUP_DOSE[k]+(k==="creatina"||k==="vd"||k==="omega3"?" al día":""):s.dose.split(/[.(]/)[0];
+  const row=s=>{const ik=suppKey(s.n),d=ik&&INFO[ik],on=supMine().includes(ik);
+    return`<div class="sp-r"><span class="sp-t"><b>${esc(s.n.replace(/ \(.*\)$/,""))}</b><small>${esc(short(ik,s))}</small></span>
+      ${d?`<button type="button" class="sp-i" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note||"")}" aria-label="Qué es ${esc(s.n)}">${IC_I}</button>`:""}
+      ${SUP_AT[ik]?`<button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Lo tomo: ${esc(s.n)}" data-supme="${ik}"></button>`:`<span class="sp-av">En ruta</span>`}</div>`};
+  const L=supplements(t),caso=s=>/si hay|Solo con|Moderada/.test(s.ev),A=L.filter(s=>!caso(s)),B=L.filter(caso);
+  const grp=(h,X)=>X.length?`<p class="sp-h">${h}</p><div class="sp-g">${X.map(row).join("")}</div>`:"";
+  return`<section class="glass pad fade hue-health sp-card"><h2>Suplementos del día</h2><p class="note" style="margin:2px 0 6px">Activa los que tomas y los verás en Hoy, en su comida.</p>
+  ${grp("Evidencia alta",A)}${grp("Según tu caso",B)}
+  <p class="note sp-legal">Solo suplementos con evidencia sólida (Instituto Australiano del Deporte, grupo A, y posturas de la ISSN). No sustituyen a la dieta. Consulta con tu médico si tomas medicación, tienes hipertensión o problemas renales.</p></section>`;
 }
 
 /* ---------- Mover entrenos en Plan: mantener pulsado, arrastrar a otro día y soltar ---------- */
@@ -6764,7 +6797,7 @@ function vHoy(){
   S.lastT=t;
     planMatch(S.day).pl.filter(x=>x.st!=="done").map(x=>{const s=x.s;return x.st==="pend"?`<span class="tchip plan${s.sport==="str"?" tgo":""}"${s.sport==="str"?` data-strgo="${esc(s.routine||"")}" data-k="${S.day}" role="button" tabindex="0" title="Abrir en Fuerza"`:""}>${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${INT_L[s.int].toLowerCase()} · ${esc(s.time||"")}${s.race?" <small>carrera</small>":""}<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="No voy a hacer este entreno" title="Saltar">✕</button></span>`
       :`<span class="tchip plan off">${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${pst(x.st)}${x.st!=="chg"?`<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="${x.st==="skip"?"Recuperar":"Marcar saltado"}" title="${x.st==="skip"?"Recuperar":"Marcar saltado"}">${x.st==="skip"?"↺":"✕"}</button>`:""}</span>`}).join("");
-  const panel=mealsCard(t)+microTodayCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
+  const panel=mealsCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
   return `
   ${raceCard(t)}
   ${weightBar()}
@@ -6996,13 +7029,14 @@ function vPlan(){
         const got=ds?{P:ds.P*a.s,C:ds.C*a.s,F:ds.F*a.s}:null;const gk=got?4*got.P+4*got.C+9*got.F:0;
         const tags=(m.pre?'<span class="pill tag-pre">Antes</span>':"")+(m.post?'<span class="pill tag-post">Después</span>':"")+(m.id==="dinner"&&t.bonus?'<span class="pill tag-load">Carga</span>':"");
         return`<div class="pm"><div class="pmh"><span><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span><span class="tags">${tags}</span></div>
-          <div class="pmsel"><button type="button" class="pmpick${ds?"":" pm-nil"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<span class="pill">${fmtS(a.s)}${a.lock?"":" · auto"}</span>`:""}</div>
+          <div class="pmsel"><button type="button" class="pmpick${ds?"":" pm-nil"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<button type="button" class="pm-x" data-pmx="${k}|${m.id}" aria-expanded="${S.pmx===k+"|"+m.id}" aria-label="Ración ${fmtS(a.s)}, cambiar">${fmtS(a.s)}</button>`:""}</div>${a&&S.pmx===k+"|"+m.id?pmxRow(k,m.id,a.s):""}
           <div class="pmm"><span class="pm-o">Objetivo<i style="--c:var(--prot)"></i>P ${fmtInt(m.P)}<i style="--c:var(--carb)"></i>H ${fmtInt(m.C)}<i style="--c:var(--fat)"></i>G ${fmtInt(m.F)}</span>${got?`<span class="pmgot">Plato P ${fmtInt(got.P)} · H ${fmtInt(got.C)} · G ${fmtInt(got.F)} · ${fmtInt(gk)} kcal</span>`:""}${got?complement(m,got):""}</div></div>`}).join("");
     }else body='<p class="empty">Completa el perfil para calcular este día.</p>';
     return`<section class="glass pad fade wk-card">${wkStrip(wk,"menu")}<div class="wk-det" data-wkdet="${k}">${wkDayHead(k,(t?`${nAs}/4 platos`:"")+(t&&k>=tk?`<button class="dl-ib" data-mdmo="${k}" aria-haspopup="dialog" aria-label="Opciones del menú de este día"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button>`:""))}
       ${chips?`<div class="pchips wk-sp">${chips}${pl.length&&!real.length?`<small>previsto ${pl.reduce((x,s)=>x+(+s.dur||0),0)} min</small>`:""}</div>`:""}
       ${t?`<div class="mbar" style="height:6px"><i style="width:${(4*t.P/t.kcal*100).toFixed(1)}%;background:var(--prot)"></i><i style="width:${(4*t.C/t.kcal*100).toFixed(1)}%;background:var(--carb)"></i><i style="width:${(9*t.F/t.kcal*100).toFixed(1)}%;background:var(--fat)"></i></div><div class="pm-o wk-mac">${fmtInt(t.kcal)} kcal<i style="--c:var(--prot)"></i>P ${fmtInt(t.P)} g<i style="--c:var(--carb)"></i>H ${fmtInt(t.C)} g<i style="--c:var(--fat)"></i>G ${fmtInt(t.F)} g</div>`:""}
       ${body}
+      ${t?microRow(k,t):""}
       ${k>=tk?`<div class="mw-sec"><button class="chip" data-gotoplan="${k}">Editar entrenos</button></div>`:""}</div></section>`;
   }).join("");
   const dlRow=x=>`<div class="spark"><span style="min-width:0">${esc(x.n)}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
@@ -7313,7 +7347,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.perfsp){S.perfSp=t.dataset.perfsp;S.perfTab=null;renderModal();return}
   if(t.dataset.perftab){S.perfTab=t.dataset.perftab;renderModal();return}
   if(t.dataset.mopen){mealOpen(t.dataset.mopen);return}
-  if(t.dataset.xs){S.xsKind=t.dataset.xs;S.sheet="xs";renderModal();return}
+  if(t.dataset.xs){S.xsKind=t.dataset.xs;S.xsDay=t.dataset.xsk||null;S.sheet="xs";renderModal();return}
   if(S.msh&&(t.dataset.msr||t.dataset.msro||t.dataset.mspick||t.dataset.msskip||t.dataset.msdel)){const p=S.msh,k=p.k,mid=p.mid,m=mshMeal(),cur=(S.log[k]||{})[mid],prev=cur?JSON.parse(JSON.stringify(cur)):null;if(!m)return;
     if(t.dataset.msr){const r=+t.dataset.msr;setLog(k,mid,logEntryFor(k,m,"done",{r}));mshDone(prev,"Apuntado: "+m.n.toLowerCase()+" según lo planeado");return}
     if(t.dataset.msro&&cur){const r=+t.dataset.msro,o=cur.r||1,f=r/o;setLog(k,mid,Object.assign({},cur,{r,P:cur.P*f,C:cur.C*f,F:cur.F*f},cur.s?{s:cur.s*f}:{},cur.mi?{mi:miScale(cur.mi,f)}:{}));mshDone(prev,"Ración cambiada");return}
@@ -8398,10 +8432,11 @@ function pdBlock(p){if(p.sport==="str")return"";pdSync(p);const by=p.by==="d"?"d
   const lab=k==="bike"?"Velocidad":"Ritmo",chl=x=>sp==="swim"?fmtInt(x*1000)+" m":String(x).replace(".",",")+" km";
   return seg+`<div class="pa-f"><span class="pa-l">Distancia</span><div class="dp"><div class="dp-row"><button type="button" class="dp-b" data-pd="km|-1" aria-label="Menos distancia">−</button><b class="dp-v">${pdFmtD(sp,p.km)}</b><button type="button" class="dp-b" data-pd="km|1" aria-label="Más distancia">+</button></div>
     <div class="dp-ch pd-ch" role="group" aria-label="Distancias habituales">${ch.map(x=>`<button type="button" class="dp-c" data-pd="set|${x}" aria-pressed="${p.km===x}">${chl(x)}</button>`).join("")}</div></div></div>
-  <div class="pa-f"><span class="pa-l">${lab} y duración</span><div class="pd-g">
+  ${k==="bike"?`<div class="pa-f"><span class="pa-l">Duración</span><div class="pd-g pd-g1"><div class="pd-t pd-c"><span>Estimada</span><b id="pd_t">≈ ${fmtMin(p.dur)}</b></div></div>
+    <p class="pa-note">A ${pdFmtV(sp,v)}, ${sd.own?"tu velocidad habitual":"una velocidad orientativa"} en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}. En bici la velocidad depende del terreno y del viento: no hace falta fijarla. La duración y el gasto salen de aquí.</p></div>`:`<div class="pa-f"><span class="pa-l">${lab} y duración</span><div class="pd-g">
     <div class="pd-t pd-r"><span>${lab}</span><div class="pd-rs"><button type="button" data-pd="v|-1" aria-label="${k==="bike"?"Más despacio":"Ritmo más lento"}">−</button><b id="pd_v">${pdFmtV(sp,v)}</b><button type="button" data-pd="v|1" aria-label="${k==="bike"?"Más rápido":"Ritmo más rápido"}">+</button></div></div>
     <div class="pd-t pd-c"><span>Duración</span><b id="pd_t">≈ ${fmtMin(p.dur)}</b></div></div>
-    <p class="pa-note">${p.spd?"Ritmo ajustado a mano.":sd.own?`${k==="bike"?"Tu velocidad":"Tu ritmo"} habitual en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}.`:`Orientativo hasta que tengas salidas de ${esc(SPORT_L[sp].toLowerCase())}.`} La duración y el gasto salen de aquí.</p></div>`}
+    <p class="pa-note">${p.spd?"Ritmo ajustado a mano.":sd.own?`${k==="bike"?"Tu velocidad":"Tu ritmo"} habitual en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}.`:`Orientativo hasta que tengas salidas de ${esc(SPORT_L[sp].toLowerCase())}.`} La duración y el gasto salen de aquí.</p></div>`}`}
 /* la intensidad se mueve sin repintar la hoja (deslizador): se actualizan ritmo y duración en su sitio */
 function pdLive(){const p=S.pa;if(!p||p.by!=="d"||p.sport==="str"||p.mode==="struct")return;pdSync(p);const v=p.spd||pdSpeed(p.sport,p.int||"s").v,a=$("#pd_v"),b=$("#pd_t");if(a)a.textContent=pdFmtV(p.sport,v);if(b)b.textContent="≈ "+fmtMin(p.dur)}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pd]");if(!b||!S.pa)return;e.stopPropagation();const p=S.pa,[a,x]=b.dataset.pd.split("|"),sp=p.sport;
@@ -8667,7 +8702,7 @@ function carbLvl(k){const t=dayTargets(k),kg=num((S.profile||{}).weight)||70;if(
 function cbLabel(k){const n=carbLvl(k),t=dayTargets(k);if(!n||!t)return"";const d=new Date(k+"T12:00:00");
   return`<p class="cb-lab"><i class="cb-r" style="--cbp:${(n/3).toFixed(4)}" aria-hidden="true"></i>${k===today()?"Hoy":DOW[d.getDay()]+" "+d.getDate()} · día ${CB_L[n]} en hidratos · ${fmtInt(t.C)} g</p>`}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
-  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day ${k>tk?"fut":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]+"s":""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b${cb?` class="cb" style="--cbp:${(cb/3).toFixed(4)}"`:""}>${d.getDate()}</b>${calMark(o,k,"span")}</button>`})()}`}).join("");
+  const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day${k>tk?" fut":""}${k===tk?" tk":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]+"s":""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b${cb?` class="cb" style="--cbp:${(cb/3).toFixed(4)}"`:""}>${d.getDate()}</b>${calMark(o,k,"span")}</button>`})()}`}).join("");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
   return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}${o.carb?cbLabel(o.sel):""}`}
 /* Mes (v278): seis filas como mucho; los días de otros meses, apagados; sin días futuros.
@@ -8720,7 +8755,7 @@ const WK_MAX=()=>mondayOf(shiftKey(today(),60));
 /* v318 · Entrenos y Menú, igual que Hoy: anillo de hidratos y el icono del entreno (en Menú explica por qué el día es alto o bajo; los platos asignados ya se ven en «n/4 platos») */
 function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today()),last=wk>=WK_MAX();
   return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:calDotTrain,carb:true,wk,label:periodLabel("week",wk),
-    right:(cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>')+`<button type="button" class="wk-nav" data-plweek="-1" aria-label="Semana anterior">‹</button><button type="button" class="wk-nav" data-plweek="1" ${last?"disabled":""} aria-label="Semana siguiente">›</button>`})}
+    right:(cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>')+`<span class="vh"><button type="button" class="wk-nav" data-plweek="-1" aria-label="Semana anterior">‹</button><button type="button" class="wk-nav" data-plweek="1" ${last?"disabled":""} aria-label="Semana siguiente">›</button></span>`})}
 /* cabecera del día elegido: fecha (con el mes, ya que arriba no hay fechas) y un dato a la derecha */
 function wkDayHead(k,right){const tk=today(),d=new Date(k+"T12:00:00");
   return`<div class="wk-h"><b>${k===tk?"Hoy · ":""}${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()].slice(0,3)}</b><span>${right||""}</span></div>`}
@@ -9338,10 +9373,10 @@ function bkNudge(){if(S.acct||S.cloud||!(S.db&&S.uid))return"";let snooze=0;try{
     <div class="bk-a"><button class="btn sm primary" data-act="clnudge">Activar copia</button><button class="btn sm" data-act="cllater">Ahora no</button></div></section>`}
 
 /* v324 · Cada cosa en el momento al que pertenece (estética Apple): los suplementos que tomas aparecen bajo su comida con una casilla,
-   y los micronutrientes se resumen en «Lo que hoy importa» (como mucho tres, con su porqué). Antes eran dos enlaces al pie del reparto.
+   (v325: «Lo que hoy importa» se quitó: solo informaba; los micronutrientes están en Plan › Menú).
    Cada uno es un chip en una sola línea (relleno = tomado, sin casilla, guía 2.1.2); si no caben, se desplazan en horizontal.
    Los suplementos son recomendaciones: solo pasan a la comida los que marcas «Lo tomo» en su hoja. Hidratos y electrolitos durante el
-   ejercicio no, porque son avituallamiento. Doc «mysup»: {on:[claves], taken:{día:{clave:1}}}. Clases msup-, mtd- */
+   ejercicio no, porque son avituallamiento. Doc «mysup»: {on:[claves], taken:{día:{clave:1}}}. Clases msup- */
 const SUP_AT={creatina:"lunch",vd:"lunch",omega3:"lunch",fe:"breakfast",whey:"post",cafeina:"pre",nitratos:"pre"};
 const SUP_WHEN={lunch:"la comida",breakfast:"el desayuno",post:"la comida de después de entrenar",pre:"la comida de antes de entrenar"};
 const SUP_DOSE={creatina:"3–5 g",vd:"1.000–2.000 UI",omega3:"1–2 g",fe:"según pauta",whey:"20–40 g",nitratos:"2–3 h antes"};
@@ -9355,9 +9390,6 @@ function supSlots(t,mp){const mine=new Set(supMine());if(!mine.size)return{};
   return out}
 function supRow(list,day){return`<div class="msup">${list.map(x=>{const on=supTaken(x.k,day);
   return`<button type="button" class="msup-i${on?" on":""}" data-supt="${x.k}" aria-pressed="${on}" aria-label="${esc(x.n)}, ${esc(x.dose)}, ${on?"tomado":"sin tomar"}"><span class="msup-n">${esc(x.n)}</span><small>${esc(x.dose)}</small></button>`}).join("")}</div>`}
-/* En la hoja de Suplementos, debajo de cada uno: «Lo tomo» (conmutador) */
-function supMeRow(k){if(!SUP_AT[k])return"";const on=supMine().includes(k);
-  return`<div class="tg-r"><span class="tg-t"><b>Lo tomo</b><small>${on?"Aparece en Hoy, en "+SUP_WHEN[SUP_AT[k]]+", para marcarlo":"Lo verás en Hoy, en "+SUP_WHEN[SUP_AT[k]]+", para marcarlo"}</small></span><button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Lo tomo" data-supme="${k}"></button></div>`}
 async function supSave(){const c=userCol();if(!c)return;const T=(S.mySup||{}).taken||{},lim=shiftKey(today(),-60);Object.keys(T).forEach(d=>{if(d<lim)delete T[d]});
   try{await c.doc("mysup").set({kind:"mysup",on:supMine(),taken:T})}catch(e){toast("No se ha podido guardar")}}
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-supt],[data-supme]");if(!t)return;
@@ -9366,14 +9398,35 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(t.dataset.supt){const k=t.dataset.supt,d=S.day,T=S.mySup.taken;T[d]=T[d]||{};if(T[d][k])delete T[d][k];else T[d][k]=1;buzz(6);render();await supSave();return}
   const k=t.dataset.supme,on=new Set(supMine());on.has(k)?on.delete(k):on.add(k);S.mySup.on=[...on];renderModal();render();await supSave()},true);
 
-/* Lo que hoy importa: primero lo que el entreno de hoy cambia (sudor, carrera), luego lo que el menú deja corto. Toda la tarjeta abre el detalle */
-function microToday(t){const L=micros(t),mm=menuMicros(S.day),P=[],has=m=>P.some(p=>p.m===m);
-  ["na","Agua","fe","k","mg"].forEach(k=>{const m=L.find(x=>x.key===k||x.n===k);if(m&&m.x&&P.length<3)P.push({m,why:m.x})});
-  if(mm)L.filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6&&!has(m)).forEach(m=>{if(P.length<3)P.push({m,why:"Tu menú cubre el "+r0(mm[m.key]/m.tv*100)+" %"})});
-  return P}
-function microTodayCard(t){const P=microToday(t);if(!P.length)return"";
-  return`<section class="glass pad fade mtd"><button type="button" class="mtd-b" data-xs="micro" aria-label="Micronutrientes del día"><span class="mtd-h"><h2>Lo que hoy importa</h2><span class="mb-go" aria-hidden="true">›</span></span>
-    ${P.map(({m,why})=>`<span class="mtd-r"><span class="mtd-t"><b>${esc(m.n)}</b><small>${esc(why)}</small></span><span class="mtd-v">${esc(m.v)}<small>${esc(m.u)}</small></span></span>`).join("")}</button></section>`}
+/* v325 · Planificador al tacto. El mes del planificador se cambia deslizando (sin flechas a la vista, como la semana de Plan):
+   la rejilla sigue al dedo, con resistencia si no hay más meses; al soltar, la inercia proyectada decide (más de medio ancho o
+   un gesto rápido) y el mes nuevo entra por el lado contrario con un muelle. Las flechas siguen, ocultas, para lector y teclado. */
+(function(){let g=null,cal=null,x0=0,y0=0,dx=0,mode=null,W=0,swAt=0;const tr=MU.track();
+  const nav=(c,d)=>c.querySelector(`.vh [data-pa^="vm:"]:${d<0?"first":"last"}-child`);
+  const can=(c,d)=>{const b=nav(c,d);return!!b&&!b.disabled};
+  const put=(el,x)=>{el.style.transform=x?`translateX(${x}px)`:""};
+  document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;const c=e.target.closest&&e.target.closest(".pa-cal");if(!c)return;
+    cal=c;g=c.querySelector(".pa-cg");if(!g)return;x0=e.clientX;y0=e.clientY;dx=0;mode=null;W=g.offsetWidth||300;tr.reset();const cur=MU.stop(g);if(cur!=null){dx=cur}},true);
+  document.addEventListener("pointermove",e=>{if(!g)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
+    if(!mode){if(Math.abs(ddx)<8&&Math.abs(ddy)<8)return;if(Math.abs(ddy)>Math.abs(ddx)){g=null;return}mode="h"}
+    let d=ddx;if((d>0&&!can(cal,-1))||(d<0&&!can(cal,1)))d=MU.rubber(d,W);dx=d;tr.add(d);put(g,d)},{passive:true});
+  const up=()=>{if(!g)return;const el=g,c=cal;g=null;if(mode!=="h")return;mode=null;swAt=performance.now();
+    const v=tr.v(),end=dx+MU.project(v),dir=end>W/2&&can(c,-1)?-1:end<-W/2&&can(c,1)?1:0;
+    if(!dir){MU.spring(el,dx,0,v,x=>put(el,x),{resp:.3,damp:.85});return}
+    buzz(6);MU.spring(el,dx,-dir*W,v,x=>put(el,x),{resp:.2,damp:1,done:()=>{nav(c,dir).click();
+      requestAnimationFrame(()=>{const n=document.querySelector(".pa-cal .pa-cg");if(!n)return;put(n,dir*W*.6);MU.spring(n,dir*W*.6,0,0,x=>put(n,x),{resp:.32,damp:1})})}})};
+  document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
+  /* el clic de soltar tras deslizar no elige el día que quedaba debajo */
+  document.addEventListener("click",e=>{if(performance.now()-swAt<250&&e.target.closest&&e.target.closest(".pa-cg")){e.preventDefault();e.stopPropagation()}},true);
+})();
+
+/* v325 · Menú: la ración del plato se cambia ahí mismo. El multiplicador es un botón del mismo alto que el plato; al tocarlo sale debajo
+   una fila con las raciones habituales y, al elegir, cambian al momento el plato y el día (sin abrir la ficha). Lo elegido a mano se queda. */
+const PMX=[.5,.75,1,1.25,1.5,2],PMX_L={.5:"½",.75:"¾",1:"1",1.25:"1¼",1.5:"1½",2:"2"};
+function pmxRow(k,mid,s){return`<div class="seg pmx-r" role="group" aria-label="Ración">${PMX.map(v=>`<button type="button" data-pmxs="${k}|${mid}|${v}" aria-pressed="${Math.abs(v-s)<.01}">${PMX_L[v]}</button>`).join("")}</div>`}
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-pmx],[data-pmxs]");if(!t)return;e.preventDefault();e.stopPropagation();
+  if(t.dataset.pmx){S.pmx=S.pmx===t.dataset.pmx?null:t.dataset.pmx;buzz(4);render();return}
+  const[k,mid,v]=t.dataset.pmxs.split("|"),a=(S.menu[k]||{})[mid];if(!a)return;a.s=+v;a.lock=true;S.pmx=null;buzz(6);render();await saveMenu()},true);
 
 })();
 </script>
