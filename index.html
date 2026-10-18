@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T14:47:20.806Z">
+<meta name="sustrato-version" content="2026-10-18T16:17:43.897Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1941,7 +1941,6 @@ body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
 html[data-theme="light"]{--rpe1:var(--verde);--rpe1-v:var(--verde-v,var(--verde));--rpe2:var(--azul);--rpe2-v:var(--azul-v,var(--azul));--rpe3:var(--naranja);--rpe3-v:var(--naranja-v,var(--naranja));--rpe4:var(--rojo);--rpe4-v:var(--rojo-v,var(--rojo))}
 
 /* v283 · Copia en la nube: «Desactivar» y, a su lado, «Desactivar y borrar la copia» en rojo (acción destructiva). Clases cl- */
-.cl-ls{display:flex;gap:18px;flex-wrap:wrap}
 .cl-del{color:var(--rojo)}
 
 /* v166 · mover entrenos arrastrando */
@@ -3198,10 +3197,11 @@ header.top.scrolled::after{opacity:1}
 .cn-a:not(.red)::after{content:"";flex:none;width:7px;height:7px;margin:0 2px 0 12px;border-top:2px solid var(--faint);border-right:2px solid var(--faint);transform:rotate(45deg)}
 .cn-a:not(.red):not(:has(small))::after{margin-left:auto}
 /* Capa de movimiento (v320): título que se recoge en la cabecera y entrada escalonada al cambiar de pantalla */
-header.top .brand{grid-row:1;grid-column:2;transition:opacity .2s,transform .2s}
-header.top .mv-ht{grid-row:1;grid-column:2;justify-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:calc(17px*var(--tz,1));letter-spacing:-.01em;color:var(--fg);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
-header.top.mv-up .brand{opacity:0;transform:translateY(-6px)}
-header.top.mv-up .mv-ht{opacity:1;transform:none}
+/* v323: relevo en orden, sin que se monten: lo que se va sale en 0,12 s y lo que llega entra después (retraso 0,1 s) */
+header.top .brand{grid-row:1;grid-column:2;transition:opacity .18s .1s,transform .18s .1s}
+header.top .mv-ht{grid-row:1;grid-column:2;justify-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:calc(17px*var(--tz,1));letter-spacing:-.01em;color:var(--fg);opacity:0;transform:translateY(6px);transition:opacity .12s,transform .12s;pointer-events:none}
+header.top.mv-up .brand{opacity:0;transform:translateY(-6px);transition:opacity .12s,transform .12s}
+header.top.mv-up .mv-ht{opacity:1;transform:none;transition:opacity .18s .1s,transform .18s .1s}
 @media (prefers-reduced-motion:no-preference){#view .mv-in{animation:mvIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--mv-i,0) * 40ms + var(--mv-t,0ms))}}
 @keyframes mvIn{from{opacity:0;transform:translateY(8px)}}
 @media (prefers-reduced-motion:reduce){header.top .brand,header.top .mv-ht{transition:none}}
@@ -3227,6 +3227,16 @@ table.bands{--tz:1}
 .tzg .rw-row{flex-wrap:wrap;row-gap:8px}
 .tzg .rw-seg{width:100%}
 .tzg .rw-seg>button{flex:1}
+
+/* v323 · Aviso de copia en Hoy (bkNudge, 101) */
+.bkn h2{margin:0 0 6px}
+.bkn .note{margin:0 0 14px}
+.bk-card{scroll-margin-top:72px}
+/* v323 · Copia en la nube con conmutador (019) */
+.cl-tg{padding-top:0}
+.cl-ask p{margin:0 0 12px;font-size:calc(15px*var(--tz,1));line-height:1.4}
+.cl-ask .cl-l{display:block}
+.cl-ask .btn.cl-del{color:var(--rojo)} /* guía 2.2: lo destructivo, en rojo */
 
 </style>
 
@@ -3313,7 +3323,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="322";
+const APP_VER="323";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3356,7 +3366,11 @@ function bodyFat(p){
   return bf>3&&bf<60?bf:null;
 }
 /* Grasa corporal: media de Marina de EE. UU. y RFM (cintura/altura) con medidas; si no, IMC y edad (Deurenberg, poco fiable en deportistas). */
+/* app 1.1.0: grasa medida por la báscula (bioimpedancia): media de las 3 últimas de los últimos 30 días, porque una sola varía mucho con el agua */
+function bfScale(){const L=(S.bodyFatHc||[]).filter(x=>x.d>=shiftKey(today(),-30)&&x.pct>3&&x.pct<60).sort((a,b)=>a.d<b.d?-1:1).slice(-3);
+  return L.length?{bf:L.reduce((s,x)=>s+x.pct,0)/L.length,d:L[L.length-1].d,n:L.length}:null}
 function bfEst(p){
+  const sc=bfScale();if(sc)return{bf:sc.bf,src:"med",how:"tu báscula ("+(sc.n>1?"media de las "+sc.n+" últimas medidas":"última medida")+")"};
   const h=num(p.height),w=num(p.waist),kg=num(p.weight),a=num(p.age),fem=p.sex==="f";const ok=v=>v!=null&&v>3&&v<60;
   const nv=bodyFat(p),rfm=h&&w?(fem?76:64)-20*h/w:null;
   if(ok(nv)&&ok(rfm))return{bf:(nv+rfm)/2,src:"med",how:"media de la fórmula de la Marina de EE. UU. y del RFM (cintura y altura)"};
@@ -4318,22 +4332,31 @@ function cloudTick(force){const cl=S.cloud;if(!cl||S.cloudBusy)return;const age=
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")cloudTick(true)});
 setInterval(()=>cloudTick(false),5*60e3);
 const codeHtml=c=>{const g=String(c).split("-");return esc(g.slice(0,3).join("-"))+"<br>"+esc(g.slice(3).join("-"))};
-function cloudBlock(){const cl=S.cloud,nw=S.cloudNew,rc=S.cloudRec;
+/* v323: la copia es un sí o no que se guarda, así que va con el conmutador de la guía (071). Encendido = copia activa o a medio activar
+   (enseñando el código); al apagarlo pregunta si se borra también del servidor. Debajo, lo que toca en cada estado. */
+function cloudBlock(){const cl=S.cloud,nw=S.cloudNew,rc=S.cloudRec,ask=S.cloudOffAsk&&cl;
   const when=iso=>{if(!iso)return"aún ninguna";const d=new Date(iso),k=iso.slice(0,10);return(k===today()?"hoy":k===shiftKey(today(),-1)?"ayer":dateLabel(k))+" a las "+pad(d.getHours())+":"+pad(d.getMinutes())};
-  let body;
-  if(nw)body=`<p class="cl-t"><b>Tu código de recuperación</b></p><div class="cl-code" aria-label="Código ${nw}">${codeHtml(nw)}</div>
-    <p class="note" style="margin:8px 0 12px">Guárdalo en un lugar seguro, por ejemplo en tu gestor de contraseñas o en una foto. Es la única forma de recuperar tu copia en otro móvil: está cifrada y ni siquiera nosotros podemos abrirla sin él.</p>
-    <div class="bk-a"><button class="btn sm" data-act="clcopy">Copiar código</button><button class="btn sm primary" data-act="clon" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Activando…":"Ya lo he guardado"}</button></div><button class="cl-l" data-act="clno">Cancelar</button>`;
-  else if(rc)body=`<p class="cl-t"><b>Recuperar desde la nube</b></p><label class="f" for="clin"><span class="vh">Código de recuperación</span><input id="clin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" class="cl-in"></label>
+  const on=!!(cl||nw),sub=cl?(cl.err?"No se pudo subir la última copia":"Al día · última copia "+when(cl.last)):nw?"Guarda el código para terminar":"Cada día, cifrada con un código que solo tienes tú";
+  const head=`<div class="tg-r cl-tg"><span class="tg-t"><b>Copia en la nube</b><small>${esc(sub)}</small></span><button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Copia en la nube" data-act="cltog" ${S.cloudBusy?"disabled":""}></button></div>`;
+  let body="";
+  if(rc)body=`<p class="cl-t"><b>Recuperar desde la nube</b></p><label class="f" for="clin"><span class="vh">Código de recuperación</span><input id="clin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" class="cl-in"></label>
     <div class="bk-a" style="margin-top:10px"><button class="btn sm primary" data-act="clget" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Buscando…":"Buscar mi copia"}</button><button class="chip sm" data-act="clrecno">Cancelar</button></div>`;
-  else if(cl)body=`<p class="cl-t"><b>Copia en la nube activada</b><span class="cl-ok${cl.err?" err":""}">${cl.err?"No se pudo subir la última":"Al día"}</span></p><p class="note" style="margin:2px 0 10px">Se hace sola y va cifrada. Última copia: ${when(cl.last)}.</p>
-    <div class="bk-a"><button class="btn sm" data-act="clnow" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Subiendo…":"Hacer copia ahora"}</button><button class="btn sm" data-act="clshow">${S.cloudShow?"Ocultar código":"Ver código"}</button></div>
-    ${S.cloudShow?`<div class="cl-code" style="margin-top:10px" aria-label="Código ${esc(cl.code)}">${codeHtml(cl.code)}</div>`:""}<div class="cl-ls"><button class="cl-l" data-act="cloff">Desactivar</button><button class="cl-l cl-del" data-act="cloffdel">Desactivar y borrar la copia</button></div>`;
-  else body=`<p class="cl-t"><b>Copia en la nube</b></p><p class="note" style="margin:2px 0 10px">Guarda tus datos cada día, cifrados con un código que solo tienes tú. Si cambias de móvil o algo falla, los recuperas.</p>
-    <div class="bk-a"><button class="btn sm primary" data-act="clnew">Activar</button><button class="btn sm" data-act="clrec">Recuperar copia</button></div>`;
-  return`<div class="cl-box">${body}</div>`}
+  else if(nw)body=`<div class="cl-code" aria-label="Código ${nw}">${codeHtml(nw)}</div>
+    <p class="note" style="margin:8px 0 12px">Tu código de recuperación. Guárdalo en un lugar seguro, por ejemplo en tu gestor de contraseñas o en una foto. Es la única forma de recuperar tu copia en otro móvil: está cifrada y ni siquiera nosotros podemos abrirla sin él.</p>
+    <div class="bk-a"><button class="btn sm" data-act="clcopy">Copiar código</button><button class="btn sm primary" data-act="clon" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Activando…":"Ya lo he guardado"}</button></div>`;
+  else if(ask)body=`<div class="cl-ask"><p><b>¿Apagar la copia en la nube?</b> Dejará de hacerse. Puedes dejar guardada la última o borrarla también del servidor.</p>
+    <div class="bk-a"><button class="btn sm" data-act="cloff">Dejarla guardada</button><button class="btn sm cl-del" data-act="cloffdel" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Borrando…":"Borrarla"}</button></div><button class="cl-l" data-act="clofno">Mantener encendida</button></div>`;
+  else if(cl)body=`<div class="bk-a"><button class="btn sm" data-act="clnow" ${S.cloudBusy?"disabled":""}>${S.cloudBusy?"Subiendo…":"Hacer copia ahora"}</button><button class="btn sm" data-act="clshow">${S.cloudShow?"Ocultar código":"Ver código"}</button></div>
+    ${S.cloudShow?`<div class="cl-code" style="margin-top:10px" aria-label="Código ${esc(cl.code)}">${codeHtml(cl.code)}</div>`:""}`;
+  else body=`<button class="cl-l" data-act="clrec">¿Tenías copia en otro móvil? Recuperarla</button>`;
+  return`<div class="cl-box">${head}${body}</div>`}
 async function cloudAction(a){
+  /* v323: botones del aviso de Hoy (101) */
+  if(a=="clnudge"){S.tab="perfil";S.cloudNew=cloudNewCode();render();setTimeout(()=>{const b=document.querySelector(".bk-card");b&&b.scrollIntoView({block:"start",behavior:"smooth"})},80);return}
+  if(a=="cllater"){try{localStorage.setItem("sustrato-bknudge",String(Date.now()+7*864e5))}catch(e){}render();return}
   if(a==="clnew"){S.cloudNew=cloudNewCode();render();return}
+  if(a==="cltog"){S.cloudRec=false;if(S.cloudNew){S.cloudNew=null}else if(S.cloud){S.cloudOffAsk=true}else{S.cloudNew=cloudNewCode()}render();return}
+  if(a==="clofno"){S.cloudOffAsk=false;render();return}
   if(a==="clno"){S.cloudNew=null;render();return}
   if(a==="clcopy"){try{await navigator.clipboard.writeText(S.cloudNew||(S.cloud&&S.cloud.code)||"");toast("Código copiado")}catch(e){toast("No se ha podido copiar")}return}
   if(a==="clon"){S.cloud={code:S.cloudNew,since:new Date().toISOString(),last:null};S.cloudNew=null;await cloudSaveCfg();render();await cloudBackup(true);return}
@@ -4341,8 +4364,8 @@ async function cloudAction(a){
   if(a==="clshow"){S.cloudShow=!S.cloudShow;render();return}
   /* v283: derecho de supresión, borra del servidor la copia actual y la anterior */
   if(a==="cloffdel"){const cl=S.cloud;if(!cl)return;S.cloudBusy=true;render();try{const{id}=await cloudKeys(cl.code);await cloudReq(id,"DELETE")}catch(e){S.cloudBusy=false;render();toast("No se ha podido borrar la copia. Prueba con conexión.");return}
-    const c=userCol();S.cloud=null;S.cloudShow=false;S.cloudBusy=false;if(c)try{await c.doc("cloud").delete()}catch(e){}toast("Copia en la nube borrada");render();return}
-  if(a==="cloff"){const c=userCol();S.cloud=null;S.cloudShow=false;if(c)try{await c.doc("cloud").delete()}catch(e){}toast("Copia en la nube desactivada. La última copia sigue guardada.");render();return}
+    const c=userCol();S.cloud=null;S.cloudOffAsk=false;S.cloudShow=false;S.cloudBusy=false;if(c)try{await c.doc("cloud").delete()}catch(e){}toast("Copia en la nube borrada");render();return}
+  if(a==="cloff"){const c=userCol();S.cloudOffAsk=false;S.cloud=null;S.cloudShow=false;if(c)try{await c.doc("cloud").delete()}catch(e){}toast("Copia en la nube desactivada. La última copia sigue guardada.");render();return}
   if(a==="clrec"){S.cloudRec=true;render();setTimeout(()=>{const i=$("#clin");if(i)i.focus()},30);return}
   if(a==="clrecno"){S.cloudRec=false;render();return}
   if(a==="clget"){const code=cloudNorm(($("#clin")||{}).value);if(!code){toast("Revisa el código: son 24 letras y números");return}
@@ -4469,7 +4492,9 @@ function stepGoal(){return num((S.profile||{}).stepGoal)||8000}
 async function saveSteps(){const c=userCol();if(!c)return;try{await c.doc("steps").set({kind:"steps",map:S.steps||{}})}catch(e){toast("No se han podido guardar los pasos")}}
 async function hcMerge(){if(!window.__native||!window.__native.health)return;try{const h=await window.__native.health();if(!h)return;
   S.rhr=Object.assign({},S.rhr||{},h.rhr||{});S.rhrHc=Object.assign({},S.rhrHc||{},Object.fromEntries(Object.keys(h.rhr||{}).map(k=>[k,1])));S.steps=Object.assign({},S.steps||{},h.steps||{});S.stepsH=h.stepsH||S.stepsH||{};S.hcSleepH=h.sleepH||S.hcSleepH||{};
-  S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d)),from=S.resetAt||"";(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!from||x.d>from))(S.weights=S.weights||[]).push(x)})}catch(e){}}
+  S.hrv=Object.assign({},S.hrvMan||{},h.hrv||{});const wd=new Set((S.weights||[]).map(x=>x.d)),from=S.resetAt||"";(h.weights||[]).forEach(x=>{if(!wd.has(x.d)&&(!from||x.d>from))(S.weights=S.weights||[]).push(x)});
+  /* app 1.1.0: grasa corporal (%) y masa magra (kg) de la báscula, si el reloj o la báscula las escriben */
+  if(h.fat)S.bodyFatHc=h.fat.filter(x=>!from||x.d>from);if(h.lean)S.leanHc=h.lean.filter(x=>!from||x.d>from)}catch(e){}}
 /* Relectura ligera desde el móvil (al volver a la app): mezcla lo nuevo de Health Connect y repinta */
 window.__hcRefresh=async()=>{const b=stateSig();await hcMerge();if(stateSig()!==b)quietRender()};
 function stepsChart(){
@@ -4776,15 +4801,17 @@ function bandsCard(){
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${hi?`Tiempo en cada zona según tu pulso y tu umbral (${hi} ppm): suave por debajo de ${lo} ppm (0,85 × umbral, donde está tu primer umbral), moderado de ${lo} a ${hi-1} e intenso desde ${hi}.`:"Tiempo en cada zona según tu pulso y tu umbral: suave por debajo del 85 % del umbral, intenso desde el umbral."} Lo recomendable es pasar en suave el 80 % del tiempo.</p></details>
     ${S.progSubBusy?'<p class="note">Analizando más actividades…</p>':""}</section>`;
 }
+/* v323: lo que no se ha podido calcular (sin curva ni pulso, o sin conexión) no se reintenta en bucle: una vez por sesión */
+const SUB_TRY=new Set();
 async function ensureProgSubs(){
-  if(S.progSubBusy||S.actsState!=="ok"||!hrParams(S.profile||{}))return;const from=shiftKey(today(),-185);
+  if(S.progSubBusy||S.actsState!=="ok"||!hrParams(S.profile||{}))return;const from=shiftKey(today(),-185),here=()=>S.tab==="prog"||S.tab==="acts";
   /* v232: las que ya tienen su curva guardada se rehacen todas aquí mismo; solo las que necesitan a Strava van en tandas de 12 con pausa */
-  const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&subNeeds(a));
+  const pend=S.acts.filter(a=>a.sport!=="oth"&&a.sport!=="str"&&a.day>=from&&a.kcal&&subNeeds(a)&&!SUB_TRY.has(a.id));
   const loc=pend.filter(a=>{const o=S.subs[a.id];return o&&o.hasHr&&o.series&&o.series.length}),net=pend.filter(a=>!loc.includes(a)).slice(0,12);
-  if(!pend.length)return;S.progSubBusy=true;let i=0;
-  for(const a of loc)await ensureSub(a);if(loc.length&&S.tab==="prog")quietRender();
-  for(const a of net){await ensureSub(a);i++;if(i%4===0&&S.tab==="prog")quietRender();await new Promise(r=>setTimeout(r,700))}
-  S.progSubBusy=false;if(S.tab==="prog")quietRender();
+  if(!pend.length)return;S.progSubBusy=true;let i=0;loc.concat(net).forEach(a=>SUB_TRY.add(a.id));
+  for(const a of loc)await ensureSub(a);if(loc.length&&here())quietRender();
+  for(const a of net){await ensureSub(a);i++;if(i%4===0&&here())quietRender();await new Promise(r=>setTimeout(r,700))}
+  S.progSubBusy=false;if(here())quietRender();
 }
 function bodyCard(){
   const p=S.profile||{},M=(S.measures||[]).slice();const be=bfEst(p),bf=be&&be.src==="med"?be.bf:null,kg=num(p.weight);
@@ -5655,10 +5682,16 @@ function weightHero(){
       <div class="pmeta">${wk!=null?`<span class="ppill">${arrow} ${Math.abs(wk).toFixed(2).replace(".",",")} kg/sem</span>`:""}<span class="note" style="margin:0">${all.length<2?"Primer pesaje. Con unos cuantos más verás aquí tu evolución.":(delta>0?"+":"")+delta.toFixed(1).replace(".",",")+" kg desde "+esc(dateLabel(first.d))}</span></div></div></div>
       ${all.length<2?"":`<div class="seg sm" role="group" aria-label="Rango">${[["30","1 m"],["90","3 m"],["all","Todo"]].map(([k,l])=>`<button data-wtrange="${k}" aria-pressed="${rg===k}">${l}</button>`).join("")}</div>`}</div>
     ${bigWeightChart(W)}
+    ${bodyComp()}
     ${weightRange(W,all,wk,rg)}
     ${adaptLine()}
   </section>`;
 }
+/* app 1.1.0: grasa y masa magra de la báscula, debajo de la gráfica del peso; solo si llegan de Health Connect o Apple Salud */
+function bodyComp(){const f=bfScale(),L=(S.leanHc||[]).slice().sort((a,b)=>a.d<b.d?-1:1),l=L[L.length-1];if(!f&&!l)return"";
+  const c=(v)=>v.toFixed(1).replace(".",",");
+  return`<div class="kv" style="margin-top:12px;grid-template-columns:1fr 1fr">${f?`<div><span>Grasa corporal</span><b>${c(f.bf)} <small>%</small></b></div>`:""}${l?`<div><span>Masa magra</span><b>${c(l.kg)} <small>kg</small></b></div>`:""}</div>
+    <p class="note" style="margin:6px 0 0">De tu báscula${f&&f.n>1?", media de las "+f.n+" últimas medidas":""}. Con ella calculo tu gasto en reposo.</p>`}
 function weightRange(W,all,wk,rg){
   if(!all.length)return"";const one=all.length<2;
   const p=S.profile||{},ref=num(p.wtRef),now=all[all.length-1].kg,st=W[0].kg,ys=W.map(x=>x.kg);
@@ -6723,6 +6756,7 @@ function vHoy(){
   ${weightBar()}
   ${glyCard()}
   ${recovCard()}
+  ${bkNudge()}
   ${flPrompt()}
   ${weekTeaser()}
   <section class="glass pad fade dsec">${strip}</section>
@@ -6982,6 +7016,7 @@ function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if
   if(m&&K[m[2]])return K[m[2]]+" "+T[m[1]];if(K[n])return K[n];
   if(/^[A-Z][a-zA-Z]+$/.test(n)&&n===n.replace(/\s/g,"")&&/Ride|Run|Walk|Hike|Training|Swim/.test(n))return base;return n}
 function vActs(){
+  setTimeout(ensureProgSubs,400); /* v323: Actividad también rehace en segundo plano el reparto que falte (tras reinstalar no había barra hasta pasar por Progreso) */
   const F=[["all","Todas"],["run","Running"],["trail","Trail"],["bike","Bici"],["swim","Natación"],["foot","A pie"],["str","Fuerza"]]; /* v266: por familia */
   const rg=S.actRange||"all",tk=today();
   let from=null,to=null;
@@ -9278,6 +9313,15 @@ document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[da
     if(now<enterUntil&&!RM())[...(view.children.length===1?view.children[0].children:view.children)].slice(0,8).forEach((el,i)=>{if(el.classList.contains("mv-in"))return;el.style.setProperty("--mv-i",i);el.style.setProperty("--mv-t",(enterAt-now).toFixed(0)+"ms");el.classList.add("mv-in")})};
   new MutationObserver(()=>{enter();if(!q)q=requestAnimationFrame(pass)}).observe(view,{childList:true});
 })();
+
+/* v323 · Aviso de copia: los datos (comidas, sensaciones de cada entreno, peso…) viven solo en el móvil si no hay cuenta ni copia en la nube.
+   Al desinstalar la app se borran sin vuelta atrás (le pasó a Javier al instalar la 1.1.0). Si hay datos de unos días y ninguna de las dos,
+   Hoy lo dice una vez por semana con un botón que activa la copia (lleva a Perfil con el código ya generado). Clases bkn- */
+function bkNudge(){if(S.acct||S.cloud||!(S.db&&S.uid))return"";let snooze=0;try{snooze=+localStorage.getItem("sustrato-bknudge")||0}catch(e){}if(Date.now()<snooze)return"";
+  const n=Object.keys(S.log||{}).length+Object.keys(S.rpe||{}).length+(S.weights||[]).length;if(n<5)return"";
+  return`<section class="glass pad fade bkn"><h2>Tus datos solo están en este móvil</h2>
+    <p class="note">Si desinstalas la app o cambias de móvil, se pierden tus comidas, cómo te sentiste en cada entreno y tu peso. Con la copia en la nube vuelven al momento: va cifrada y la clave solo la tienes tú.</p>
+    <div class="bk-a"><button class="btn sm primary" data-act="clnudge">Activar copia</button><button class="btn sm" data-act="cllater">Ahora no</button></div></section>`}
 
 })();
 </script>
