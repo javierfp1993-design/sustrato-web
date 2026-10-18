@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T11:34:19.103Z">
+<meta name="sustrato-version" content="2026-10-18T11:57:39.604Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3201,7 +3201,7 @@ header.top .brand{grid-row:1;grid-column:2;transition:opacity .2s,transform .2s}
 header.top .mv-ht{grid-row:1;grid-column:2;justify-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:17px;letter-spacing:-.01em;color:var(--fg);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
 header.top.mv-up .brand{opacity:0;transform:translateY(-6px)}
 header.top.mv-up .mv-ht{opacity:1;transform:none}
-@media (prefers-reduced-motion:no-preference){#view .mv-in{animation:mvIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--mv-i,0) * 40ms)}}
+@media (prefers-reduced-motion:no-preference){#view .mv-in{animation:mvIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--mv-i,0) * 40ms + var(--mv-t,0ms))}}
 @keyframes mvIn{from{opacity:0;transform:translateY(8px)}}
 @media (prefers-reduced-motion:reduce){header.top .brand,header.top .mv-ht{transition:none}}
 
@@ -3284,7 +3284,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="320";
+const APP_VER="321";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7748,6 +7748,8 @@ const MU={
   project:(v,d=.998)=>v/1000*d/(1-d),
   rubber:(o,dim,c=.55)=>o*dim*c/(dim+c*Math.abs(o)),
   reduce:()=>matchMedia("(prefers-reduced-motion: reduce)").matches,
+  /* v320.1: lo que se mueve por sí solo (entradas, cifras, fundido de tema) solo responde a algo que acaba de hacer el usuario; nunca al abrir ni al sincronizar */
+  boot:performance.now(),userAt:-1e9,byUser:(ms=1200)=>performance.now()-MU.userAt<ms,
   /* velo de una hoja: pasa a una capa propia (::before) cuya opacidad se mueve sin repintar la pantalla */
   scrim(o,a){if(!o)return;if(!o.classList.contains("scrim-fx")){o.style.setProperty("--scrim-c",getComputedStyle(o).backgroundColor);o.classList.add("scrim-fx")}o.style.setProperty("--so",a.toFixed(3))},
   stop(el){if(el&&el._mu){cancelAnimationFrame(el._mu.f);const x=el._mu.x;el._mu=null;return x}return null},
@@ -7801,12 +7803,13 @@ const MU={
     if(ov)ov.animate([{backgroundColor:getComputedStyle(ov).backgroundColor},{backgroundColor:"rgba(0,0,0,0)"}],{duration:180,fill:"forwards"});an.onfinish=()=>c.click()},true);
 })();
 /* v320 · Cambio de tema suave: al pasar de claro a oscuro (a mano o por el sistema) los colores se funden en 0,3 s en vez de saltar. */
-(function(){const h=document.documentElement;let t=0;new MutationObserver(()=>{if(MU.reduce())return;h.classList.add("theme-fade");clearTimeout(t);t=setTimeout(()=>h.classList.remove("theme-fade"),360)}).observe(h,{attributes:true,attributeFilter:["data-theme"]})})();
+(function(){const h=document.documentElement;let t=0;new MutationObserver(()=>{if(MU.reduce()||performance.now()-MU.boot<3000)return;h.classList.add("theme-fade");clearTimeout(t);t=setTimeout(()=>h.classList.remove("theme-fade"),360)}).observe(h,{attributes:true,attributeFilter:["data-theme"]})})();
 /* v320 · Bordes de lo que se desplaza en horizontal: marca por qué lado queda contenido para desvanecer solo ese borde */
 (function(){const SEL=".tt,.daystrip";const mark=el=>{const l=el.scrollLeft>2,r=el.scrollLeft+el.clientWidth<el.scrollWidth-2;el.toggleAttribute("data-fl",l);el.toggleAttribute("data-fr",r)};
   document.addEventListener("scroll",e=>{const t=e.target;if(t.matches&&t.matches(SEL))mark(t)},true);
   let q=0;new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;document.querySelectorAll(SEL).forEach(mark)})}).observe(document.body,{childList:true,subtree:true});
   addEventListener("resize",()=>document.querySelectorAll(SEL).forEach(mark))})();
+addEventListener("pointerdown",()=>{MU.userAt=performance.now()},true);addEventListener("keydown",()=>{MU.userAt=performance.now()},true);
 
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
@@ -9219,6 +9222,7 @@ document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[da
    · Título grande que se recoge: al pasar bajo la cabecera, su texto aparece pequeño en el centro de la cabecera en lugar del logo.
    · Entrada al cambiar de pestaña o de sección: los primeros bloques suben 8 px y aparecen, escalonados 40 ms. No en cada repintado.
    · Cifras que se deslizan: si una cifra grande (.vhead, .rg-c, .qk2, .en-hd) cambia sin cambiar de pantalla, cuenta hasta la nueva en 0,45 s.
+   v320.1: entradas y cifras solo tras algo que hace el usuario (MU.byUser), nunca al abrir la app ni al sincronizar: antes parpadeaba al arrancar.
    Con «reducir movimiento», nada de esto se mueve. Clases mv- */
 (function(){const RM=()=>matchMedia("(prefers-reduced-motion: reduce)").matches,view=document.getElementById("view"),hd=document.querySelector("header.top"),lt=document.getElementById("ltitle");if(!view)return;
   /* título que se recoge */
@@ -9228,15 +9232,15 @@ document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[da
   addEventListener("scroll",fold,{passive:true});
   /* entrada al cambiar de pantalla y cifras */
   const key=()=>[S.tab,S.tab==="plan"?S.planView:S.tab==="prog"?S.progSec:S.tab==="fuerza"?S.fzSec:""].join("|");
-  let last=key(),nums=new Map(),q=0,enterUntil=0;
+  let last=key(),nums=new Map(),q=0,enterUntil=0,enterAt=0;
   const parse=t=>{const m=/-?[\d.]+(?:,\d+)?/.exec(t);if(!m)return null;const s=m[0],dec=(s.split(",")[1]||"").length;return{v:parseFloat(s.replace(/\./g,"").replace(",",".")),dec,th:/\d\.\d{3}/.test(s)}};
   const fmt=(v,p)=>{let s=v.toFixed(p.dec).replace(".",",");if(p.th){const[a,b]=s.split(",");s=a.replace(/\B(?=(\d{3})+(?!\d))/g,".")+(b?","+b:"")}return s};
   const tween=(node,from,to,p)=>{const t0=performance.now(),d=450,txt=node.nodeValue,m=/-?[\d.]+(?:,\d+)?/.exec(txt),pre=txt.slice(0,m.index),post=txt.slice(m.index+m[0].length);
     const step=now=>{const k=Math.min(1,(now-t0)/d),e=1-Math.pow(1-k,3);node.nodeValue=pre+fmt(from+(to-from)*e,p)+post;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)};
-  const pass=()=>{q=0;const k=key(),moved=k!==last,now=performance.now();last=k;if(moved)enterUntil=now+220; /* al cambiar de pantalla se repinta dos veces seguidas: la entrada cubre las dos */
-    if((moved||now<enterUntil)&&!RM()){[...(view.children.length===1?view.children[0].children:view.children)].slice(0,8).forEach((el,i)=>{if(el.classList.contains("mv-in"))return;el.style.setProperty("--mv-i",i);el.classList.add("mv-in")});setTimeout(()=>view.querySelectorAll(".mv-in").forEach(el=>el.classList.remove("mv-in")),1100)}
+  const pass=()=>{q=0;const k=key(),moved=k!==last,now=performance.now();last=k;if(moved&&MU.byUser()){enterUntil=now+220;enterAt=now} /* solo si lo cambió el usuario; al cambiar de pantalla se repinta dos veces: la entrada cubre las dos */
+    if(now<enterUntil&&!RM()){[...(view.children.length===1?view.children[0].children:view.children)].slice(0,8).forEach((el,i)=>{if(el.classList.contains("mv-in"))return;el.style.setProperty("--mv-i",i);el.style.setProperty("--mv-t",(enterAt-now).toFixed(0)+"ms");el.classList.add("mv-in")}); /* un repintado a mitad continúa la entrada, no la reinicia */setTimeout(()=>view.querySelectorAll(".mv-in").forEach(el=>el.classList.remove("mv-in")),1100)}
     const seen=new Map();view.querySelectorAll(".vhead b,.rg-c b,.qk2 b,.en-hd b").forEach((b,i)=>{const sec=b.closest("section"),id=((sec&&(sec.querySelector(".pkk,h2")||{}).textContent)||"")+"#"+i,tn=[...b.childNodes].find(n=>n.nodeType===3&&/\d/.test(n.nodeValue));if(!tn)return;const p=parse(tn.nodeValue);if(!p)return;
-      seen.set(id,p.v);const old=nums.get(id);if(!moved&&now>=enterUntil&&!RM()&&old!=null&&old!==p.v&&Math.abs(old-p.v)<1e7)tween(tn,old,p.v,p)});
+      seen.set(id,p.v);const old=nums.get(id);if(!moved&&now>=enterUntil&&MU.byUser(1500)&&!RM()&&old!=null&&old!==p.v&&Math.abs(old-p.v)<1e7)tween(tn,old,p.v,p)});
     nums=seen;fold()};
   new MutationObserver(()=>{if(!q)q=requestAnimationFrame(pass)}).observe(view,{childList:true});
 })();
