@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T16:17:43.897Z">
+<meta name="sustrato-version" content="2026-10-18T17:35:04.969Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1986,7 +1986,7 @@ div.mbody{cursor:default}
 .mb-s{color:var(--muted);font-variant-numeric:tabular-nums}
 .mbody .mwhy{margin:0;font-size:calc(13px*var(--tz,1))}
 .mbody .mwhy i{margin-top:5px}
-.mbody .mbar{height:5px;margin:6px 0 0;max-width:220px}
+.mbody .mbar{height:6px;margin:6px 0 0} /* v324: todo el ancho; cuenta de qué está hecha la comida, no cuánto pesa (eso ya lo dice la cifra) */
 .mb-k{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:calc(15px*var(--tz,1));font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .mb-k small{font-size:calc(12px*var(--tz,1));font-weight:400;color:var(--muted)}
 .mb-go{font-size:calc(20px*var(--tz,1));color:var(--faint);margin-left:-2px}
@@ -2448,7 +2448,7 @@ html[data-theme="dark"] .gsi-material-button:not(:disabled):active .gsi-material
 .gly-tank{margin:12px 0 4px}.gly-tank svg{display:block;width:100%;height:32px}
 .gly-bg{fill:var(--fill2)}.gly-hab{fill:color-mix(in srgb,var(--carb) 16%,transparent)}
 /* v273 · el color de los hidratos; si es estimado, en trama */
-.gly-l{fill:var(--carb)}.gly-tank.est .gly-l{fill:color-mix(in srgb,var(--carb) 62%,var(--card))} /* v320: estimado en tono plano, no rayado */.gly-hs{fill:var(--carb)}.gly-hb{fill:color-mix(in srgb,var(--carb) 30%,var(--card))}
+.gly-l{fill:var(--carb)}.gly-tank.est .gly-l{fill:var(--carb)} /* v324: lo estimado se dice con palabras (≈, «Estimado»), no apagando el color: mezclado con el fondo, en oscuro daba un ocre sucio */.gly-hs{fill:var(--carb)}.gly-hb{fill:color-mix(in srgb,var(--carb) 30%,var(--card))}
 .gly-sc{position:relative;display:flex;justify-content:space-between;font-size:calc(11px*var(--tz,1));color:var(--muted)}
 .gly-spk{display:block;width:100%;height:46px;margin-top:12px}
 .gly-sb{fill:color-mix(in srgb,var(--carb) 12%,transparent)}.gly-sl{fill:none;stroke:var(--carb);stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}.gly-sd{fill:var(--carb)}
@@ -2647,8 +2647,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .mw-r.del{background:var(--rojo-v,var(--rojo))}
 .mw-r button{appearance:none;border:0;background:none;color:#fff;font:600 calc(15px*var(--tz,1)) var(--font);height:100%;width:112px;cursor:pointer}
 /* pendiente: barras tenues (lo previsto); registrada: llenas */
-.mw:not(.st-done):not(.st-chg) .mbar{opacity:.35}
-.mw .mbar{transition:opacity .25s}
+.mw:not(.st-done):not(.st-chg) .mbar{height:3px;margin-top:8px} /* v324: lo planeado, fino; lo comido, grueso. Los colores, siempre plenos */
+.mw .mbar{transition:height .25s,margin-top .25s}
 .mw-ok{display:inline-flex;align-items:center;gap:5px}
 .mw-ok svg{width:10px;height:10px;box-sizing:content-box;padding:3px;border-radius:50%;background:var(--verde);color:#fff}
 .mw-chg{--pc:var(--amarillo)}
@@ -3191,9 +3191,9 @@ header.top.scrolled::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.ph-sh i{animation:none}}
 /* Barrido (v320): bordes que se desvanecen en lo que se desplaza en horizontal (títulos de Plan y Progreso, tira de días),
    solo por el lado en que queda más contenido (lo marca 099: data-fl / data-fr); filas de acción de Conexiones con su flecha */
-.tt[data-fl],.daystrip[data-fl]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px);mask-image:linear-gradient(90deg,transparent 0,#000 28px)}
-.tt[data-fr],.daystrip[data-fr]{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
-.tt[data-fl][data-fr],.daystrip[data-fl][data-fr]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent)}
+.tt[data-fl],.daystrip[data-fl],.msup[data-fl]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px);mask-image:linear-gradient(90deg,transparent 0,#000 28px)}
+.tt[data-fr],.daystrip[data-fr],.msup[data-fr]{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+.tt[data-fl][data-fr],.daystrip[data-fl][data-fr],.msup[data-fl][data-fr]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent)}
 .cn-a:not(.red)::after{content:"";flex:none;width:7px;height:7px;margin:0 2px 0 12px;border-top:2px solid var(--faint);border-right:2px solid var(--faint);transform:rotate(45deg)}
 .cn-a:not(.red):not(:has(small))::after{margin-left:auto}
 /* Capa de movimiento (v320): título que se recoge en la cabecera y entrada escalonada al cambiar de pantalla */
@@ -3237,6 +3237,19 @@ table.bands{--tz:1}
 .cl-ask p{margin:0 0 12px;font-size:calc(15px*var(--tz,1));line-height:1.4}
 .cl-ask .cl-l{display:block}
 .cl-ask .btn.cl-del{color:var(--rojo)} /* guía 2.2: lo destructivo, en rojo */
+
+/* v324 · Suplementos bajo su comida y «Lo que hoy importa» (102) */
+.msup{display:flex;gap:6px;padding:0 0 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.msup::-webkit-scrollbar{display:none}
+.msup-i{appearance:none;flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border:0;border-radius:10px;background:var(--fill2);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);white-space:nowrap;cursor:pointer;transition:background .18s,color .18s}
+.msup-i small{color:var(--muted);font-size:calc(12px*var(--tz,1));font-weight:400;transition:color .18s}
+.msup-i.on{background:var(--ac);color:var(--ac-on,#fff)}.msup-i.on small{color:inherit;opacity:.8}
+.mtd{padding:0}
+.mtd-b{appearance:none;display:block;width:100%;text-align:left;border:0;background:none;color:inherit;font:inherit;padding:18px;cursor:pointer;border-radius:inherit}
+.mtd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}.mtd-h h2{margin:0}
+.mtd-r{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:.5px solid var(--sep)}
+.mtd-h+.mtd-r{border-top:0}
+.mtd-t{flex:1;min-width:0}.mtd-t b{display:block;font-size:calc(15px*var(--tz,1));font-weight:600}.mtd-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
+.mtd-v{font-size:calc(20px*var(--tz,1));font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}.mtd-v small{font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px}
 
 </style>
 
@@ -3323,7 +3336,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="323";
+const APP_VER="324";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4390,7 +4403,7 @@ async function syncFlush(){if(!S.acct||SYNC.busy)return;const ids=Object.keys(SY
   catch(e){if(S.acct){S.acct=Object.assign({},S.acct,{err:e&&e.code||"net"});LS("sustrato-acct",S.acct)}}
   SYNC.busy=false;if(Object.keys(SYNC.q).length)SYNC.t=setTimeout(syncFlush,30e3)}
 /* Vuelve a leer el estado guardado tras recibir cambios de otro dispositivo */
-function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.profile,S.str,S.dishes,S.rhr,S.hrv,S.hrvMan,S.sleep,S.steps,S.stepsH,S.fasted,S.rpe,S.fuel,S.sweat,S.measures,S.routines,S.pantry,S._cy])}catch(e){return String(Math.random())}}
+function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.profile,S.str,S.dishes,S.rhr,S.hrv,S.hrvMan,S.sleep,S.steps,S.stepsH,S.fasted,S.rpe,S.mySup,S.fuel,S.sweat,S.measures,S.routines,S.pantry,S._cy])}catch(e){return String(Math.random())}}
 async function reloadFromStore(){const sig0=stateSig();["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines","_cy"].forEach(k=>{delete S[k]});
   Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();if(stateSig()!==sig0)quietRender()}
 function quietRender(){const h=document.documentElement;h.classList.add("quiet");render();clearTimeout(quietRender.t);quietRender.t=setTimeout(()=>h.classList.remove("quiet"),500)}
@@ -5117,6 +5130,7 @@ async function loadStore(){
       else if(d.id==="weights"&&v.list)S.weights=JSON.parse(JSON.stringify(v.list));
       else if(d.id==="reset"&&v.at)S.resetAt=v.at;
       else if(d.id==="rpe"&&v.map)S.rpe=JSON.parse(JSON.stringify(v.map));
+      else if(d.id==="mysup")S.mySup={on:v.on||[],taken:JSON.parse(JSON.stringify(v.taken||{}))};
       else if(d.id==="cloud"&&v.code)S.cloud={code:v.code,since:v.since,last:v.last,err:v.err||null};
       else if(d.id==="eff"&&v.map)S.eff=JSON.parse(JSON.stringify(v.map));
       else if(d.id==="pmx"&&v.map)S.pmx=JSON.parse(JSON.stringify(v.map));
@@ -6494,10 +6508,9 @@ function stravaAlert(){
   return `<div class="alert"><span>${esc(mcpMsg(S.actsErr))}</span>${S.actsErr&&["server_unavailable","upstream_error"].includes(S.actsErr.code)?'<button class="btn" data-act="reload">Reintentar</button>':""}</div>`;
 }
 function mealsCard(t){
-  const mp=mealPlan(t,S.day),mx=Math.max(...mp.meals.map(m=>m.kcal));
+  const mp=mealPlan(t,S.day),SUPS=supSlots(t,mp);
   const mwFirst=(mp.meals.find(m=>!((S.log[S.day]||{})[m.id]))||{}).id;
   const rows=mp.meals.map(m=>{
-    const w=v=>(v/mx*100).toFixed(1);
     const lg=(S.log[S.day]||{})[m.id],st=lg&&lg.st,canL=S.day<=today();
     /* v254: sin casilla ni flecha; la fila se desliza (070-deslizar-comidas.js) y al tocarla abre la hoja */
     /* Para qué es esta comida: una frase, sin etiquetas */
@@ -6508,10 +6521,10 @@ function mealsCard(t){
     if(st==="done"){line=ds?esc(ds.n):"";kc=kcOf(lg);src=lg;lab="Hecha"+(lg.at&&keyOf(new Date(lg.at))===S.day?" · "+fromMin(new Date(lg.at).getHours()*60+new Date(lg.at).getMinutes()):"")+(lg.r&&lg.r!==1?" · "+(RL[lg.r]||lg.r):"")}
     else if(st==="chg"){line=esc(lg.n||"Otra cosa");kc=kcOf(lg);src=lg;lab=lg.photo?"por foto":lg.txt?"escrito":"otra cosa"}
     else if(st==="skip"){line="Me la salté";kc=0;lab="saltada"}
-    const bar=st==="skip"?"":`<span class="mbar"><i style="width:${w(4*(src.P||0))}%;background:var(--prot)"></i><i style="width:${w(4*(src.C||0))}%;background:var(--carb)"></i><i style="width:${w(9*(src.F||0))}%;background:var(--fat)"></i></span>`;
+    const bar=st==="skip"?"":`<span class="mbar"><i style="flex:${4*(src.P||0)};background:var(--prot)"></i><i style="flex:${4*(src.C||0)};background:var(--carb)"></i><i style="flex:${9*(src.F||0)};background:var(--fat)"></i></span>`;
     const thr=protThr(),pv=src.P||0,pLow=thr&&st!=="skip"&&protMain(m)&&pv<thr*.95;
     const body=`<span class="mb-m"><span class="mb-t"><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span>${line?`<span class="mb-d">${line}</span>`:""}${tagRow}${bar}${pLow?`<span class="mprot">Poca proteína · ${fmtInt(pv)} de ${fmtInt(thr)} g</span>`:""}</span><span class="mb-k">${st==="skip"?"—":fmtInt(kc)+" kcal"}${lab?`<small class="${st==="done"?"mw-ok"+(S.pop===m.id?" chkpop":""):st==="chg"?"mw-chg":""}">${st==="done"?MW_CK:""}${lab}</small>`:canL?`<small>lo planeado</small>`:""}</span>`;
-    return`<div class="meal mr2${st?" st-"+st:""}${canL?" mw":""}">${canL?`<div class="mw-in" data-mw="${m.id}"><div class="mw-l${st==="done"?" back":""}" aria-hidden="true">${st==="done"?"":MW_CK}<span>${st==="done"?"Pendiente":"Hecha"}</span></div><div class="mw-r${st?" del":""}"><button type="button" data-mwq="${m.id}" tabindex="-1" aria-hidden="true">${st?"Quitar":"Me la salté"}</button></div><div class="mline mw-fg"><button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}, ${st==="done"?"hecha":st==="skip"?"saltada":st==="chg"?"otra cosa":"pendiente"}: toca para registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}</div></div>${!st&&m.id===mwFirst?`<div class="mw-hint" aria-hidden="true">Desliza → si la has comido · ← si te la saltaste</div>`:""}`:`<div class="mline"><div class="mbody">${body}</div></div>`}${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}</div>`}).join("");
+    return`<div class="meal mr2${st?" st-"+st:""}${canL?" mw":""}">${canL?`<div class="mw-in" data-mw="${m.id}"><div class="mw-l${st==="done"?" back":""}" aria-hidden="true">${st==="done"?"":MW_CK}<span>${st==="done"?"Pendiente":"Hecha"}</span></div><div class="mw-r${st?" del":""}"><button type="button" data-mwq="${m.id}" tabindex="-1" aria-hidden="true">${st?"Quitar":"Me la salté"}</button></div><div class="mline mw-fg"><button class="mbody" data-mopen="${m.id}" aria-label="${esc(m.n)}, ${st==="done"?"hecha":st==="skip"?"saltada":st==="chg"?"otra cosa":"pendiente"}: toca para registrar o cambiar">${body}</button>${S.sampleImg&&!st?`<label class="mcam mcam2" aria-label="Foto de ${m.n.toLowerCase()}">${IC_CAM}<input type="file" id="lgc_${m.id}" accept="image/*" hidden></label>`:""}</div></div>${!st&&m.id===mwFirst?`<div class="mw-hint" aria-hidden="true">Desliza → si la has comido · ← si te la saltaste</div>`:""}`:`<div class="mline"><div class="mbody">${body}</div></div>`}${S.ph&&S.ph.mid===m.id&&S.ph.k===S.day?phCard(m):""}${SUPS[m.id]?supRow(SUPS[m.id],S.day):""}</div>`}).join("");
   const blocks=mp.blocks.length?mp.blocks.map(b=>`${esc(b.label)} ${fromMin(b.st)}–${fromMin(b.en)}`).join(" · "):"Sin entreno";
   return`<section class="glass pad fade hue-gly"><div class="row"><h2>Reparto por comidas</h2><span class="note" style="margin:0">${blocks}</span></div>
     ${logSummary(t,S.day)}
@@ -6527,7 +6540,8 @@ function xLine(t){const mm=menuMicros(S.day),cap=x=>esc(x.charAt(0).toUpperCase(
   else mi="Objetivos de hoy, ajustados al entreno";
   const n=supplements(t).length,su=n?n+" con evidencia para hoy":"Ninguno indicado para hoy";
   const row=(k,ic,b,sm)=>`<button class="xline" data-xs="${k}"><span class="xl-ic">${ic}</span><span class="xl-tx"><b>${b}</b><small>${cap(sm)}</small></span><span class="mb-go" aria-hidden="true">›</span></button>`;
-  return`<div class="xgrp">${row("micro",IC_DROP,"Micronutrientes",mi)}${row("supl",IC_PILL,"Suplementos",su)}</div>`}
+  const mine=supMine().length;
+  return`<div class="xgrp">${microToday(t).length?"":row("micro",IC_DROP,"Micronutrientes",mi)}${row("supl",IC_PILL,"Suplementos",mine?mine+" que tomas · "+su.toLowerCase():su)}</div>`}
 function xSheetHtml(){const t=dayTargets(S.day);if(!t)return"";const mi=S.xsKind!=="supl";
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade xs-sheet" role="dialog" aria-modal="true" aria-label="${mi?"Micronutrientes":"Suplementos"}">
     <div class="row"><h3>${mi?"Micronutrientes del día":"Suplementos del día"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -6678,7 +6692,7 @@ function suppCard(t){
   const evc=e=>/^Alta/.test(e)?"ev-hi":/^Moderada-alta/.test(e)?"ev-mh":/^Moderada/.test(e)?"ev-md":"ev-lo";
   const rows=supplements(t).map(s=>{const ik=suppKey(s.n),d=INFO[ik];
     return`<details class="xb"><summary>${s.ic||""}<span class="xb-t"><b>${esc(s.n)}</b><span class="xb-ev"><span class="ev ${evc(s.ev)}">${esc(s.ev.replace(/^(Alta|Moderada-alta|Moderada)/,m=>"Evidencia "+m.toLowerCase()))}</span></span></span><span class="xb-ch" aria-hidden="true"></span></summary>
-      <div class="xb-d"><p>${esc(s.why)}</p>${xbRow("dose",s.dose)}${s.note?xbRow("warn",s.note):""}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note)}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
+      <div class="xb-d"><p>${esc(s.why)}</p>${xbRow("dose",s.dose)}${s.note?xbRow("warn",s.note):""}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(s.dose)}" data-in="${esc(s.note)}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}${ik?supMeRow(ik):""}</div></details>`}).join("");
   return`<section class="glass pad fade hue-health"><h2>Suplementos del día</h2><div class="xlist">${rows}</div>
   <p class="note">Solo suplementos con evidencia sólida (Instituto Australiano del Deporte, grupo A, y posturas de la ISSN). No sustituyen a la dieta. Consulta con tu médico si tomas medicación, tienes hipertensión o problemas renales.</p></section>`;
 }
@@ -6750,7 +6764,7 @@ function vHoy(){
   S.lastT=t;
     planMatch(S.day).pl.filter(x=>x.st!=="done").map(x=>{const s=x.s;return x.st==="pend"?`<span class="tchip plan${s.sport==="str"?" tgo":""}"${s.sport==="str"?` data-strgo="${esc(s.routine||"")}" data-k="${S.day}" role="button" tabindex="0" title="Abrir en Fuerza"`:""}>${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${INT_L[s.int].toLowerCase()} · ${esc(s.time||"")}${s.race?" <small>carrera</small>":""}<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="No voy a hacer este entreno" title="Saltar">✕</button></span>`
       :`<span class="tchip plan off">${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${pst(x.st)}${x.st!=="chg"?`<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="${x.st==="skip"?"Recuperar":"Marcar saltado"}" title="${x.st==="skip"?"Recuperar":"Marcar saltado"}">${x.st==="skip"?"↺":"✕"}</button>`:""}</span>`}).join("");
-  const panel=mealsCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
+  const panel=mealsCard(t)+microTodayCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
   return `
   ${raceCard(t)}
   ${weightBar()}
@@ -7870,7 +7884,7 @@ const MU={
 /* v320 · Cambio de tema suave: al pasar de claro a oscuro (a mano o por el sistema) los colores se funden en 0,3 s en vez de saltar. */
 (function(){const h=document.documentElement;let t=0;new MutationObserver(()=>{if(MU.reduce()||performance.now()-MU.boot<3000)return;h.classList.add("theme-fade");clearTimeout(t);t=setTimeout(()=>h.classList.remove("theme-fade"),360)}).observe(h,{attributes:true,attributeFilter:["data-theme"]})})();
 /* v320 · Bordes de lo que se desplaza en horizontal: marca por qué lado queda contenido para desvanecer solo ese borde */
-(function(){const SEL=".tt,.daystrip";const mark=el=>{const l=el.scrollLeft>2,r=el.scrollLeft+el.clientWidth<el.scrollWidth-2;el.toggleAttribute("data-fl",l);el.toggleAttribute("data-fr",r)};
+(function(){const SEL=".tt,.daystrip,.msup";const mark=el=>{const l=el.scrollLeft>2,r=el.scrollLeft+el.clientWidth<el.scrollWidth-2;el.toggleAttribute("data-fl",l);el.toggleAttribute("data-fr",r)};
   document.addEventListener("scroll",e=>{const t=e.target;if(t.matches&&t.matches(SEL))mark(t)},true);
   let q=0;new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;document.querySelectorAll(SEL).forEach(mark)})}).observe(document.body,{childList:true,subtree:true});
   addEventListener("resize",()=>document.querySelectorAll(SEL).forEach(mark))})();
@@ -9322,6 +9336,44 @@ function bkNudge(){if(S.acct||S.cloud||!(S.db&&S.uid))return"";let snooze=0;try{
   return`<section class="glass pad fade bkn"><h2>Tus datos solo están en este móvil</h2>
     <p class="note">Si desinstalas la app o cambias de móvil, se pierden tus comidas, cómo te sentiste en cada entreno y tu peso. Con la copia en la nube vuelven al momento: va cifrada y la clave solo la tienes tú.</p>
     <div class="bk-a"><button class="btn sm primary" data-act="clnudge">Activar copia</button><button class="btn sm" data-act="cllater">Ahora no</button></div></section>`}
+
+/* v324 · Cada cosa en el momento al que pertenece (estética Apple): los suplementos que tomas aparecen bajo su comida con una casilla,
+   y los micronutrientes se resumen en «Lo que hoy importa» (como mucho tres, con su porqué). Antes eran dos enlaces al pie del reparto.
+   Cada uno es un chip en una sola línea (relleno = tomado, sin casilla, guía 2.1.2); si no caben, se desplazan en horizontal.
+   Los suplementos son recomendaciones: solo pasan a la comida los que marcas «Lo tomo» en su hoja. Hidratos y electrolitos durante el
+   ejercicio no, porque son avituallamiento. Doc «mysup»: {on:[claves], taken:{día:{clave:1}}}. Clases msup-, mtd- */
+const SUP_AT={creatina:"lunch",vd:"lunch",omega3:"lunch",fe:"breakfast",whey:"post",cafeina:"pre",nitratos:"pre"};
+const SUP_WHEN={lunch:"la comida",breakfast:"el desayuno",post:"la comida de después de entrenar",pre:"la comida de antes de entrenar"};
+const SUP_DOSE={creatina:"3–5 g",vd:"1.000–2.000 UI",omega3:"1–2 g",fe:"según pauta",whey:"20–40 g",nitratos:"2–3 h antes"};
+const supMine=()=>(S.mySup&&S.mySup.on)||[];
+const supTaken=(k,day)=>!!((((S.mySup||{}).taken||{})[day])||{})[k];
+function supSlots(t,mp){const mine=new Set(supMine());if(!mine.size)return{};
+  const pre=mp.meals.find(m=>m.pre),post=mp.meals.find(m=>m.post),out={};
+  supplements(t).forEach(s=>{const k=suppKey(s.n);if(!k||!mine.has(k)||!SUP_AT[k])return;let id=SUP_AT[k];
+    if(id==="pre"){if(!pre)return;id=pre.id}else if(id==="post")id=post?post.id:"snack";
+    (out[id]=out[id]||[]).push({k,n:s.n.replace(/ \(.*\)$/,""),dose:k==="cafeina"?s.dose.split(" (")[0]:SUP_DOSE[k]})});
+  return out}
+function supRow(list,day){return`<div class="msup">${list.map(x=>{const on=supTaken(x.k,day);
+  return`<button type="button" class="msup-i${on?" on":""}" data-supt="${x.k}" aria-pressed="${on}" aria-label="${esc(x.n)}, ${esc(x.dose)}, ${on?"tomado":"sin tomar"}"><span class="msup-n">${esc(x.n)}</span><small>${esc(x.dose)}</small></button>`}).join("")}</div>`}
+/* En la hoja de Suplementos, debajo de cada uno: «Lo tomo» (conmutador) */
+function supMeRow(k){if(!SUP_AT[k])return"";const on=supMine().includes(k);
+  return`<div class="tg-r"><span class="tg-t"><b>Lo tomo</b><small>${on?"Aparece en Hoy, en "+SUP_WHEN[SUP_AT[k]]+", para marcarlo":"Lo verás en Hoy, en "+SUP_WHEN[SUP_AT[k]]+", para marcarlo"}</small></span><button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Lo tomo" data-supme="${k}"></button></div>`}
+async function supSave(){const c=userCol();if(!c)return;const T=(S.mySup||{}).taken||{},lim=shiftKey(today(),-60);Object.keys(T).forEach(d=>{if(d<lim)delete T[d]});
+  try{await c.doc("mysup").set({kind:"mysup",on:supMine(),taken:T})}catch(e){toast("No se ha podido guardar")}}
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-supt],[data-supme]");if(!t)return;
+  if(t.dataset.supme&&t.dataset.tgGo!=="1")return; /* el conmutador (071) se mueve primero y vuelve a pulsar: se actúa en esa segunda */
+  e.preventDefault();e.stopPropagation();S.mySup=S.mySup||{on:[],taken:{}};S.mySup.taken=S.mySup.taken||{};
+  if(t.dataset.supt){const k=t.dataset.supt,d=S.day,T=S.mySup.taken;T[d]=T[d]||{};if(T[d][k])delete T[d][k];else T[d][k]=1;buzz(6);render();await supSave();return}
+  const k=t.dataset.supme,on=new Set(supMine());on.has(k)?on.delete(k):on.add(k);S.mySup.on=[...on];renderModal();render();await supSave()},true);
+
+/* Lo que hoy importa: primero lo que el entreno de hoy cambia (sudor, carrera), luego lo que el menú deja corto. Toda la tarjeta abre el detalle */
+function microToday(t){const L=micros(t),mm=menuMicros(S.day),P=[],has=m=>P.some(p=>p.m===m);
+  ["na","Agua","fe","k","mg"].forEach(k=>{const m=L.find(x=>x.key===k||x.n===k);if(m&&m.x&&P.length<3)P.push({m,why:m.x})});
+  if(mm)L.filter(m=>m.key&&m.tv&&mm[m.key]!=null&&mm[m.key]/m.tv<.6&&!has(m)).forEach(m=>{if(P.length<3)P.push({m,why:"Tu menú cubre el "+r0(mm[m.key]/m.tv*100)+" %"})});
+  return P}
+function microTodayCard(t){const P=microToday(t);if(!P.length)return"";
+  return`<section class="glass pad fade mtd"><button type="button" class="mtd-b" data-xs="micro" aria-label="Micronutrientes del día"><span class="mtd-h"><h2>Lo que hoy importa</h2><span class="mb-go" aria-hidden="true">›</span></span>
+    ${P.map(({m,why})=>`<span class="mtd-r"><span class="mtd-t"><b>${esc(m.n)}</b><small>${esc(why)}</small></span><span class="mtd-v">${esc(m.v)}<small>${esc(m.u)}</small></span></span>`).join("")}</button></section>`}
 
 })();
 </script>
