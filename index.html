@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-17T22:00:19.768Z">
+<meta name="sustrato-version" content="2026-10-18T11:34:19.103Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -376,9 +376,10 @@ header .fab:focus-visible,.hbtn:focus-visible{outline:2px solid var(--amarillo);
 .clegend b{color:var(--fg);font-size:14px;font-weight:600}
 /* ===== Color protagonista ===== */
 .glass{background:#141414}
-.hatch-g{background:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 2px,rgba(255,255,255,.06) 2px 5px)!important}
-.hatch-y{background:repeating-linear-gradient(45deg,var(--amarillo) 0 2px,transparent 2px 5px)!important}
-.hatch-w{background:repeating-linear-gradient(45deg,rgba(255,255,255,.8) 0 2px,rgba(255,255,255,.15) 2px 5px)!important}
+/* v320: lo estimado, en un tono plano más claro (antes rayado; el único patrón de la app) */
+.hatch-g{background:rgba(255,255,255,.2)!important}
+.hatch-y{background:color-mix(in srgb,var(--amarillo) 55%,transparent)!important}
+.hatch-w{background:rgba(255,255,255,.45)!important}
 /* ===== Estilo Apple sobrio ===== */
 :root{
   --card:#141414;--card2:#232325;--fill:rgba(118,118,128,.24);--fill2:rgba(118,118,128,.16);
@@ -2035,7 +2036,7 @@ div.mbody{cursor:default}
 /* v174 · gráfico de gasto legible en modo claro */
 .sw-neat{background:rgba(255,255,255,.3)}
 html[data-theme="light"] .sw-neat{background:rgba(60,60,67,.22)}
-html[data-theme="light"] .hatch-g{background:repeating-linear-gradient(45deg,rgba(60,60,67,.38) 0 2px,rgba(60,60,67,.06) 2px 5px)!important}
+html[data-theme="light"] .hatch-g{background:rgba(60,60,67,.18)!important}
 html[data-theme="light"] #hatchG rect{fill:rgba(60,60,67,.05)}
 html[data-theme="light"] #hatchG line{stroke:rgba(60,60,67,.32)}
 /* v174 · Resumen «lo que te queda», cámara por comida, micros y suplementos separados */
@@ -2447,7 +2448,7 @@ html[data-theme="dark"] .gsi-material-button:not(:disabled):active .gsi-material
 .gly-tank{margin:12px 0 4px}.gly-tank svg{display:block;width:100%;height:32px}
 .gly-bg{fill:var(--fill2)}.gly-hab{fill:color-mix(in srgb,var(--carb) 16%,transparent)}
 /* v273 · el color de los hidratos; si es estimado, en trama */
-.gly-l{fill:var(--carb)}.gly-tank.est .gly-l{fill:url(#glyh)}.gly-hs{fill:var(--carb)}.gly-hb{fill:color-mix(in srgb,var(--carb) 30%,var(--card))}
+.gly-l{fill:var(--carb)}.gly-tank.est .gly-l{fill:color-mix(in srgb,var(--carb) 62%,var(--card))} /* v320: estimado en tono plano, no rayado */.gly-hs{fill:var(--carb)}.gly-hb{fill:color-mix(in srgb,var(--carb) 30%,var(--card))}
 .gly-sc{position:relative;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
 .gly-spk{display:block;width:100%;height:46px;margin-top:12px}
 .gly-sb{fill:color-mix(in srgb,var(--carb) 12%,transparent)}.gly-sl{fill:none;stroke:var(--carb);stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}.gly-sd{fill:var(--carb)}
@@ -3137,6 +3138,73 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .bc-s{margin:0;font-size:15px;font-weight:600}
 .bc-a{display:flex;gap:8px;align-items:center}
 
+/* v320 · Ajustes del sistema (skill apple-design §14): «Reducir transparencia» y «Aumentar contraste».
+   Sin soporte del navegador, estas reglas no se aplican y todo queda como estaba.
+   Reducir transparencia: el cristal (barra de pestañas, cabecera, menú lateral, menú rápido, hojas, avisos, etiqueta de gráficas)
+   pasa a fondo sólido y sin desenfoque. Aumentar contraste: grises de texto más marcados y un borde definido en tarjetas y hojas.
+   Llevan !important a propósito: varias de esas superficies ya lo usan (004, 071) y un ajuste de accesibilidad tiene que imponerse. */
+@media (prefers-reduced-transparency:reduce){
+  .tabbar,header.top::before,nav.tabs,.sheet,.pop,.toast,.ctip,.rad-ov,.drawer{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .tabbar,header.top::before,nav.tabs,.drawer{background:var(--bg)!important}
+  .sheet,.pop,.toast,.ctip{background:var(--card)!important}
+  .rad-ov{background:rgba(0,0,0,.92)!important}
+}
+@media (prefers-contrast:more){
+  /* mismos casos y fuerza que 034 (tema oscuro, claro elegido y claro del sistema), para poder sustituirlo */
+  :root,html[data-theme="dark"]{--muted:#d1d1d6!important;--faint:#aeaeb2!important;--edge:rgba(255,255,255,.45);--sep:rgba(255,255,255,.4)}
+  html[data-theme="light"]{--muted:#3a3a3c!important;--faint:#636366!important;--edge:rgba(0,0,0,.45);--sep:rgba(0,0,0,.4)}
+  @media (prefers-color-scheme:light){html:not([data-theme="dark"]){--muted:#3a3a3c!important;--faint:#636366!important;--edge:rgba(0,0,0,.45);--sep:rgba(0,0,0,.4)}}
+  .glass,.sheet,.pop,.toast{border:1px solid var(--edge)!important}
+  .tabbar,header.top::before{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--bg)!important}
+  .tabbar{border-top:1px solid var(--edge)!important}
+}
+
+/* v320 · Tacto y materiales (skill apple-design §1, §7, §12, §15)
+   Tipografía por tamaño: las cifras grandes que aún no lo tenían, con el espaciado cerrado (cuanto más grande, más).
+   Respuesta al pulsar en todo control: se hunde al tocar, no al soltar (prioridad cero con :where, así las reglas propias mandan).
+   Hojas: entran desde abajo y salen por el mismo camino (099); el fondo aparece y se va a la par. Ya no se repite la entrada al repintar.
+   Menú rápido: nace del botón + que lo abre y su fondo se materializa (desenfoque y opacidad juntos).
+   Cabecera: en vez de la línea fina al desplazar, una sombra difusa solo cuando el contenido pasa por debajo. */
+.ptile .pbig,.pwide .pbig,.stp-c b,.wc-neo .rg-c b{letter-spacing:-.03em}
+.dp-b,.pwrap .bsum b,.pwrap .ptile.pwide .pbig{letter-spacing:-.025em}
+:where(button,.btn,.chip,[role="button"]:not([data-pmove]),a.pill):not(:disabled):active{transform:scale(.97);transition:transform .1s ease-out}
+.overlay>.sheet.fade{animation:none}
+@media (prefers-reduced-motion:no-preference){
+  .overlay.ov-in{animation:ovIn .28s ease-out both}
+  .overlay>.sheet.sh-in{animation:shIn .42s cubic-bezier(.32,.72,0,1) both}
+  .qa-ov{animation:qaMat .26s ease-out both}
+  .qa{animation:qaFrom .34s cubic-bezier(.32,.72,0,1) both;transform-origin:var(--qx,50%) var(--qy,100%)}
+}
+@keyframes ovIn{from{background-color:rgba(0,0,0,0)}}
+@keyframes shIn{from{transform:translateY(calc(100% + 32px))}}
+@keyframes qaMat{from{background-color:rgba(0,0,0,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}to{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
+@keyframes qaFrom{from{opacity:0;transform:scale(.6)}}
+header.top.scrolled::before{border-bottom-color:transparent}
+header.top::after{content:"";position:absolute;left:-50vw;right:-50vw;top:100%;height:14px;pointer-events:none;background:linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,0));opacity:0;transition:opacity .2s}
+html[data-theme="light"] header.top::after{background:linear-gradient(rgba(0,0,0,.07),rgba(0,0,0,0))}
+header.top.scrolled::after{opacity:1}
+/* Velo de las hojas en capa propia (lo pone MU.scrim al arrastrar o cerrar) */
+.overlay.scrim-fx{background:transparent!important}
+.overlay.scrim-fx::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--scrim-c,rgba(0,0,0,.55));opacity:var(--so,1);will-change:opacity}
+/* Cambio de tema: fundido de colores, solo mientras dura */
+.theme-fade,.theme-fade *,.theme-fade *::before,.theme-fade *::after{transition:background-color .3s ease,color .3s ease,border-color .3s ease,fill .3s ease,stroke .3s ease!important}
+@media (prefers-reduced-motion:reduce){.ph-sh i{animation:none}}
+/* Barrido (v320): bordes que se desvanecen en lo que se desplaza en horizontal (títulos de Plan y Progreso, tira de días),
+   solo por el lado en que queda más contenido (lo marca 099: data-fl / data-fr); filas de acción de Conexiones con su flecha */
+.tt[data-fl],.daystrip[data-fl]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px);mask-image:linear-gradient(90deg,transparent 0,#000 28px)}
+.tt[data-fr],.daystrip[data-fr]{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+.tt[data-fl][data-fr],.daystrip[data-fl][data-fr]{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 36px),transparent)}
+.cn-a:not(.red)::after{content:"";flex:none;width:7px;height:7px;margin:0 2px 0 12px;border-top:2px solid var(--faint);border-right:2px solid var(--faint);transform:rotate(45deg)}
+.cn-a:not(.red):not(:has(small))::after{margin-left:auto}
+/* Capa de movimiento (v320): título que se recoge en la cabecera y entrada escalonada al cambiar de pantalla */
+header.top .brand{grid-row:1;grid-column:2;transition:opacity .2s,transform .2s}
+header.top .mv-ht{grid-row:1;grid-column:2;justify-self:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:17px;letter-spacing:-.01em;color:var(--fg);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
+header.top.mv-up .brand{opacity:0;transform:translateY(-6px)}
+header.top.mv-up .mv-ht{opacity:1;transform:none}
+@media (prefers-reduced-motion:no-preference){#view .mv-in{animation:mvIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--mv-i,0) * 40ms)}}
+@keyframes mvIn{from{opacity:0;transform:translateY(8px)}}
+@media (prefers-reduced-motion:reduce){header.top .brand,header.top .mv-ht{transition:none}}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3216,7 +3284,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="319";
+const APP_VER="320";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5517,7 +5585,7 @@ const VZ={w:400,
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
       <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Barras (apiladas o no). o={label,cols:[{x:"rótulo",segs:[{v,c}],ghost,tip,cur}],refs:[{v,label}],fmt,grid,h} */
-  bars(o){const w=VZ.w,h=o.h||170,PL=o.grid?34:4,PR=(o.refs||[]).some(r=>r.label)?44:4,PB=20,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length,slot=iw/n,bw=Math.min(24,slot*.62);
+  bars(o){const w=VZ.w,h=o.h||170,PL=o.grid?34:4,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.4)+10):m,4),PB=20 /* v320: cabe la etiqueta entera */,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length,slot=iw/n,bw=Math.min(24,slot*.62);
     const tot=c=>c.segs.reduce((a,s)=>a+s.v,0),mx=Math.max(...C.map(c=>Math.max(tot(c),c.ghost||0)),...(o.refs||[]).map(r=>r.v),1e-9)*1.1,Y=v=>PT+ih-v/mx*ih,fmt=o.fmt||(v=>fmtInt(v));
     const every=Math.ceil(n/7),ci=C.findIndex(c=>c.cur),showX=i=>i===ci||(i%every===(n-1)%every&&(ci<0||Math.abs(i-ci)>=every));
     const cols=C.map((c,i)=>{const x=PL+i*slot+(slot-bw)/2;let y=PT+ih;const segs=c.segs.filter(s=>s.v>0);let out="";
@@ -7665,6 +7733,81 @@ addEventListener("resize",hcarFit);
 /* v262: al abrir o cerrar un «Cómo se calcula» dentro del carrusel, la altura se recalcula (si no, el texto quedaba cortado) */
 document.addEventListener("toggle",e=>{const d=e.target;if(d.tagName==="DETAILS"&&d.closest&&d.closest(".hcar-en")){hcarFit();setTimeout(hcarFit,320)}},true);
 
+/* ---------- Muelles (v320) ----------
+   El tacto de iOS en los gestos (skill apple-design, de «Designing Fluid Interfaces», WWDC 2018):
+   el movimiento sale del valor que hay en pantalla, hereda la velocidad del dedo, proyecta la inercia y se puede volver a agarrar.
+   MU.track(): historial corto de posiciones para saber la velocidad al soltar (px/s).
+   MU.project(v): dónde acabaría el gesto con la deceleración del desplazamiento (0,998, la de Apple).
+   MU.rubber(o,dim): resistencia elástica pasado un límite, en vez de un tope seco.
+   MU.spring(el,from,to,v,set,o): muelle con «respuesta» (s) y amortiguamiento (1 = sin rebote), desde from con velocidad v;
+     uno por elemento: si el usuario vuelve a agarrar, MU.stop lo para donde está. Con «reducir movimiento», salta al final.
+   Valores de Apple: mover 1,0/0,4 · hojas 0,8/0,3 · rebote (0,8) solo cuando el gesto trae inercia. */
+const MU={
+  track(){const h=[];return{add(x){const t=performance.now();h.push([x,t]);while(h.length>2&&t-h[0][1]>100)h.shift()},
+    v(){if(h.length<2)return 0;const a=h[0],b=h[h.length-1],dt=(b[1]-a[1])/1000;return dt>0.005?(b[0]-a[0])/dt:0},reset(){h.length=0}}},
+  project:(v,d=.998)=>v/1000*d/(1-d),
+  rubber:(o,dim,c=.55)=>o*dim*c/(dim+c*Math.abs(o)),
+  reduce:()=>matchMedia("(prefers-reduced-motion: reduce)").matches,
+  /* velo de una hoja: pasa a una capa propia (::before) cuya opacidad se mueve sin repintar la pantalla */
+  scrim(o,a){if(!o)return;if(!o.classList.contains("scrim-fx")){o.style.setProperty("--scrim-c",getComputedStyle(o).backgroundColor);o.classList.add("scrim-fx")}o.style.setProperty("--so",a.toFixed(3))},
+  stop(el){if(el&&el._mu){cancelAnimationFrame(el._mu.f);const x=el._mu.x;el._mu=null;return x}return null},
+  spring(el,from,to,v,set,o={}){MU.stop(el);if(MU.reduce()){set(to);o.done&&o.done();return}
+    const resp=o.resp||.4,damp=o.damp==null?1:o.damp,k=Math.pow(2*Math.PI/resp,2),c=4*Math.PI*damp/resp,st={x:from,v:v||0,f:0};el._mu=st;let last=performance.now();
+    const step=now=>{if(el._mu!==st)return;let dt=Math.min(.064,(now-last)/1000);last=now;
+      while(dt>0){const h=Math.min(dt,1/240),a=-k*(st.x-to)-c*st.v;st.v+=a*h;st.x+=st.v*h;dt-=h}
+      if(Math.abs(st.x-to)<.5&&Math.abs(st.v)<10){el._mu=null;set(to);o.done&&o.done();return}
+      set(st.x);st.f=requestAnimationFrame(step)};
+    st.f=requestAnimationFrame(step)}
+};
+/* Hojas: se cierran arrastrando hacia abajo (con la hoja en lo alto de su scroll); hacia arriba, resistencia.
+   Al soltar decide la inercia proyectada: si pasa del 35 % de la hoja (o el dedo baja rápido), se va con su velocidad y se cierra
+   por su botón de cerrar; si no, vuelve con un muelle con un poco de rebote. El fondo se aclara a la par. Solo .overlay > .sheet. */
+(function(){let sh=null,ov=null,y0=0,x0=0,dy=0,base=0,mode=null,drag=false,H=0;const tr=MU.track();
+  const skip=el=>el.closest("input,textarea,select,.seg,.scroll-x,.hcar,.pa-w,[data-nodrag],svg.chart,.chartwrap,.mw-in,.str-step");
+  const put=(s,o,y)=>{s.style.transform=y?`translateY(${y}px)`:"";MU.scrim(o,y>0?1-Math.min(1,y/H):1)};
+  document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;const s=e.target.closest&&e.target.closest(".overlay>.sheet");if(!s||skip(e.target))return;
+    sh=s;ov=s.parentNode;y0=e.clientY;x0=e.clientX;mode=null;drag=false;tr.reset();let cur=MU.stop(s);
+    if(s.classList.contains("sh-in")){const m=new DOMMatrix(getComputedStyle(s).transform);s.classList.remove("sh-in");if(m.m42>0.5){cur=m.m42;s.style.transform=`translateY(${cur}px)`}}
+    dy=base=cur||0;H=s.offsetHeight||400;tr.add(dy)});
+  document.addEventListener("pointermove",e=>{if(!sh)return;const ddy=e.clientY-y0,ddx=e.clientX-x0;
+    if(!mode){if(Math.abs(ddy)<10&&Math.abs(ddx)<10)return;if(Math.abs(ddx)>Math.abs(ddy)||ddy<0||sh.scrollTop>0){sh=null;return}mode="v";drag=true;sh.style.transition="none";try{sh.setPointerCapture(e.pointerId)}catch(_){}}
+    dy=base+(ddy>0?ddy:MU.rubber(ddy,H));tr.add(dy);put(sh,ov,dy)});
+  const up=()=>{if(!sh)return;const s=sh,o=ov;sh=null;if(!mode)return;mode=null;setTimeout(()=>{drag=false},80);const v=tr.v(),end=dy+MU.project(v);
+    if(end>H*.35||v>900){s.style.pointerEvents="none";buzz(6);
+      MU.spring(s,dy,H+40,Math.max(v,0),y=>put(s,o,y),{resp:.3,damp:1,done:()=>{s.style.pointerEvents="";const c=s.querySelector(".xclose")||o;c&&c.click()}})}
+    else MU.spring(s,dy,0,v,y=>put(s,o,y),{resp:.3,damp:.8,done:()=>{s.style.transition="";put(s,o,0)}})};
+  document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
+  /* tras arrastrar la hoja, el clic de soltar no pulsa lo que hubiera debajo */
+  document.addEventListener("click",e=>{if(drag&&e.isTrusted){drag=false;if(e.target.closest&&e.target.closest(".overlay>.sheet")){e.preventDefault();e.stopPropagation()}}},true);
+})();
+/* v320 · Hojas que entran y salen por el mismo camino: al abrirse el modal, la hoja sube desde abajo (sh-in) y el fondo aparece;
+   al repintarse con la hoja ya abierta no se repite. Al cerrar (botón o fondo, como decide 054), baja con un muelle y luego se cierra.
+   Con «reducir movimiento», todo es inmediato. */
+(function(){const m=document.getElementById("modal");if(!m)return;let open=false;
+  new MutationObserver(()=>{const ov=m.querySelector(".overlay"),now=!!ov&&!m.hidden;if(now&&!open){const s=ov.querySelector(":scope>.sheet");ov.classList.add("ov-in");if(s){s.classList.add("sh-in");s.addEventListener("animationend",()=>s.classList.remove("sh-in"),{once:true})}}open=now}).observe(m,{childList:true,attributes:true,attributeFilter:["hidden"]});
+  document.addEventListener("click",e=>{if(!e.isTrusted||MU.reduce())return;const t=e.target.closest&&e.target.closest("button,[data-close]");if(!t||!t.dataset.close||!(e.target===t||t.tagName==="BUTTON"))return;
+    const ov=t.closest("#modal .overlay"),s=ov&&ov.querySelector(":scope>.sheet");if(!s||(S.sheet==="info"&&S.infoBack))return;
+    e.preventDefault();e.stopImmediatePropagation();const H=s.offsetHeight||400;s.style.pointerEvents="none";
+    const y0=s.classList.contains("sh-in")?new DOMMatrix(getComputedStyle(s).transform).m42:0;s.classList.remove("sh-in");
+    MU.spring(s,y0,H+32,0,y=>{s.style.transform=`translateY(${y}px)`;MU.scrim(ov,1-Math.min(1,y/H))},{resp:.28,damp:1,done:()=>t.click()})},true);
+})();
+/* v320 · Menú rápido: nace del botón + (su origen es el del botón) y al cerrar vuelve a él. */
+(function(){const r=document.getElementById("radial"),fab=document.getElementById("fab");if(!r||!fab)return;
+  new MutationObserver(()=>{const q=r.querySelector(".qa");if(!q||r.hidden)return;const a=fab.getBoundingClientRect(),b=q.getBoundingClientRect();
+    q.style.setProperty("--qx",(a.left+a.width/2-b.left)+"px");q.style.setProperty("--qy",(a.top+a.height/2-b.top)+"px")}).observe(r,{childList:true});
+  document.addEventListener("click",e=>{if(!e.isTrusted||MU.reduce())return;const c=e.target.closest&&e.target.closest("[data-radclose]");if(!c||(e.target!==c&&!c.matches("button")))return;const q=r.querySelector(".qa"),ov=r.querySelector(".qa-ov");if(!q)return;
+    e.preventDefault();e.stopImmediatePropagation();q.style.animation="none";if(ov)ov.style.animation="none";
+    const an=q.animate([{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(.6)"}],{duration:180,easing:"cubic-bezier(.4,0,1,1)",fill:"forwards"});
+    if(ov)ov.animate([{backgroundColor:getComputedStyle(ov).backgroundColor},{backgroundColor:"rgba(0,0,0,0)"}],{duration:180,fill:"forwards"});an.onfinish=()=>c.click()},true);
+})();
+/* v320 · Cambio de tema suave: al pasar de claro a oscuro (a mano o por el sistema) los colores se funden en 0,3 s en vez de saltar. */
+(function(){const h=document.documentElement;let t=0;new MutationObserver(()=>{if(MU.reduce())return;h.classList.add("theme-fade");clearTimeout(t);t=setTimeout(()=>h.classList.remove("theme-fade"),360)}).observe(h,{attributes:true,attributeFilter:["data-theme"]})})();
+/* v320 · Bordes de lo que se desplaza en horizontal: marca por qué lado queda contenido para desvanecer solo ese borde */
+(function(){const SEL=".tt,.daystrip";const mark=el=>{const l=el.scrollLeft>2,r=el.scrollLeft+el.clientWidth<el.scrollWidth-2;el.toggleAttribute("data-fl",l);el.toggleAttribute("data-fr",r)};
+  document.addEventListener("scroll",e=>{const t=e.target;if(t.matches&&t.matches(SEL))mark(t)},true);
+  let q=0;new MutationObserver(()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;document.querySelectorAll(SEL).forEach(mark)})}).observe(document.body,{childList:true,subtree:true});
+  addEventListener("resize",()=>document.querySelectorAll(SEL).forEach(mark))})();
+
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
 function segKey(g){return(g.getAttribute("aria-label")||"")+"|"+g.className.replace(/\s*th-on/,"")+"|"+((g.querySelector("button")||{}).outerHTML||"").replace(/aria-(pressed|selected|checked)="[^"]*"/g,"").slice(0,80)}
@@ -7678,10 +7821,11 @@ function segThumbs(){document.querySelectorAll(".seg").forEach(g=>{if(g.querySel
   /* una marca nueva (al repintar una hoja) nace donde estaba la anterior, sin barrido; solo viaja si cambió la opción */
   if(!g.offsetWidth)return;const th=document.createElement("i");th.className="seg-th";th.setAttribute("aria-hidden","true");g.prepend(th);g.classList.add("th-on");g.dataset.thw=g.offsetWidth;
   const P=SEGPOS[segKey(g)];th.style.transition="none";if(P){th.style.transform=`translateX(${P.x}px)`;th.style.width=P.w+"px"}else segPlace(g,false);th.offsetWidth;th.style.transition="";if(P)segPlace(g,true)})}
-(function(){let g=null,x0=0,st=0,moved=false,sup=false;
-  document.addEventListener("pointerdown",e=>{const s=e.target.closest&&e.target.closest(".seg.th-on");if(!s)return;g=s;x0=e.clientX;moved=false;const th=s.querySelector(".seg-th");st=th?new DOMMatrix(getComputedStyle(th).transform).m41:0});
-  document.addEventListener("pointermove",e=>{if(!g)return;if(!moved&&Math.abs(e.clientX-x0)<8)return;moved=true;const th=g.querySelector(".seg-th");if(!th)return;th.style.transition="none";const max=g.clientWidth-th.offsetWidth-2;th.style.transform=`translateX(${Math.max(2,Math.min(max,st+e.clientX-x0))}px) scale(1.04)`});
-  const end=()=>{if(!g)return;const s=g;g=null;if(!moved)return;sup=true;setTimeout(()=>sup=false,350);const th=s.querySelector(".seg-th");th.style.transition="";const r=th.getBoundingClientRect(),cx=r.left+r.width/2;let best=null,bd=1e9;
+/* v320 · Con muelles (099): al soltar la marca se elige la opción hacia la que iba (inercia proyectada); en los bordes, resistencia */
+(function(){let g=null,x0=0,st=0,moved=false,sup=false,cur=0;const tr=MU.track();
+  document.addEventListener("pointerdown",e=>{const s=e.target.closest&&e.target.closest(".seg.th-on");if(!s)return;g=s;x0=e.clientX;moved=false;const th=s.querySelector(".seg-th");st=th?new DOMMatrix(getComputedStyle(th).transform).m41:0;cur=st;tr.reset();tr.add(st)});
+  document.addEventListener("pointermove",e=>{if(!g)return;if(!moved&&Math.abs(e.clientX-x0)<8)return;moved=true;const th=g.querySelector(".seg-th");if(!th)return;th.style.transition="none";const max=g.clientWidth-th.offsetWidth-2;let x=st+e.clientX-x0;if(x<2)x=2+MU.rubber(x-2,th.offsetWidth);if(x>max)x=max+MU.rubber(x-max,th.offsetWidth);cur=x;tr.add(x);th.style.transform=`translateX(${x}px) scale(1.04)`});
+  const end=()=>{if(!g)return;const s=g;g=null;if(!moved)return;sup=true;setTimeout(()=>sup=false,350);const th=s.querySelector(".seg-th");th.style.transition="";const r=th.getBoundingClientRect(),cx=r.left+r.width/2+MU.project(tr.v(),.99);let best=null,bd=1e9;
     [...s.children].filter(b=>b.tagName==="BUTTON").forEach(b=>{const q=b.getBoundingClientRect(),d=Math.abs(q.left+q.width/2-cx);if(d<bd){bd=d;best=b}});
     if(best&&best!==segOn(s))best.click();else segPlace(s,false)};
   document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end);
@@ -7898,29 +8042,34 @@ function mwHint(){if(S._mwSeen||S._mwHinted||S.tab!=="hoy")return;try{if(localSt
   const b=fg.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)return; /* solo si está a la vista */
   S._mwHinted=1;const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;h.classList.add("on");
   if(!reduce){r.classList.add("mw-sl");fg.style.transition="transform .3s cubic-bezier(.2,.8,.2,1)";fg.style.transform="translateX(56px)";
-    setTimeout(()=>{fg.style.transform="";setTimeout(()=>{r.classList.remove("mw-sl");fg.style.transition=""},320)},700)}
+    setTimeout(()=>{if(r._x)return;fg.style.transform="";setTimeout(()=>{if(r._x)return;r.classList.remove("mw-sl");fg.style.transition=""},320)},700)} /* v320: si el usuario ya mueve la fila, la pista no la toca */
   setTimeout(()=>{if(h.isConnected)h.classList.remove("on")},4000)}
 /* también al llegar a ella desplazando la pantalla */
 addEventListener("scroll",()=>{if(!S._mwSeen&&!S._mwHinted){clearTimeout(mwHint.t);mwHint.t=setTimeout(mwHint,250)}},{passive:true});
-(function(){let row=null,fg=null,x0=0,y0=0,dx=0,mode=null,moved=false,buzzed=false,openRow=null;
+/* v320 · Con muelles (099): la fila sigue al dedo, al soltar decide por la inercia proyectada y no por dónde se soltó,
+   y llega a su sitio con la velocidad del dedo; pasado el límite, resistencia en vez de tope. Se puede volver a agarrar en pleno viaje. */
+(function(){let row=null,fg=null,x0=0,y0=0,dx=0,mode=null,moved=false,buzzed=false,openRow=null,base=0;const tr=MU.track();
   const W=()=>row.offsetWidth,QW=112;
-  const set=(r,v,anim)=>{const f=r.querySelector(".mw-fg");f.style.transition=anim?"transform .25s cubic-bezier(.2,.8,.2,1)":"none";f.style.transform=v?`translateX(${v}px)`:"";
+  const paint=(r,v)=>{const f=r.querySelector(".mw-fg");f.style.transition="none";f.style.transform=Math.abs(v)>.4?`translateX(${v}px)`:"";r._x=v;
     r.classList.toggle("mw-sr",v>0);r.classList.toggle("mw-sl",v<0)};
-  const close=(r)=>{if(!r||!r.isConnected)return;set(r,0,true);setTimeout(()=>{if(!r.querySelector(".mw-fg").style.transform)r.classList.remove("mw-sl","mw-sr")},260)};
+  const set=(r,v,anim,vel=0,done)=>{const f=r.querySelector(".mw-fg");if(!anim){MU.stop(f);paint(r,v);return}
+    MU.spring(f,r._x||0,v,vel,x=>paint(r,x),{resp:.35,damp:v===0?.85:1,done})};
+  const close=(r,vel=0)=>{if(!r||!r.isConnected)return;set(r,0,true,vel,()=>{if(!r.querySelector(".mw-fg").style.transform)r.classList.remove("mw-sl","mw-sr")})};
   document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;
     const f=e.target.closest&&e.target.closest(".mw-fg");
     if(openRow&&(!f||f.parentNode!==openRow)&&!(e.target.closest&&e.target.closest("[data-mwq]"))){close(openRow);openRow=null}
-    if(!f||e.target.closest(".mcam"))return;row=f.parentNode;fg=f;x0=e.clientX;y0=e.clientY;dx=0;mode=null;moved=false;buzzed=false});
+    if(!f||e.target.closest(".mcam"))return;row=f.parentNode;fg=f;x0=e.clientX;y0=e.clientY;const cur=MU.stop(f);base=cur!=null?cur:(openRow===row?-QW:0);dx=base;mode=null;moved=false;buzzed=false;tr.reset();tr.add(dx)});
   document.addEventListener("pointermove",e=>{if(!row)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
     if(!mode){if(Math.abs(ddx)>8&&Math.abs(ddx)>Math.abs(ddy)*1.3){mode="h";try{fg.setPointerCapture(e.pointerId)}catch(_){}}else if(Math.abs(ddy)>8){row=null;return}else return}
-    moved=true;dx=(openRow===row?-QW:0)+ddx;const w=W();dx=Math.max(-w,Math.min(dx,row.querySelector(".mw-l")?w*.85:0));set(row,dx,false);
+    moved=true;const w=W(),hi=row.querySelector(".mw-l")?w*.85:0;dx=base+ddx;if(dx>hi)dx=hi+MU.rubber(dx-hi,w);if(dx<-w)dx=-w+MU.rubber(dx+w,w);tr.add(dx);set(row,dx,false);
     const pass=dx>w*.45||dx<-w*.6;if(pass&&!buzzed){buzzed=true;buzz(8)}if(!pass)buzzed=false});
-  const up=()=>{if(!row)return;const r=row,id=r.dataset.mw,tr=r.dataset.mwt,w=W();row=null;if(!moved)return;
-    if(tr){if(dx<-w*.6){set(r,-w,true);openRow=null;setTimeout(()=>mwTr(tr),190);return}if(dx<-40){set(r,-QW,true);openRow=r;return}if(openRow===r)openRow=null;close(r);return}
-    if(dx>w*.45){set(r,w,true);openRow=null;setTimeout(()=>mwAct(id,1),190);return}
-    if(dx<-w*.6){set(r,-w,true);openRow=null;setTimeout(()=>mwAct(id,-1),190);return}
-    if(dx<-40){set(r,-QW,true);openRow=r;mwSeen();return}
-    if(openRow===r)openRow=null;close(r)};
+  const up=()=>{if(!row)return;const r=row,id=r.dataset.mw,tv=r.dataset.mwt,w=W();row=null;if(!moved)return;
+    const v=tr.v(),p=dx+MU.project(v),hasR=!!r.querySelector(".mw-l"); /* destino según adónde iba el dedo */
+    if(tv){if(p<-w*.6){set(r,-w,true,v,()=>mwTr(tv));openRow=null;return}if(p<-40){set(r,-QW,true,v);openRow=r;return}if(openRow===r)openRow=null;close(r,v);return}
+    if(hasR&&p>w*.45){set(r,w,true,v,()=>mwAct(id,1));openRow=null;return}
+    if(p<-w*.6){set(r,-w,true,v,()=>mwAct(id,-1));openRow=null;return}
+    if(p<-40){set(r,-QW,true,v);openRow=r;mwSeen();return}
+    if(openRow===r)openRow=null;close(r,v)};
   document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
   /* tras arrastrar, el clic no abre la hoja; con la fila abierta, tocarla la cierra */
   document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest(".mw-fg");
@@ -8497,15 +8646,22 @@ document.addEventListener("click",e=>{const d=e.target.closest&&e.target.closest
     if(S.planView==="train"){const r=document.querySelector('.trow[data-trow="'+d.dataset.wday+'"]');if(r){r.scrollIntoView({block:"start",behavior:"smooth"});r.classList.remove("flash");void r.offsetWidth;r.classList.add("flash")}return}render();return}
   const n=e.target.closest&&e.target.closest("[data-wknow]");if(n){S.planWeek=mondayOf(today());S.planDay=today();S._wkAnim="";render()}});
 /* deslizar la fila: semana siguiente (hacia la izquierda) o anterior */
-(function(){let x0=0,y0=0,t0=0,on=null;
-  document.addEventListener("pointerdown",e=>{const w=e.target.closest&&e.target.closest(".wk");if(!w)return;on=w;x0=e.clientX;y0=e.clientY;t0=Date.now();S._wkSw=false});
-  document.addEventListener("pointermove",e=>{if(!on)return;const dx=e.clientX-x0;if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(e.clientY-y0)){const s=on.querySelector(".wk-s");if(s){s.style.transition="none";s.style.transform=`translateX(${dx*.5}px)`;s.style.opacity=String(1-Math.min(.5,Math.abs(dx)/400))}}});
-  const end=e=>{if(!on)return;const w=on;on=null;const dx=(e.clientX||x0)-x0,s=w.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}
-    if(Math.abs(dx)<50||Math.abs(dx)<1.5*Math.abs((e.clientY||y0)-y0)||Date.now()-t0>800)return;
-    const dir=dx<0?1:-1,wk=w.dataset.wk,i=Math.round((new Date(planDayK(wk)+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5);if(dir>0&&wk>=WK_MAX())return;
-    S.planWeek=shiftKey(wk,7*dir);S.planDay=shiftKey(S.planWeek,i);
-    S._wkSw=true;setTimeout(()=>{S._wkSw=false},60);S._wkAnim=dir>0?"wk-in-l":"wk-in-r";buzz(8);render();setTimeout(()=>{S._wkAnim=""},400)};
-  document.addEventListener("pointerup",end);document.addEventListener("pointercancel",()=>{if(on){const s=on.querySelector(".wk-s");if(s){s.style.transition="";s.style.transform="";s.style.opacity=""}on=null}})})();
+/* v320 · Con muelles (099): la fila sigue al dedo 1:1; al llegar a los 2 meses (o hacia atrás, sin límite) responde con resistencia;
+   al soltar, la semana cambia si la inercia proyectada pasa de la mitad del ancho, y la fila sale con la velocidad del dedo; si no, vuelve. */
+(function(){let x0=0,y0=0,on=null,s=null,dx=0,mode=null;const tr=MU.track();
+  const paint=x=>{if(!s)return;s.style.transition="none";s.style.transform=Math.abs(x)>.4?`translateX(${x}px)`:"";s.style.opacity=String(1-Math.min(.6,Math.abs(x)/(s.offsetWidth||360)))};
+  const reset=el=>{if(el){el.style.transition="";el.style.transform="";el.style.opacity=""}};
+  document.addEventListener("pointerdown",e=>{const w=e.target.closest&&e.target.closest(".wk");if(!w)return;on=w;s=w.querySelector(".wk-s");x0=e.clientX;y0=e.clientY;mode=null;S._wkSw=false;const c=MU.stop(s);dx=c||0;tr.reset();tr.add(dx)});
+  document.addEventListener("pointermove",e=>{if(!on)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
+    if(!mode){if(Math.abs(ddx)<10&&Math.abs(ddy)<10)return;if(Math.abs(ddx)<=Math.abs(ddy)){on=null;return}mode="h";try{on.setPointerCapture(e.pointerId)}catch(_){}}
+    const W=s?s.offsetWidth:360,last=on.dataset.wk>=WK_MAX();dx=ddx<0&&last?MU.rubber(ddx,W):ddx;tr.add(dx);paint(dx)});
+  const end=()=>{if(!on)return;const w=on,el=s;on=null;if(!mode){return}mode=null;const W=el?el.offsetWidth:360,v=tr.v(),p=dx+MU.project(v),wk=w.dataset.wk,dir=p<0?1:-1;
+    S._wkSw=true;setTimeout(()=>{S._wkSw=false},60);
+    if(Math.abs(p)<W/2||(dir>0&&wk>=WK_MAX())){if(el)MU.spring(el,dx,0,v,x=>{s=el;paint(x)},{resp:.35,damp:.8,done:()=>reset(el)});return}
+    const i=Math.round((new Date(planDayK(wk)+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5);buzz(8);
+    const go=()=>{S.planWeek=shiftKey(wk,7*dir);S.planDay=shiftKey(S.planWeek,i);S._wkAnim=dir>0?"wk-in-l":"wk-in-r";render();setTimeout(()=>{S._wkAnim=""},400)};
+    if(el)MU.spring(el,dx,-dir*W,v,x=>{s=el;paint(x)},{resp:.25,damp:1,done:go});else go()};
+  document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end)})();
 
 
 /* ---------- Ingrediente propio (v274, v275) ----------
@@ -9057,6 +9213,33 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     setLog(k,mid,{st:"chg",n:p.n,P:p.P*g/100,C:p.C*g/100,F:p.F*g/100,r:1,portion:g+" g",bc:p.ean});bcRemember(p);mshDone(prev,"Apuntado: "+p.n)}},true);
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="bcn"){e.preventDefault();bcFind(e.target.value)}});
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-close]"))bcStop()},true); /* al cerrar la hoja, se apaga la cámara */
+
+/* ---------- Capa de movimiento (v320) ----------
+   Lo sutil que hace que la app se sienta de iOS, sin tocar cómo se pinta cada pantalla (todo cuelga de #view y del scroll):
+   · Título grande que se recoge: al pasar bajo la cabecera, su texto aparece pequeño en el centro de la cabecera en lugar del logo.
+   · Entrada al cambiar de pestaña o de sección: los primeros bloques suben 8 px y aparecen, escalonados 40 ms. No en cada repintado.
+   · Cifras que se deslizan: si una cifra grande (.vhead, .rg-c, .qk2, .en-hd) cambia sin cambiar de pantalla, cuenta hasta la nueva en 0,45 s.
+   Con «reducir movimiento», nada de esto se mueve. Clases mv- */
+(function(){const RM=()=>matchMedia("(prefers-reduced-motion: reduce)").matches,view=document.getElementById("view"),hd=document.querySelector("header.top"),lt=document.getElementById("ltitle");if(!view)return;
+  /* título que se recoge */
+  let htl=null;if(hd&&lt){htl=document.createElement("span");htl.className="mv-ht";htl.setAttribute("aria-hidden","true");hd.appendChild(htl)}
+  const ttText=()=>{const b=lt&&lt.querySelector('[aria-selected="true"]');return(b?b.textContent:lt?lt.textContent:"").trim()};
+  const fold=()=>{if(!htl)return;const up=lt.getBoundingClientRect().bottom<hd.getBoundingClientRect().bottom+2;if(up)htl.textContent=ttText();hd.classList.toggle("mv-up",up)};
+  addEventListener("scroll",fold,{passive:true});
+  /* entrada al cambiar de pantalla y cifras */
+  const key=()=>[S.tab,S.tab==="plan"?S.planView:S.tab==="prog"?S.progSec:S.tab==="fuerza"?S.fzSec:""].join("|");
+  let last=key(),nums=new Map(),q=0,enterUntil=0;
+  const parse=t=>{const m=/-?[\d.]+(?:,\d+)?/.exec(t);if(!m)return null;const s=m[0],dec=(s.split(",")[1]||"").length;return{v:parseFloat(s.replace(/\./g,"").replace(",",".")),dec,th:/\d\.\d{3}/.test(s)}};
+  const fmt=(v,p)=>{let s=v.toFixed(p.dec).replace(".",",");if(p.th){const[a,b]=s.split(",");s=a.replace(/\B(?=(\d{3})+(?!\d))/g,".")+(b?","+b:"")}return s};
+  const tween=(node,from,to,p)=>{const t0=performance.now(),d=450,txt=node.nodeValue,m=/-?[\d.]+(?:,\d+)?/.exec(txt),pre=txt.slice(0,m.index),post=txt.slice(m.index+m[0].length);
+    const step=now=>{const k=Math.min(1,(now-t0)/d),e=1-Math.pow(1-k,3);node.nodeValue=pre+fmt(from+(to-from)*e,p)+post;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)};
+  const pass=()=>{q=0;const k=key(),moved=k!==last,now=performance.now();last=k;if(moved)enterUntil=now+220; /* al cambiar de pantalla se repinta dos veces seguidas: la entrada cubre las dos */
+    if((moved||now<enterUntil)&&!RM()){[...(view.children.length===1?view.children[0].children:view.children)].slice(0,8).forEach((el,i)=>{if(el.classList.contains("mv-in"))return;el.style.setProperty("--mv-i",i);el.classList.add("mv-in")});setTimeout(()=>view.querySelectorAll(".mv-in").forEach(el=>el.classList.remove("mv-in")),1100)}
+    const seen=new Map();view.querySelectorAll(".vhead b,.rg-c b,.qk2 b,.en-hd b").forEach((b,i)=>{const sec=b.closest("section"),id=((sec&&(sec.querySelector(".pkk,h2")||{}).textContent)||"")+"#"+i,tn=[...b.childNodes].find(n=>n.nodeType===3&&/\d/.test(n.nodeValue));if(!tn)return;const p=parse(tn.nodeValue);if(!p)return;
+      seen.set(id,p.v);const old=nums.get(id);if(!moved&&now>=enterUntil&&!RM()&&old!=null&&old!==p.v&&Math.abs(old-p.v)<1e7)tween(tn,old,p.v,p)});
+    nums=seen;fold()};
+  new MutationObserver(()=>{if(!q)q=requestAnimationFrame(pass)}).observe(view,{childList:true});
+})();
 
 })();
 </script>
