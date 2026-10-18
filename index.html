@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T18:38:11.258Z">
+<meta name="sustrato-version" content="2026-10-18T19:23:03.531Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -191,8 +191,6 @@ nav.tabs .fab:focus-visible{outline:2px solid var(--amarillo);outline-offset:3px
 .shop input{width:20px;min-height:20px;height:20px}
 .shop b{font-variant-numeric:tabular-nums;font-weight:500;color:var(--muted)}
 .shop input:checked+span{text-decoration:line-through;color:var(--faint)}
-.mcov{height:5px;border-radius:999px;background:var(--fill2);margin-top:6px;overflow:hidden}
-.mcov i{display:block;height:100%;border-radius:999px}
 #wiz .sheet{max-width:760px}
 .wtop{display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:12px;margin-top:14px}
 @media (max-width:520px){.wtop{grid-template-columns:minmax(0,1fr)}}
@@ -838,15 +836,12 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .xb-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .xb-t b{font-size:calc(15px*var(--tz,1));font-weight:600}
 .xb-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.xb-t small.xb-x{color:var(--muted)}
-.xb-v{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:calc(15px*var(--tz,1))}.xb-v i{font-style:normal;font-size:calc(12px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px} /* v306: unidad pequeña y en gris (guía) */
 .xb .ev{flex:0 0 auto}
 .xb-ch{width:16px;height:16px;flex:0 0 auto;opacity:.5;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform .2s}
 .xb[open] .xb-ch{transform:rotate(180deg)}
 .xb-d{padding:0 14px 12px 66px;display:flex;flex-direction:column;gap:6px}
 .xb-d p{margin:0;font-size:calc(14px*var(--tz,1));line-height:1.5}
 .xb-d .k{display:inline-block;font-size:calc(11px*var(--tz,1));font-weight:600;color:var(--muted);margin-right:8px}
-.xb-d .mcov{margin:0}
 .xb-s{color:var(--muted)}
 @media (max-width:420px){.xb-d{padding-left:14px}}
 
@@ -1433,19 +1428,17 @@ html[data-theme="light"] .rd-card{--rd-bg:#fff}
 .rd-sl span{font-weight:600}
 
 /* tasa de sudor */
-.sw-ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;color:var(--cian);background:color-mix(in srgb,var(--cian-v,var(--cian)) 16%,transparent);flex:0 0 auto}
+.sw-ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;color:var(--fg);background:var(--fill2);flex:0 0 auto} /* v326: tesela neutra (guía 2.3) */
 .sw-ic.big{width:52px;height:52px;border-radius:14px}
-html[data-theme="light"] .sw-ic{color:var(--azul)}
 .sw-box{margin-top:20px;padding:14px;border-radius:14px;background:var(--card2,rgba(127,127,127,.12));display:flex;flex-direction:column;gap:12px}
 .sw-h{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start}
 .sw-h h2{margin:0!important;font-size:calc(15px*var(--tz,1))!important}.sw-h p{margin:2px 0 0;font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
 .sw-r{font-size:calc(20px*var(--tz,1));font-variant-numeric:tabular-nums;white-space:nowrap}
 .sw-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .sw-f{display:flex;flex-direction:column;gap:5px;font-size:calc(12px*var(--tz,1));color:var(--muted)}
-.sw-in{position:relative;display:block}.sw-in input{min-height:42px;padding:0 30px 0 12px;font-size:calc(17px*var(--tz,1));font-variant-numeric:tabular-nums;background:var(--bg)!important}
-html[data-theme="light"] .sw-in input{background:#fff!important}
+.sw-in{position:relative;display:block}.sw-in input{min-height:44px;padding:0 30px 0 12px;font-size:calc(17px*var(--tz,1));font-variant-numeric:tabular-nums;background:var(--fill2)!important;border-radius:14px}
 .sw-in i{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-style:normal;font-size:calc(12px*var(--tz,1));color:var(--faint);pointer-events:none}
-.sw-a{display:flex;gap:8px}
+.sw-a{display:flex;gap:8px}.sw-a .btn.primary{flex:1;min-height:44px;border-radius:14px} /* v326: el principal, a lo ancho y con radio 14 */
 .sw-empty{display:grid;grid-template-columns:auto 1fr;gap:14px;margin:12px 0 4px}
 .sw-empty b{font-size:calc(17px*var(--tz,1))}.sw-empty p{margin:4px 0 0;font-size:calc(14px*var(--tz,1));color:var(--muted);line-height:1.45}
 .sw-how{margin:10px 0 0;padding-left:20px;font-size:calc(14px*var(--tz,1));color:var(--muted);display:flex;flex-direction:column;gap:4px;line-height:1.4}
@@ -1593,8 +1586,6 @@ html[data-theme="light"] .ws-star{color:var(--naranja)}
 .fl-ask-h p{margin:6px 0 0;font-size:calc(14px*var(--tz,1));color:var(--muted);line-height:1.45}
 .fl-ask-a{display:flex;gap:10px;align-items:center}.fl-ask-a .btn{flex:1}
 .fl-box{margin-top:20px;padding:14px;border-radius:14px;background:var(--card2,rgba(127,127,127,.12));display:flex;flex-direction:column;gap:12px}
-.fl-ic{color:var(--amarillo)!important;background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 18%,transparent)!important}
-html[data-theme="light"] .fl-ic{color:var(--naranja)!important}
 .fl-items{display:flex;flex-direction:column;gap:2px}
 .fl-it{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0}
 .fl-it>span{display:flex;flex-direction:column;min-width:0}.fl-it b{font-size:calc(14px*var(--tz,1));font-weight:600}.fl-it small{font-size:calc(12px*var(--tz,1));color:var(--muted)}
@@ -1616,10 +1607,9 @@ html[data-theme="light"] .fl-ic{color:var(--naranja)!important}
 .fl-add{display:flex;flex-direction:column;gap:8px}
 .fl-lbl{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}
 .fl-chips{display:flex;flex-wrap:wrap;gap:6px}
-.fl-chip{appearance:none;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:0 12px;min-height:34px;background:var(--bg);color:var(--fg);font:500 calc(14px*var(--tz,1)) var(--font);cursor:pointer}
-html[data-theme="light"] .fl-chip{background:#fff}
+.fl-chip{appearance:none;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:0 12px;min-height:34px;background:var(--fill2);color:var(--fg);font:500 calc(14px*var(--tz,1)) var(--font);cursor:pointer}
 .fl-chip i{width:7px;height:7px;border-radius:50%}
-.fl-new,.fl-more{color:var(--muted)}.fl-more{text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--muted) 40%,transparent)}
+.fl-new,.fl-more{color:var(--muted)}
 .fl-form{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:var(--bg)}
 html[data-theme="light"] .fl-form{background:#fff}
 .fl-form .sw-in input,.fl-form input{background:var(--card2,rgba(127,127,127,.12))!important}
@@ -2938,8 +2928,9 @@ a.fb-row{text-decoration:none}
 .trow.pm-over{background:var(--ac-soft);box-shadow:inset 3px 0 0 var(--ac)}
 .tday{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
 .tday b{font-size:calc(13px*var(--tz,1));color:var(--muted);font-weight:500}
-.tday span{font:700 calc(24px + 24px*(var(--tz,1) - 1)*.75) var(--round)}
-.trow.today .tday span{color:var(--ac)}
+.tday span{display:grid;place-items:center;width:36px;height:36px;margin:2px 0 0 -6px;border-radius:50%;font:600 calc(20px*var(--tz,1)) var(--round)} /* v326: el mismo círculo que la tira y el mes */
+.trow.today:not(.sel) .tday span{color:var(--ac)} /* hoy: la cifra en el acento, como el Calendario de Apple */
+.trow.sel .tday span{background:var(--ac);color:var(--ac-on)}
 .tday small{font-size:calc(11px*var(--tz,1));color:var(--fg);font-weight:600;margin-top:2px}
 .trest{font-size:calc(14px*var(--tz,1));color:var(--faint);padding:8px 0}
 .wk-det .mw-sec{margin-top:16px}
@@ -3160,6 +3151,8 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .dp-b,.pwrap .bsum b,.pwrap .ptile.pwide .pbig{letter-spacing:-.025em}
 :where(button,.btn,.chip,[role="button"]:not([data-pmove]),a.pill):not(:disabled):active{transform:scale(.97);transition:transform .1s ease-out}
 .overlay>.sheet.fade{animation:none}
+/* v326: tampoco lo de dentro de una hoja: al repintarse (un conmutador, una ración…) volvía a entrar desde opacidad .4 y parpadeaba. La entrada ya la hace la hoja al subir */
+.overlay .fade{animation:none}
 @media (prefers-reduced-motion:no-preference){
   .overlay.ov-in{animation:ovIn .28s ease-out both}
   .overlay>.sheet.sh-in{animation:shIn .42s cubic-bezier(.32,.72,0,1) both}
@@ -3265,6 +3258,11 @@ table.bands{--tz:1}
 .sp-i{appearance:none;flex:none;width:36px;height:36px;border:0;border-radius:50%;display:grid;place-items:center;background:none;color:var(--muted);cursor:pointer}
 .sp-av{flex:none;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .sp-legal{margin-top:14px}
+/* v326 · Detalle de actividad (104): con el conmutador encendido y sin datos, la cabecera antigua sobra */
+.fl-on>.sw-h,.sw-on>.sw-h{display:none}
+.fl-off,.sw-off{padding-top:6px;padding-bottom:6px}
+/* v326 · Micronutrientes (050): la cifra a la derecha, como en Salud */
+.mi-v{flex:none;font-size:calc(17px*var(--tz,1));font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.mi-v small{font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px}
 
 </style>
 
@@ -3329,10 +3327,11 @@ const famOf=sp=>isBike(sp)?"bike":sp==="walk"||sp==="hike"?"foot":sp;
 const SPORT_S={run:"Running",trail:"Trail",road:"Carretera",gravel:"Gravel",mtb:"MTB",indoor:"Rodillo",swim:"Natación",str:"Fuerza",walk:"Paseo",hike:"Sendero",oth:"Otro"};
 /* Curva de sustrato: fracción de energía de hidratos según % de FC de reserva */
 const SUB_MID=0.52, SUB_K=0.20; /* v229: curva más suave, ajustada al punto de cruce (Brooks) y FatMax (Achten y Jeukendrup) */
+/* v326: los tramos mixtos, en tono claro (mezclado con blanco), no con el fondo: mezclados con la tarjeta daban ocre y azul sucios en oscuro */
 const BANDS=[
   {id:"b1",name:"Lipolítica",lo:0,hi:.35,col:"var(--azul)",desc:"Grasas dominantes"},
-  {id:"b2",name:"Mixta lipídica",lo:.35,hi:.5,col:"color-mix(in srgb,var(--azul) 50%,var(--card))",desc:"Más grasa que hidratos"},
-  {id:"b3",name:"Mixta glucídica",lo:.5,hi:.7,col:"color-mix(in srgb,var(--amarillo) 50%,var(--card))",desc:"Más hidratos que grasa"},
+  {id:"b2",name:"Mixta lipídica",lo:.35,hi:.5,col:"color-mix(in srgb,var(--azul) 55%,#fff)",desc:"Más grasa que hidratos"},
+  {id:"b3",name:"Mixta glucídica",lo:.5,hi:.7,col:"color-mix(in srgb,var(--amarillo) 55%,#fff)",desc:"Más hidratos que grasa"},
   {id:"b4",name:"Glucolítica",lo:.7,hi:.9,col:"var(--amarillo)",desc:"Glucógeno dominante"},
   {id:"b5",name:"Glucolítica máxima",lo:.9,hi:1.01,col:"var(--naranja)",desc:"Casi solo glucógeno"}
 ];
@@ -3351,7 +3350,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="325";
+const APP_VER="326";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3926,7 +3925,7 @@ function drawFull(){
   box.innerHTML=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">
     <defs><clipPath id="fclipL"><rect id="fclipR" x="${PL}" y="0" width="0" height="${H}"/></clipPath></defs>
     ${grid}
-    <g class="fu-areas"><path d="${top}${back}Z" fill="color-mix(in srgb,var(--carb-v,var(--carb)) 35%,transparent)"/><path d="${fat}L${X(n-1).toFixed(1)} ${Y(0)} L${X(0).toFixed(1)} ${Y(0)} Z" fill="color-mix(in srgb,var(--fat-v,var(--fat)) 35%,transparent)"/><path d="${top}" fill="none" stroke="var(--carb)" stroke-width="2" stroke-linejoin="round"/><path d="${fat}" fill="none" stroke="var(--fat)" stroke-width="2" stroke-linejoin="round"/></g>
+    <g class="fu-areas"><path d="${top}${back}Z" fill="var(--carb)"/><path d="${fat}L${X(n-1).toFixed(1)} ${Y(0)} L${X(0).toFixed(1)} ${Y(0)} Z" fill="var(--fat)"/><path d="${top}" fill="none" stroke="var(--carb)" stroke-width="2" stroke-linejoin="round"/><path d="${fat}" fill="none" stroke="var(--fat)" stroke-width="2" stroke-linejoin="round"/></g>
     <line x1="${PL}" x2="${W-PR}" y1="${Y(0)}" y2="${Y(0)}" class="vz-g"/>
     <g>${strip}</g>${tk}
     <g id="fuCur"><line id="fuLine" x1="0" x2="0" y1="${PT}" y2="${PT+ih+14}" class="fu-line"/>
@@ -4442,7 +4441,7 @@ window.__authDone=async t=>{if(!t){toast("No se ha podido iniciar sesión");retu
   try{const me=await syncApi("/me");S.acct={t,email:me.email,name:me.name};LS("sustrato-acct",S.acct);toast("Sesión iniciada. Sincronizando tus datos…");
     if(!(S.profile||{}).name&&me.name){S.profile=Object.assign({},S.profile,{name:me.name})}await syncFirst();render();toast("Tus datos ya están en tu cuenta")}
   catch(e){S.acct=null;LS("sustrato-acct",null);toast("No se ha podido iniciar sesión");render()}};
-async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;location.href=c.api.replace(/\/$/,"")+"/auth/google/start?ret="+encodeURIComponent(ret)}catch(e){toast("No hay conexión con el servidor")}}
+async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;const api=c.api.replace(/\/$/,"");location.href=api+"/auth/google/start?ret="+encodeURIComponent(ret)+"&via="+encodeURIComponent(api)} /* v326: «via» para que Google vuelva por la misma dirección (la reserva de Netlify si Cloudflare está bloqueado) */catch(e){toast("No hay conexión con el servidor")}}
 /* Con Apple (iPhone, v290): nonce firmado del servidor → ventana de Apple (nativa) → el servidor comprueba el token y da la sesión */
 async function acctApple(){try{const c=await cloudCfg(),api=c.api.replace(/\/$/,""),n=await(await fetch(api+"/auth/apple/nonce")).json(),r=await window.__native.appleSignIn(n.nonce);
     const res=await fetch(api+"/auth/apple",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:r.token,state:n.state,name:r.name||""})}),j=await res.json().catch(()=>null);
@@ -4621,8 +4620,9 @@ function weightVerdict(){const W=(S.weights||[]).filter(x=>x.d>=shiftKey(today()
 
 /* ---------- Tasa de sudor ---------- */
 function sweatBlock(a){if(a.sport==="str"||a.mov<1800)return"";const ex=(S.sweat||[]).find(x=>x.id===a.id);
+  if(!ex&&!(S.swOn||{})[a.id])return`<div class="sw-box sw-off"><div class="tg-r"><span class="tg-t"><b>Me pesé antes y después</b><small>Con eso calculo tu tasa de sudor real</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Me pesé antes y después" data-swon="${a.id}"></button></div></div>`;
   const f=(id,l,u,v,ph)=>`<label class="sw-f" for="${id}"><span>${l}</span><span class="sw-in"><input id="${id}" inputmode="decimal" placeholder="${String(ph).replace(".",",")}" value="${v!=null?String(v).replace(".",","):""}"><i>${u}</i></span></label>`;
-  return`<div class="sw-box"><div class="sw-h"><span class="sw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><h2>Tu tasa de sudor</h2><p>${ex?"Calculada en esta sesión":"Pésate justo antes y justo después, sin ropa mojada, y apunta lo que bebiste."}</p></div>${ex?`<b class="sw-r">${ex.rate.toFixed(2).replace(".",",")} L/h</b>`:""}</div>
+  return`<div class="sw-box${ex?"":" sw-on"}">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Me pesé antes y después</b><small>Sin ropa mojada, y apunta lo que bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Me pesé antes y después" data-swon="${a.id}"></button></div>`}<div class="sw-h"><span class="sw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><h2>Tu tasa de sudor</h2><p>${ex?"Calculada en esta sesión":"Pésate justo antes y justo después, sin ropa mojada, y apunta lo que bebiste."}</p></div>${ex?`<b class="sw-r">${ex.rate.toFixed(2).replace(".",",")} L/h</b>`:""}</div>
     <div class="sw-g">${f("sw_pre","Peso antes","kg",ex&&ex.pre,(num((S.profile||{}).weight)||"")+"")}${f("sw_post","Peso después","kg",ex&&ex.post,"")}${f("sw_drk","Bebido","ml",ex&&ex.drank,"0")}</div>
     <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button>${ex?`<button class="chip sm danger" data-sweatdel="${a.id}">Borrar</button>`:""}</div></div>`}
 function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
@@ -4728,6 +4728,8 @@ function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c
     <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+" mg":"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+" mg":"—"}</b></div></div></div>`}
 function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a);
   if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
+  /* v326: sin nada apuntado, una fila con conmutador; al encenderlo se despliega lo de abajo (104) */
+  if(!ex&&!(S.flOn||{})[a.id])return`<div class="fl-box fl-off" id="flbox"><div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Geles, bebida o comida: así aprendo cuántos hidratos por hora toleras</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div></div>`;
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
   const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelFor(a.day,a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
   const used=new Set(dr.items.map(i=>i.pid)),uses={},last={};(S.fuel||[]).forEach(f=>(f.items||[]).forEach(it=>{uses[it.pid]=(uses[it.pid]||0)+1;if(!last[it.pid]||f.d>last[it.pid])last[it.pid]=f.d}));
@@ -4735,7 +4737,7 @@ function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
   const row=it=>{const p=ptById(it.pid);if(!p)return"";const tt=PT_T[p.t]||PT_T.food;return`<div class="fl-it"><span class="fl-dot" style="background:${tt[1]}" aria-hidden="true"></span><span class="fl-nm"><b>${esc(p.n)}</b><small>${esc(ptSub(p))}</small></span><div class="str-step"><button type="button" data-fl="${esc(p.id)}|-1" aria-label="Uno menos">−</button><b>${it.q}</b><button type="button" data-fl="${esc(p.id)}|1" aria-label="Uno más">+</button></div></div>`};
   const nf=S.flNew;
-  return`<div class="fl-box" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
+  return`<div class="fl-box${ex?"":" fl-on"}" id="flbox">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Añade lo que comiste y bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div>`}<div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
     ${dr.items.length?`<div class="fl-items">${dr.items.map(row).join("")}</div>`:""}
     <div class="fl-add"><span class="fl-lbl">${dr.items.length?"Añadir otro":"Añadir"}</span><div class="fl-chips">${avail.map(p=>`<button type="button" class="fl-chip" data-fladd="${esc(p.id)}"><i style="background:${(PT_T[p.t]||PT_T.food)[1]}"></i>${esc(p.n)}</button>`).join("")}${hid>0?`<button type="button" class="fl-chip fl-more" data-flall="1">Ver todos (${ranked.length})</button>`:S.flAll&&ranked.length>4?`<button type="button" class="fl-chip fl-more" data-flall="0">Ver menos</button>`:""}<button type="button" class="fl-chip fl-new" data-flnew="1" aria-expanded="${!!nf}">＋ Nuevo producto</button></div></div>
     ${nf?`<div class="fl-form"><label class="sw-f fl-wide" for="flp_n"><span>Marca y producto</span><input id="flp_n" placeholder="Ej.: Maurten Gel 100 Caf" value="${esc(nf.n||"")}" autocomplete="off"></label>
@@ -5246,7 +5248,7 @@ function areaChart(series,dur){
   const choArea=tot+back+"Z",f1=v=>v.toFixed(v<10&&v%1?1:0).replace(".",",");
   return `<svg class="chart vz" viewBox="0 0 ${W} ${H}" role="img" aria-label="Energía por minuto: hidratos y grasas">
 ${VZ.grid(ticks.filter(v=>v<mx),Y,PL,W-PR,f1)}<line x1="${PL}" x2="${W-PR}" y1="${Y(0)}" y2="${Y(0)}" class="vz-g"/>
-<path d="${choArea}" fill="color-mix(in srgb,var(--carb-v,var(--carb)) 35%,transparent)"/><path d="${fatArea}" fill="color-mix(in srgb,var(--fat-v,var(--fat)) 35%,transparent)"/><path d="${tot}" fill="none" stroke="var(--carb)" stroke-width="2" stroke-linejoin="round"/><path d="${fatTop}" fill="none" stroke="var(--fat)" stroke-width="2" stroke-linejoin="round"/>
+<path d="${choArea}" fill="var(--carb)"/><path d="${fatArea}" fill="var(--fat)"/><path d="${tot}" fill="none" stroke="var(--carb)" stroke-width="2" stroke-linejoin="round"/><path d="${fatTop}" fill="none" stroke="var(--fat)" stroke-width="2" stroke-linejoin="round"/>
 <text class="ax" x="${PL}" y="${PT-8}">kcal/min</text><text class="ax" x="${PL}" y="${H-5}">0</text><text class="ax" x="${W-PR}" y="${H-5}" text-anchor="end">${dur?fmtDur(dur):"final"}</text></svg>`;
 }
 function bandBar(bands){
@@ -6703,15 +6705,18 @@ function infoHtml(){
 }
 function openInfo(k,v,n){if(!INFO[k])return;S.infoBack=S.sheet==="xs"?"xs":null;const t=document.getElementById("ctip");if(t)t.hidden=true;S.info={k,v,n};S.sheet="info";renderModal()}
 
+/* v326 · Micronutrientes como los suplementos: filas limpias (nombre, por qué cambia hoy o lo que cubre tu menú, cifra) y ⓘ con la
+   ficha; sin teselas de color ni símbolos químicos coloreados (guía: texto sin color, teselas neutras) y sin desplegables. */
 function microCard(t){
-  const mm=menuMicros(S.xsDay||S.day);
-  const rows=micros(t).map(m=>{const got=mm&&m.key?mm[m.key]:null,pc=got!=null?Math.min(100,got/m.tv*100):0;
-    const ik=m.key||(m.n==="Agua"?"agua":/^Vitaminas B/.test(m.n)?"vb":null),d=INFO[ik];
-    const cov=got!=null?`<div class="mcov"><i style="width:${pc.toFixed(0)}%;background:${pc>=90?"var(--ok)":pc>=60?"var(--warn)":"var(--err)"}"></i></div>`:"";
-    return`<details class="xb"><summary>${m.ic||""}<span class="xb-t"><b>${m.n}</b>${m.x?`<small class="xb-x">${esc(m.x)}</small>`:got!=null?`<small>El menú cubre el ${fmtInt(pc)} %</small>`:""}</span><span class="xb-v">${m.v?m.v+"<i>"+m.u+"</i>":""}</span><span class="xb-ch" aria-hidden="true"></span></summary>
-      <div class="xb-d">${got!=null?`${cov}<p class="xb-s">El menú aporta ${got<10&&got%1?got.toFixed(1).replace(".",","):fmtInt(got)} ${m.u} de ${m.v} ${m.u}.</p>`:""}${xbRow("src",m.src)}${d?`<button class="ibtn" data-info="${ik}" data-iv="${esc(m.v?m.v+" "+m.u:"")}">Qué es y qué dice la ciencia<span aria-hidden="true">›</span></button>`:""}</div></details>`}).join("");
-  return`<section class="glass pad fade hue-health"><h2>Micronutrientes del día</h2><div class="xlist">${rows}</div>
-  ${mm?"":'<p class="note">Asigna platos en la pestaña Plan y verás aquí cuánto cubre tu menú de cada uno.</p>'}<p class="note">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
+  const mm=menuMicros(S.xsDay||S.day),IC_I='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg>';
+  const n1=v=>v<10&&v%1?v.toFixed(1).replace(".",","):fmtInt(v);
+  const rows=micros(t).map(m=>{const got=mm&&m.key?mm[m.key]:null,ik=m.key||(m.n==="Agua"?"agua":/^Vitaminas B/.test(m.n)?"vb":null),d=INFO[ik];
+    const sub=[m.x,got!=null?"Tu menú: "+n1(got)+" de "+m.v+" "+m.u:""].filter(Boolean).join(" · ");
+    return`<div class="sp-r"><span class="sp-t"><b>${esc(m.n)}</b>${sub?`<small>${esc(sub)}</small>`:""}</span>${m.v?`<span class="mi-v">${m.v}<small>${m.u}</small></span>`:""}
+      ${d?`<button type="button" class="sp-i" data-info="${ik}" data-iv="${esc(m.v?m.v+" "+m.u:"")}" data-in="${esc(m.src||"")}" aria-label="Qué es ${esc(m.n)}">${IC_I}</button>`:'<span class="sp-i" aria-hidden="true"></span>'}</div>`}).join("");
+  return`<section class="glass pad fade hue-health sp-card"><h2>Micronutrientes del día</h2><p class="note" style="margin:2px 0 6px">Objetivos de hoy, ajustados al entreno.${mm?"":" Asigna platos en Menú y verás cuánto cubre de cada uno."}</p>
+  <div class="sp-g">${rows}</div>
+  <p class="note sp-legal">Objetivos de referencia (EFSA) ajustados por el entreno del día. El sodio del menú no incluye la sal que añadas al cocinar. El sudor se estima en ~1 L/h corriendo y ~0,8 L/h en bici.</p></section>`;
 }
 /* v325 · Suplementos sin desplegables (menos es más): una fila por suplemento con el nombre, la dosis de hoy en una línea,
    la ⓘ (abre la ficha: qué es, qué dice la ciencia, dosis y precauciones) y el conmutador «Lo tomo». El nivel de evidencia
@@ -6772,7 +6777,7 @@ function vPlanTrain(wk){
         return`<div class="af pf" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${pfBody(s,"pend",kg)}${s.race?`<button type="button" class="chip sm rp-chip" data-rplan="${k}|${i}">Plan de carrera</button>`:""}</div>`}).join(""); /* v303: ficha prevista */
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
-    return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
+    return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}${k===planDayK(mondayOf(k))?" sel":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
       <div class="tbody">${realH}${edit?`<div class="plist">${edit}</div>`:""}${empty&&k<tk?`<span class="trest">Descanso</span>`:""}${k>=tk?`<button class="tadd" data-pladd="${k}" aria-label="Añadir entreno el ${DOW[d.getDay()]} ${d.getDate()}"><span aria-hidden="true">＋</span> Añadir entreno</button>`:""}</div></div>`}).join("");
   /* v278: calendario arriba y, en la misma tarjeta, el resumen de la semana y debajo planificar; luego el tiempo y la semana en lista */
   return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
@@ -7184,7 +7189,7 @@ function vDetail(){
 function subAnchor(a,hp){if(!hp)return"";const aj=["a tu nivel"];if(S.profile&&S.profile.sex==="f")aj.push("a tu sexo");aj.push("a la duración");if(S.fasted[a.id])aj.push("al ayuno");
   return` En esta salida, el cálculo parte de ${hp.mode==="lt"?"tu umbral de lactato ("+r0(hp.lthr)+" ppm"+(hp.lthrSrc==="auto"?", estimado con tus esfuerzos":"")+")":"tu FC de reserva"} y se ajusta ${aj.slice(0,-1).join(", ")} y ${aj[aj.length-1]}.`}
 async function openDetail(id,focusFuel){
-  S.flDraft=null;S.flNew=null;if(!focusFuel)S.flEditId=null;S.detail=id;renderModal();
+  S.flDraft=null;S.flNew=null;if(!focusFuel)S.flEditId=null;else{S.flOn=S.flOn||{};S.flOn[id]=true} /* v326: desde «Apuntar» de Hoy, el avituallamiento ya abierto */S.detail=id;renderModal();
   if(focusFuel)setTimeout(()=>{const b=$("#flbox");if(b)b.scrollIntoView({behavior:"smooth",block:"start"})},120);const a=S.acts.find(x=>x.id===id);if(!a)return;
   ensureSub(a).then(renderModal);drEnsure(a);
   S.alt=S.alt||{};if(!S.alt[id]&&a.sport!=="str"&&(a.sid||a.poly)){const sid=a.sid||a.id;
@@ -9427,6 +9432,15 @@ function pmxRow(k,mid,s){return`<div class="seg pmx-r" role="group" aria-label="
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-pmx],[data-pmxs]");if(!t)return;e.preventDefault();e.stopPropagation();
   if(t.dataset.pmx){S.pmx=S.pmx===t.dataset.pmx?null:t.dataset.pmx;buzz(4);render();return}
   const[k,mid,v]=t.dataset.pmxs.split("|"),a=(S.menu[k]||{})[mid];if(!a)return;a.s=+v;a.lock=true;S.pmx=null;buzz(6);render();await saveMenu()},true);
+
+/* v326 · Detalle de actividad: avituallamiento y tasa de sudor se despliegan con un conmutador (revelación progresiva, como en
+   Ajustes). Sin datos, cada tarjeta es una fila; al encenderla aparecen sus opciones; al apagarla sin guardar, se recoge y se
+   descarta el borrador. Con datos guardados se ve el resumen, como antes. El aviso rápido de Hoy («¿Qué tomaste?») sigue igual. */
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-flon],[data-swon]");if(!t||t.dataset.tgGo!=="1")return; /* el conmutador (071) se mueve y vuelve a pulsar */
+  e.preventDefault();e.stopPropagation();
+  if(t.dataset.flon){const id=t.dataset.flon;S.flOn=S.flOn||{};S.flOn[id]=!S.flOn[id];if(!S.flOn[id]){if(S.flDraft&&S.flDraft.id===id)S.flDraft=null;S.flNew=null}}
+  else{const id=t.dataset.swon;S.swOn=S.swOn||{};S.swOn[id]=!S.swOn[id]}
+  renderModal()},true);
 
 })();
 </script>
