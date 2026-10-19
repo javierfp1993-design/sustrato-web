@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T14:03:22.313Z">
+<meta name="sustrato-version" content="2026-10-19T14:38:04.201Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3430,7 +3430,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="339";
+const APP_VER="340";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -9778,14 +9778,15 @@ function lkHtml(){const L=S.lk;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
-  return`<div class="pa-f"><span class="pa-l">Vinculados</span>${L.links===null?`<p class="pa-note">Cargando…</p>`:live.length?live.map(l=>`<div class="lk-card">${lkPro(l.pro)}<span class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}</span>${l.state==="active"?lkToggles(l.id,l.perms):""}<div class="pa-ex"><button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button></div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
+  return`<div class="pa-f"><span class="pa-l">Vinculados</span>${L.links===null?`<p class="pa-note">Cargando…</p>`:live.length?live.map(l=>`<div class="lk-card">${lkPro(l.pro)}<span class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}</span>${l.state==="active"?`<div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega un resumen al día"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div><span class="pa-l">Compartes</span>`+lkToggles(l.id,l.perms):""}<div class="pa-ex"><button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button></div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
     <button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
 function lkRender(){S.ppSh=true;renderModal()}
-document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp]");if(!t)return;const L=S.lk;
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp],[data-lklive]");if(!t)return;const L=S.lk;
+  if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});toast(v?"Compartes en directo":"Le llega un resumen al día");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
   if(t.dataset.lkp!=null){if(t.dataset.tgGo!=="1")return;const [id,k]=t.dataset.lkp.split("|");
     if(id==="new"){L.perms[k]=!L.perms[k];return}
     const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!l.perms[k]});l.perms=perms;
-    try{await lkCall("/link/perms",{id,perms});toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}return}
+    try{await lkCall("/link/perms",{id,perms});if(typeof lkPush==="function")lkPush(true);toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}return}
   if(t.dataset.lkend){const l=(L.links||[]).find(x=>x.id===t.dataset.lkend);if(!l)return;
     if(!confirm(l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+l.pro.name+"? Dejará de ver lo que compartes."))return;
     try{await lkCall("/link/end",{id:l.id});await lkLoad();toast(l.state==="pending"?"Solicitud cancelada":"Vínculo terminado")}catch(x){L.err="No se ha podido. Prueba en un momento.";lkRender()}return}
@@ -9798,6 +9799,52 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(a==="lksend"){t.disabled=true;try{const k=await lkKey(),me=S.profile||{};const j=await lkCall("/link/request",{code:L.code,perms:L.perms,pub:k.pub,name:(me.name||"").trim()});
       if(!j.ok){L.err=j.code==="already"?"Ya estás vinculado o tienes una solicitud con este profesional.":j.code==="self"?"Esa llave es tuya.":"Esa llave ya no vale. Pide otra a tu profesional.";lkRender();return}
       L.step=null;await lkLoad();toast("Solicitud enviada a "+L.pro.name)}catch(x){L.err="No se ha podido enviar. Prueba en un momento.";lkRender()}return}});
+
+/* ---------- Compartir con tu profesional (fase C de Sustrato Pro, v340) ----------
+   Por cada vínculo activo, un paquete por día con lo que el deportista comparte (entrenos, comida frente al objetivo, peso,
+   cómo llega) y uno de «meta» (próximas carreras). Se cifra aquí con AES-GCM y la clave común del vínculo (ECDH P-256 entre la
+   clave de este móvil y la pública del profesional); el servidor solo guarda paquetes ilegibles. De Strava solo va lo calculado
+   por Sustrato (duración, energía, hidratos, intensidad), sin distancia, desnivel, ruta ni nombre.
+   Cuándo: un resumen al día; «En directo», con cada cambio mientras usas la app. Si cambian los permisos o la clave del
+   profesional, se reenvía todo. */
+const LKP_HIST=56;
+const lkb64=u8=>{let s="";new Uint8Array(u8).forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
+const lkun64=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)),c=>c.charCodeAt(0));
+const lkStrava=a=>!/^(hc|ah|fit|apple|man)[-_]/i.test(String(a.id||""));
+function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
+  if(P.train){const A=S.acts.filter(a=>a.day===k&&a.sport!=="oth").map(a=>{const u=(S.subs||{})[a.id],f=flEntry(a),x={s:a.sport,h:(a.start||"").slice(11,16),m:Math.round((a.mov||0)/60),kcal:Math.round(a.kcal||0),i:actInt(a)};
+      if(u)x.cho=Math.round(u.cho/4);if(f&&f.cph)x.gh=f.cph;if(!lkStrava(a)){x.km=r1((a.dist||0)/1000);x.up=Math.round(a.elev||0)}return x});
+    const pl=plannedFor(k).filter(x=>!x.skip).map(x=>({s:x.sport,m:x.dur||0,i:x.int||"m",race:!!x.race}));if(A.length)o.a=A;if(pl.length&&k>=today())o.pl=pl}
+  if(P.food&&k<=today()){const t=dayTargets(k),e=dayEaten(k);if(t)o.t={kcal:Math.round(t.kcal),P:Math.round(t.P),C:Math.round(t.C),F:Math.round(t.F),dt:typeof ppDayType==="function"?ppDayType(k,t.acts,t.plan):null};if(e)o.e={kcal:Math.round(e.kcal),P:Math.round(e.P),C:Math.round(e.C),F:Math.round(e.F)}}
+  if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct}
+  if(P.ready){const rh=(S.rhr||{})[k],hv=(S.hrv||{})[k],sl=(S.sleep||{})[k];if(rh)o.rhr=rh;if(hv)o.hrv=hv;if(sl)o.sl=sl;if(rh||hv||sl){try{o.rd=readiness(k).sc}catch(e){}}}
+  return Object.keys(o).length?o:null}
+function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
+  if(P.food){const q=(S.profile||{}).pro;if(q)o.pauta={n:q.n,at:q.at||null,e:q.e||null}}return o}
+async function lkAes(l){const k=await lkKey(),priv=await crypto.subtle.importKey("jwk",k.priv,{name:"ECDH",namedCurve:"P-256"},false,["deriveKey"]);
+  const pub=await crypto.subtle.importKey("raw",lkun64(l.proPub),{name:"ECDH",namedCurve:"P-256"},false,[]);
+  return crypto.subtle.deriveKey({name:"ECDH",public:pub},priv,{name:"AES-GCM",length:256},false,["encrypt"])}
+async function lkSeal(aes,id,obj){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode(id)},aes,new TextEncoder().encode(JSON.stringify(obj)));return{iv:lkb64(iv),ct:lkb64(ct)}}
+const lkHash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36)};
+let LKP_BUSY=false;
+async function lkPush(force){if(!S.acct||LKP_BUSY||!S.lk||!S.lk.links)return;LKP_BUSY=true;
+  try{const st=LS("sustrato-lkpush")||{};
+    for(const l of S.lk.links.filter(x=>x.state==="active"&&x.proPub)){
+      const P=l.perms||{},sig=lkHash(JSON.stringify(P)),s0=st[l.id]||{},reset=s0.pk!==l.proPub||s0.sig!==sig,days=reset?{}:Object.assign({},s0.days||{});
+      if(!force&&!reset&&!l.live&&s0.at&&Date.now()-s0.at<20*36e5)continue; /* resumen diario */
+      const from=P.hist?shiftKey(today(),-LKP_HIST):(l.acc?new Date(l.acc).toISOString().slice(0,10):today()),items=[],aes=await lkAes(l);
+      for(let k=from;k<=shiftKey(today(),7);k=shiftKey(k,1)){const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;
+        items.push(Object.assign({k},await lkSeal(aes,l.id,d||{empty:true})));days[k]=h}
+      const meta=lkMeta(P),mh=lkHash(JSON.stringify(meta));if(mh!==days.meta){items.push(Object.assign({k:"meta"},await lkSeal(aes,l.id,meta)));days.meta=mh}
+      if(!items.length&&!reset){st[l.id]=Object.assign({},s0,{at:Date.now()});continue}
+      for(let i=0;i<items.length;i+=100)await lkCall("/link/push",{id:l.id,items:items.slice(i,i+100),reset:reset&&i===0});
+      st[l.id]={pk:l.proPub,sig,days,at:Date.now()}}
+    LS("sustrato-lkpush",st)}catch(e){}finally{LKP_BUSY=false}}
+/* cuándo: al abrir y al volver a la app; en directo, cada 3 minutos mientras está abierta */
+async function lkTick(force){if(!S.acct)return;if(!S.lk.links)await lkLoad();await lkPush(force)}
+setTimeout(()=>lkTick(false),9000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")lkTick(false)});
+setInterval(()=>{if(document.visibilityState==="visible"&&S.lk&&(S.lk.links||[]).some(l=>l.state==="active"&&l.live))lkPush(false)},180000);
 
 })();
 </script>
