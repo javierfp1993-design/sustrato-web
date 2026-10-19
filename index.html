@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T10:51:04.787Z">
+<meta name="sustrato-version" content="2026-10-19T11:11:02.811Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3297,6 +3297,16 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pro-in{margin:0 0 4px}
 .pro-l{display:flex;flex-direction:column}.pro-l .tg-r+.tg-r{border-top:1px solid var(--sep)}
 .ws-pro{width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* v333 · Pauta de tu profesional: quién la manda, lo que cambia (antes tachado, propuesto en negrita), su nota y aceptar */
+.pp-who{display:flex;align-items:center;gap:12px}
+.pp-av{flex:0 0 44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--fg);font-size:calc(19px*var(--tz,1));font-weight:600}
+.pp-wt{display:flex;flex-direction:column;gap:2px;min-width:0}.pp-wt b{font-size:calc(17px*var(--tz,1));font-weight:600}.pp-wt small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.pp-rows{background:var(--card2);border-radius:14px;padding:0 14px}
+.pp-r{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;font-size:calc(15px*var(--tz,1))}.pp-r+.pp-r{border-top:1px solid var(--sep)}
+.pp-v{display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums}.pp-v s{color:var(--muted);font-size:calc(13px*var(--tz,1))}.pp-v b{font-weight:600}
+.pp-note{margin:0;padding:12px 14px;background:var(--card2);border-radius:14px;font-size:calc(15px*var(--tz,1));line-height:1.4}
+.pp-in{display:flex;gap:8px;align-items:center}.pp-in input{flex:1;min-width:0}
+.pp-err{margin:0;font-size:calc(13px*var(--tz,1));color:var(--rojo)}
 
 </style>
 
@@ -3384,7 +3394,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="332";
+const APP_VER="333";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3570,7 +3580,7 @@ function dayTargets(k,raw){
   if(stp!=null){const extra=Math.max(0,stp-actSteps(k));neat=b.bmr*0.12+extra*0.0005*w;bySteps=true}
   if(!raw&&p.adaptOn&&S.adaptF&&S.adaptF!==1){adapt=(b.bmr+neat)*(S.adaptF-1);neat+=adapt}
   const tdee=b.bmr+neat+ex;
-  const g=GOALS[p.goal]||GOALS.recomp;
+  const g=ppGoal(p); /* v333: con la pauta del profesional encima, si la hay */
   /* v317 · Alrededor de una carrera no se recorta: el día de la carrera y el siguiente (recuperación) van sin déficit */
   const rcOf=d=>plannedFor(d).find(x=>x.race&&!x.skip),raceDay=rcOf(k),recRace=rcOf(shiftKey(k,-1)),recDay=recRace&&(recRace.dur||0)>=60?recRace:null;
   let kcal=tdee*(1+(raceDay||recDay?Math.max(0,g.adj):g.adj));if(kcal<b.bmr)kcal=b.bmr;
@@ -7421,7 +7431,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7815,6 +7825,9 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
   /* v286: archivos FIT, sin cuenta; completan lo que ya hay o añaden lo que falte */
   {const n=Object.keys(S.fit||{}).length;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 18v-6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/></svg></span>`,"Archivos FIT",`<span>${S.fitLast?esc(S.fitLast):"De tu reloj o de Garmin Connect, COROS, Suunto… Completan los entrenos que ya tienes o añaden los que falten."}</span>`,n?`<span class="cn-st">${n} importado${n>1?"s":""}</span>`:"")
     +`<label class="cn-a${S.fitBusy?" fit-busy":""}" for="fitin">${S.fitBusy?"Importando…":"Importar archivos"}</label><input type="file" id="fitin" accept=".fit,application/octet-stream" multiple hidden${S.fitBusy?" disabled":""}>`)}
+  /* v333: tu profesional (pauta por enlace) */
+  {const q=(S.profile||{}).pro;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span>`,"Tu profesional",`<span>${q?"Pauta de "+esc(q.n)+" · "+esc(PP_ROLE[q.r]||""):"Tu entrenador o nutricionista te manda su pauta con un enlace."}</span>`,q?`<span class="cn-st cx-ok">Pauta activa</span>`:"")
+    +`<button type="button" class="cn-a" data-act="ppopen">${q?"Ver pauta":"Añadir pauta"}</button>`)}
   return`<section class="glass pad fade cx-card"><span class="pkk">Conexiones</span>${G.map(g=>`<div class="cn-g">${g}</div>`).join("")}</section>`
     +(a&&!S.acDel?`<div class="cn-del"><button type="button" data-act="acdel">Borrar mi cuenta y mis datos</button><p>Borra del servidor todo lo sincronizado. Pide confirmación.</p></div>`:"")}
 function knowCard(){return`<section class="glass pad fade kn-card"><span class="pkk">Conoce Sustrato</span><div class="kn">
@@ -9630,6 +9643,45 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   const on=proOn(),k=t.dataset.proon;on[k]=!on[k];LS("sustrato-proshare",on);t.setAttribute("aria-checked",String(!!on[k]));
   const u=await proRender().catch(()=>null);if(!S.share)return;S.share.url=u;S.share.busy=false;const pv=document.querySelector("#shsheet .sh-prev");
   if(pv)pv.innerHTML=u?`<img src="${u}" alt="Resumen para tu profesional">`:`<p class="note">Enciende al menos una parte para crear el resumen.</p>`;const g=document.querySelector("#shsheet .sh-go");if(g)g.disabled=!u});
+
+/* ---------- Pauta de tu profesional (v333) ----------
+   El sentido inverso del resumen: tu entrenador o nutricionista rellena sustrato.app/pauta y te manda un enlace. La pauta va
+   dentro del enlace, tras «#», que el navegador nunca envía a ningún servidor. Tú la ves junto a lo que tienes ahora y la
+   aceptas o no. Aceptada, cambia el cálculo de tus objetivos (dayTargets lee S.profile.pro) hasta que la quites.
+   Campos: g objetivo, adj ajuste de energía, p proteína g/kg, f grasa g/kg, c hidratos mínimos g/kg, n nombre, r profesión, a para quién, x nota, t fecha */
+const PP_ROLE={diet:"Dietista-nutricionista",coach:"Entrenador/a",med:"Médico/a deportivo",otro:"Profesional"};
+function ppParse(s){try{s=String(s||"").trim();const m=s.match(/[#&]p=([A-Za-z0-9_-]+)/)||s.match(/^([A-Za-z0-9_-]{20,})$/);if(!m)return null;
+  const b=m[1].replace(/-/g,"+").replace(/_/g,"/"),bin=atob(b+"===".slice((b.length+3)%4)),o=JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0))));
+  if(!o||o.v!==1||!o.n)return null;const nm=(v,lo,hi)=>v==null||v===""?null:Math.max(lo,Math.min(hi,+v));
+  return{v:1,n:String(o.n).slice(0,60),r:PP_ROLE[o.r]?o.r:"otro",a:o.a?String(o.a).slice(0,60):"",g:GOALS[o.g]?o.g:null,adj:nm(o.adj,-25,15),p:nm(o.p,1.2,2.6),f:nm(o.f,.6,1.5),c:nm(o.c,2,6),x:o.x?String(o.x).slice(0,400):"",t:String(o.t||"").slice(0,10)}}catch(e){return null}}
+/* objetivo con la pauta encima (lo que no pauta, queda como lo calcula la app) */
+function ppGoal(p){const g0=GOALS[(p.pro&&p.pro.g)||p.goal]||GOALS.recomp,q=p.pro;if(!q)return g0;
+  return Object.assign({},g0,q.adj!=null?{adj:q.adj/100}:{},q.p!=null?{p:q.p}:{},q.f!=null?{f:q.f}:{},q.c!=null?{cmin:q.c}:{})}
+function ppRows(q,cur){const f1=v=>(+v).toFixed(1).replace(".",","),pc=v=>(v>0?"+":v<0?"−":"")+Math.abs(Math.round(v*100))+" %";
+  return[["Objetivo",q.g?GOALS[q.g].label:null,cur.label],["Energía",q.adj!=null?pc(q.adj/100):null,pc(cur.adj)],["Proteína",q.p!=null?f1(q.p)+" g/kg":null,f1(cur.p)+" g/kg"],
+    ["Grasa",q.f!=null?f1(q.f)+" g/kg":null,f1(cur.f)+" g/kg"],["Hidratos mínimos",q.c!=null?f1(q.c)+" g/kg":null,f1(cur.cmin)+" g/kg"]].filter(r=>r[1]!=null)}
+function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
+  const rows=(x,cur,label)=>`<div class="pp-rows">${ppRows(x,cur).map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`;
+  const note=x=>x.x?`<blockquote class="pp-note">${esc(x.x)}</blockquote>`:"";
+  let body;
+  if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${rows(q,base,true)}${note(q)}
+    <button type="button" class="btn primary pa-go" data-act="ppok">Aceptar pauta</button><div class="pa-ex"><button type="button" class="ms-link" data-act="ppno">Ahora no</button></div>`;
+  else if(act)body=`${who(act)}<p class="pa-note">Pauta activa: tus objetivos de cada día se calculan con ella.</p>${rows(act,base,false)}${note(act)}
+    <div class="pa-f"><span class="pa-l">¿Te ha mandado otra?</span><div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div></div>
+    <div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`;
+  else body=`<p class="pa-note">Tu entrenador o nutricionista rellena su pauta en sustrato.app/pauta y te manda un enlace. Pégalo aquí: verás lo que cambia antes de aceptarlo.</p>
+    <div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div>${S.ppErr?`<p class="pp-err" role="alert">Ese enlace no trae una pauta válida.</p>`:""}`;
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
+    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${body}</div></div>`}
+function ppOpen(q){S.ppIn=q||null;S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act^='pp']");if(!t)return;const a=t.dataset.act;
+  if(a==="ppopen"){ppOpen(null);return}
+  if(a==="ppclose"||a==="ppno"){S.ppIn=null;S.sheet=null;renderModal();return}
+  if(a==="ppread"){const i=$("#ppurl"),q=ppParse(i&&i.value);S.ppSh=true;if(q){S.ppIn=q;S.ppErr=false}else S.ppErr=true;renderModal();return}
+  if(a==="ppok"&&S.ppIn){S.profile=Object.assign({},S.profile,{pro:Object.assign({},S.ppIn,{at:today()})});saveProfile(true);S.ppIn=null;S.sheet=null;renderModal();render();toast("Pauta aceptada · "+S.profile.pro.n);return}
+  if(a==="ppdel"){const p=Object.assign({},S.profile);delete p.pro;S.profile=p;saveProfile(true);S.ppSh=true;renderModal();render();toast("Pauta quitada");return}});
+/* al abrir la app con el enlace de una pauta (sustrato.app/…#p=…) */
+setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(null,"",location.pathname+location.search);ppOpen(q)}}catch(e){}},1500);
 
 })();
 </script>
