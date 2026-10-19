@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T11:34:54.891Z">
+<meta name="sustrato-version" content="2026-10-19T12:15:44.238Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3317,6 +3317,14 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .fl-off .tg-r{gap:12px}.fl-off .fl-gel{align-self:center}
 .fl-kv b{white-space:nowrap}
 .fl-kv b small.u{display:inline}
+/* v335 · Avituallamiento y tasa de sudor: misma fila (icono, texto, interruptor); el resumen se toca para cambiarlo */
+.sw-drop{color:var(--cian)}
+.sw-box .tg-r,.fl-box .tg-r{gap:12px}
+.fl-sum{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.fl-chg{align-self:flex-start}
+.sw-on .sw-g{margin-top:12px}
+/* v335 · El aviso (con «Deshacer») por encima de las hojas: antes quedaba debajo y no se podía tocar */
+.toast{z-index:80}
 
 </style>
 
@@ -3404,7 +3412,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="334";
+const APP_VER="335";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4676,12 +4684,15 @@ function weightVerdict(){const W=(S.weights||[]).filter(x=>x.d>=shiftKey(today()
   return Math.abs(wk)<=0.3?["ok",t+" · estable"]:["mid",t+(wk>0?" · sube":" · baja")]}
 
 /* ---------- Tasa de sudor ---------- */
-function sweatBlock(a){if(a.sport==="str"||a.mov<1800)return"";const ex=(S.sweat||[]).find(x=>x.id===a.id);
-  if(!ex&&!(S.swOn||{})[a.id])return`<div class="sw-box sw-off"><div class="tg-r"><span class="tg-t"><b>Me pesé antes y después</b><small>Con eso calculo tu tasa de sudor real</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Me pesé antes y después" data-swon="${a.id}"></button></div></div>`;
+/* v335 · Fila con interruptor siempre visible y sin mínimo de tiempo; apagarlo con datos los borra y ofrece deshacer (104) */
+const SW_DROP=`<span class="fl-gel sw-drop" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/><path d="M9.5 15.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></span>`;
+function swRow(a,on,sub){return`<div class="tg-r">${SW_DROP}<span class="tg-t"><b>Me pesé antes y después</b><small>${sub}</small></span><button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Me pesé antes y después" data-swon="${a.id}"></button></div>`}
+function sweatBlock(a){if(!a.mov)return"";const ex=(S.sweat||[]).find(x=>x.id===a.id);
+  if(!ex&&!(S.swOn||{})[a.id])return`<div class="sw-box sw-off">${swRow(a,false,"Con eso calculo tu tasa de sudor real")}</div>`;
   const f=(id,l,u,v,ph)=>`<label class="sw-f" for="${id}"><span>${l}</span><span class="sw-in"><input id="${id}" inputmode="decimal" placeholder="${String(ph).replace(".",",")}" value="${v!=null?String(v).replace(".",","):""}"><i>${u}</i></span></label>`;
-  return`<div class="sw-box${ex?"":" sw-on"}">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Me pesé antes y después</b><small>Sin ropa mojada, y apunta lo que bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Me pesé antes y después" data-swon="${a.id}"></button></div>`}<div class="sw-h"><span class="sw-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><h2>Tu tasa de sudor</h2><p>${ex?"Calculada en esta sesión":"Pésate justo antes y justo después, sin ropa mojada, y apunta lo que bebiste."}</p></div>${ex?`<b class="sw-r">${ex.rate.toFixed(2).replace(".",",")} L/h</b>`:""}</div>
+  return`<div class="sw-box sw-on">${swRow(a,true,ex?`${ex.rate.toFixed(2).replace(".",",")} L/h de sudor${ex.temp!=null?" con "+Math.round(ex.temp)+" °C":""}`:"Sin ropa mojada, y apunta lo que bebiste")}
     <div class="sw-g">${f("sw_pre","Peso antes","kg",ex&&ex.pre,(num((S.profile||{}).weight)||"")+"")}${f("sw_post","Peso después","kg",ex&&ex.post,"")}${f("sw_drk","Bebido","ml",ex&&ex.drank,"0")}</div>
-    <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button>${ex?`<button class="chip sm danger" data-sweatdel="${a.id}">Borrar</button>`:""}</div></div>`}
+    <div class="sw-a"><button class="btn sm primary" data-sweat="${a.id}">${ex?"Recalcular":"Calcular y guardar"}</button></div></div>`}
 function sweatCard(){const L=(S.sweat||[]).slice().sort((a,b)=>a.d<b.d?-1:1);
   const how=`<ol class="sw-how"><li>Pésate justo antes de una sesión de al menos 45 minutos.</li><li>Apunta lo que bebas durante.</li><li>Sécate y vuelve a pesarte al terminar.</li><li>Abre la actividad en Sustrato y rellena "Tu tasa de sudor".</li></ol>`;
   if(!L.length)return`<section class="glass pad fade sw-card"><span class="pkk">Tasa de sudor</span><div class="sw-empty"><span class="sw-ic big" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 3.5s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z"/></svg></span><div><b>Hidratación a tu medida</b><p>Cada persona suda distinto. Con una prueba sencilla, el avituallamiento y el agua del día usan tus litros por hora reales en lugar de una media.</p></div></div>${how}${saltBlock()}</section>`;
@@ -4768,6 +4779,8 @@ function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!
 const FL_GEL=`<span class="fl-gel" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10 9.5 6.5V3.5h5v3L17 10v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M9.5 6.5h5"/><path d="M10 14h4M10 17h4"/></svg></span>`;
 const PT_DEF=[{id:"g25",n:"Gel 25 g",t:"gel",c:25,caf:0,na:0},{id:"g45",n:"Gel 45 g",t:"gel",c:45,caf:0,na:0},{id:"g25c",n:"Gel 25 g con cafeína",t:"gel",c:25,caf:75,na:0},{id:"iso",n:"Isotónico 500 ml",t:"drink",c:30,caf:0,na:300},{id:"bar",n:"Barrita",t:"bar",c:25,caf:0,na:0},{id:"ban",n:"Plátano",t:"food",c:25,caf:0,na:0}];
 const PT_T={gel:["Gel","var(--amarillo)"],drink:["Bebida","var(--cian)"],bar:["Barrita","var(--naranja)"],food:["Comida","var(--verde)"]};
+/* v335 · Fila con interruptor siempre visible (como la tasa de sudor): encendido = hay algo apuntado o lo estás apuntando */
+function flRow(a,on,sub){return`<div class="tg-r">${FL_GEL}<span class="tg-t"><b>Tomé algo durante la sesión</b><small>${sub}</small></span><button class="tg-sw" role="switch" aria-checked="${on}" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div>`}
 function pantry(){const own=S.pantry||[];return own.concat(PT_DEF.filter(d=>!own.some(o=>o.id===d.id)))}
 function ptById(id){return pantry().find(p=>p.id===id)}
 function ptSub(p){return[p.c+" g hidratos",p.caf?p.caf+" mg cafeína":null,p.na?p.na+" mg sodio":null].filter(Boolean).join(" · ")}
@@ -4783,13 +4796,14 @@ function flTotals(items){let c=0,caf=0,na=0;(items||[]).forEach(it=>{const p=ptB
 function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c:ex.carbs||0,caf:ex.caf||0,na:ex.na||0},kg=num((S.profile||{}).weight)||70;
   const its=(ex.items||[]).map(it=>{const p=ptById(it.pid);if(!p)return"";return`<li><i style="background:${(PT_T[p.t]||PT_T.food)[1]}" aria-hidden="true"></i><span>${esc(p.n)}</span><b>× ${it.q}</b></li>`}).join("");
   const gi={good:"Te sentó bien",meh:"Te sentó regular",bad:"Tuviste molestias"}[ex.gi]||"",pl=ex.src==="plan"?"según lo previsto":"";
-  return`<div class="fl-box fl-done" id="flbox"><div class="sw-h">${FL_GEL}<div><h2>Lo que tomaste</h2><p>${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}</p></div><button type="button" class="chip sm" data-fledit="${esc(a.id)}">Editar</button></div>
+  return{line:`${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}`,body:`<div class="fl-sum">
     ${its?`<ul class="fl-list">${its}</ul>`:""}
-    <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div></div>`}
+    <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div>
+    <button type="button" class="ms-link fl-chg" data-fledit="${esc(a.id)}">Cambiar lo que tomaste</button></div>`}}
 function fuelBlock(a){if(!a.mov)return""; /* v334: en cualquier actividad, sin mínimo de tiempo */const ex=flEntry(a);
-  if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
+  if(ex&&S.flEditId!==a.id){const m=flSummary(a,ex);return`<div class="fl-box fl-done" id="flbox">${flRow(a,true,m.line)}${m.body}</div>`}
   /* v326: sin nada apuntado, una fila con conmutador; al encenderlo se despliega lo de abajo (104) */
-  if(!ex&&!(S.flOn||{})[a.id])return`<div class="fl-box fl-off" id="flbox"><div class="tg-r">${FL_GEL}<span class="tg-t"><b>Tomé algo durante la sesión</b><small>Geles, bebida o comida: así aprendo cuántos hidratos por hora toleras</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div></div>`;
+  if(!ex&&!(S.flOn||{})[a.id])return`<div class="fl-box fl-off" id="flbox">${flRow(a,false,"Geles, bebida o comida: así aprendo cuántos hidratos por hora toleras")}</div>`;
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
   const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelFor(a.day,a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
   const used=new Set(dr.items.map(i=>i.pid)),uses={},last={};(S.fuel||[]).forEach(f=>(f.items||[]).forEach(it=>{uses[it.pid]=(uses[it.pid]||0)+1;if(!last[it.pid]||f.d>last[it.pid])last[it.pid]=f.d}));
@@ -4797,7 +4811,7 @@ function fuelBlock(a){if(!a.mov)return""; /* v334: en cualquier actividad, sin m
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
   const row=it=>{const p=ptById(it.pid);if(!p)return"";const tt=PT_T[p.t]||PT_T.food;return`<div class="fl-it"><span class="fl-dot" style="background:${tt[1]}" aria-hidden="true"></span><span class="fl-nm"><b>${esc(p.n)}</b><small>${esc(ptSub(p))}</small></span><div class="str-step"><button type="button" data-fl="${esc(p.id)}|-1" aria-label="Uno menos">−</button><b>${it.q}</b><button type="button" data-fl="${esc(p.id)}|1" aria-label="Uno más">+</button></div></div>`};
   const nf=S.flNew;
-  return`<div class="fl-box${ex?"":" fl-on"}" id="flbox">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Añade lo que comiste y bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div>`}<div class="sw-h">${FL_GEL}<div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
+  return`<div class="fl-box fl-on" id="flbox">${flRow(a,true,ex?(ex.src==="plan"&&!dr.items.length?`Marcado según lo previsto (${ex.carbs} g): añade lo que tomaste para afinarlo`:"Cambia lo que tomaste"):"Añade lo que comiste y bebiste")}
     ${dr.items.length?`<div class="fl-items">${dr.items.map(row).join("")}</div>`:""}
     <div class="fl-add"><span class="fl-lbl">${dr.items.length?"Añadir otro":"Añadir"}</span><div class="fl-chips">${avail.map(p=>`<button type="button" class="fl-chip" data-fladd="${esc(p.id)}"><i style="background:${(PT_T[p.t]||PT_T.food)[1]}"></i>${esc(p.n)}</button>`).join("")}${hid>0?`<button type="button" class="fl-chip fl-more" data-flall="1">Ver todos (${ranked.length})</button>`:S.flAll&&ranked.length>4?`<button type="button" class="fl-chip fl-more" data-flall="0">Ver menos</button>`:""}<button type="button" class="fl-chip fl-new" data-flnew="1" aria-expanded="${!!nf}">＋ Nuevo producto</button></div></div>
     ${nf?`<div class="fl-form"><label class="sw-f fl-wide" for="flp_n"><span>Marca y producto</span><input id="flp_n" placeholder="Ej.: Maurten Gel 100 Caf" value="${esc(nf.n||"")}" autocomplete="off"></label>
@@ -9562,8 +9576,15 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
    descarta el borrador. Con datos guardados se ve el resumen, como antes. El aviso rápido de Hoy («¿Qué tomaste?») sigue igual. */
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-flon],[data-swon]");if(!t||t.dataset.tgGo!=="1")return; /* el conmutador (071) se mueve y vuelve a pulsar */
   e.preventDefault();e.stopPropagation();
-  if(t.dataset.flon){const id=t.dataset.flon;S.flOn=S.flOn||{};S.flOn[id]=!S.flOn[id];if(!S.flOn[id]){if(S.flDraft&&S.flDraft.id===id)S.flDraft=null;S.flNew=null}}
-  else{const id=t.dataset.swon;S.swOn=S.swOn||{};S.swOn[id]=!S.swOn[id]}
+  /* v335: con algo guardado, apagar lo borra y ofrece deshacer */
+  if(t.dataset.flon){const id=t.dataset.flon,a=S.acts.find(x=>x.id===id),ex=a&&flEntry(a);S.flOn=S.flOn||{};
+    if(ex&&t.getAttribute("aria-checked")==="false"){const keep=JSON.parse(JSON.stringify(ex));flPut(a,null);S.flOn[id]=false;S.flEditId=null;S.flDraft=null;S.flNew=null;renderModal();render();
+      undoToast("Avituallamiento borrado",()=>{flPut(a,keep);renderModal();render()});return}
+    S.flOn[id]=!S.flOn[id];if(!S.flOn[id]){if(S.flDraft&&S.flDraft.id===id)S.flDraft=null;S.flNew=null;S.flEditId=null}}
+  else{const id=t.dataset.swon,ex=(S.sweat||[]).find(x=>x.id===id);S.swOn=S.swOn||{};
+    if(ex&&t.getAttribute("aria-checked")==="false"){S.sweat=S.sweat.filter(x=>x.id!==id);S.swOn[id]=false;saveSweat();renderModal();render();
+      undoToast("Tasa de sudor borrada",()=>{S.sweat=(S.sweat||[]).concat([ex]);saveSweat();renderModal();render()});return}
+    S.swOn[id]=!S.swOn[id]}
   renderModal()},true);
 
 /* v327 · Peso › Composición. Cruza peso, masa magra y grasa en kg de cambio desde el inicio del periodo, en una sola escala
