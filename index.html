@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T11:11:02.811Z">
+<meta name="sustrato-version" content="2026-10-19T11:34:54.891Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3307,6 +3307,16 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pp-note{margin:0;padding:12px 14px;background:var(--card2);border-radius:14px;font-size:calc(15px*var(--tz,1));line-height:1.4}
 .pp-in{display:flex;gap:8px;align-items:center}.pp-in input{flex:1;min-width:0}
 .pp-err{margin:0;font-size:calc(13px*var(--tz,1));color:var(--rojo)}
+/* v334 · Lo que tomaste: el gel en la fila del título (no centrado con todo el bloque); la línea de g/h debajo, a todo el ancho */
+.fl-gel{flex:0 0 24px;width:24px;height:24px;display:grid;place-items:center;color:var(--amarillo)}
+.fl-box .sw-h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:10px;row-gap:4px}
+.fl-box .sw-h>div{display:contents}
+.fl-box .sw-h .fl-gel{grid-column:1;grid-row:1}.fl-box .sw-h h2{grid-column:2;grid-row:1;margin:0}
+.fl-box .sw-h>button,.fl-box .sw-h>.chip{grid-column:3;grid-row:1}
+.fl-box .sw-h p{grid-column:1/-1;grid-row:2;margin:0}
+.fl-off .tg-r{gap:12px}.fl-off .fl-gel{align-self:center}
+.fl-kv b{white-space:nowrap}
+.fl-kv b small.u{display:inline}
 
 </style>
 
@@ -3394,7 +3404,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="333";
+const APP_VER="334";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4754,6 +4764,8 @@ function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!
   return`<section class="glass pad fade ws-tease"><div><span class="pkk">Tu semana pasada</span><p>${st.n} entrenos · ${fmtDur(st.t)}${st.cmp.n?` · plan ${st.cmp.ok}/${st.cmp.n}`:""}</p></div><button class="btn sm primary" data-wkgo="${lw}">Ver resumen</button></section>`}
 
 /* ---------- Avituallamiento real ---------- */
+/* v334 · Icono de gel (sobre con boquilla y muesca), sin tesela, en el amarillo de los hidratos */
+const FL_GEL=`<span class="fl-gel" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10 9.5 6.5V3.5h5v3L17 10v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M9.5 6.5h5"/><path d="M10 14h4M10 17h4"/></svg></span>`;
 const PT_DEF=[{id:"g25",n:"Gel 25 g",t:"gel",c:25,caf:0,na:0},{id:"g45",n:"Gel 45 g",t:"gel",c:45,caf:0,na:0},{id:"g25c",n:"Gel 25 g con cafeína",t:"gel",c:25,caf:75,na:0},{id:"iso",n:"Isotónico 500 ml",t:"drink",c:30,caf:0,na:300},{id:"bar",n:"Barrita",t:"bar",c:25,caf:0,na:0},{id:"ban",n:"Plátano",t:"food",c:25,caf:0,na:0}];
 const PT_T={gel:["Gel","var(--amarillo)"],drink:["Bebida","var(--cian)"],bar:["Barrita","var(--naranja)"],food:["Comida","var(--verde)"]};
 function pantry(){const own=S.pantry||[];return own.concat(PT_DEF.filter(d=>!own.some(o=>o.id===d.id)))}
@@ -4771,13 +4783,13 @@ function flTotals(items){let c=0,caf=0,na=0;(items||[]).forEach(it=>{const p=ptB
 function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c:ex.carbs||0,caf:ex.caf||0,na:ex.na||0},kg=num((S.profile||{}).weight)||70;
   const its=(ex.items||[]).map(it=>{const p=ptById(it.pid);if(!p)return"";return`<li><i style="background:${(PT_T[p.t]||PT_T.food)[1]}" aria-hidden="true"></i><span>${esc(p.n)}</span><b>× ${it.q}</b></li>`}).join("");
   const gi={good:"Te sentó bien",meh:"Te sentó regular",bad:"Tuviste molestias"}[ex.gi]||"",pl=ex.src==="plan"?"según lo previsto":"";
-  return`<div class="fl-box fl-done" id="flbox"><div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}</p></div><button type="button" class="chip sm" data-fledit="${esc(a.id)}">Editar</button></div>
+  return`<div class="fl-box fl-done" id="flbox"><div class="sw-h">${FL_GEL}<div><h2>Lo que tomaste</h2><p>${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}</p></div><button type="button" class="chip sm" data-fledit="${esc(a.id)}">Editar</button></div>
     ${its?`<ul class="fl-list">${its}</ul>`:""}
-    <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+" mg":"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+" mg":"—"}</b></div></div></div>`}
-function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a);
+    <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div></div>`}
+function fuelBlock(a){if(!a.mov)return""; /* v334: en cualquier actividad, sin mínimo de tiempo */const ex=flEntry(a);
   if(ex&&S.flEditId!==a.id)return flSummary(a,ex);
   /* v326: sin nada apuntado, una fila con conmutador; al encenderlo se despliega lo de abajo (104) */
-  if(!ex&&!(S.flOn||{})[a.id])return`<div class="fl-box fl-off" id="flbox"><div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Geles, bebida o comida: así aprendo cuántos hidratos por hora toleras</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div></div>`;
+  if(!ex&&!(S.flOn||{})[a.id])return`<div class="fl-box fl-off" id="flbox"><div class="tg-r">${FL_GEL}<span class="tg-t"><b>Tomé algo durante la sesión</b><small>Geles, bebida o comida: así aprendo cuántos hidratos por hora toleras</small></span><button class="tg-sw" role="switch" aria-checked="false" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div></div>`;
   const dr=S.flDraft&&S.flDraft.id===a.id?S.flDraft:{id:a.id,items:ex&&ex.items?JSON.parse(JSON.stringify(ex.items)):[],gi:ex?ex.gi:null};S.flDraft=dr;
   const T=flTotals(dr.items),h=a.mov/3600,cph=Math.round(T.c/h),tg=fuelFor(a.day,a.mov/60,actInt(a)),kg=num((S.profile||{}).weight)||70;
   const used=new Set(dr.items.map(i=>i.pid)),uses={},last={};(S.fuel||[]).forEach(f=>(f.items||[]).forEach(it=>{uses[it.pid]=(uses[it.pid]||0)+1;if(!last[it.pid]||f.d>last[it.pid])last[it.pid]=f.d}));
@@ -4785,7 +4797,7 @@ function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a
   const avail=S.flAll?ranked:ranked.slice(0,4),hid=ranked.length-avail.length;
   const row=it=>{const p=ptById(it.pid);if(!p)return"";const tt=PT_T[p.t]||PT_T.food;return`<div class="fl-it"><span class="fl-dot" style="background:${tt[1]}" aria-hidden="true"></span><span class="fl-nm"><b>${esc(p.n)}</b><small>${esc(ptSub(p))}</small></span><div class="str-step"><button type="button" data-fl="${esc(p.id)}|-1" aria-label="Uno menos">−</button><b>${it.q}</b><button type="button" data-fl="${esc(p.id)}|1" aria-label="Uno más">+</button></div></div>`};
   const nf=S.flNew;
-  return`<div class="fl-box${ex?"":" fl-on"}" id="flbox">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Añade lo que comiste y bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div>`}<div class="sw-h"><span class="sw-ic fl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v4l-4 6v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6l-4-6V3"/><path d="M6 14h12"/></svg></span><div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
+  return`<div class="fl-box${ex?"":" fl-on"}" id="flbox">${ex?"":`<div class="tg-r"><span class="tg-t"><b>Tomé algo durante la sesión</b><small>Añade lo que comiste y bebiste</small></span><button class="tg-sw" role="switch" aria-checked="true" aria-label="Tomé algo durante la sesión" data-flon="${esc(a.id)}"></button></div>`}<div class="sw-h">${FL_GEL}<div><h2>Lo que tomaste</h2><p>${ex?(ex.src==="plan"&&!dr.items.length?`Marcado como tomado según lo previsto (${ex.carbs} g). Añade lo que tomaste para afinarlo.`:"Guardado. Puedes corregirlo."):"Añade lo que comiste y bebiste durante la sesión."}</p></div>${T.c?`<b class="sw-r">${cph} g/h</b>`:""}</div>
     ${dr.items.length?`<div class="fl-items">${dr.items.map(row).join("")}</div>`:""}
     <div class="fl-add"><span class="fl-lbl">${dr.items.length?"Añadir otro":"Añadir"}</span><div class="fl-chips">${avail.map(p=>`<button type="button" class="fl-chip" data-fladd="${esc(p.id)}"><i style="background:${(PT_T[p.t]||PT_T.food)[1]}"></i>${esc(p.n)}</button>`).join("")}${hid>0?`<button type="button" class="fl-chip fl-more" data-flall="1">Ver todos (${ranked.length})</button>`:S.flAll&&ranked.length>4?`<button type="button" class="fl-chip fl-more" data-flall="0">Ver menos</button>`:""}<button type="button" class="fl-chip fl-new" data-flnew="1" aria-expanded="${!!nf}">＋ Nuevo producto</button></div></div>
     ${nf?`<div class="fl-form"><label class="sw-f fl-wide" for="flp_n"><span>Marca y producto</span><input id="flp_n" placeholder="Ej.: Maurten Gel 100 Caf" value="${esc(nf.n||"")}" autocomplete="off"></label>
@@ -4793,7 +4805,7 @@ function fuelBlock(a){if(a.sport==="str"||a.mov<3600)return"";const ex=flEntry(a
       <div class="sw-g">${[["c","Hidratos","g"],["caf","Cafeína","mg"],["na","Sodio","mg"]].map(([k,l,u])=>`<label class="sw-f" for="flp_${k}"><span>${l}</span><span class="sw-in"><input id="flp_${k}" inputmode="numeric" value="${nf[k]!=null?nf[k]:""}" placeholder="0"><i>${u}</i></span></label>`).join("")}</div>
       <div class="sw-a"><button type="button" class="btn sm primary" data-flpsave="1">Guardar en tu despensa</button><button type="button" class="chip sm" data-flnew="0">Cancelar</button></div></div>`:""}
     ${T.c||T.caf?`<div class="fl-tot">${tg?`<div class="fl-cmp"><div><span>Hidratos</span><b>${cph} g/h</b></div><div class="fl-track"><i style="width:${Math.min(100,cph/100*100).toFixed(0)}%"></i><em style="left:${tg}%" title="Objetivo ${tg} g/h"></em></div><div><span>Objetivo</span><b>${tg} g/h</b></div></div>`:`<div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div>`}
-      <div class="fl-kvs"><div class="fl-kv"><span>Total</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+" mg":"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+" mg":"—"}</b></div></div></div>`:""}
+      <div class="fl-kvs"><div class="fl-kv"><span>Total</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div></div>`:""}
     <div class="fl-gi"><span>¿Cómo te sentó?</span><div class="seg sm" role="group" aria-label="Cómo te sentó">${[["good","Bien"],["meh","Regular"],["bad","Molestias"]].map(([k,l])=>`<button type="button" data-flgi="${k}" aria-pressed="${dr.gi===k}">${l}</button>`).join("")}</div></div>
     <div class="sw-a"><button class="btn sm primary" data-flsave="${a.id}">${ex?"Guardar cambios":"Guardar"}</button>${ex?'<button type="button" class="chip sm" data-fledit="">Cancelar</button>':""}</div></div>`}
 function flReadNew(){const nf=S.flNew;if(!nf)return;const g=id=>($("#"+id)||{}).value;const n=g("flp_n");if(n!=null)nf.n=n;["c","caf","na"].forEach(k=>{const v=g("flp_"+k);if(v!=null)nf[k]=v===""?null:num(v)})}
