@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T12:15:44.238Z">
+<meta name="sustrato-version" content="2026-10-19T12:41:40.979Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3325,6 +3325,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .sw-on .sw-g{margin-top:12px}
 /* v335 · El aviso (con «Deshacer») por encima de las hojas: antes quedaba debajo y no se podía tocar */
 .toast{z-index:80}
+.pp-h{margin:6px 0 -6px}
 
 </style>
 
@@ -3412,7 +3413,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="335";
+const APP_VER="336";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3624,9 +3625,11 @@ function dayTargets(k,raw){
   if(load){const tgt=load.gk*w;if(C<tgt){C=tgt}F=Math.max(0.6*w,Math.min(F,0.8*w));kcal=4*P+4*C+9*F}
   /* el día después de una carrera de 60 min o más, al menos 5 g/kg para reponer (lo que dice la tarjeta de carrera) */
   if(recDay&&C<5*w){C=5*w;kcal=4*P+4*C+9*F}
+  /* v336: hidratos según el tipo de día de la pauta del profesional (sustituyen a la carga de carrera y a la de mañana) */
+  const ppc=ppCarb(k,w,acts,plan);if(ppc){C=ppc.g;kcal=4*P+4*C+9*F;load=null}
   /* Carga para mañana: si lo previsto mañana gasta mucho glucógeno, la cena de hoy sube hidratos */
   let bonus=0,tomorrow=null;const tk=nextKey(k);
-  if(!load&&tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
+  if(!load&&!ppc&&tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
   /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
   let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
@@ -7852,7 +7855,7 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
   {const n=Object.keys(S.fit||{}).length;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 18v-6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/></svg></span>`,"Archivos FIT",`<span>${S.fitLast?esc(S.fitLast):"De tu reloj o de Garmin Connect, COROS, Suunto… Completan los entrenos que ya tienes o añaden los que falten."}</span>`,n?`<span class="cn-st">${n} importado${n>1?"s":""}</span>`:"")
     +`<label class="cn-a${S.fitBusy?" fit-busy":""}" for="fitin">${S.fitBusy?"Importando…":"Importar archivos"}</label><input type="file" id="fitin" accept=".fit,application/octet-stream" multiple hidden${S.fitBusy?" disabled":""}>`)}
   /* v333: tu profesional (pauta por enlace) */
-  {const q=(S.profile||{}).pro;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span>`,"Tu profesional",`<span>${q?"Pauta de "+esc(q.n)+" · "+esc(PP_ROLE[q.r]||""):"Tu entrenador o nutricionista te manda su pauta con un enlace."}</span>`,q?`<span class="cn-st cx-ok">Pauta activa</span>`:"")
+  {const q=(S.profile||{}).pro;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span>`,"Tu profesional",`<span>${q?"Pauta de "+esc(q.n)+" · "+esc(PP_ROLE[q.r]||"")+(ppActive()?"":" · ya no está en vigor"):"Tu entrenador o nutricionista te manda su pauta con un enlace."}</span>`,q?(ppActive()?`<span class="cn-st cx-ok">Pauta activa</span>`:`<span class="cn-st">Caducada</span>`):"")
     +`<button type="button" class="cn-a" data-act="ppopen">${q?"Ver pauta":"Añadir pauta"}</button>`)}
   return`<section class="glass pad fade cx-card"><span class="pkk">Conexiones</span>${G.map(g=>`<div class="cn-g">${g}</div>`).join("")}</section>`
     +(a&&!S.acDel?`<div class="cn-del"><button type="button" data-act="acdel">Borrar mi cuenta y mis datos</button><p>Borra del servidor todo lo sincronizado. Pide confirmación.</p></div>`:"")}
@@ -9263,7 +9266,8 @@ function gutPlan(k){k=k||today();const r=raceAhead(k);if(!r||r.inD<2||(r.s.dur||
   return{r,goal,tol,last,next,done:tol!=null&&tol>=goal}}
 /* Hidratos por hora de una sesión ese día: lo de siempre o, si toca, el escalón del plan de estómago */
 function gutFor(k,min,race){if(race||!k||min<75)return null;const g=gutPlan(k);return g&&!g.done?g:null}
-function fuelFor(k,min,it,race){const g=gutFor(k,min,race);return g?g.next:fuelTarget(min,it,race)}
+function fuelFor(k,min,it,race){const q=typeof ppActive==="function"&&ppActive();if(q&&q.fh){const v=q.fh[min<60?"s":min<150?"m":"l"];if(v!=null)return Math.round(v)} /* v336: lo que pauta tu profesional */
+  const g=gutFor(k,min,race);return g?g.next:fuelTarget(min,it,race)}
 /* De dónde sale el escalón: lo tolerado o, si no hay toma sin molestias, cómo fue la última */
 function gutLast(g){if(g.last&&g.last.gi!=="good"&&g.last.gi)return`La última, a ${g.last.cph} g/h, ${g.last.gi==="bad"?"te dio molestias":"te sentó regular"}`;
   return g.tol!=null?`Llevas ${g.tol} g/h sin molestias`:g.last?`La última fue a ${g.last.cph} g/h`:"Aún no hay tomas apuntadas"}
@@ -9683,23 +9687,43 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
    aceptas o no. Aceptada, cambia el cálculo de tus objetivos (dayTargets lee S.profile.pro) hasta que la quites.
    Campos: g objetivo, adj ajuste de energía, p proteína g/kg, f grasa g/kg, c hidratos mínimos g/kg, n nombre, r profesión, a para quién, x nota, t fecha */
 const PP_ROLE={diet:"Dietista-nutricionista",coach:"Entrenador/a",med:"Médico/a deportivo",otro:"Profesional"};
+/* v336 · Pauta completa (v:2). Además de lo anterior: cd hidratos g/kg por tipo de día {rest,easy,mod,hard,pre}; fh g/h durante
+   el entreno por duración {s:<60 min, m:60–150, l:>150}; fl líquido ml/h; na sodio mg/h; pt tomas de proteína; caf cafeína mg/kg;
+   cre creatina g/día; col colegiado; e fin de la vigencia. La v:1 se sigue leyendo. */
+const PP_DAY=[["rest","Descanso"],["easy","Día suave"],["mod","Día moderado"],["hard","Día intenso"],["pre","Víspera de carrera"]],PP_FH=[["s","Hasta 1 h"],["m","1 h a 2 h 30"],["l","Más de 2 h 30"]];
 function ppParse(s){try{s=String(s||"").trim();const m=s.match(/[#&]p=([A-Za-z0-9_-]+)/)||s.match(/^([A-Za-z0-9_-]{20,})$/);if(!m)return null;
   const b=m[1].replace(/-/g,"+").replace(/_/g,"/"),bin=atob(b+"===".slice((b.length+3)%4)),o=JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0))));
-  if(!o||o.v!==1||!o.n)return null;const nm=(v,lo,hi)=>v==null||v===""?null:Math.max(lo,Math.min(hi,+v));
-  return{v:1,n:String(o.n).slice(0,60),r:PP_ROLE[o.r]?o.r:"otro",a:o.a?String(o.a).slice(0,60):"",g:GOALS[o.g]?o.g:null,adj:nm(o.adj,-25,15),p:nm(o.p,1.2,2.6),f:nm(o.f,.6,1.5),c:nm(o.c,2,6),x:o.x?String(o.x).slice(0,400):"",t:String(o.t||"").slice(0,10)}}catch(e){return null}}
+  if(!o||(o.v!==1&&o.v!==2)||!o.n)return null;const nm=(v,lo,hi)=>v==null||v===""||isNaN(+v)?null:Math.max(lo,Math.min(hi,+v)),day=d=>/^\d{4}-\d{2}-\d{2}$/.test(d||"")?d:"";
+  const obj=(x,keys,lo,hi)=>{if(!x||typeof x!=="object")return null;const r={};let n=0;keys.forEach(([k])=>{const v=nm(x[k],lo,hi);if(v!=null){r[k]=v;n++}});return n?r:null};
+  return{v:2,n:String(o.n).slice(0,60),r:PP_ROLE[o.r]?o.r:"otro",col:o.col?String(o.col).slice(0,30):"",a:o.a?String(o.a).slice(0,60):"",g:GOALS[o.g]?o.g:null,adj:nm(o.adj,-25,15),p:nm(o.p,1.2,2.6),f:nm(o.f,.6,1.5),c:nm(o.c,2,6),
+    cd:obj(o.cd,PP_DAY,2,12),fh:obj(o.fh,PP_FH,0,120),fl:nm(o.fl,0,1500),na:nm(o.na,0,1500),pt:nm(o.pt,2,6),caf:nm(o.caf,1,6),cre:nm(o.cre,2,10),x:o.x?String(o.x).slice(0,400):"",t:day(o.t),e:day(o.e)}}catch(e){return null}}
+/* la pauta aceptada y en vigor (si tiene fecha de fin y ya pasó, deja de aplicarse) */
+function ppActive(){const q=(S.profile||{}).pro;return q&&(!q.e||q.e>=today())?q:null}
 /* objetivo con la pauta encima (lo que no pauta, queda como lo calcula la app) */
-function ppGoal(p){const g0=GOALS[(p.pro&&p.pro.g)||p.goal]||GOALS.recomp,q=p.pro;if(!q)return g0;
+function ppGoal(p){const q=ppActive(),g0=GOALS[(q&&q.g)||p.goal]||GOALS.recomp;if(!q)return g0;
   return Object.assign({},g0,q.adj!=null?{adj:q.adj/100}:{},q.p!=null?{p:q.p}:{},q.f!=null?{f:q.f}:{},q.c!=null?{cmin:q.c}:{})}
-function ppRows(q,cur){const f1=v=>(+v).toFixed(1).replace(".",","),pc=v=>(v>0?"+":v<0?"−":"")+Math.abs(Math.round(v*100))+" %";
-  return[["Objetivo",q.g?GOALS[q.g].label:null,cur.label],["Energía",q.adj!=null?pc(q.adj/100):null,pc(cur.adj)],["Proteína",q.p!=null?f1(q.p)+" g/kg":null,f1(cur.p)+" g/kg"],
-    ["Grasa",q.f!=null?f1(q.f)+" g/kg":null,f1(cur.f)+" g/kg"],["Hidratos mínimos",q.c!=null?f1(q.c)+" g/kg":null,f1(cur.cmin)+" g/kg"]].filter(r=>r[1]!=null)}
-function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
-  const rows=(x,cur,label)=>`<div class="pp-rows">${ppRows(x,cur).map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`;
+/* tipo de día para los hidratos de la pauta: víspera de carrera, o según las horas de carga (ponderadas por intensidad) */
+function ppDayType(k,acts,plan){if(plannedFor(nextKey(k)).some(x=>x.race&&!x.skip))return"pre";const W={s:.7,m:1,i:1.3},no=sp=>sp==="walk"||sp==="oth";
+  let h=0,hard=false;acts.forEach(a=>{if(no(a.sport))return;const it=a.sport==="str"?"m":actInt(a),d=(a.mov||0)/3600;h+=d*(W[it]||1);if(it==="i"&&d>=.75)hard=true});
+  plan.forEach(x=>{if(no(x.sport))return;const d=(x.dur||0)/60;h+=d*(W[x.int]||1);if(x.int==="i"&&d>=.75)hard=true});
+  return!h?"rest":hard||h>=2?"hard":h>=1?"mod":"easy"}
+function ppCarb(k,w,acts,plan){const q=ppActive();if(!q||!q.cd)return null;const t=ppDayType(k,acts,plan),v=q.cd[t];return v!=null?{t,g:v*w}:null}
+function ppRows(q,cur){const f1=v=>(+v).toFixed(1).replace(".",","),pc=v=>(v>0?"+":v<0?"−":"")+Math.abs(Math.round(v*100))+" %",G=[];
+  const base=[["Objetivo",q.g?GOALS[q.g].label:null,cur.label],["Energía",q.adj!=null?pc(q.adj/100):null,pc(cur.adj)],["Proteína",q.p!=null?f1(q.p)+" g/kg":null,f1(cur.p)+" g/kg"],
+    ["Grasa",q.f!=null?f1(q.f)+" g/kg":null,f1(cur.f)+" g/kg"],["Hidratos mínimos",q.c!=null?f1(q.c)+" g/kg":null,f1(cur.cmin)+" g/kg"]].filter(r=>r[1]!=null);
+  if(base.length)G.push(["",base]);
+  if(q.cd)G.push(["Hidratos según el día",PP_DAY.filter(([k])=>q.cd[k]!=null).map(([k,l])=>[l,f1(q.cd[k])+" g/kg",null])]);
+  const dur=[];if(q.fh)PP_FH.filter(([k])=>q.fh[k]!=null).forEach(([k,l])=>dur.push([l,q.fh[k]?Math.round(q.fh[k])+" g/h":"Sin hidratos",null]));
+  if(q.fl!=null)dur.push(["Líquido",Math.round(q.fl)+" ml/h",null]);if(q.na!=null)dur.push(["Sodio",Math.round(q.na)+" mg/h",null]);if(dur.length)G.push(["Durante el entreno",dur]);
+  const ind=[];if(q.pt!=null)ind.push(["Proteína repartida en",Math.round(q.pt)+" tomas",null]);if(q.caf!=null)ind.push(["Cafeína antes de entrenar",f1(q.caf)+" mg/kg",null]);if(q.cre!=null)ind.push(["Creatina",f1(q.cre)+" g al día",null]);
+  if(ind.length)G.push(["Indicaciones",ind]);return G}
+function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.col?" · n.º "+esc(x.col):""}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
+  const rows=(x,cur,label)=>ppRows(x,cur).map(([h,L])=>`${h?`<span class="pa-l pp-h">${h}</span>`:""}<div class="pp-rows">${L.map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`).join("")+(x.e?`<p class="pa-note">${x.e<today()?"Caducó el ":"En vigor hasta el "}${esc(dateLabel(x.e))}.</p>`:"");
   const note=x=>x.x?`<blockquote class="pp-note">${esc(x.x)}</blockquote>`:"";
   let body;
   if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${rows(q,base,true)}${note(q)}
     <button type="button" class="btn primary pa-go" data-act="ppok">Aceptar pauta</button><div class="pa-ex"><button type="button" class="ms-link" data-act="ppno">Ahora no</button></div>`;
-  else if(act)body=`${who(act)}<p class="pa-note">Pauta activa: tus objetivos de cada día se calculan con ella.</p>${rows(act,base,false)}${note(act)}
+  else if(act)body=`${who(act)}<p class="pa-note">${ppActive()?"Pauta activa: tus objetivos de cada día se calculan con ella.":"Esta pauta ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}
     <div class="pa-f"><span class="pa-l">¿Te ha mandado otra?</span><div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div></div>
     <div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`;
   else body=`<p class="pa-note">Tu entrenador o nutricionista rellena su pauta en sustrato.app/pauta y te manda un enlace. Pégalo aquí: verás lo que cambia antes de aceptarlo.</p>
