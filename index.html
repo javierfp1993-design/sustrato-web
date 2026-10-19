@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T10:05:32.025Z">
+<meta name="sustrato-version" content="2026-10-19T10:51:04.787Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3293,6 +3293,10 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 /* v331 · Importar plan: icono en la cabecera del calendario de Entrenos (utilidad, no compite con Planificar); gasto real en naranja (energía) */
 .wk-imp{flex:0 0 auto}
 .aline-b i{background:var(--naranja)}
+/* v332 · Resumen para tu profesional: en la hoja de compartir, qué incluir con los interruptores de siempre; botón en Resumen */
+.pro-in{margin:0 0 4px}
+.pro-l{display:flex;flex-direction:column}.pro-l .tg-r+.tg-r{border-top:1px solid var(--sep)}
+.ws-pro{width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 
 </style>
 
@@ -3380,7 +3384,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="331";
+const APP_VER="332";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4725,7 +4729,8 @@ function weekCard(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00
     <div class="ws-g">${tiles.map(([l,v,u,d])=>`<div><span>${l}</span>${(()=>{const phys=/^(km|kg|ppm)$/.test(u);return`<b>${v}${phys&&v!=="—"?` <small>${u}</small>`:""}</b>${u&&(!phys||v==="—")&&!(phys&&v==="—")?`<small class="ws-na">${u}</small>`:""}`})()}${d}</div>`).join("")}</div>
     ${st.longest?`<p class="ws-hl"><span class="ws-star" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>Sesión más larga: ${esc(SPORT_L[st.longest.sport])} · ${fmtDur(st.longest.mov)}${st.longest.dist?" · "+f1(st.longest.dist/1000)+" km":""} el ${esc(dateLabel(st.longest.day))}</p>`:""}
 
-    ${isWk?wrBlock(wk):""}</section>`}
+    ${isWk?wrBlock(wk):""}
+    <button type="button" class="btn ws-pro" data-act="proshare"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 15V3.5M8 7.5l4-4 4 4"/></svg>Enviar a tu profesional</button></section>`}
 /* tramo elegido: por defecto, la semana pasada */
 function sumRange(){const lw=shiftKey(mondayOf(today()),-7);let a=S.sumA||lw,b=S.sumB||shiftKey(lw,6);if(a>b)[a,b]=[b,a];const tk=today();if(b>tk)b=tk;return[a,b]}
 function sumLabel(a,b){const f=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3).toLowerCase()};const n=Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)+1;return(a===b?dateLabel(a):a.slice(0,7)===b.slice(0,7)?(+a.slice(8))+" – "+f(b):f(a)+" – "+f(b))+" · "+n+(n===1?" día":" días")}
@@ -7038,11 +7043,14 @@ async function shRender(p){const d=shData(p);if(!d)return null;
 async function shOpen(p){S.share={p:p||(S.period==="day"?"day":S.period),busy:true,url:null};shSheet();const u=await shRender(S.share.p).catch(()=>null);if(!S.share)return;S.share.busy=false;S.share.url=u;shSheet()}
 function shSheet(){let el=$("#shsheet");const s=S.share;if(!s){if(el)el.remove();document.body.classList.remove("noscroll");return}
   if(!el){el=document.createElement("div");el.id="shsheet";el.setAttribute("role","dialog");el.setAttribute("aria-label","Compartir logros");document.body.appendChild(el)}document.body.classList.add("noscroll");
+  if(s.p==="pro"){el.setAttribute("aria-label","Resumen para tu profesional");el.innerHTML=`<div class="sh-top"><b>Para tu profesional</b><button class="sh-x" data-sh="close" aria-label="Cerrar">✕</button></div>${proHtml()}
+   <button class="btn primary sh-go" data-sh="go" ${s.url?"":"disabled"}>Enviar resumen</button>`;return} /* v332 */
+  el.setAttribute("aria-label","Compartir logros");
   el.innerHTML=`<div class="sh-top"><b>Compartir</b><button class="sh-x" data-sh="close" aria-label="Cerrar">✕</button></div>
    <div class="seg sh-seg" role="group" aria-label="Periodo">${[["day","Día"],["week","Semana"],["month","Mes"],["year","Año"]].map(([k,l])=>`<button data-sh="p:${k}" aria-pressed="${s.p===k}">${l}</button>`).join("")}</div>
    <div class="sh-prev">${s.busy?'<span class="note">Preparando la imagen…</span>':s.url?`<img src="${s.url}" alt="Imagen para compartir">`:`<p class="note">Aún no hay comidas apuntadas ${s.p==="day"?"este día":s.p==="week"?"esta semana":s.p==="month"?"este mes":"este año"}. Apunta lo que comes y aquí tendrás tus logros.</p>`}</div>
    <button class="btn primary sh-go" data-sh="go" ${s.url?"":"disabled"}>Compartir imagen</button>`}
-async function shGo(){const u=S.share&&S.share.url;if(!u)return;const name="sustrato-"+S.share.p+".png";
+async function shGo(){const u=S.share&&S.share.url;if(!u)return;const name=S.share.p==="pro"?"sustrato-resumen-"+sumRange()[0]+".png":"sustrato-"+S.share.p+".png";
   try{if(window.__native&&window.__native.shareImage){await window.__native.shareImage(u,name);return}
     const b=await (await fetch(u)).blob(),f=new File([b],name,{type:"image/png"});
     if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}
@@ -9581,6 +9589,47 @@ function cpView(rg,tog){const from=rg==="all"?"0000":shiftKey(today(),-(+rg)),L=
     <div class="legend"><span><i style="background:var(--fg)"></i>Peso</span><span><i style="background:var(--prot)"></i>Masa magra</span><span><i style="background:var(--fat)"></i>Grasa</span>${est?'<span><i class="cp-dash"></i>Estimado por medidas</span>':""}</div>
     <p class="note" style="margin:8px 0 0">Cambio en kg en ${wk} ${wk===1?"semana":"semanas"}, desde el ${esc(dateLabel(c0.d))}${sc&&est?". Báscula y, donde no la hay, medidas de cintura y cuello":sc?", con tu báscula":", estimado con tus medidas de cintura y cuello"}. Se resalta lo que persigue tu objetivo (${esc((GOALS[g]||GOALS.recomp).label.toLowerCase())}).</p></section>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wtview]");if(!b||b.getAttribute("aria-pressed")==="true")return;S.wtView=b.dataset.wtview;buzz(6);render()});
+
+/* ---------- Resumen para tu profesional (v332) ----------
+   Primer paso del modo profesional (taller/modo-profesional.md): una imagen con la semana para enviarla a tu entrenador o
+   nutricionista. Se genera en el móvil y la envías tú (no pasa por el servidor). Eliges qué incluir; al principio, nada.
+   Sin datos brutos de Strava: solo totales y lo que calcula Sustrato. Reutiliza la hoja de compartir (S.share, shSheet, shGo). */
+const PRO_SEC=[["train","Entrenos","Sesiones, tiempo, distancia y plan cumplido"],["food","Comida","Energía, hidratos y proteína frente a tu objetivo"],["body","Peso","Peso medio y cambio"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"]];
+function proOn(){const v=LS("sustrato-proshare");return v&&typeof v==="object"?v:{}}
+function proData(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00:00")-new Date(wk+"T12:00:00"))/864e5)+1,st=weekStats(wk,end),pv=weekStats(shiftKey(wk,-nd),shiftKey(wk,-1)),tk=today();
+  const kg=num((S.profile||{}).weight)||null,D=[];let np=0;for(let i=0;i<nd;i++){const k=shiftKey(wk,i);if(k>=tk)break;np++;const t=dayTargets(k),e=t?dayEaten(k):null;if(t&&e)D.push({t,e})}
+  const av=f=>D.length?D.reduce((s,d)=>s+f(d),0)/D.length:null,rd=[];for(let i=0;i<nd;i++){const k=shiftKey(wk,i);if(k>tk)break;if((S.rhr||{})[k]||(S.hrv||{})[k]||(S.sleep||{})[k]){try{rd.push(readiness(k).sc)}catch(e){}}}
+  return{wk,end,nd,np,label:sumLabel(wk,end),st,pv,kg,days:D.length,kcal:av(d=>d.e.kcal),kcalT:av(d=>d.t.kcal),C:av(d=>d.e.C),CT:av(d=>d.t.C),P:av(d=>d.e.P),PT:av(d=>d.t.P),rd:rd.length?Math.round(rd.reduce((a,b)=>a+b,0)/rd.length):null}}
+async function proRender(){const on=proOn(),secs=PRO_SEC.filter(([k])=>on[k]);if(!secs.length)return null;const d=proData(),f1=v=>v.toFixed(1).replace(".",","),gk=v=>d.kg?f1(v/d.kg)+" g/kg":fmtInt(v)+" g";
+  const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,P=72;
+  const K=dark?{bg:"#000000",fg:"#f4f5f7",mu:"#8e8e93",card:"#1c1c1e",sep:"#2c2c2e"}:{bg:"#f2f2f7",fg:"#1c1c1e",mu:"#636366",card:"#ffffff",sep:"#e5e5ea"};
+  const rows={train:[["Sesiones",String(d.st.n),d.pv.n!=null?`semana anterior: ${d.pv.n}`:""],["Tiempo",fmtDur(d.st.t),d.pv.t?`antes: ${fmtDur(d.pv.t)}`:""],["Distancia",fmtInt(d.st.km)+" km",""],
+      ["Plan cumplido",d.st.cmp.n?d.st.cmp.ok+" de "+d.st.cmp.n:"Sin plan",""],...(d.st.longest?[["Sesión más larga",`${SPORT_L[d.st.longest.sport]} · ${fmtDur(d.st.longest.mov)}`,dateLabel(d.st.longest.day)]]:[])],
+    food:d.days?[["Días apuntados",d.days+" de "+d.np,""],["Energía",Math.round(d.kcal/d.kcalT*100)+" %",`${fmtInt(d.kcal)} de ${fmtInt(d.kcalT)} kcal al día`],
+      ["Hidratos",gk(d.C),`objetivo ${gk(d.CT)}`],["Proteína",gk(d.P),`objetivo ${gk(d.PT)}`],["Comidas como previstas",d.st.ok+" de "+d.st.meals,""]]:[["Comidas apuntadas","Ninguna",""]],
+    body:[["Peso medio",d.st.w!=null?f1(d.st.w)+" kg":"Sin pesajes",d.st.w!=null&&d.st.w0!=null?`${d.st.w>=d.st.w0?"+":"−"}${f1(Math.abs(d.st.w-d.st.w0))} kg frente a antes`:""]],
+    ready:[["Cómo llegas",d.rd!=null?d.rd+" de 100":"Sin datos","media de la semana"],["Pulso en reposo",d.st.r!=null?Math.round(d.st.r)+" ppm":"Sin datos",d.st.r!=null&&d.st.r0!=null?`antes: ${Math.round(d.st.r0)} ppm`:""],
+      ["Sueño",(d.st.sl.good+d.st.sl.ok+d.st.sl.bad)?d.st.sl.good+" noches buenas de "+(d.st.sl.good+d.st.sl.ok+d.st.sl.bad):"Sin registrar",""]]};
+  const RH=96,HH=86,H=Math.max(1350,330+secs.reduce((s,[k])=>s+HH+rows[k].length*RH+40,0)+120);
+  try{await document.fonts.ready}catch(e){}
+  const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
+  const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
+  const rr=(X,Y,w,h,r,c)=>{x.fillStyle=c;x.beginPath();x.roundRect(X,Y,w,h,r);x.fill()};
+  x.fillStyle=K.bg;x.fillRect(0,0,W,H);{const lg=await shLogo();if(lg)x.drawImage(lg,P,80,64,64)}T("Sustrato",P+84,126,F(700,38),K.fg);
+  const who=((S.profile||{}).name||"").trim();T("Resumen para tu profesional",P,232,F(800,56),K.fg);T((who?who+" · ":"")+d.label,P,286,F(500,34),K.mu);
+  let y=340;secs.forEach(([k,l])=>{const R=rows[k],h=HH+R.length*RH;rr(P-8,y,W-2*P+16,h,32,K.card);T(l,P+24,y+58,F(700,36),K.fg);
+    R.forEach(([a,b,c],i)=>{const ry=y+HH+i*RH;if(i){x.fillStyle=K.sep;x.fillRect(P+24,ry,W-2*P-40,2)}T(a,P+24,ry+(c?44:58),F(500,32),K.fg);if(c)T(c,P+24,ry+80,F(500,26),K.mu);T(b,W-P-16,ry+58,F(700,34),K.fg,"right")});y+=h+40});
+  T("Estimaciones de Sustrato a partir de tus datos · sustrato.app",W/2,H-60,F(500,26),K.mu,"center");
+  return cv.toDataURL("image/png")}
+function proHtml(){const on=proOn(),s=S.share;
+  return`<p class="note pro-in">Una imagen con tu semana para tu entrenador o nutricionista. Se crea en tu móvil y la envías tú. Elige qué incluir.</p>
+    <div class="pro-l">${PRO_SEC.map(([k,l,d])=>`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${d}</small></span><button type="button" class="tg-sw" role="switch" data-proon="${k}" aria-checked="${!!on[k]}" aria-label="Incluir ${l.toLowerCase()}"></button></div>`).join("")}</div>
+    <div class="sh-prev">${s.busy?'<span class="note">Preparando la imagen…</span>':s.url?`<img src="${s.url}" alt="Resumen para tu profesional">`:`<p class="note">Enciende al menos una parte para crear el resumen.</p>`}</div>`}
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-proon],[data-act='proshare']");if(!t)return;
+  if(t.dataset.act==="proshare"){S.share={p:"pro",busy:true,url:null};shSheet();S.share.url=await proRender().catch(()=>null);if(S.share){S.share.busy=false;shSheet()}return}
+  const on=proOn(),k=t.dataset.proon;on[k]=!on[k];LS("sustrato-proshare",on);t.setAttribute("aria-checked",String(!!on[k]));
+  const u=await proRender().catch(()=>null);if(!S.share)return;S.share.url=u;S.share.busy=false;const pv=document.querySelector("#shsheet .sh-prev");
+  if(pv)pv.innerHTML=u?`<img src="${u}" alt="Resumen para tu profesional">`:`<p class="note">Enciende al menos una parte para crear el resumen.</p>`;const g=document.querySelector("#shsheet .sh-go");if(g)g.disabled=!u});
 
 })();
 </script>
