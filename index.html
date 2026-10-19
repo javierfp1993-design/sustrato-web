@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-18T19:23:03.531Z">
+<meta name="sustrato-version" content="2026-10-19T07:47:13.604Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -426,7 +426,7 @@ input.bad{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo) 70%,transpare
 .pill{background:var(--fill);border:0;border-radius:8px;font-weight:500}
 .tag-pre{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 18%,transparent)}
 .tag-post{background:color-mix(in srgb,var(--azul-v,var(--azul)) 16%,transparent)}
-.tag-load{background:color-mix(in srgb,var(--morado-v,var(--morado)) 18%,transparent)}
+.tag-load{background:var(--fill2)}
 .seg,.subtabs{background:var(--fill2);border:0;border-radius:10px;padding:2px;gap:0}
 .subtabs{box-shadow:none}
 .seg button,.subtabs button{border-radius:8px;min-height:32px;padding:6px 12px;font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--fg)}
@@ -577,7 +577,7 @@ header.top::before{inset:0 calc(50% - 50vw)!important}
 .pbig small{font-size:calc(20px*var(--tz,1));font-weight:600;margin-left:4px;letter-spacing:0;opacity:.6}
 .ptile .pbig{font-size:calc(44px + 44px*(var(--tz,1) - 1)*.5);color:#fff}
 .pmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
-.ppill{font-size:calc(13px*var(--tz,1));font-weight:600;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--muted);font-variant-numeric:tabular-nums}
+.ppill{font-size:calc(13px*var(--tz,1));font-weight:600;padding:4px 10px;border-radius:999px;background:var(--fill2);color:var(--muted);font-variant-numeric:tabular-nums}
 .ppill.good{background:color-mix(in srgb,var(--verde-v,var(--verde)) 15%,transparent);color:var(--fg);--pc:var(--verde)}.ppill.bad{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 15%,transparent);color:var(--fg);--pc:var(--naranja)}
 .wg{stroke:var(--sep);stroke-dasharray:2 4}
 .wlast{stroke:var(--card);stroke-width:2.5}
@@ -613,7 +613,7 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 .hml i{width:11px;height:11px;border-radius:3px;display:inline-block;background:var(--card2)}
 .hml i.l1{background:color-mix(in srgb,var(--verde-v,var(--verde)) 30%,transparent)}.hml i.l2{background:color-mix(in srgb,var(--verde) 52%,transparent)}.hml i.l3{background:color-mix(in srgb,var(--verde) 76%,transparent)}.hml i.l4{background:var(--verde)}
 .vhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
-.vhead b{font:700 calc(28px + 28px*(var(--tz,1) - 1)*.5)/1.1 var(--round,var(--font));letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.vhead b{font:700 calc(34px + 34px*(var(--tz,1) - 1)*.5)/1.05 var(--round,var(--font)); /* v327: la cifra protagonista, como en Salud */letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .vhead>span:not(.ppill){color:var(--muted);font-size:calc(14px*var(--tz,1))}
 .vhead .ppill{margin-left:auto}
 .vol{display:block;width:100%;margin-top:6px}
@@ -650,22 +650,26 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 .wrng{margin-top:16px;padding-top:14px;border-top:.5px solid var(--sep)}
 .wrng-h{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .wtrack{position:relative;height:10px;border-radius:8px;background:var(--card2);margin:30px 6px 10px}
-.wfill{position:absolute;top:0;bottom:0;border-radius:8px;background:color-mix(in srgb,var(--morado-v,var(--morado)) 40%,transparent)}
+.wfill{position:absolute;top:0;bottom:0;border-radius:8px;background:color-mix(in srgb,var(--fg) 18%,transparent)}
 .wtrack .wm{position:absolute;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;cursor:pointer}
 .wtrack .wm em{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font:600 calc(12px*var(--tz,1)) var(--font);font-style:normal;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.wtrack .wm.st{background:var(--card);box-shadow:inset 0 0 0 2.5px var(--morado)}
-.wtrack .wm.nw{background:var(--morado);box-shadow:0 0 0 3px var(--card)}
+.wtrack .wm.st{background:var(--card);box-shadow:inset 0 0 0 2.5px var(--fg)}
+.wtrack .wm.nw{background:var(--fg);box-shadow:0 0 0 3px var(--card)}
 .wtrack .wm.nw em{color:var(--fg);font-weight:700}
 .wtrack .wm.ref{width:3px;height:22px;border-radius:2px;background:var(--fg);opacity:.7}
 .wtrack .wm.ref em{bottom:auto;top:25px}
 .wtrack.has-ref{margin-bottom:30px}
 .wlg{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:calc(12px*var(--tz,1));color:var(--muted);margin-top:14px}
 .wlg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.wlg i.st{box-shadow:inset 0 0 0 2px var(--morado)}.wlg i.nw{background:var(--morado)}.wlg i.ref{width:3px;height:11px;border-radius:2px;background:var(--fg);opacity:.7}
+.wlg i.st{box-shadow:inset 0 0 0 2px var(--fg)}.wlg i.nw{background:var(--fg)}.wlg i.ref{width:3px;height:11px;border-radius:2px;background:var(--fg);opacity:.7}
 .wmm{margin-left:auto;color:var(--faint);font-variant-numeric:tabular-nums}
 .wri{margin:10px 0 0;font-size:calc(14px*var(--tz,1));color:var(--muted)}.wri b{color:var(--fg)}
 .wref-ed{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .wref-ed input{width:76px;min-height:32px;padding:4px 12px}
+
+/* v327 · Resumen bajo la cifra (Apple: el mensaje principal antes de la gráfica) */
+.vsum{margin:2px 0 6px;font-size:calc(14px*var(--tz,1));line-height:1.35;color:var(--muted)}.vsum b{color:var(--fg);font-weight:600}
+.cp-dash{display:inline-block;width:14px;height:0!important;border-top:2px dashed var(--muted);background:none!important;border-radius:0!important;vertical-align:3px}
 
 /* ===== Donut protagonista ===== */
 .hero .macro{gap:22px}
@@ -676,7 +680,7 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 
 .aline{margin-top:14px;padding-top:12px;border-top:.5px solid var(--sep);display:flex;flex-direction:column;gap:8px}
 .aline-t{font-size:calc(13px*var(--tz,1));color:var(--muted)}.aline-t b{color:var(--fg);font-weight:600}
-.aline-b{height:4px;border-radius:2px;background:var(--card2);overflow:hidden}.aline-b i{display:block;height:100%;background:var(--morado);border-radius:2px}
+.aline-b{height:4px;border-radius:2px;background:var(--card2);overflow:hidden}.aline-b i{display:block;height:100%;background:var(--fg);border-radius:2px}
 .pwide .pbig{font-size:calc(44px + 44px*(var(--tz,1) - 1)*.5)}
 .pwide .cmpb{max-width:420px}
 .vplan-i{display:inline-block;width:14px;height:0!important;border-top:3px solid var(--fg);background:none!important;border-radius:0!important}
@@ -711,7 +715,7 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 .bbar i.tip-on{filter:brightness(1.2)}
 .bcomp{display:flex;flex-direction:column;gap:12px;margin-top:12px}
 .bstack{display:flex;height:22px;border-radius:10px;overflow:hidden;gap:2px}
-.bstack i{display:block;height:100%;cursor:pointer}.bstack .bl{background:var(--morado)}.bstack .bf{background:color-mix(in srgb,var(--morado-v,var(--morado)) 30%,var(--card2))}
+.bstack i{display:block;height:100%;cursor:pointer}.bstack .bl{background:var(--fg)}.bstack .bf{background:var(--fill2)}
 .bkv{display:flex;gap:28px}.bkv div{display:flex;flex-direction:column}.bkv b{font:700 calc(24px + 24px*(var(--tz,1) - 1)*.75)/1.1 var(--round,var(--font));font-variant-numeric:tabular-nums}.bkv span{font-size:calc(12px*var(--tz,1));color:var(--muted)}
 .strl{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);display:flex;align-items:center;gap:14px;padding:14px 16px 14px 18px;text-align:left;width:100%}
 .strl-t{display:flex;flex-direction:column;gap:2px;flex:1}.strl-t b{font:700 calc(24px + 24px*(var(--tz,1) - 1)*.75)/1.1 var(--round,var(--font))}
@@ -726,13 +730,12 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
 .tb-ic svg{width:22px;height:22px}
 .tb-l{font-size:calc(11px*var(--tz,1));font-weight:500;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tabbar button[aria-current="page"]{color:var(--fg)}
-.tabbar button[aria-current="page"] .tb-ic{color:var(--c);background:color-mix(in srgb,var(--c-v,var(--c)) 16%,transparent)}
+.tabbar button[aria-current="page"] .tb-ic{color:var(--fg);background:var(--fill2)} /* v327: igual en todas las pestañas, sin color por sección (el ocre salía sucio en oscuro) */
 .tabbar button[aria-current="page"] .tb-l{font-weight:600}
 .tabbar button:focus-visible{outline:2px solid var(--amarillo);outline-offset:-2px}
 .toast{bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
 .avbtn[aria-current="page"]{color:#8e8e93;background:rgba(255,255,255,.08)}
 html[data-theme="light"] .tabbar{background:rgba(249,249,251,.86);border-top-color:rgba(0,0,0,.1)}
-html[data-theme="light"] .tabbar button[aria-current="page"] .tb-ic{color:color-mix(in srgb,var(--c) 80%,#000)}
 html[data-theme="light"] .avbtn[aria-current="page"]{background:rgba(0,0,0,.06)}
 @media (min-width:900px){.tabbar{left:50%;right:auto;transform:translateX(-50%);bottom:16px;border-radius:16px;border:.5px solid rgba(255,255,255,.12);padding:6px 10px;gap:4px;box-shadow:0 20px 50px rgba(0,0,0,.4)}.tabbar button{width:96px;flex:0 0 auto}html[data-theme="light"] .tabbar{border-color:rgba(0,0,0,.08);box-shadow:0 20px 50px rgba(0,0,0,.12)}}
 
@@ -1482,7 +1485,7 @@ html[data-theme="light"] .rd-card{--rd-bg:#fff}
 .acc .ring-t{fill:var(--fg)}
 .acc .pt-s{color:var(--muted)!important}
 .acc .cmpb span{color:var(--muted)!important}.acc .cmpb b{color:var(--fg)!important}
-.acc .cmpb i{background:var(--ac)!important}.acc .cmpb i.ghost{background:color-mix(in srgb,var(--ac-v,var(--ac)) 30%,transparent)!important}
+.acc .cmpb i{background:var(--naranja)!important}.acc .cmpb i.ghost{background:var(--vz-n2)!important} /* v327: gasto = naranja (energía); lo calculado, en gris (antes, azul de selección y azul apagado) */
 .acc .chart{color:var(--fg)}
 html[data-theme="light"] .acc .pbig{filter:brightness(.82)}
 .dnew.acc{background:var(--card)!important}
@@ -1505,7 +1508,7 @@ html[data-theme="light"] .acc .pbig{filter:brightness(.82)}
 /* sistema: etiquetas sin "píldora tintada". Fondo neutro, texto normal y el color en un punto. */
 html[data-theme] .pill.tag-pre,html[data-theme] .pill.tag-post,html[data-theme] .pill.tag-load{background:var(--card2,rgba(127,127,127,.14))!important;color:var(--fg)!important;border:0!important;font-weight:500}
 .pill.tag-pre::before,.pill.tag-post::before,.pill.tag-load::before{content:"";width:6px;height:6px;border-radius:50%;flex:0 0 auto}
-.pill.tag-pre::before{background:var(--naranja)}.pill.tag-post::before{background:var(--azul)}.pill.tag-load::before{background:var(--morado)}
+.pill.tag-pre::before{background:var(--naranja)}.pill.tag-post::before{background:var(--azul)}.pill.tag-load::before{background:var(--carb)}
 html[data-theme] .ev{background:none!important;color:var(--muted)!important;padding:0!important;font-weight:500!important;font-size:calc(13px*var(--tz,1))!important;display:inline-flex;align-items:center;gap:7px}
 .ev::before{content:"";width:17px;height:9px;border-radius:2px;background:linear-gradient(90deg,var(--e1) 0 3px,transparent 3px 4.67px,var(--e2) 4.67px 7.67px,transparent 7.67px 9.33px,var(--e3) 9.33px 12.33px,transparent 12.33px 14px,var(--e4) 14px 17px)}
 .ev{--on:var(--fg);--on-v:var(--fg-v,var(--fg));--off:color-mix(in srgb,var(--fg) 20%,transparent)}
@@ -1569,8 +1572,7 @@ html[data-theme="light"] .rc-ic{color:var(--verde)}
 .ws-g em{font-style:normal;font-size:calc(12px*var(--tz,1));font-weight:600;font-variant-numeric:tabular-nums}
 .ws-g em.nt{color:var(--muted)}.ws-g em.up{color:var(--fg);--pc:var(--verde)}.ws-g em.dn{color:var(--fg);--pc:var(--naranja)}
 .ws-hl{display:flex;align-items:center;gap:8px;margin:14px 0 12px;font-size:calc(14px*var(--tz,1))}
-.ws-star{width:24px;height:24px;border-radius:10px;display:grid;place-items:center;color:var(--amarillo);background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 18%,transparent);flex:0 0 auto}
-html[data-theme="light"] .ws-star{color:var(--naranja)}
+.ws-star{width:24px;height:24px;border-radius:10px;display:grid;place-items:center;color:var(--fg);background:var(--fill2);flex:0 0 auto}
 .ws-tease{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .ws-tease p{margin:4px 0 0;font-size:calc(14px*var(--tz,1));color:var(--muted)}
 
@@ -1598,6 +1600,9 @@ html[data-theme="light"] .ws-star{color:var(--naranja)}
 .fl-gi{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:calc(14px*var(--tz,1));font-weight:600}
 .fl-ch{display:block;width:100%;height:auto}
 .fl-warn{margin:8px 0 0!important;padding:10px;border-radius:14px;background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 10%,transparent);font-size:calc(13px*var(--tz,1))!important}
+
+/* v327 · Periodo en el selector único, a lo ancho */
+.ws-pre{display:flex;width:100%}.ws-pre button{flex:1}
 
 /* avituallamiento: despensa */
 .fl-it{display:grid!important;grid-template-columns:8px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0!important;border-top:.5px solid var(--sep,var(--edge-soft))}
@@ -1731,14 +1736,13 @@ html[data-theme="light"]{--fig-base:#e5e5ea;--fig-on:var(--rojo);--fig-on-v:var(
 .wc-in input:focus,.wc-p .wc-in input:focus{background:var(--fill)!important;box-shadow:0 0 0 2px var(--fg) inset!important}
 .wc-p .wc-in input{background:var(--wc-in)!important}
 .wc-big em{color:var(--wc-tx)!important;border-color:var(--sep)!important}
-.wc-w .wc-ic{background:color-mix(in srgb,var(--morado-v,var(--morado)) 20%,transparent)!important;color:var(--morado)!important}
+.wc-w .wc-ic{background:var(--fill2)!important;color:var(--fg)!important}
 .wc-p .wc-ic{background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 18%,transparent)!important;color:var(--rojo)!important}
 .wc-ics{background:color-mix(in srgb,var(--azul-v,var(--azul)) 20%,transparent)!important;color:var(--azul)!important}
 .wc-save{background:var(--fg)!important;color:var(--bg)!important}
 .wc-skip{color:var(--wc-tx)!important}.wc-skip:hover{background:var(--fill)!important}
 .wc-hd .wc-edit{background:var(--card2)!important;color:var(--wc-tx)!important}
 .wc-btn{background:var(--fg)!important;color:var(--bg)!important}
-html[data-theme="light"] .wc-w .wc-ic{color:var(--morado)!important}
 html[data-theme="light"] .wc-p .wc-ic{color:var(--rojo)!important}
 html[data-theme="light"] .wc-ics{color:var(--azul)!important}
 .wc-hv{flex-wrap:wrap}
@@ -2098,8 +2102,8 @@ html.quiet *,html.quiet *::before,html.quiet *::after{animation:none!important;t
 .pf-car>.pf-cd:only-child{flex-basis:100%}
 .pf-ct{font-size:calc(13px*var(--tz,1));font-weight:700;color:var(--muted)}
 .pf-cd .pf-big{margin-top:-4px}
-.pf-chip{align-self:flex-start;font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--fg);background:color-mix(in srgb,var(--morado-v,var(--morado)) 22%,transparent);border-radius:999px;padding:5px 11px 5px 9px;display:inline-flex;align-items:center;gap:6px}
-.pf-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--morado)}
+.pf-chip{align-self:flex-start;font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--fg);background:var(--fill2);border-radius:10px;padding:5px 11px 5px 9px;display:inline-flex;align-items:center;gap:6px}
+.pf-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .pf-g{position:relative;margin:8px 0 18px}
 .pf-gb{position:relative;height:10px;border-radius:999px;overflow:hidden;background:var(--fill)}
 .pf-gb i{position:absolute;top:0;bottom:0}
@@ -2245,14 +2249,15 @@ div.pg-p{cursor:default}
 .pwrap .ptile .pkk{font-size:var(--fs-title)!important;font-weight:600!important;color:var(--fg)!important}
 .pwrap .ptile.pwide .pbig{font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5)}
 .dnew h3{font-size:var(--fs-title);font-weight:600}
-.rh-bar span:nth-child(1){background:var(--rojo)!important}.rh-bar span:nth-child(2){background:color-mix(in srgb,var(--rojo) 65%,var(--card))!important}.rh-bar span:nth-child(3){background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 40%,var(--card))!important}.rh-bar span:nth-child(4){background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 20%,var(--card))!important}
+.rh-bar span{background:var(--fill2)!important}.rh-bar span.on{background:var(--rojo)!important} /* v327: la escala en gris y tu tramo en rojo pleno (antes, rojos mezclados con el fondo: granate sucio en oscuro) */
 .rh-bar span.on em{color:var(--fg)!important;font-weight:600!important}
 .rh-bar u{position:absolute;left:0;right:0;top:33px;text-align:center;text-decoration:none;font-size:calc(11px*var(--tz,1));color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
 .rh-bar{margin-bottom:44px!important}
-.rh-bar span:nth-child(5){background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 10%,var(--card))!important}
 
 /* Gramática de gráficas */
-.vz-g{stroke:var(--sep);stroke-width:1}
+.vz-g{stroke:color-mix(in srgb,var(--fg) 7%,transparent);stroke-width:1} /* v327: rejilla que no compite con los datos */
+.vz-z{stroke:color-mix(in srgb,var(--fg) 22%,transparent);stroke-width:1}
+.vz-last{stroke:var(--card);stroke-width:2}
 .vz-ref{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:3 4}
 .vz-rl{fill:var(--muted)}
 .vz-cur{font-weight:700;fill:var(--fg)}
@@ -2393,7 +2398,7 @@ html body .legend{row-gap:6px}
 header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolation:isolate}
 .dt-name{display:flex;align-items:center;gap:8px}
 .me-card{display:flex;align-items:center;gap:16px}
-.me-av{position:relative;width:72px;height:72px;border-radius:50%;flex:none;display:grid;place-items:center;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--morado);font:600 calc(28px + 28px*(var(--tz,1) - 1)*.5) var(--font);cursor:pointer}
+.me-av{position:relative;width:72px;height:72px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--fill2);color:var(--fg);font:600 calc(28px + 28px*(var(--tz,1) - 1)*.5) var(--font);cursor:pointer}
 .me-av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .me-av input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .me-cam{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);color:var(--fg);display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
@@ -2799,7 +2804,7 @@ span.ia-ic{flex:none;width:32px;height:32px;border-radius:10px;display:grid;plac
 .str-bg{grid-template-columns:1fr;margin-bottom:8px}
 
 /* v267 · Avatar en el botón de Perfil (080). Como el de la tarjeta de Perfil, en pequeño. Clase .hav */
-.hav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:color-mix(in srgb,var(--morado-v,var(--morado)) 16%,transparent);color:var(--morado);font:600 calc(13px*var(--tz,1)) var(--font)}
+.hav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:var(--fill2);color:var(--fg);font:600 calc(13px*var(--tz,1)) var(--font)}
 
 /* v269 · Fuerza que progresa (081): series propuestas con ✓, por qué, «¿Cómo fue?», la próxima vez, descanso, «···» de rutinas y Fuerza › Progreso */
 .fz-sug-r .fz-in input{color:var(--muted)}
@@ -3264,6 +3269,9 @@ table.bands{--tz:1}
 /* v326 · Micronutrientes (050): la cifra a la derecha, como en Salud */
 .mi-v{flex:none;font-size:calc(17px*var(--tz,1));font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.mi-v small{font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px}
 
+/* v327 · el mes del Resumen también se desliza */
+.ws-cal{overflow:hidden}.ws-cal .cm-g{will-change:transform}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3350,7 +3358,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="326";
+const APP_VER="327";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4683,9 +4691,9 @@ function weekCard(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00
     ["Peso medio",st.w!=null?f1(st.w):"—",st.w!=null?"kg":"",dl(st.w,st.w0,"kg",1,null)],
     ["Pulso medio",st.r!=null?Math.round(st.r):"—",st.r!=null?"ppm":"",dl(st.r,st.r0,"ppm",0,true)],
     ["Comidas",st.logged?st.ok+"/"+st.meals:"—",st.logged?"como previstas":"sin registrar",""],
-    ["Sueño",st.sl.good+st.sl.ok+st.sl.bad?st.sl.good+"/"+(st.sl.good+st.sl.ok+st.sl.bad):"—",st.sl.good+st.sl.ok+st.sl.bad?"noches buenas":"sin registrar",""]];
+    ["Sueño",st.sl.good+st.sl.ok+st.sl.bad?st.sl.good+"/"+(st.sl.good+st.sl.ok+st.sl.bad):"—",st.sl.good+st.sl.ok+st.sl.bad?"noches buenas":"sin registrar",""]].filter((x,i)=>i<2||x[1]!=="—"); /* v327: fuera las casillas sin dato (solo ocupaban sitio) */
   return`<section class="glass pad fade ws-card" id="wkcard"><span class="pkk">Resumen</span>
-    <div class="chips ws-pre">${sumPresets(wk,end)}</div>
+    <div class="seg ws-pre" role="group" aria-label="Periodo">${sumPresets(wk,end)}</div>
     <div class="ws-cal">${calMonth({view:S.sumView||end.slice(0,8)+"01",a:S._cmDrag?[S._cmDrag.a,S._cmDrag.b].sort()[0]:wk,b:S._cmDrag?[S._cmDrag.a,S._cmDrag.b].sort()[1]:end,dot:calDotTrain})}</div>
     <p class="ws-sel">${S._cmA&&wk===end?"Toca otro día para elegir un tramo · ":""}${esc(sumLabel(wk,end))}${nd>1?` · comparado con ${nd===7&&isWk?"la semana anterior":"los "+nd+" días anteriores"}`:""}</p>
     ${bar?`<div class="ws-bar" role="img" aria-label="Tiempo por deporte">${bar}</div><div class="ws-lg">${lg}</div>`:`<p class="note">Sin entrenos esta semana.</p>`}
@@ -4696,9 +4704,9 @@ function weekCard(){const[wk,end]=sumRange(),nd=Math.round((new Date(end+"T12:00
 /* tramo elegido: por defecto, la semana pasada */
 function sumRange(){const lw=shiftKey(mondayOf(today()),-7);let a=S.sumA||lw,b=S.sumB||shiftKey(lw,6);if(a>b)[a,b]=[b,a];const tk=today();if(b>tk)b=tk;return[a,b]}
 function sumLabel(a,b){const f=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3).toLowerCase()};const n=Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)+1;return(a===b?dateLabel(a):a.slice(0,7)===b.slice(0,7)?(+a.slice(8))+" – "+f(b):f(a)+" – "+f(b))+" · "+n+(n===1?" día":" días")}
-const SUM_P=[["lw","Semana pasada"],["tw","Esta semana"],["tm","Este mes"],["30","30 días"]];
+const SUM_P=[["tw","Semana","Esta semana"],["lw","Anterior","La semana pasada"],["tm","Mes","Este mes"],["30","30 días","Los últimos 30 días"]]; /* v327: en el selector único, nombres cortos (el completo, para el lector) */
 function sumPreset(k){const tk=today(),mw=mondayOf(tk);return k==="lw"?[shiftKey(mw,-7),shiftKey(mw,-1)]:k==="tw"?[mw,tk]:k==="tm"?[tk.slice(0,8)+"01",tk]:[shiftKey(tk,-29),tk]}
-function sumPresets(a,b){return SUM_P.map(([k,l])=>{const[x,y]=sumPreset(k);return`<button type="button" class="chip sm" data-sump="${k}" aria-pressed="${x===a&&y===b}">${l}</button>`}).join("")}
+function sumPresets(a,b){return SUM_P.map(([k,l,al])=>{const[x,y]=sumPreset(k);return`<button type="button" data-sump="${k}" aria-pressed="${x===a&&y===b}" aria-label="${al}">${l}</button>`}).join("")}
 document.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data-sump]");if(p){const[a,b]=sumPreset(p.dataset.sump);S._cmA=null;S.sumA=a;S.sumB=b;S.sumView=b.slice(0,8)+"01";render();return}
   const m=e.target.closest&&e.target.closest("[data-cmnav]");if(m){const b=sumRange()[1],v=new Date((S.sumView||b.slice(0,8)+"01")+"T12:00:00");v.setMonth(v.getMonth()+ +m.dataset.cmnav);S.sumView=keyOf(v).slice(0,8)+"01";render()}});
 function weekTeaser(){const d=new Date().getDay();if(S.day!==today()||(d!==1&&d!==2))return"";const lw=shiftKey(mondayOf(today()),-7);let hid=null;try{hid=localStorage.getItem("sustrato-wkseen")}catch(e){}if(hid===lw||S._wkSeen===lw)return"";
@@ -4761,27 +4769,25 @@ function fuelLogCard(){const L=(S.fuel||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if
     ${gutProgress()||`<p class="note" style="margin:8px 0 0">Si preparas una carrera larga, el estómago se entrena: con una carrera de 90 min o más en el plan, cada sesión larga te pedirá un poco más.</p>`}</section>`}
 function fitCard(){
   if(!S.acts.length)return"";const{pts,race,hist}=fitnessSeries(),tk=today(),now=pts.find(x=>x.k===tk)||pts[pts.length-1];if(!pts.length)return"";
-  const st=tsbState(now.tsb),w=400,h=230,PL=34,PR=4,PT=22,H1=128,G=14,H2=46,iw=w-PL-PR,n=pts.length;
+  const st=tsbState(now.tsb),w=400,h=230,PL=4,PR=36,PT=22,H1=128,G=14,H2=46,iw=w-PL-PR,n=pts.length;
   const mx=Math.max(...pts.map(x=>Math.max(x.ctl,x.atl)),10)*1.1,X=i=>PL+i/(n-1)*iw,Y=v=>PT+H1-v/mx*H1;
   const tm=Math.max(20,...pts.map(x=>Math.abs(x.tsb))),Y2c=PT+H1+G+H2/2,Y2=v=>Y2c-v/tm*(H2/2);
   const ti=pts.findIndex(x=>x.k===tk),line=(f,a,b)=>pts.slice(a,b).map((x,j)=>(j?"L":"M")+X(a+j).toFixed(1)+" "+Y(x[f]).toFixed(1)).join(" ");
   const past=ti<0?n:ti+1;
   const area=line("ctl",0,past)+` L${X(past-1).toFixed(1)} ${PT+H1} L${X(0)} ${PT+H1} Z`;
   const bw=iw/n,tcol=v=>v>5?"var(--verde)":v>-10?"var(--faint)":v>-30?"var(--naranja)":"var(--rojo)";
-  const bars=pts.map((x,i)=>`<rect x="${(X(i)-bw/2+.3).toFixed(1)}" y="${Math.min(Y2c,Y2(x.tsb)).toFixed(1)}" width="${Math.max(.8,bw-.6).toFixed(2)}" height="${Math.max(.6,Math.abs(Y2(x.tsb)-Y2c)).toFixed(1)}" fill="${tcol(x.tsb)}" opacity="${x.fut?.4:.9}"/>`).join("");
+  const bars=pts.map((x,i)=>`<rect x="${(X(i)-(x.fut?bw*.22:bw/2-.3)).toFixed(1)}" y="${Math.min(Y2c,Y2(x.tsb)).toFixed(1)}" width="${(x.fut?Math.max(.8,bw*.44):Math.max(.8,bw-.6)).toFixed(2)}" height="${Math.max(.6,Math.abs(Y2(x.tsb)-Y2c)).toFixed(1)}" fill="${tcol(x.tsb)}"/>`).join("");
   const ri=race?pts.findIndex(x=>x.k===race.d):-1,rp=ri>=0?pts[ri]:null;
   const months=[];pts.forEach((x,i)=>{if(x.k.slice(8)==="01")months.push(`<text class="ax" x="${X(i).toFixed(1)}" y="${h-6}" text-anchor="middle">${MON[+x.k.slice(5,7)-1].slice(0,3).toLowerCase()}</text>`)});
   const sg=v=>v>0?"+"+r0(v):v<0?"−"+Math.abs(r0(v)):"0";
   SCRUB.fit={w,PT,pts:pts.map((x,i)=>({x:X(i),y:Y(x.ctl),a:esc(dateLabel(x.k)),b:"Forma "+r0(x.ctl),read:`<b>${r0(x.ctl)}</b><span>forma · fatiga ${r0(x.atl)} · frescura ${sg(x.tsb)} · ${esc(VZ.sd(x.k))}${x.fut?" (previsto)":""}</span>`}))};
   const svg=`<svg class="chart fit vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="Forma, fatiga y frescura en los últimos 90 días${race?" y proyección hasta "+race.n:""}">
-    <defs><linearGradient id="ctlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--azul-v,var(--azul))" stop-opacity=".35"/><stop offset="1" stop-color="var(--azul)" stop-opacity="0"/></linearGradient></defs>
     ${ti>=0&&ti<n-1?`<rect x="${X(ti).toFixed(1)}" y="${PT-6}" width="${(X(n-1)-X(ti)).toFixed(1)}" height="${H1+G+H2+6}" class="ffut"/>`:""}
     ${VZ.grid(VZ.nice(0,mx,3).filter(v=>v>0&&v<mx).slice(0,3),Y,PL,w-PR,v=>fmtInt(v))}
-    <path d="${area}" fill="url(#ctlg)"/>
-    <path d="${line("ctl",0,past)}" fill="none" stroke="var(--azul)" stroke-width="2.6" stroke-linejoin="round" class="draw"/>
-    <path d="${line("atl",0,past)}" fill="none" stroke="var(--k)" stroke-width="1.6" stroke-linejoin="round" opacity=".9"/>
+    <path d="${line("ctl",0,past)}" fill="none" stroke="var(--azul)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="draw"/>
+    <path d="${line("atl",0,past)}" fill="none" stroke="var(--k)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     ${past<n?`<path d="${line("ctl",past-1,n)}" fill="none" stroke="var(--azul)" stroke-width="2.2" stroke-dasharray="4 4"/><path d="${line("atl",past-1,n)}" fill="none" stroke="var(--k)" stroke-width="1.4" stroke-dasharray="3 4" opacity=".8"/>`:""}
-    <line x1="${PL}" x2="${w-PR}" y1="${Y2c}" y2="${Y2c}" class="wg"/>${bars}
+    <line x1="${PL}" x2="${w-PR}" y1="${Y2c}" y2="${Y2c}" class="vz-z"/>${bars}
     <text class="ax" x="${PL}" y="${PT+H1+G-3}">frescura</text>
     ${ti>=0?`<line x1="${X(ti).toFixed(1)}" x2="${X(ti).toFixed(1)}" y1="${PT-8}" y2="${PT+H1+G+H2}" class="ftoday"/><text class="ax" x="${X(ti).toFixed(1)}" y="${PT-11}" text-anchor="middle">hoy</text>`:""}
     ${rp?`<line x1="${X(ri).toFixed(1)}" x2="${X(ri).toFixed(1)}" y1="${PT-8}" y2="${PT+H1+G+H2}" class="frace"/><text class="ax frace-t" x="${(X(ri)-3).toFixed(1)}" y="${PT-11}" text-anchor="end">${esc(race.n)}</text>`:""}
@@ -4853,7 +4859,7 @@ function bodyCard(){
   if(!bf||!kg)return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span><p class="empty">Añade tu cintura (y el cuello${p.sex==="f"?" y la cadera":""} para afinar) en el perfil para ver tu grasa y tu masa magra, y cómo cambian con el tiempo.</p><button class="chip sm" data-goto="perfil">Ir al perfil</button></section>`;
   const fat=kg*bf/100,lean=kg-fat;
   const hist=M.map(m=>{const q=Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip});const e=bfEst(Object.assign(q,{weight:m.kg||kg})),b=e&&e.src==="med"?e.bf:null,w=m.kg||kg;return b?{d:m.d,bf:b,lean:w*(1-b/100),fat:w*b/100}:null}).filter(Boolean);
-  let chart="";if(hist.length>=2){const H={};hist.forEach(x=>H[x.d]=x);chart=`<p class="vplan-t">Tu % de grasa, medida a medida</p>`+VZ.line({id:"bf",color:"var(--morado)",label:"Evolución del porcentaje de grasa",pts:hist.map(x=>({d:x.d,v:x.bf})),minPad:.6,fmt:v=>v.toFixed(1).replace(".",",")+" %",tfmt:v=>r0(v)+" %",
+  let chart="";if(hist.length>=2){const H={};hist.forEach(x=>H[x.d]=x);chart=`<p class="vplan-t">Tu % de grasa, medida a medida</p>`+VZ.line({id:"bf",color:"var(--fg)",label:"Evolución del porcentaje de grasa",pts:hist.map(x=>({d:x.d,v:x.bf})),minPad:.6,fmt:v=>v.toFixed(1).replace(".",",")+" %",tfmt:v=>r0(v)+" %",
       read:p=>{const x=H[p.d];return`<div><b>${x.lean.toFixed(1).replace(".",",")} kg</b><span>masa magra · ${esc(dateLabel(x.d))}</span></div><div><b>${x.bf.toFixed(1).replace(".",",")} %</b><span>grasa · ${x.fat.toFixed(1).replace(".",",")} kg</span></div>`}})}
     const f1=v=>v.toFixed(1).replace(".",",");
   return`<section class="glass pad fade hue-body"><span class="pkk">Composición corporal</span>
@@ -4914,7 +4920,7 @@ function volCard(){
       read:`<b>${fmt(x.t)}</b><span>${cur?"esta semana":"semana del "+VZ.sd(x.wk)}</span>${x.t?'<button type="button" class="vz-go">Ver sesiones ›</button>':""}`,go:()=>{S.vzl={wk:x.wk,iso};S.sheet="vzl";renderModal()},
       tip:`${esc(periodLabel("week",x.wk))}|${x.t?Object.entries(x.by).map(([k,v])=>FAM_L[k]+" "+fmt(v)).join(" · "):"Sin entrenos"}${ptxt}`}});
   const cur=weeks[N-1].t,avg=weeks.slice(N-5,N-1).reduce((s,x)=>s+x.t,0)/4,dd=daysBetween(w0,tk);
-  const avgSo=[1,2,3,4].reduce((s,j)=>{const wk=shiftKey(w0,-7*j),e=shiftKey(wk,dd);return s+S.acts.filter(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=e&&(!iso||famOf(a.sport)===iso)).reduce((t,a)=>t+(m==="h"?a.mov/3600:m==="km"?a.dist/1000:a.kcal||0),0)},0)/4,dv=avgSo?(cur-avgSo)/avgSo:null;
+  const wsSo=[1,2,3,4].map(j=>{const wk=shiftKey(w0,-7*j),e=shiftKey(wk,dd);return S.acts.filter(a=>a.sport!=="oth"&&a.day>=wk&&a.day<=e&&(!iso||famOf(a.sport)===iso)).reduce((t,a)=>t+(m==="h"?a.mov/3600:m==="km"?a.dist/1000:a.kcal||0),0)}),avgSo=wsSo.reduce((x,y)=>x+y,0)/4,dv=avgSo&&wsSo.every(v=>v>0)?(cur-avgSo)/avgSo:null; /* v327: el % solo con las 4 semanas anteriores con datos (con poco historial salía «↑ 850 %») */
   const used=FAMS.filter(sp=>S.acts.some(a=>famOf(a.sport)===sp&&a.day>=shiftKey(w0,-7*(N-1)))),hasPlan=weeks.some(x=>x.pn),cw=weeks[N-1];
   return`<section class="glass pad fade"><div class="row"><span class="pkk">Volumen semanal</span><div class="seg sm" role="group" aria-label="Medida">${[["h","Horas"],["km","Km"],["kcal","kcal"]].map(([k,l])=>`<button data-volm="${k}" aria-pressed="${m===k}">${l}</button>`).join("")}</div></div>
     <div class="vhead" data-vzread><b>${fmt(cur)}</b><span>esta semana${iso?" · solo "+FAM_L[iso]:""}</span></div>${dv!=null&&Math.abs(dv)>=.05?`<p class="vplan-t">${dv>=0?"↑":"↓"} ${r0(Math.abs(dv)*100)} % frente a tus últimas 4 semanas a estas alturas</p>`:""}
@@ -5259,14 +5265,15 @@ function bandBar(bands){
 }
 function gastoCard(){const c=weekChart();if(!c)return"";const ts=[];for(let i=6;i>=0;i--){const t=dayTargets(shiftKey(today(),-i));if(t)ts.push(t)}
   const av=ts.reduce((a,t)=>a+t.tdee,0)/(ts.length||1),ex=ts.reduce((a,t)=>a+t.ex,0)/(ts.length||1);
-  return`<section class="glass pad fade"><h2>Gasto de la semana</h2><div class="vhead" data-vzread><b>${fmtInt(av)}</b><span>kcal al día de media${ex>=50?` · ${fmtInt(ex)} entrenando`:""}</span></div><div style="margin-top:4px">${c}</div>
+  return`<section class="glass pad fade"><h2>Gasto de la semana</h2><div class="vhead" data-vzread><b>${fmtInt(av)}</b><span>kcal al día de media</span></div>${(()=>{const L=[];for(let i=6;i>=0;i--){const k=shiftKey(today(),-i),t=dayTargets(k);if(t)L.push({k,t})}const top=L.reduce((m,x)=>x.t.tdee>(m?m.t.tdee:0)?x:m,null);return`<p class="vsum">${ex>=50?`<b>${fmtInt(ex)} kcal</b> de ejercicio de media`:"Sin entrenos esta semana"}${top?` · ${top.k===today()?"hoy":"el "+DOW_L[new Date(top.k+"T12:00:00").getDay()].toLowerCase()}, tu día más alto`:""}</p>`})()}<div style="margin-top:4px">${c}</div>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Basal según tu composición corporal, actividad diaria por tus pasos y ejercicio de cada entreno (los previstos cuentan hasta que se hacen). Si tienes activado el ajuste de gasto real, ya está aplicado.</p></details></section>`}
 function weekChart(){
   const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(keyOf(d))}
   const data=days.map(k=>({k,t:dayTargets(k)}));if(!data[0].t)return"";
-  const cols=data.map(d=>{const t=d.t,dd=new Date(d.k+"T12:00:00");return{x:DOW[dd.getDay()],cur:d.k===today(),segs:[{v:t.b.bmr,c:"var(--vz-n1)"},{v:t.neat,c:"var(--vz-n2)"},{v:t.ex,c:"var(--amarillo)"}],
+  const cols=data.map(d=>{const t=d.t,dd=new Date(d.k+"T12:00:00");return{x:DOW[dd.getDay()],cur:d.k===today(),segs:[{v:t.b.bmr,c:"var(--vz-n1)"},{v:t.neat,c:"var(--vz-n2)"},{v:t.ex,c:"var(--naranja)"}],
     read:`<b>${fmtInt(t.tdee)}</b><span>kcal el ${esc(dateLabel(d.k))} · ${t.ex>=20?fmtInt(t.ex)+" entrenando":"sin entreno"}</span>`}});
-  return VZ.bars({id:"gs",label:"Gasto diario de la última semana",cols,grid:true})+`<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:var(--amarillo)"></i>Ejercicio</span></div>`;
+  const av=data.reduce((a,d)=>a+d.t.tdee,0)/data.length;
+  return VZ.bars({id:"gs",label:"Gasto diario de la última semana",cols,grid:true,refs:[{v:av,label:"media"}]})+`<div class="legend"><span><i style="background:var(--naranja)"></i>Ejercicio</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:var(--vz-n1)"></i>Basal</span></div>`;
 }
 
 /* ---------- Maniquí muscular ---------- */
@@ -5648,7 +5655,8 @@ function weightBar(){
 function weekCompliance(wk,nd){let n=0,ok=0;const tk=today();for(let i=0;i<(nd||7);i++){const k=shiftKey(wk,i);if(k>tk)break;planMatch(k).pl.forEach(x=>{if(x.st==="pend")return;n++;if(x.st==="done"||x.st==="chg")ok++})}return{n,ok}}
 function ring(v,col,track,size,stroke,label){const r=(size-stroke)/2,c=2*Math.PI*r,o=c*(1-Math.max(0,Math.min(1,v)));
   return`<svg class="ring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track}" stroke-width="${stroke}"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${o.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})" class="ring-v"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="ring-t">${label}</text></svg>`}
-/* ---------- Gramática de gráficas (v197) ----------
+/* ---------- Gramática de gráficas (v197; v327: criterio único con las guías de Apple — valores del eje a la derecha, rejilla muy tenue,
+   línea de 2,5 px sin área ni degradado, punto final con anillo, base de las barras marcada) ----------
    Una sola forma de dibujar cada cosa: línea de 2 px con fundido de su color, valores sueltos como puntos tenues,
    el último punto con anillo, rejilla de líneas finas continuas con su valor a la izquierda, referencias (media,
    objetivo, tu mínimo) discontinuas con su nombre a la derecha, barras con el extremo redondeado y la base recta,
@@ -5656,12 +5664,13 @@ function ring(v,col,track,size,stroke,label){const r=(size-stroke)/2,c=2*Math.PI
 const VZ={w:400,
   sd:k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)},
   nice(lo,hi,n){const r=(hi-lo)/(n||3),p=Math.pow(10,Math.floor(Math.log10(r||1))),st=[1,2,2.5,5,10].map(m=>m*p).find(m=>m>=r)||r;const o=[];for(let v=Math.ceil(lo/st)*st;v<=hi+1e-9;v+=st)o.push(+v.toFixed(6));return o},
-  grid(ticks,Y,PL,R,fmt){return ticks.map(v=>`<line x1="${PL}" x2="${R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="vz-g"/><text class="ax" x="${PL-6}" y="${(Y(v)+4).toFixed(1)}" text-anchor="end">${fmt(v)}</text>`).join("")},
+  /* v327 (criterio único, guías de Apple): los valores del eje van a la derecha, fuera del área de datos, para que el borde de entrada quede limpio */
+  grid(ticks,Y,PL,R,fmt,refY){return ticks.map(v=>{const y=Y(v),hide=(refY||[]).some(q=>Math.abs(q-y)<16);return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-g"/>${hide?"":`<text class="ax" x="${R+8}" y="${(y+4).toFixed(1)}">${fmt(v)}</text>`}`}).join("")},
   /* referencia: línea discontinua y su nombre fuera del área de datos, a la derecha, para no tapar nada */
   ref(y,PL,R,label){return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-ref"/>${label?`<text class="ax vz-rl" x="${R+9}" y="${(y+4).toFixed(1)}">${label}</text>`:""}`},
   bar(x,y,w,h,r){if(h<=0)return"";r=Math.min(r,h,w/2);return`M${x.toFixed(1)} ${(y+h).toFixed(1)}V${(y+r).toFixed(1)}Q${x.toFixed(1)} ${y.toFixed(1)} ${(x+r).toFixed(1)} ${y.toFixed(1)}H${(x+w-r).toFixed(1)}Q${(x+w).toFixed(1)} ${y.toFixed(1)} ${(x+w).toFixed(1)} ${(y+r).toFixed(1)}V${(y+h).toFixed(1)}Z`},
   /* Línea de tendencia. o={id,color,label,pts:[{d,v}],line:[{d,v}],refs:[{v,label}],fmt,tip,h} */
-  line(o){const w=VZ.w,h=o.h||170,PL=34,PR=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?44:8,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts,L=o.line||P;if(P.length<2)return"";
+  line(o){const w=VZ.w,h=o.h||170,PL=4,PR=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?52:40,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts,L=o.line||P;if(P.length<2)return"";
     const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));const vs=P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v),o.band?[o.band.lo,o.band.hi]:[]);
     let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(o.minPad||.5,(hi-lo)*.18);lo-=pad;hi+=pad;
     const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>o.inv?PT+(v-lo)/(hi-lo)*ih:PT+ih-(v-lo)/(hi-lo)*ih,fmt=o.fmt||(v=>fmtInt(v));
@@ -5669,16 +5678,16 @@ const VZ={w:400,
     const last=L[L.length-1],lx=X(last.d),ly=Y(last.v),gid="vzg"+o.id;
     SCRUB[o.id]={w,PT,pts:P.map(p=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:o.tip?o.tip(p):fmt(p.v),read:o.read?o.read(p):null}))};
     const ticks=VZ.nice(lo,hi,3).filter(v=>v>lo&&v<hi).slice(0,3),tf=o.tfmt||fmt;
-    return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${vivo(o.color)}" stop-opacity=".22"/><stop offset="1" stop-color="${o.color}" stop-opacity="0"/></linearGradient></defs>
-      ${o.band?`<rect x="${PL}" y="${Y(o.inv?o.band.lo:o.band.hi).toFixed(1)}" width="${iw}" height="${Math.abs(Y(o.band.lo)-Y(o.band.hi)).toFixed(1)}" rx="3" class="vz-band"/>${o.band.label?`<text class="ax vz-rl" x="${w-PR+9}" y="${((Y(o.band.lo)+Y(o.band.hi))/2+4).toFixed(1)}">${o.band.label}</text>`:""}`:""}${VZ.grid(ticks,Y,PL,w-PR,tf)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
-      ${o.inv||o.band?"":`<path d="${ar}" fill="url(#${gid})"/>`}${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
-      <path d="${ln}" fill="none" stroke="${o.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4.5" fill="${o.color}" class="vz-last scr-hide"/>
+    return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}">
+      ${o.band?`<rect x="${PL}" y="${Y(o.inv?o.band.lo:o.band.hi).toFixed(1)}" width="${iw}" height="${Math.abs(Y(o.band.lo)-Y(o.band.hi)).toFixed(1)}" rx="3" class="vz-band"/>${o.band.label?`<text class="ax vz-rl" x="${w-PR+9}" y="${((Y(o.band.lo)+Y(o.band.hi))/2+4).toFixed(1)}">${o.band.label}</text>`:""}`:""}${VZ.grid(ticks,Y,PL,w-PR,tf,(o.refs||[]).filter(r=>r.label).map(r=>Y(r.v)))}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
+      ${o.line?P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2.2" fill="${o.color}" opacity=".35"/>`).join(""):""}
+      <path d="${ln}" fill="none" stroke="${o.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="5" fill="${o.color}" class="vz-last scr-hide"/>
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="5" fill="${o.color}"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
       <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Barras (apiladas o no). o={label,cols:[{x:"rótulo",segs:[{v,c}],ghost,tip,cur}],refs:[{v,label}],fmt,grid,h} */
-  bars(o){const w=VZ.w,h=o.h||170,PL=o.grid?34:4,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.4)+10):m,4),PB=20 /* v320: cabe la etiqueta entera */,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length,slot=iw/n,bw=Math.min(24,slot*.62);
+  bars(o){const w=VZ.w,h=o.h||170,PL=4,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.4)+12):m,o.grid?40:4),PB=20 /* v320: cabe la etiqueta entera */,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length,slot=iw/n,bw=Math.min(24,slot*.62);
     const tot=c=>c.segs.reduce((a,s)=>a+s.v,0),mx=Math.max(...C.map(c=>Math.max(tot(c),c.ghost||0)),...(o.refs||[]).map(r=>r.v),1e-9)*1.1,Y=v=>PT+ih-v/mx*ih,fmt=o.fmt||(v=>fmtInt(v));
     const every=Math.ceil(n/7),ci=C.findIndex(c=>c.cur),showX=i=>i===ci||(i%every===(n-1)%every&&(ci<0||Math.abs(i-ci)>=every));
     const cols=C.map((c,i)=>{const x=PL+i*slot+(slot-bw)/2;let y=PT+ih;const segs=c.segs.filter(s=>s.v>0);let out="";
@@ -5689,7 +5698,7 @@ const VZ={w:400,
       return`<g class="vb"${c.tip&&!o.id?` data-tip="${c.tip}"`:""}><rect x="${(PL+i*slot).toFixed(1)}" y="0" width="${slot.toFixed(1)}" height="${PT+ih}" fill="transparent"/>${out}${lab}</g>`}).join("");
     const ticks=o.grid?VZ.nice(0,mx,2).filter(v=>v>0&&v<mx).slice(0,3):[];
     if(o.id)SCRUB[o.id]={w,PT,bars:true,pts:C.map((c,i)=>({i,x:PL+i*slot+slot/2,y:Y(tot(c)),read:c.read||null,go:c.go||null}))};
-    return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}">${o.grid?VZ.grid(ticks,Y,PL,w-PR,fmt):""}<line x1="${PL}" x2="${w-PR}" y1="${PT+ih}" y2="${PT+ih}" class="vz-g"/>${cols}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}${o.id?`<rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>`:""}</svg>`}
+    return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}">${o.grid?VZ.grid(ticks,Y,PL,w-PR,fmt,(o.refs||[]).filter(r=>r.label).map(r=>Y(r.v))):""}<line x1="${PL}" x2="${w-PR}" y1="${PT+ih}" y2="${PT+ih}" class="vz-z"/>${cols}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}${o.id?`<rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>`:""}</svg>`}
 };
 document.addEventListener("click",e=>{const b=e.target.closest("[data-pfsp]");if(!b||b.getAttribute("aria-pressed")==="true")return;S.pfSp=b.dataset.pfsp;buzz(8);render()});
 function vzlHtml(){const v=S.vzl,e=shiftKey(v.wk,6),L=S.acts.filter(a=>a.sport!=="oth"&&a.day>=v.wk&&a.day<=e&&(!v.iso||famOf(a.sport)===v.iso)).sort((a,b)=>a.day<b.day?-1:1),t=L.reduce((s,a)=>s+a.mov,0);
@@ -5703,7 +5712,7 @@ function bigWeightChart(W){
   if(W.length<2)return"";
   const line=W.map(x=>{const win=W.filter(y=>daysBetween(y.d,x.d)>=0&&daysBetween(y.d,x.d)<7);return{d:x.d,v:win.reduce((s,y)=>s+y.kg,0)/win.length}});
   const f1=v=>v.toFixed(1).replace(".",","),L={};line.forEach(p=>L[p.d]=p.v);
-  return VZ.line({id:"w",color:"var(--morado)",label:"Evolución del peso",pts:W.map(x=>({d:x.d,v:x.kg})),line,minPad:.4,fmt:f1,tip:p=>f1(p.v)+" kg",
+  return VZ.line({id:"w",color:"var(--fg)",label:"Evolución del peso",pts:W.map(x=>({d:x.d,v:x.kg})),line,minPad:.4,fmt:f1,tip:p=>f1(p.v)+" kg",
     read:p=>`<div class="pbig">${f1(p.v)}<small>kg</small></div><div class="pmeta"><span class="note" style="margin:0">${esc(dateLabel(p.d))} · media de 7 días ${f1(L[p.d])} kg</span></div>`});
 }
 function weightHero(){
@@ -5713,8 +5722,11 @@ function weightHero(){
   const last=all[all.length-1],first=W[0],delta=last.kg-first.kg;
   const rec=all.filter(x=>x.d>=shiftKey(today(),-28)),r=rec.length>=2?linreg(rec.map(x=>[daysBetween(rec[0].d,x.d),x.kg])):null,wk=r?r.m*7:null;
   const arrow=wk==null?"":wk<-.02?"↓":wk>.02?"↑":"→";
-  return`<section class="glass pad fade phero">
-    <div class="row" style="align-items:flex-start"><div><span class="pkk">Peso actual</span><div data-vzread><div class="pbig">${String(last.kg).replace(".",",")}<small>kg</small></div>
+  /* v327: con datos de composición, Peso y Composición en el selector de arriba */
+  const hasCp=!!cpSeries(rg==="all"?"0000":shiftKey(today(),-(+rg))),tog=v=>hasCp?`<div class="seg sm" role="group" aria-label="Vista">${[["peso","Peso"],["comp","Composición"]].map(([k,l])=>`<button data-wtview="${k}" aria-pressed="${v===k}">${l}</button>`).join("")}</div>`:"";
+  if(hasCp&&S.wtView==="comp")return cpView(rg,tog("comp"));
+  return`<section class="glass pad fade phero">${hasCp?`<div class="row" style="align-items:center;margin-bottom:6px"><span class="pkk">Peso</span>${tog("peso")}</div>`:""}
+    <div class="row" style="align-items:flex-start"><div>${hasCp?"":`<span class="pkk">Peso actual</span>`}<div data-vzread><div class="pbig">${String(last.kg).replace(".",",")}<small>kg</small></div>
       <div class="pmeta">${wk!=null?`<span class="ppill">${arrow} ${Math.abs(wk).toFixed(2).replace(".",",")} kg/sem</span>`:""}<span class="note" style="margin:0">${all.length<2?"Primer pesaje. Con unos cuantos más verás aquí tu evolución.":(delta>0?"+":"")+delta.toFixed(1).replace(".",",")+" kg desde "+esc(dateLabel(first.d))}</span></div></div></div>
       ${all.length<2?"":`<div class="seg sm" role="group" aria-label="Rango">${[["30","1 m"],["90","3 m"],["all","Todo"]].map(([k,l])=>`<button data-wtrange="${k}" aria-pressed="${rg===k}">${l}</button>`).join("")}</div>`}</div>
     ${bigWeightChart(W)}
@@ -5741,6 +5753,8 @@ function weightRange(W,all,wk,rg){
     info=`<p class="wri">${left<=.1?"Estás en tu peso de referencia.":`A <b>${f1(left)} kg</b> de tu referencia · ${r0(pc*100)} % del recorrido desde el inicio del periodo${eta}`}</p>`}
   const edit=S.wtRefEdit?`<div class="wref-ed"><input id="wtref" inputmode="decimal" placeholder="kg" value="${ref?f1(ref):""}" aria-label="Peso de referencia en kg"><button class="chip sm" data-act="wtrefsave">Guardar</button>${ref?'<button class="chip sm" data-act="wtrefdel">Quitar</button>':""}<button class="chip sm" data-act="wtref">Cancelar</button></div>`
     :`<button class="chip sm" data-act="wtref">${ref?"Referencia "+f1(ref)+" kg":"＋ Peso de referencia"}</button>`;
+  /* v327: con un solo pesaje y sin referencia, la barra era un punto sin significado: solo el botón y una frase */
+  if(one&&!ref)return`<div class="wrng"><div class="wrng-h"><span class="pkk">Recorrido</span>${edit}</div><p class="wri">Con un peso de referencia o unos cuantos pesajes verás aquí tu recorrido.</p></div>`;
   return`<div class="wrng"><div class="wrng-h"><span class="pkk">${one?"Recorrido":"Recorrido · "+(rg==="all"?"todo":rg==="30"?"1 mes":"3 meses")}</span>${edit}</div>
     <div class="wtrack${ref?" has-ref":""}" role="img" aria-label="Peso inicial ${f1(st)} kg, actual ${f1(now)} kg${ref?", referencia "+f1(ref)+" kg":""}">
       <i class="wfill" style="left:${P(a)};width:calc(${P(b)} - ${P(a)})"></i>
@@ -5758,11 +5772,11 @@ function adaptLine(){
 function adaptTile(){
   const ad=computeAdapt(),p=S.profile||{};
   if(ad.ok){const mx=Math.max(ad.implied,ad.model);
-    return`<section class="glass pad fade ptile pwide acc" style="--ac:var(--morado);--ac-v:var(--morado-v,var(--morado))"><span class="pkk">Tu gasto real</span><div class="pbig">${fmtInt(ad.implied)}<small> kcal al día</small></div><p class="pt-s ad-ctx">${(v=>v===0?"Lo mismo que calculan las fórmulas":v>0?"Un "+v+" % más de lo que calculan las fórmulas":"Un "+(-v)+" % menos de lo que calculan las fórmulas")(Math.round((ad.f-1)*100))}</p>
+    return`<section class="glass pad fade ptile pwide acc"><span class="pkk">Tu gasto real</span><div class="pbig">${fmtInt(ad.implied)}<small> kcal al día</small></div><p class="pt-s ad-ctx">${(v=>v===0?"Lo mismo que calculan las fórmulas":v>0?"Un "+v+" % más de lo que calculan las fórmulas":"Un "+(-v)+" % menos de lo que calculan las fórmulas")(Math.round((ad.f-1)*100))}</p>
       <div class="cmpb"><div><span>Real</span><i style="width:${(ad.implied/mx*100).toFixed(0)}%"></i><b>${fmtInt(ad.implied)}</b></div><div><span>Calculado</span><i class="ghost" style="width:${(ad.model/mx*100).toFixed(0)}%"></i><b>${fmtInt(ad.model)}</b></div></div>
       <p class="pt-s">Sale de cómo evoluciona tu peso con lo que comes: es tu metabolismo medido, no estimado.</p><div class="tg-r"><span class="tg-t"><b>Ajustar mis calorías</b><small>Con el gasto real: unas ${fmtInt(ad.implied)} kcal al día</small></span><button type="button" class="tg-sw" role="switch" data-act="adapt" aria-checked="${!!p.adaptOn}" aria-label="Ajustar mis calorías con el gasto real"></button></div></section>`}
   const W=(S.weights||[]).filter(w=>w.d>=shiftKey(today(),-28)).sort((a,b)=>a.d<b.d?-1:1),n=W.length,span=n>1?daysBetween(W[0].d,W[n-1].d):0,v=Math.min(1,(Math.min(n,6)/6+Math.min(span,14)/14)/2);
-  return`<section class="glass pad fade ptile acc" style="--ac:var(--morado);--ac-v:var(--morado-v,var(--morado))"><span class="pkk">Gasto real</span><div class="ptr">${ring(v,"currentColor","rgba(127,127,127,.2)",86,9,r0(v*100)+"%")}</div>
+  return`<section class="glass pad fade ptile acc"><span class="pkk">Gasto real</span><div class="ptr">${ring(v,"currentColor","rgba(127,127,127,.2)",86,9,r0(v*100)+"%")}</div>
     <p class="pt-s">${Math.min(n,6)}/6 pesajes · ${Math.min(span,14)}/14 días para calcularlo</p></section>`;
 }
 function effCard(){
@@ -5973,7 +5987,7 @@ function progSection(sec){
     ent:()=>[volCard(),bandsCard(),heatCard(),strSumCard()||E("Fuerza","Registra una sesión en Fuerza con peso y repeticiones"),recordsCard()], /* v269: el detalle de fuerza está en Fuerza › Progreso */
     com:()=>{const mi=comMicroCard(),ma=comMacroCard(),ea=eatCard(),P=x=>typeof x==="string"?x:E(x.t,x.need); /* v278: «Comer según el plan» viene de Energía */
       const al=typeof mi==="string"&&mi.includes("com-al");return[al?mi:"",P(ma),al?"":P(mi),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días")].filter(x=>x!=="")}, /* con aviso, los micros van primero */
-    cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil",bo):bo,stepsChart(),weightHistory()]}
+    cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil o conecta una báscula",bo):bo,stepsChart(),weightHistory()]}
   }[sec]();
   const ok=L.filter(x=>typeof x==="string"&&x),pend=L.filter(x=>x&&typeof x==="object");
   return ok.join("")+(pend.length?`<section class="glass pad fade pg-pend"><h2>Cuando haya datos</h2>${pend.map(p=>p.h?`<details class="pg-p"><summary><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span>${IC_CHEV_D}</summary><div class="pg-pb">${p.h.replace(/^<section[^>]*>/,"").replace(/<\/section>\s*$/,"")}</div></details>`:`<div class="pg-p"><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span></div>`).join("")}</section>`:"");
@@ -6260,7 +6274,7 @@ function strengthChart(pts,pr,unit){
   <text class="ax" x="${(tx+5).toFixed(1)}" y="${PT+6}">estimación</text>
   <path d="${band}" fill="var(--rojo-v,var(--rojo))" fill-opacity=".12"/><path d="${proj}" fill="none" stroke="var(--rojo)" stroke-width="2" stroke-dasharray="5 5" stroke-linecap="round" opacity=".85"/>
   <circle cx="${X(end.d).toFixed(1)}" cy="${Y(end.v).toFixed(1)}" r="4" fill="var(--card)" stroke="var(--rojo)" stroke-width="2"/>
-  <path d="${area}" fill="url(#sga)"/><path d="${line}" fill="none" stroke="var(--rojo)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" class="draw"/>
+  <path d="${area}" fill="none"/><path d="${line}" fill="none" stroke="var(--rojo)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" class="draw"/>
   ${pts.map((p,i)=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="${i===pts.length-1?4.5:7}" fill="${i===pts.length-1?"var(--rojo)":"transparent"}" class="tipdot${i===pts.length-1?" wlast":" sdot-h"}" data-tip="${esc(dateLabel(p.d))}|${fmt(p.v)}"/>`).join("")}
   <text class="ax" x="${PL}" y="${h-5}">${esc(dateLabel(d0))}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${esc(dateLabel(d1))}</text></svg>
   <div class="legend"><span><i style="background:var(--rojo)"></i>Tu progresión</span><span><i class="vplan-i" style="border-top:2px dashed var(--rojo)"></i>Estimación</span><span><i style="background:color-mix(in srgb,var(--rojo-v,var(--rojo)) 25%,transparent)"></i>Rango probable</span></div>`;
@@ -6270,7 +6284,7 @@ function strengthCard(){
   const pts=strengthSeries(sel),unit=exUnit(sel);
   const head=`<div class="row"><span class="pkk">Evolución de la fuerza</span><button type="button" class="dd dd-in" data-optopen="str"><b class="dv">${esc(sel==="all"?"Fuerza global":((exs.find(e=>e.id===sel)||{}).n||"Fuerza global"))}</b></button></div>`;
   if(pts.length<1){
-    const ghost=`<svg class="chart sghost" viewBox="0 0 400 120" aria-hidden="true"><defs><linearGradient id="sgg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--rojo-v,var(--rojo))" stop-opacity=".18"/><stop offset="1" stop-color="var(--rojo)" stop-opacity="0"/></linearGradient></defs><path d="M10 104 C 90 100, 150 86, 210 66 S 330 26, 390 18 L390 112 L10 112 Z" fill="url(#sgg)"/><path d="M10 104 C 90 100, 150 86, 210 66 S 330 26, 390 18" fill="none" stroke="var(--rojo)" stroke-width="2.2" stroke-dasharray="5 6" stroke-linecap="round" opacity=".55"/><circle cx="10" cy="104" r="4.5" fill="var(--rojo)"/></svg>`;
+    const ghost=`<svg class="chart sghost" viewBox="0 0 400 120" aria-hidden="true"><defs><linearGradient id="sgg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--rojo-v,var(--rojo))" stop-opacity=".18"/><stop offset="1" stop-color="var(--rojo)" stop-opacity="0"/></linearGradient></defs><path d="M10 104 C 90 100, 150 86, 210 66 S 330 26, 390 18 L390 112 L10 112 Z" fill="none"/><path d="M10 104 C 90 100, 150 86, 210 66 S 330 26, 390 18" fill="none" stroke="var(--rojo)" stroke-width="2.2" stroke-dasharray="5 6" stroke-linecap="round" opacity=".55"/><circle cx="10" cy="104" r="4.5" fill="var(--rojo)"/></svg>`;
     return`<section class="glass pad fade sfcard">${head}<p class="fdesc">Aquí verás cómo crece tu fuerza. Registra tus sesiones con peso y repeticiones y, desde la primera, trazo hacia dónde vas en las próximas 12 semanas.</p>${ghost}<button class="chip sm" data-goto="fuerza">Registrar una sesión</button></section>`;
   }
   const pr=strengthProj(pts),first=pts[0].v,last=pts[pts.length-1].v,p4=pr.pts[4].v,p12=pr.pts[12].v;
@@ -6847,10 +6861,10 @@ function vHoy(){
 function barChart(bk){
   /* v207: gramática VZ (barras apiladas con tocar y leer). Basal y actividad diaria en neutros; el ejercicio, en su amarillo */
   if(!bk.length)return"";
-  const cols=bk.map(d=>{const t=d.b+d.neat+d.ex;return{x:d.label,cur:!!d.hl,segs:[{v:d.b,c:"var(--vz-n1)"},{v:d.neat,c:"var(--vz-n2)"},{v:d.ex,c:d.fut?"color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 40%,transparent)":"var(--amarillo)"}],
+  const cols=bk.map(d=>{const t=d.b+d.neat+d.ex;return{x:d.label,cur:!!d.hl,segs:[{v:d.b,c:"var(--vz-n1)"},{v:d.neat,c:"var(--vz-n2)"},{v:d.ex,c:d.fut?"color-mix(in srgb,var(--fg) 35%,transparent)":"var(--naranja)"}],
     read:`<b>${fmtInt(t)}</b><span>kcal · ${esc(String(d.label))}${d.ex?` · ${fmtInt(d.ex)} de ejercicio${d.fut?" previsto":""}`:""}</span>`}});
   return VZ.bars({id:"gasto",label:"Gasto por día",cols,grid:true,h:190})+
-`<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:var(--amarillo)"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i style="background:color-mix(in srgb,var(--amarillo-v,var(--amarillo)) 40%,transparent)"></i>Previsto</span>':""}</div>`;
+`<div class="legend"><span><i style="background:var(--vz-n1)"></i>Basal</span><span><i style="background:var(--vz-n2)"></i>Actividad diaria</span><span><i style="background:var(--naranja)"></i>Ejercicio</span>${bk.some(b=>b.fut)?'<span><i style="background:color-mix(in srgb,var(--fg) 35%,transparent)"></i>Previsto</span>':""}</div>`;
 }
 /* Constancia del periodo: lo que has comido cada día frente a tu objetivo de ese día (no lo programado) */
 function dayEaten(k){const l=(S.log||{})[k]||{};let P=0,C=0,F=0,n=0;Object.entries(l).forEach(([id,x])=>{if(id.startsWith("fuel_")||id==="alc"||!x)return;if(x.P||x.C||x.F){n++;P+=x.P||0;C+=x.C||0;F+=x.F||0}});const fc=fuelCho(k);if(fc){C+=fc;n=n||1}return n?{P,C,F,kcal:4*P+4*C+9*F,fuel:fc}:null}
@@ -7291,7 +7305,7 @@ function vPerfil(){
     <section class="glass pad fade"><h2>Cómo leer los colores</h2><div class="clegend">
       <span><i style="background:var(--rojo)"></i><b>Músculo</b>Proteína, fuerza</span><span><i style="background:var(--amarillo)"></i><b>Glucógeno</b>Hidratos, energía</span>
       <span><i style="background:var(--azul)"></i><b>Aeróbico</b>Grasas, resistencia</span><span><i style="background:var(--cian)"></i><b>Hidratación</b>Agua, electrolitos</span>
-      <span><i style="background:var(--verde)"></i><b>Salud</b>Micros, suplementos</span><span><i style="background:var(--morado)"></i><b>Cuerpo</b>Peso, composición</span></div></section>
+      <span><i style="background:var(--verde)"></i><b>Salud</b>Micros, suplementos</span></div></section>
     <section class="glass pad fade hue-aer"><h2>Bandas de sustrato</h2>
       ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Forma aeróbica: ${hp.lvSrc==="vo2"?"según el VO2max estimado de tus actividades ("+esc(vo2Norm(perfAgg().vo2).toLowerCase())+")":"nivel "+esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())+" del perfil, hasta que haya datos de VO2max"}.${hp.whs?" Tu cintura supera la mitad de tu altura, así que la grasa entra algo más tarde.":""} Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso <small>ppm</small></th><th>Hidratos <small>%</small></th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
     </section>
@@ -8719,7 +8733,7 @@ function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFull
   const h=K.map(({d,k,out},i)=>{if(out)return`<span class="day cm-c out"><b>${d.getDate()}</b></span>`;if(k>tk)return`<span class="day cm-c fut"><b>${d.getDate()}</b><i class="dot"></i></span>`;
     const inn=has(i),s_=inn&&(i%7===0||!has(i-1)),e_=inn&&(i%7===6||!has(i+1));
     return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b>${calMark(o,k,"i")}</span>`}).join("");
-  return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
+  return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r vh"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
     <div class="cm-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
     <div class="cm-g" role="group" aria-label="Toca dos días, o mantén pulsado y arrastra, para elegir un tramo">${h}</div>`}
 function cmPaint(g,a,b){if(a>b)[a,b]=[b,a];const C=[...g.querySelectorAll(".cm-c")];
@@ -9406,12 +9420,14 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
 /* v325 · Planificador al tacto. El mes del planificador se cambia deslizando (sin flechas a la vista, como la semana de Plan):
    la rejilla sigue al dedo, con resistencia si no hay más meses; al soltar, la inercia proyectada decide (más de medio ancho o
    un gesto rápido) y el mes nuevo entra por el lado contrario con un muelle. Las flechas siguen, ocultas, para lector y teclado. */
+/* v327: lo mismo para el mes del Resumen de Progreso (.ws-cal, flechas data-cmnav). Mantener y arrastrar sigue eligiendo el tramo (084). */
 (function(){let g=null,cal=null,x0=0,y0=0,dx=0,mode=null,W=0,swAt=0;const tr=MU.track();
-  const nav=(c,d)=>c.querySelector(`.vh [data-pa^="vm:"]:${d<0?"first":"last"}-child`);
+  const K=[{w:".pa-cal",g:".pa-cg",nav:(c,d)=>c.querySelector(`.vh [data-pa^="vm:"]:${d<0?"first":"last"}-child`)},{w:".ws-cal",g:".cm-g",nav:(c,d)=>c.querySelector(`[data-cmnav="${d}"]`)}];
+  let k=K[0];const nav=(c,d)=>k.nav(c,d);
   const can=(c,d)=>{const b=nav(c,d);return!!b&&!b.disabled};
   const put=(el,x)=>{el.style.transform=x?`translateX(${x}px)`:""};
-  document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;const c=e.target.closest&&e.target.closest(".pa-cal");if(!c)return;
-    cal=c;g=c.querySelector(".pa-cg");if(!g)return;x0=e.clientX;y0=e.clientY;dx=0;mode=null;W=g.offsetWidth||300;tr.reset();const cur=MU.stop(g);if(cur!=null){dx=cur}},true);
+  document.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;const c=e.target.closest&&e.target.closest(".pa-cal,.ws-cal");if(!c)return;
+    k=c.matches(".ws-cal")?K[1]:K[0];cal=c;g=c.querySelector(k.g);if(!g)return;x0=e.clientX;y0=e.clientY;dx=0;mode=null;W=g.offsetWidth||300;tr.reset();const cur=MU.stop(g);if(cur!=null){dx=cur}},true);
   document.addEventListener("pointermove",e=>{if(!g)return;const ddx=e.clientX-x0,ddy=e.clientY-y0;
     if(!mode){if(Math.abs(ddx)<8&&Math.abs(ddy)<8)return;if(Math.abs(ddy)>Math.abs(ddx)){g=null;return}mode="h"}
     let d=ddx;if((d>0&&!can(cal,-1))||(d<0&&!can(cal,1)))d=MU.rubber(d,W);dx=d;tr.add(d);put(g,d)},{passive:true});
@@ -9419,10 +9435,10 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
     const v=tr.v(),end=dx+MU.project(v),dir=end>W/2&&can(c,-1)?-1:end<-W/2&&can(c,1)?1:0;
     if(!dir){MU.spring(el,dx,0,v,x=>put(el,x),{resp:.3,damp:.85});return}
     buzz(6);MU.spring(el,dx,-dir*W,v,x=>put(el,x),{resp:.2,damp:1,done:()=>{nav(c,dir).click();
-      requestAnimationFrame(()=>{const n=document.querySelector(".pa-cal .pa-cg");if(!n)return;put(n,dir*W*.6);MU.spring(n,dir*W*.6,0,0,x=>put(n,x),{resp:.32,damp:1})})}})};
+      requestAnimationFrame(()=>{const n=document.querySelector(k.w+" "+k.g);if(!n)return;put(n,dir*W*.6);MU.spring(n,dir*W*.6,0,0,x=>put(n,x),{resp:.32,damp:1})})}})};
   document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up);
   /* el clic de soltar tras deslizar no elige el día que quedaba debajo */
-  document.addEventListener("click",e=>{if(performance.now()-swAt<250&&e.target.closest&&e.target.closest(".pa-cg")){e.preventDefault();e.stopPropagation()}},true);
+  document.addEventListener("click",e=>{if(performance.now()-swAt<250&&e.target.closest&&e.target.closest(".pa-cg,.cm-g")){e.preventDefault();e.stopPropagation()}},true);
 })();
 
 /* v325 · Menú: la ración del plato se cambia ahí mismo. El multiplicador es un botón del mismo alto que el plato; al tocarlo sale debajo
@@ -9441,6 +9457,55 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.flon){const id=t.dataset.flon;S.flOn=S.flOn||{};S.flOn[id]=!S.flOn[id];if(!S.flOn[id]){if(S.flDraft&&S.flDraft.id===id)S.flDraft=null;S.flNew=null}}
   else{const id=t.dataset.swon;S.swOn=S.swOn||{};S.swOn[id]=!S.swOn[id]}
   renderModal()},true);
+
+/* v327 · Peso › Composición. Cruza peso, masa magra y grasa en kg de cambio desde el inicio del periodo, en una sola escala
+   (en valores absolutos 79, 60 y 14 kg quedarían planas). Datos: la báscula (grasa % de Health Connect o Apple Salud, con el
+   pesaje más cercano) y, si no, las medidas de cintura y cuello (estimación: tramo discontinuo). Se resalta lo que persigue tu
+   objetivo (perder grasa: la grasa; hipertrofia: la magra; recomposición: las dos) y una frase dice qué está pasando.
+   Aparece con dos mediciones separadas al menos una semana. Clases cp- */
+function cpNavy(q){const nv=bodyFat(q),h=num(q.height),w=num(q.waist),rfm=h&&w?(q.sex==="f"?76:64)-20*h/w:null,ok=v=>v!=null&&v>3&&v<60;
+  return ok(nv)&&ok(rfm)?(nv+rfm)/2:ok(nv)?nv:ok(rfm)?rfm:null}
+function cpSeries(from){const p=S.profile||{},W=(S.weights||[]).slice().sort((a,b)=>a.d<b.d?-1:1),near=d=>{let b=null,bd=4;W.forEach(x=>{const k=Math.abs(daysBetween(x.d,d));if(k<bd){bd=k;b=x}});return b?b.kg:null};
+  const out={},put=(d,kg,bf,lean,est)=>{if(!kg||!(bf>3&&bf<60))return;if(out[d]&&!out[d].est)return;const fat=kg*bf/100;out[d]={d,kg,fat,lean:lean||kg-fat,est}};
+  (S.measures||[]).forEach(m=>{if(m.d<from)return;const kg=m.kg||near(m.d)||num(p.weight);put(m.d,kg,cpNavy(Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip})),null,true)});
+  const LN={};(S.leanHc||[]).forEach(x=>LN[x.d]=x.kg);
+  (S.bodyFatHc||[]).forEach(x=>{if(x.d<from)return;put(x.d,near(x.d),x.pct,LN[x.d],false)});
+  /* con báscula, solo báscula: mezclar métodos (bioimpedancia y medidas) crea saltos que no son cambios reales */
+  let L=Object.values(out).sort((a,b)=>a.d<b.d?-1:1);if(L.filter(x=>!x.est).length>=2)L=L.filter(x=>!x.est);return L.length>=2&&daysBetween(L[0].d,L[L.length-1].d)>=7?L:null}
+/* Varias líneas en una escala (VZ.line es de una serie). S=[{name,color,w,pts:[{d,v,est}]}] */
+VZ.multi=function(o){const w=VZ.w,h=o.h||170,PL=4,PR=40,PB=20,PT=12,iw=w-PL-PR,ih=h-PB-PT,A=o.series.flatMap(s=>s.pts);if(A.length<2)return"";
+  const ds=A.map(p=>p.d).sort(),d0=ds[0],d1=ds[ds.length-1],span=Math.max(1,daysBetween(d0,d1)),vs=A.map(p=>p.v).concat(0);
+  let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max(.4,(hi-lo)*.15);lo-=pad;hi+=pad;
+  const X=d=>PL+daysBetween(d0,d)/span*iw,Y=v=>PT+ih-(v-lo)/(hi-lo)*ih,fmt=o.fmt;
+  const ticks=VZ.nice(lo,hi,3).filter(v=>v>lo&&v<hi);
+  const path=P=>P.map((p,i)=>(i?"L":"M")+X(p.d).toFixed(1)+" "+Y(p.v).toFixed(1)).join(" ");
+  const lines=o.series.map(s=>{const P=s.pts,k=P.findIndex(p=>!p.est),E=k<0?P:P.slice(0,k+1),R=k<0?[]:P.slice(k);
+    return`${E.length>1?`<path d="${path(E)}" fill="none" stroke="${s.color}" stroke-width="${s.w}" stroke-dasharray="4 4" stroke-linecap="round"/>`:""}${R.length>1?`<path d="${path(R)}" fill="none" stroke="${s.color}" stroke-width="${s.w}" stroke-linecap="round" stroke-linejoin="round"/>`:""}
+      ${P.map(p=>p.est?"":`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="${s.w>3?4:3}" fill="${s.color}" class="vz-last"/>`).join("")}`}).join("");
+  const M=o.series[0].pts;SCRUB[o.id]={w,PT,pts:M.map((p,i)=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:"",read:o.read?o.read(i):null}))};
+  return`<svg class="chart vz" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(o.label||"")}">${VZ.grid(ticks.filter(v=>Math.abs(v)>1e-9),Y,PL,w-PR,fmt)}
+    <line x1="${PL}" x2="${w-PR}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" class="vz-z"/><text class="ax" x="${w-PR+8}" y="${(Y(0)+4).toFixed(1)}">0</text>${lines}
+    <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="0"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
+    <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
+    <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax${d1===today()?" vz-cur":""}" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`};
+function cpView(rg,tog){const from=rg==="all"?"0000":shiftKey(today(),-(+rg)),L=cpSeries(from);if(!L)return"";
+  const g=(S.profile||{}).goal||"recomp",c0=L[0],f1=v=>(v>0?"+":v<0?"−":"")+Math.abs(v).toFixed(1).replace(".",","),wk=Math.max(1,Math.round(daysBetween(c0.d,L[L.length-1].d)/7));
+  const D=x=>({kg:x.kg-c0.kg,fat:x.fat-c0.fat,lean:x.lean-c0.lean}),z=D(L[L.length-1]);
+  const hiF=g==="loss"||g==="recomp"||g==="maint",hiL=g==="hyper"||g==="recomp";
+  const main=g==="hyper"?["lean","de masa magra"]:["fat","de grasa"];
+  const why=z.fat<-.3&&z.lean>=-.2?"estás perdiendo grasa sin perder músculo":z.fat<-.3?"pierdes grasa, pero también algo de masa magra: cuida la proteína y la fuerza":z.lean>.3&&z.fat<=.3?"ganas masa magra sin sumar grasa":z.lean>.3?"ganas masa magra y algo de grasa":"tu composición se mantiene estable";
+  const other=main[0]==="fat"?`y <b>${f1(z.lean)} kg</b> de masa magra`:`y <b>${f1(z.fat)} kg</b> de grasa`;
+  const est=L.some(x=>x.est),sc=L.some(x=>!x.est);
+  const ser=(k,name,color,hi)=>({name,color,w:hi?3.5:2,pts:L.map(x=>({d:x.d,v:D(x)[k],est:x.est}))});
+  const chart=VZ.multi({id:"cp",label:`Cambio desde el ${dateLabel(c0.d)}: peso ${f1(z.kg)} kg, grasa ${f1(z.fat)} kg, masa magra ${f1(z.lean)} kg`,fmt:v=>(v>0?"+":v<0?"−":"")+Math.abs(v),
+    series:[ser("kg","Peso","var(--fg)",false),ser("lean","Masa magra","var(--prot)",hiL),ser("fat","Grasa","var(--fat)",hiF)],
+    read:i=>{const d=D(L[i]);return`<div class="pbig">${f1(d[main[0]])}<small>kg ${main[1]}</small></div><p class="vsum">${esc(dateLabel(L[i].d))} · peso <b>${f1(d.kg)}</b> · magra <b>${f1(d.lean)}</b> · grasa <b>${f1(d.fat)}</b> kg${L[i].est?" · estimado":""}</p>`}});
+  return`<section class="glass pad fade phero cp-card"><div class="row" style="align-items:center"><span class="pkk">Composición</span>${tog}</div>
+    <div data-vzread><div class="pbig">${f1(z[main[0]])}<small>kg ${main[1]}</small></div><p class="vsum">${other}: ${why}.</p></div>
+    ${chart}
+    <div class="legend"><span><i style="background:var(--fg)"></i>Peso</span><span><i style="background:var(--prot)"></i>Masa magra</span><span><i style="background:var(--fat)"></i>Grasa</span>${est?'<span><i class="cp-dash"></i>Estimado por medidas</span>':""}</div>
+    <p class="note" style="margin:8px 0 0">Cambio en kg en ${wk} ${wk===1?"semana":"semanas"}, desde el ${esc(dateLabel(c0.d))}${sc&&est?". Báscula y, donde no la hay, medidas de cintura y cuello":sc?", con tu báscula":", estimado con tus medidas de cintura y cuello"}. Se resalta lo que persigue tu objetivo (${esc((GOALS[g]||GOALS.recomp).label.toLowerCase())}).</p></section>`}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wtview]");if(!b||b.getAttribute("aria-pressed")==="true")return;S.wtView=b.dataset.wtview;buzz(6);render()});
 
 })();
 </script>
