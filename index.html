@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T08:26:33.083Z">
+<meta name="sustrato-version" content="2026-10-19T09:05:27.127Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3276,6 +3276,12 @@ table.bands{--tz:1}
 .fu-bands{margin-top:14px}
 .re-plot svg{height:auto!important}.relev .re-line{stroke-width:2;vector-effect:none}
 .relev .re-plot{padding-top:30px}.relev .re-tip{top:0}
+/* v329 · Entreno previsto en Hoy: tesela llena con sus esquinas (la línea fina quedaba recortada por el contenedor del gesto) */
+.tc-mw .af.pf.mw-fg{background:var(--card2);box-shadow:none;border-radius:14px;padding:14px 14px 12px}
+/* v329 · Rendimiento: el deporte con su icono, sin palabra (el nombre queda para el lector de pantalla) */
+.pf-pick button{display:flex;align-items:center;gap:10px}
+.pf-pick button .tc-ic{width:34px;height:34px;border-radius:10px;background:var(--fill2);color:var(--fg)}
+.pf-pick button[aria-pressed="true"] .tc-ic{background:color-mix(in srgb,var(--ac-on) 18%,transparent);color:var(--ac-on)}
 
 </style>
 
@@ -3363,7 +3369,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="328";
+const APP_VER="329";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5885,7 +5891,7 @@ async function drEnsure(a){const p=(S.pmx||{})[a.id];S._drAsk=S._drAsk||{};if(!p
   try{const st=await call("get_activity_streams",{activity_id:sid,streams:run?["time","heart_rate","velocity_smooth","watts"]:["time","heart_rate","distance","altitude","velocity_smooth","watts"],resolution:900},{cache:{staleTime:300000,gcTime:86400000}});
     const du=durab(st,run,kg,bikePh(a));if(du){p.du=du;S.pmxRev=(S.pmxRev||0)+1;savePerf();if(S.detail===a.id)renderModal()}}catch(e){}}
 async function savePerf(){const c=userCol();if(!c)return;try{await c.doc("pmx").set({kind:"pmx",map:S.pmx})}catch(e){}}
-function perfHk(){const hp=hrParams(S.profile||{});return hp?Math.round(hp.max)+"-"+Math.round(hp.rest):""}
+function perfHk(){const hp=hrParams(S.profile||{});return hp?"m"+Math.round(hp.max):""} /* v329: sin el pulso en reposo, que cambia cada día y movía todo el historial */
 const perfRun=a=>(a.sport==="run"||a.sport==="trail")&&a.dist>=3000&&a.mov>=900&&(a.elev||0)/a.dist<.015;
 const perfBike=a=>isBike(a.sport)&&!isEbike(a)&&a.mov>=1200; /* e-bike fuera: el motor falsea vatios y forma */
 async function ensurePerf(){
@@ -5905,12 +5911,20 @@ async function ensurePerf(){
     S.pmxRev=(S.pmxRev||0)+1;savePerf(); /* v232: se guarda cada salida, para que cerrar la app a medias no obligue a repetir la tanda */
     if(++n%5===0&&S.tab==="prog")render();await new Promise(r=>setTimeout(r,700))}
   S.pmxBusy=false;savePerf();render()}
+function vo2Seq(E,sus){const k=(S.pmxRev||0)+"|"+E.length;if(vo2Seq.k===k)return vo2Seq.v;
+  const L=E.filter(x=>x.sp==="run"&&x.vo2!=null&&!x.err&&!sus[x.id]).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0),out=[];let v=null,wk=null,w0=null;
+  L.forEach((x,i)=>{if(v==null){if(i<Math.min(2,L.length-1))return;v=med(L.slice(0,i+1).map(y=>y.vo2));wk=x.d;w0=v}
+    else{const nv=v+(x.vo2-v)*(x.hot?.1:.2);if(x.d>shiftKey(wk,6)){wk=x.d;w0=v}v=Math.max(w0-1,Math.min(w0+1,nv))}
+    out.push({d:x.d,v})});
+  vo2Seq.k=k;vo2Seq.v=out;return out}
 /* Valor del día `end` con las salidas de las 6 semanas anteriores (12 si hay pocas) */
 function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id);if(!a)return false;const T=tempAt(a.day,(a.start||"").slice(11,16),a.mov/60);return T!=null&&T>=27},E=Object.entries(P).map(([id,x])=>Object.assign({},x,{id,hot:x.sp==="run"&&hot(id)})),sus=hrSuspects(),win=(sp,f,days)=>E.filter(x=>x.sp===sp&&x[f]!=null&&!x.err&&!sus[x.id]&&x.d<=end&&x.d>shiftKey(end,-days));
-  let r=win("run","vo2",42);if(r.length<2)r=win("run","vo2",84);if(r.length<2)r=win("run","vo2",112);{const cool=r.filter(x=>!x.hot);if(cool.length>=2)r=cool}
+  /* v329 · VO2máx estable, como en los relojes: la cifra se acumula carrera a carrera (cada una la acerca un 20 % a lo que da esa
+     sesión, un 10 % si hacía calor) y no se mueve más de 1 punto por semana. Sin carreras en 16 semanas, deja de darse. */
+  const seq=vo2Seq(E,sus),last=seq.filter(x=>x.d<=end).pop(),r=win("run","vo2",42);
   let b=win("bike","ftp",42);if(b.length<2)b=win("bike","ftp",84);const pm=b.filter(x=>x.src==="pm");if(pm.length)b=pm;
   const top=(L,f)=>{const v=L.map(x=>x[f]).sort((x,y)=>y-x).slice(0,3);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
-  const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=r.length?med(r.map(x=>x.vo2)):null,vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
+  const ftp=top(b,"ftp"),kg=num((S.profile||{}).weight)||null,vr=last&&last.d>shiftKey(end,-112)?last.v:null,vb=ftp&&kg?10.8*(ftp/.76)/kg+7:null;
   /* v268: manda la carrera, como en los relojes. Antes se tomaba el mayor de carrera y bici, y el de bici (FTP estimado con la física de las subidas) lo inflaba */
   return{vo2:vr!=null?vr:vb,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
 function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
@@ -5936,7 +5950,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const sp=a.vo2&&a.ftp?(S.pfSp||"run"):a.vo2?"run":"bike",f1=v=>v.toFixed(1).replace(".",",");
   const wkB=kg&&a.ftp?a.ftp/kg:null,lvB=wkB==null?"":wkB<2?"Inicio":wkB<2.8?"Aficionado":wkB<3.5?"Bueno":wkB<4.2?"Muy bueno":"Excelente",lvR=(vo2Norm(a.vo2)||"").replace(/^./,c=>c.toUpperCase());
   /* La elegida muestra su nivel (la cifra ya va grande debajo); la otra, su cifra, para verla sin cambiar */
-  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}"><span>${l}</span><b>${sp===k&&lv?esc(lv):`${v} <small>${u}</small>`}</b></button>`).join("")}</div>`:"";
+  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}">${spIcon(k)}<span class="vh">${l}</span><b>${sp===k&&lv?esc(lv):`${v} <small>${u}</small>`}</b></button>`).join("")}</div>`:"";
   const scale=(bands,val,c)=>{const j=bands.findIndex(x=>val<x[1]),jj=j<0?bands.length-1:j,b=bands[jj],pos=(jj+Math.max(0,Math.min(1,(val-b[0])/(b[1]-b[0]))))/bands.length*100;
     return`<div class="rh-bar pf-bar">${bands.map((x,i)=>`<span class="${i===jj?"on":""}" style="flex:1;background:color-mix(in srgb,${c} ${[18,32,48,64,82,100][Math.round(i*5/(bands.length-1))]}%,var(--card))!important"><em>${x[2]}</em><u>${x[3]}</u></span>`).join("")}<i style="left:${Math.max(1,Math.min(99,pos)).toFixed(1)}%"></i></div>`};
   const zrow=(z,l,r)=>`<div class="pf-z"><i style="background:${Z_C[z]}"></i><span><b>Z${z}</b> ${l}</span><em>${r}</em></div>`;
@@ -5951,7 +5965,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
       <div class="kv pf-kv"><div><span>Ritmo umbral</span><b>${fmtClock(a.thr)} <small>/km</small></b></div>${a.cadR?`<div><span>Cadencia</span><b>${Math.round(a.cadR)} <small>pasos/min</small></b></div>`:""}</div>
       <h3 class="pf-zh">Tus ritmos por zonas <small>min/km</small></h3>
       <div class="pf-zl">${zrow(1,"Recuperación","más de "+P(.6))}${zrow(2,"Base aeróbica",P(.74)+" – "+P(.6))}${zrow(3,"Tempo",P(.83)+" – "+P(.75))}${zrow(4,"Umbral",P(.92)+" – "+P(.84))}${zrow(5,"VO2max","menos de "+P(.93))}</div>
-      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de tus carreras de las últimas 6 semanas (hasta 16 si hay pocas; mediana, sin las de calor), con el coste de correr del ACSM (corregido a ritmo lento), que es el que coincide con las pruebas de laboratorio. La bici solo cuenta si no tienes carreras. El margen (±4 ml/kg/min) es el error medio frente a 41 pruebas de esfuerzo con analizador de gases; si escribes tu FC máxima real en el perfil, afina. Nivel según los percentiles del Cooper Institute para tu edad y sexo (los mismos que usan los relojes): Superior es el 5 % más en forma. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
+      <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">VO2max estimado con el ritmo y el pulso de los tramos estables de cada carrera. La cifra se acumula: cada carrera la acerca un poco a lo que dio esa sesión (menos si hacía calor) y no se mueve más de 1 punto por semana, para que un día raro no la hunda. Se calcula con el coste de correr del ACSM (corregido a ritmo lento), que es el que coincide con las pruebas de laboratorio. La bici solo cuenta si no tienes carreras. El margen (±4 ml/kg/min) es el error medio frente a 41 pruebas de esfuerzo con analizador de gases; si escribes tu FC máxima real en el perfil, afina. Nivel según los percentiles del Cooper Institute para tu edad y sexo (los mismos que usan los relojes): Superior es el 5 % más en forma. Los ritmos salen del coste de oxígeno de cada fracción de tu VO2max (método Daniels): Z2 es el 60–74 %, Z4 el 84–92 %.</p></details>`}
   else{const ftp=a.ftp,wk=kg?ftp/kg:null,df=a.prev.ftp?Math.round(ftp-a.prev.ftp):null;
     const bands=[[0,2,"Inicio","<2"],[2,2.8,"Aficionado","2–2,8"],[2.8,3.5,"Bueno","2,8–3,5"],[3.5,4.2,"Muy bueno","3,5–4,2"],[4.2,5,"Excelente","4,2+"]];
     const W=x=>Math.round(ftp*x);
