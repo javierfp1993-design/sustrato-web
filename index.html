@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T12:41:40.979Z">
+<meta name="sustrato-version" content="2026-10-19T13:02:26.520Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3326,6 +3326,14 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 /* v335 · El aviso (con «Deshacer») por encima de las hojas: antes quedaba debajo y no se podía tocar */
 .toast{z-index:80}
 .pp-h{margin:6px 0 -6px}
+/* v337 · El peso en morado, como «Medidas corporales» en Apple Salud (guía: el morado es para IA, ciclo y medidas corporales).
+   Gráfico, vista Composición y recorrido; la referencia sigue en tinta */
+:root{--peso:var(--morado)}
+.wfill{background:var(--peso)}
+.wtrack .wm.st{box-shadow:inset 0 0 0 2.5px var(--peso)}
+.wtrack .wm.nw{background:var(--peso)}
+.wtrack .wm.nw em{color:var(--fg)}
+.wlg i.st{box-shadow:inset 0 0 0 2px var(--peso)}.wlg i.nw{background:var(--peso)}
 
 </style>
 
@@ -3413,7 +3421,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="336";
+const APP_VER="337";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5807,7 +5815,7 @@ function bigWeightChart(W){
   if(W.length<2)return"";
   const line=W.map(x=>{const win=W.filter(y=>daysBetween(y.d,x.d)>=0&&daysBetween(y.d,x.d)<7);return{d:x.d,v:win.reduce((s,y)=>s+y.kg,0)/win.length}});
   const f1=v=>v.toFixed(1).replace(".",","),L={};line.forEach(p=>L[p.d]=p.v);
-  return VZ.line({id:"w",color:"var(--fg)",label:"Evolución del peso",pts:W.map(x=>({d:x.d,v:x.kg})),line,minPad:.4,fmt:f1,tip:p=>f1(p.v)+" kg",
+  return VZ.line({id:"w",color:"var(--peso)",label:"Evolución del peso",pts:W.map(x=>({d:x.d,v:x.kg})),line,minPad:.4,fmt:f1,tip:p=>f1(p.v)+" kg",
     read:p=>`<div class="pbig">${f1(p.v)}<small>kg</small></div><div class="pmeta"><span class="note" style="margin:0">${esc(dateLabel(p.d))} · media de 7 días ${f1(L[p.d])} kg</span></div>`});
 }
 function weightHero(){
@@ -9631,12 +9639,12 @@ function cpView(rg,tog){const from=rg==="all"?"0000":shiftKey(today(),-(+rg)),L=
   const est=L.some(x=>x.est),sc=L.some(x=>!x.est);
   const ser=(k,name,color,hi)=>({name,color,w:hi?3.5:2,pts:L.map(x=>({d:x.d,v:D(x)[k],est:x.est}))});
   const chart=VZ.multi({id:"cp",label:`Cambio desde el ${dateLabel(c0.d)}: peso ${f1(z.kg)} kg, grasa ${f1(z.fat)} kg, masa magra ${f1(z.lean)} kg`,fmt:v=>(v>0?"+":v<0?"−":"")+Math.abs(v),
-    series:[ser("kg","Peso","var(--fg)",false),ser("lean","Masa magra","var(--prot)",hiL),ser("fat","Grasa","var(--fat)",hiF)],
+    series:[ser("kg","Peso","var(--peso)",false),ser("lean","Masa magra","var(--prot)",hiL),ser("fat","Grasa","var(--fat)",hiF)],
     read:i=>{const d=D(L[i]);return`<div class="pbig">${f1(d[main[0]])}<small>kg ${main[1]}</small></div><p class="vsum">${esc(dateLabel(L[i].d))} · peso <b>${f1(d.kg)}</b> · magra <b>${f1(d.lean)}</b> · grasa <b>${f1(d.fat)}</b> kg${L[i].est?" · estimado":""}</p>`}});
   return`<section class="glass pad fade phero cp-card"><div class="row" style="align-items:center"><span class="pkk">Composición</span>${tog}</div>
     <div data-vzread><div class="pbig">${f1(z[main[0]])}<small>kg ${main[1]}</small></div><p class="vsum">${other}: ${why}.</p></div>
     ${chart}
-    <div class="legend"><span><i style="background:var(--fg)"></i>Peso</span><span><i style="background:var(--prot)"></i>Masa magra</span><span><i style="background:var(--fat)"></i>Grasa</span>${est?'<span><i class="cp-dash"></i>Estimado por medidas</span>':""}</div>
+    <div class="legend"><span><i style="background:var(--peso)"></i>Peso</span><span><i style="background:var(--prot)"></i>Masa magra</span><span><i style="background:var(--fat)"></i>Grasa</span>${est?'<span><i class="cp-dash"></i>Estimado por medidas</span>':""}</div>
     <p class="note" style="margin:8px 0 0">Cambio en kg en ${wk} ${wk===1?"semana":"semanas"}, desde el ${esc(dateLabel(c0.d))}${sc&&est?". Báscula y, donde no la hay, medidas de cintura y cuello":sc?", con tu báscula":", estimado con tus medidas de cintura y cuello"}. Se resalta lo que persigue tu objetivo (${esc((GOALS[g]||GOALS.recomp).label.toLowerCase())}).</p></section>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wtview]");if(!b||b.getAttribute("aria-pressed")==="true")return;S.wtView=b.dataset.wtview;buzz(6);render()});
 
