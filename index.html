@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T09:39:29.090Z">
+<meta name="sustrato-version" content="2026-10-19T10:05:32.025Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3290,6 +3290,9 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .rw-it:active{transform:scale(.97)}
 .rw-it{justify-content:flex-start;padding-top:18px}.rw-it svg{flex:0 0 26px}
 .rw-it span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+/* v331 · Importar plan: icono en la cabecera del calendario de Entrenos (utilidad, no compite con Planificar); gasto real en naranja (energía) */
+.wk-imp{flex:0 0 auto}
+.aline-b i{background:var(--naranja)}
 
 </style>
 
@@ -3377,7 +3380,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="330";
+const APP_VER="331";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5824,7 +5827,7 @@ function adaptTile(){
       <div class="cmpb"><div><span>Real</span><i style="width:${(ad.implied/mx*100).toFixed(0)}%"></i><b>${fmtInt(ad.implied)}</b></div><div><span>Calculado</span><i class="ghost" style="width:${(ad.model/mx*100).toFixed(0)}%"></i><b>${fmtInt(ad.model)}</b></div></div>
       <p class="pt-s">Sale de cómo evoluciona tu peso con lo que comes: es tu metabolismo medido, no estimado.</p><div class="tg-r"><span class="tg-t"><b>Ajustar mis calorías</b><small>Con el gasto real: unas ${fmtInt(ad.implied)} kcal al día</small></span><button type="button" class="tg-sw" role="switch" data-act="adapt" aria-checked="${!!p.adaptOn}" aria-label="Ajustar mis calorías con el gasto real"></button></div></section>`}
   const W=(S.weights||[]).filter(w=>w.d>=shiftKey(today(),-28)).sort((a,b)=>a.d<b.d?-1:1),n=W.length,span=n>1?daysBetween(W[0].d,W[n-1].d):0,v=Math.min(1,(Math.min(n,6)/6+Math.min(span,14)/14)/2);
-  return`<section class="glass pad fade ptile acc"><span class="pkk">Gasto real</span><div class="ptr">${ring(v,"currentColor","rgba(127,127,127,.2)",86,9,r0(v*100)+"%")}</div>
+  return`<section class="glass pad fade ptile acc"><span class="pkk">Gasto real</span><div class="ptr">${ring(v,"var(--naranja)","rgba(127,127,127,.2)",86,9,r0(v*100)+"%")}</div>
     <p class="pt-s">${Math.min(n,6)}/6 pesajes · ${Math.min(span,14)}/14 días para calcularlo</p></section>`;
 }
 function effCard(){
@@ -6852,7 +6855,7 @@ function vPlanTrain(wk){
   /* v278: calendario arriba y, en la misma tarjeta, el resumen de la semana y debajo planificar; luego el tiempo y la semana en lista */
   return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
     <div class="kv kv4 pl-kv"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div>
-    <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return`<div class="mw-sec odd">${c}<button type="button" class="chip" data-icopen="1">Importar plan</button></div>`})()}</section>
+    <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}</section>
   ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
@@ -8845,7 +8848,7 @@ const WK_MAX=()=>mondayOf(shiftKey(today(),60));
 /* v318 · Entrenos y Menú, igual que Hoy: anillo de hidratos y el icono del entreno (en Menú explica por qué el día es alto o bajo; los platos asignados ya se ven en «n/4 platos») */
 function wkStrip(wk,kind){const days=[0,1,2,3,4,5,6].map(i=>shiftKey(wk,i)),cur=wk===mondayOf(today()),last=wk>=WK_MAX();
   return calStrip({days,sel:planDayK(wk),attr:"data-wday",dot:calDotTrain,carb:true,wk,label:periodLabel("week",wk),
-    right:(cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>')+`<span class="vh"><button type="button" class="wk-nav" data-plweek="-1" aria-label="Semana anterior">‹</button><button type="button" class="wk-nav" data-plweek="1" ${last?"disabled":""} aria-label="Semana siguiente">›</button></span>`})}
+    right:(cur?"":'<button type="button" class="chip sm" data-wknow="1">Esta semana</button>')+(kind==="train"?`<button type="button" class="hbtn wk-imp" data-icopen="1" aria-label="Importar plan de TrainingPeaks, intervals u otro calendario" title="Importar plan"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3.5v3M16 3.5v3"/><path d="M20 12V7.5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2V18a2 2 0 0 0 2 2h6"/><path d="M4 10h16"/><path d="M18 14.5v6M15.5 18l2.5 2.5 2.5-2.5"/></svg></button>`:"")+`<span class="vh"><button type="button" class="wk-nav" data-plweek="-1" aria-label="Semana anterior">‹</button><button type="button" class="wk-nav" data-plweek="1" ${last?"disabled":""} aria-label="Semana siguiente">›</button></span>`})}
 /* cabecera del día elegido: fecha (con el mes, ya que arriba no hay fechas) y un dato a la derecha */
 function wkDayHead(k,right){const tk=today(),d=new Date(k+"T12:00:00");
   return`<div class="wk-h"><b>${k===tk?"Hoy · ":""}${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()].slice(0,3)}</b><span>${right||""}</span></div>`}
