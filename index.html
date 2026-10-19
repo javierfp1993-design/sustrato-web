@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T18:55:15.889Z">
+<meta name="sustrato-version" content="2026-10-19T20:04:39.991Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3355,6 +3355,15 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .lm-m.me{justify-self:end;background:var(--fill)}
 .lm-m small{font-size:12px;color:var(--muted)}.lm-m p{margin:2px 0 0;font-size:15px;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}
 
+/* v342 · Seguimiento con tu profesional (111): hábitos en Hoy, revisión de la semana y punto azul de lo nuevo en el avatar */
+.pr-hab .tg-r+.tg-r{border-top:.5px solid var(--sep)}
+.pr-hab .row{align-items:baseline}
+.pr-sc{display:flex}.pr-sc button{flex:1}
+.pr-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
+.pr-x{width:100%;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:15px/1.4 var(--font);padding:12px 14px;resize:none;outline:none}
+#menuBtn{position:relative}
+#menuBtn[data-prnew]::before{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 2px var(--bg);z-index:1}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3441,7 +3450,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="341";
+const APP_VER="342";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3485,7 +3494,7 @@ function bodyFat(p){
 }
 /* Grasa corporal: media de Marina de EE. UU. y RFM (cintura/altura) con medidas; si no, IMC y edad (Deurenberg, poco fiable en deportistas). */
 /* app 1.1.0: grasa medida por la báscula (bioimpedancia): media de las 3 últimas de los últimos 30 días, porque una sola varía mucho con el agua */
-function bfScale(){const L=(S.bodyFatHc||[]).filter(x=>x.d>=shiftKey(today(),-30)&&x.pct>3&&x.pct<60).sort((a,b)=>a.d<b.d?-1:1).slice(-3);
+function bfScale(){const L=(S.bodyFatHc||[]).concat((S.measures||[]).filter(m=>m.src==="pro"&&m.bf).map(m=>({d:m.d,pct:m.bf}))) /* v342: también la de tu profesional */.filter(x=>x.d>=shiftKey(today(),-30)&&x.pct>3&&x.pct<60).sort((a,b)=>a.d<b.d?-1:1).slice(-3);
   return L.length?{bf:L.reduce((s,x)=>s+x.pct,0)/L.length,d:L[L.length-1].d,n:L.length}:null}
 function bfEst(p){
   const sc=bfScale();if(sc)return{bf:sc.bf,src:"med",how:"tu báscula ("+(sc.n>1?"media de las "+sc.n+" últimas medidas":"última medida")+")"};
@@ -5597,7 +5606,9 @@ window.addEventListener("scroll",()=>{const h=document.querySelector("header.top
 
 /* ---------- Preferencias, compra y exportación ---------- */
 const TAGS={meat:["pollo","pavo","ternera","cerdo","jamon"],fish:["atun","merluza","salmon","sardinas"],shell:["gambas","mejillones"],
-  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey","kefir","yprot","qbprot","bprot"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola","wrap"],nuts:["nueces","almendras","cacahuete"]};
+  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey","kefir","yprot","qbprot","bprot"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola","wrap"],nuts:["nueces","almendras","cacahuete"],soy:["tofu"],sesame:["hummus"]};
+/* v342 · Exclusiones (alergias e intolerancias): una sola lista para Perfil, el menú automático, la IA y el panel del profesional */
+const EXCL=[["noLactose","Lactosa","dairy"],["noGluten","Gluten","gluten"],["noNuts","Frutos secos","nuts"],["noShell","Marisco","shell"],["noEgg","Huevo","egg"],["noFish","Pescado","fish"],["noSoy","Soja","soy"],["noSesame","Sésamo","sesame"]];
 const SHOP_CAT=[["Carne y pescado",TAGS.meat.concat(TAGS.fish,TAGS.shell,["tofu"])],["Lácteos y huevos",TAGS.dairy.filter(x=>x!=="whey").concat(TAGS.egg)],
   ["Pan, cereales y pasta",["arroz","pasta","pastaint","pan","panint","wrap","avena","quinoa","granola","tortitas"]],["Legumbres",["lentejas","garbanzos","hummus"]],
   ["Fruta",["platano","manzana","rojos","naranja","aguacate","datiles"]],["Verdura",["patata","boniato","tomate","verduras","espinacas","lechuga","setas","cebolla"]],
@@ -5610,8 +5621,7 @@ function dishAllowed(d){
   if(diet!=="omni"&&has("meat"))return false;
   if((diet==="veggie"||diet==="vegan")&&(has("fish")||has("shell")))return false;
   if(diet==="vegan"&&(has("dairy")||has("egg")||ids.includes("miel")))return false;
-  if(p.noLactose&&has("dairy"))return false;if(p.noGluten&&has("gluten"))return false;
-  if(p.noNuts&&has("nuts"))return false;if(p.noShell&&has("shell"))return false;
+  if(EXCL.some(([k,,t])=>p[k]&&has(t)))return false;
   return true;
 }
 function weekShopping(wk){
@@ -6954,9 +6964,11 @@ function vHoy(){
   ${glyCard()}
   ${recovCard()}
   ${bkNudge()}
+  ${typeof prHoy==="function"?prHoy():""}
   ${flPrompt()}
   ${weekTeaser()}
   <section class="glass pad fade dsec">${strip}</section>
+  ${typeof prHabCard==="function"?prHabCard():""}
   <div class="hcar${S.day<=today()?" hcar-en":""}"><div class="hcar-track">
   <section class="glass pad fade hero">
     <div class="hero-l">
@@ -7403,7 +7415,7 @@ function vPerfil(){
   const bands=hp?BANDS.map(bd=>{const lo=bd.lo<=0?null:hrForFrac(bd.lo,hp),hi=bd.hi>1?null:hrForFrac(bd.hi,hp);
     const rng=lo==null?"< "+r0(hi):hi==null?"> "+r0(lo):r0(lo)+"–"+r0(hi);
     return`<tr><td><span class="sw" style="display:inline-block;vertical-align:middle;margin-right:8px;background:${bd.col}"></span>${bd.name}</td><td class="num">${rng}</td><td class="num">${bd.lo<=0?"<35":r0(bd.lo*100)+"–"+Math.min(100,r0(bd.hi*100))}</td><td style="color:var(--muted);font-size:calc(13px*var(--tz,1))">${bd.desc}</td></tr>`}).join(""):"";
-  const MT=MEALS.map(([id,n,def])=>p["meal_"+id]||def).sort(),EX=[["noLactose","lactosa"],["noGluten","gluten"],["noNuts","frutos secos"],["noShell","marisco"]].filter(([k])=>p[k]).map(x=>x[1]);
+  const MT=MEALS.map(([id,n,def])=>p["meal_"+id]||def).sort(),EX=EXCL.filter(([k])=>p[k]).map(x=>x[1].toLowerCase());
   const DI={omni:"Omnívora",pesce:"Pescetariana",veggie:"Vegetariana",vegan:"Vegana"};
   const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
     med:[p.waist&&"Cintura "+p.waist+" cm",p.neck&&"cuello "+p.neck+" cm"].filter(Boolean).join(" · ")||"Sin medidas",
@@ -7433,7 +7445,7 @@ function vPerfil(){
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
       ${pkField("store","Dónde haces la compra",[["","En cualquier súper"],["merc","Mercadona"]],p.store||"")}
       ${pkField("diet","Tipo de dieta",[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]],p.diet||"omni")}
-      <div class="f pfx-g" role="group" aria-labelledby="pfx-l"><span id="pfx-l">Excluir</span><div class="chips">${[["noLactose","Lactosa"],["noGluten","Gluten"],["noNuts","Frutos secos"],["noShell","Marisco"]].map(([k,l])=>`<button type="button" class="chip" data-pfx="${k}" aria-pressed="${!!p[k]}">${l}</button>`).join("")}</div></div>
+      <div class="f pfx-g" role="group" aria-labelledby="pfx-l"><span id="pfx-l">Excluir</span><div class="chips">${EXCL.map(([k,l])=>`<button type="button" class="chip" data-pfx="${k}" aria-pressed="${!!p[k]}">${l}</button>`).join("")}</div></div>
     </div><p class="note">La asignación automática solo usa platos compatibles. En Plan › Platos, con «···», puedes dejar fuera los que no te gustan.</p></fieldset></details>
     <details class="psec" data-ps="hor" ${psOpen("hor")}><summary><span class="ps-t"><b>Horario de comidas</b><small>${psSum.hor}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Horario de comidas</legend><div class="fields">
       <div class="hr-g">${MEALS.map(([id,n,def])=>{const v=p["meal_"+id]||def;return`<label class="fd-f hr-r"><span>${n}</span><b>${esc(fdFmt("time",v))}</b><i aria-hidden="true">›</i><input type="time" id="p_meal_${id}" value="${esc(v)}" aria-label="${esc(n)}"></label>`}).join("")}</div>
@@ -7488,7 +7500,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7703,7 +7715,7 @@ document.addEventListener("submit",e=>{if(e.target.id!=="pform")return;e.prevent
   const g=id=>{const el=$("#p_"+id);return el?el.value.trim():""};
   const p=Object.assign({},S.profile);
   ["name","sex","goal","level","diet","store","meal_breakfast","meal_lunch","meal_snack","meal_dinner"].forEach(k=>p[k]=g(k)||null);
-  ["noLactose","noGluten","noNuts","noShell"].forEach(k=>{const el=document.querySelector(`[data-pfx="${k}"]`);p[k]=!!(el&&el.getAttribute("aria-pressed")==="true")});
+  EXCL.forEach(([k])=>{const el=document.querySelector(`[data-pfx="${k}"]`);p[k]=!!(el&&el.getAttribute("aria-pressed")==="true")});
   ["age","height","weight","neck","waist","hip","hrmax","hrrest","lthr","neat"].forEach(k=>p[k]=num(g(k)));
   S.profile=p;S.pfDirty=false;S.pfJust=true;saveProfile(true);render();ensureDaySubs();
   clearTimeout(S.pfT);S.pfT=setTimeout(()=>{S.pfJust=false;const b=document.querySelector(".pf-save");if(b&&!S.pfDirty){b.classList.remove("done");b.textContent="Guardar cambios"}},2400);
@@ -7713,8 +7725,8 @@ document.addEventListener("input",pfMark);document.addEventListener("change",pfM
 /* v281 · Excluir en Perfil: botones con acento (como el resto de opciones), sin casilla ni :has() */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pfx]");if(!b)return;b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));buzz(6);pfMark({target:b})});
 function trackMeasures(){const p=S.profile||{},n=num(p.neck),w=num(p.waist),h=num(p.hip);if(!n||!w)return;S.measures=S.measures||[];
-  const last=S.measures[S.measures.length-1];if(last&&last.neck===n&&last.waist===w&&(last.hip||0)===(h||0))return;
-  const e={d:today(),neck:n,waist:w,hip:h||null,kg:num(p.weight)||null};S.measures=S.measures.filter(x=>x.d!==e.d).concat([e]).sort((a,b)=>a.d<b.d?-1:1);
+  const last=S.measures.filter(x=>x.src!=="pro").pop(); /* v342: las de tu profesional no cuentan aquí */if(last&&last.neck===n&&last.waist===w&&(last.hip||0)===(h||0))return;
+  const e={d:today(),neck:n,waist:w,hip:h||null,kg:num(p.weight)||null};S.measures=S.measures.filter(x=>x.d!==e.d||x.src==="pro").concat([e]).sort((a,b)=>a.d<b.d?-1:1);
   const c=userCol();if(c)c.doc("measures").set({kind:"measures",list:S.measures}).catch(()=>{})}
 async function saveProfile(quiet){trackMeasures();
   const c=userCol();if(!c){toast("Perfil aplicado, pero esta vista no puede guardarlo");return}
@@ -7884,7 +7896,7 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
     +`<label class="cn-a${S.fitBusy?" fit-busy":""}" for="fitin">${S.fitBusy?"Importando…":"Importar archivos"}</label><input type="file" id="fitin" accept=".fit,application/octet-stream" multiple hidden${S.fitBusy?" disabled":""}>`)}
   /* v333: tu profesional (pauta por enlace) */
   {const q=(S.profile||{}).pro;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span>`,"Tu profesional",`<span>${q?"Pauta de "+esc(q.n)+" · "+esc(PP_ROLE[q.r]||"")+(ppActive()?"":" · ya no está en vigor"):"Tu entrenador o nutricionista te manda su pauta con un enlace."}</span>`,q?(ppActive()?`<span class="cn-st cx-ok">Pauta activa</span>`:`<span class="cn-st">Caducada</span>`):"")
-    +`<button type="button" class="cn-a" data-act="ppopen">${q?"Ver pauta":"Añadir pauta"}</button>`)}
+    +`<button type="button" class="cn-a" data-act="ppopen">${typeof prNew==="function"&&prNew()?"Ver lo nuevo · "+prNew():q?"Ver pauta":"Añadir pauta"}</button>`)}
   return`<section class="glass pad fade cx-card"><span class="pkk">Conexiones</span>${G.map(g=>`<div class="cn-g">${g}</div>`).join("")}</section>`
     +(a&&!S.acDel?`<div class="cn-del"><button type="button" data-act="acdel">Borrar mi cuenta y mis datos</button><p>Borra del servidor todo lo sincronizado. Pide confirmación.</p></div>`:"")}
 function knowCard(){return`<section class="glass pad fade kn-card"><span class="pkk">Conoce Sustrato</span><div class="kn">
@@ -8540,7 +8552,7 @@ function qnHtml(){const q=S.qn,m=qnMeal();if(!m)return"";const kc=Math.round(4*m
     <button type="button" class="btn primary big qn-run" data-qnrun="1" ${q.busy?"disabled":""}>${q.res?"Otras ideas":"Proponer"}</button>
   </div></div>`}
 async function qnRun(){const q=S.qn,m=qnMeal();if(!q||!m||!S.sample)return;const inp=$("#qn_have");q.have=inp?inp.value.trim().slice(0,200):q.have;q.busy=true;q.err=null;renderModal();
-  const p=S.profile||{},diet={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"}[p.diet||"omni"],ex=[["noLactose","lactosa"],["noGluten","gluten"],["noNuts","frutos secos"],["noShell","marisco"]].filter(([k])=>p[k]).map(x=>x[1]);
+  const p=S.profile||{},diet={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"}[p.diet||"omni"],ex=EXCL.filter(([k])=>p[k]).map(x=>x[1].toLowerCase());
   try{const r=await S.sample.json(`Propón tres comidas sencillas y distintas para ${m.n.toLowerCase()} (${fromMin(m.min)}) de una persona con dieta ${diet}${ex.length?", sin "+ex.join(", "):""}. Objetivo de esa comida: ${Math.round(m.P)} g de proteína, ${Math.round(m.C)} g de hidratos y ${Math.round(m.F)} g de grasa${m.pre?"; es antes de entrenar: fácil de digerir, poca grasa y fibra":m.post?"; es después de entrenar: prioriza proteína e hidratos":""}.${q.have?` Usa sobre todo lo que tiene a mano: "${q.have}".`:""} Alimentos corrientes en España, cantidades en gramos o unidades caseras. Calcula los macros reales de cada propuesta (BEDCA o USDA), cerca del objetivo.
 Responde solo JSON: {"opciones":[{"n":"nombre corto","q":"ingredientes con cantidades, separados por ·","P":g,"C":g,"F":g${MI_ASK}}]}`,{modelTier:"quick"});
     const os=(Array.isArray(r.opciones)?r.opciones:[]).slice(0,3).map(o=>({n:String(o.n||"").slice(0,70),q:String(o.q||"").slice(0,160),P:+o.P,C:+o.C,F:+o.F,mi:miParse(o.mi)})).filter(o=>o.n&&[o.P,o.C,o.F].every(x=>isFinite(x)&&x>=0));
@@ -9628,7 +9640,7 @@ function cpNavy(q){const nv=bodyFat(q),h=num(q.height),w=num(q.waist),rfm=h&&w?(
   return ok(nv)&&ok(rfm)?(nv+rfm)/2:ok(nv)?nv:ok(rfm)?rfm:null}
 function cpSeries(from){const p=S.profile||{},W=(S.weights||[]).slice().sort((a,b)=>a.d<b.d?-1:1),near=d=>{let b=null,bd=4;W.forEach(x=>{const k=Math.abs(daysBetween(x.d,d));if(k<bd){bd=k;b=x}});return b?b.kg:null};
   const out={},put=(d,kg,bf,lean,est)=>{if(!kg||!(bf>3&&bf<60))return;if(out[d]&&!out[d].est)return;const fat=kg*bf/100;out[d]={d,kg,fat,lean:lean||kg-fat,est}};
-  (S.measures||[]).forEach(m=>{if(m.d<from)return;const kg=m.kg||near(m.d)||num(p.weight);put(m.d,kg,cpNavy(Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip})),null,true)});
+  (S.measures||[]).forEach(m=>{if(m.d<from)return;const kg=m.kg||near(m.d)||num(p.weight);if(m.src==="pro"&&m.bf){put(m.d,kg,m.bf,m.lean||null,false);return} /* v342: medida de la consulta (pliegues o bioimpedancia) */put(m.d,kg,cpNavy(Object.assign({},p,{neck:m.neck,waist:m.waist,hip:m.hip})),null,true)});
   const LN={};(S.leanHc||[]).forEach(x=>LN[x.d]=x.kg);
   (S.bodyFatHc||[]).forEach(x=>{if(x.d<from)return;put(x.d,near(x.d),x.pct,LN[x.d],false)});
   /* con báscula, solo báscula: mezclar métodos (bioimpedancia y medidas) crea saltos que no son cambios reales */
@@ -9762,7 +9774,7 @@ function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||G
     <div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div>${S.ppErr?`<p class="pp-err" role="alert">Ese enlace no trae una pauta válida.</p>`:""}`;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
     <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml()}${body}</div></div>`}
-function ppOpen(q){S.ppIn=q||null;if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
+function ppOpen(q){S.ppIn=q||null;if(typeof prSeen==="function")prSeen();if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act^='pp']");if(!t)return;const a=t.dataset.act;
   if(a==="ppopen"){ppOpen(null);return}
   if(a==="ppclose"||a==="ppno"){S.ppIn=null;S.sheet=null;renderModal();return}
@@ -9834,6 +9846,7 @@ function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
     /* v341 · cotejo: si ese día regía una pauta, lo que pauta (hidratos según el tipo de día, proteína y sus tomas) */
     const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)}}}
   if(P.meals&&k<=today()){const ml=lkMeals(k);if(ml)o.ml=ml}
+  if(typeof prHabDay==="function"){const hb=prHabDay(k);if(hb)o.hb=hb} /* v342: los hábitos que te propuso, marcados ese día */
   if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct}
   if(P.ready){const rh=(S.rhr||{})[k],hv=(S.hrv||{})[k],sl=(S.sleep||{})[k];if(rh)o.rhr=rh;if(hv)o.hrv=hv;if(sl)o.sl=sl;if(rh||hv||sl){try{o.rd=readiness(k).sc}catch(e){}}}
   return Object.keys(o).length?o:null}
@@ -9847,6 +9860,7 @@ function lkMeals(k){const L=(S.log||{})[k]||{},t=dayTargets(k),mp=t?mealPlan(t,k
   const al=L.alc;if(al&&al.alc)ml.push({m:"alc",st:"done",n:"Alcohol",kcal:r(alKcal(al)),g:r(al.alc)});
   return ml.some(x=>x.st)?ml:null}
 function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
+  if(P.food){const p=S.profile||{};o.excl={diet:p.diet||"omni"};EXCL.forEach(([k])=>{if(p[k])o.excl[k]=true})} /* v342: sus exclusiones, para la ficha del profesional */
   if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}return o}
 async function lkAes(l){const k=await lkKey(),priv=await crypto.subtle.importKey("jwk",k.priv,{name:"ECDH",namedCurve:"P-256"},false,["deriveKey"]);
   const pub=await crypto.subtle.importKey("raw",lkun64(l.proPub),{name:"ECDH",namedCurve:"P-256"},false,[]);
@@ -9889,7 +9903,7 @@ async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=t
       for(const x of j.items||[]){B.since=Math.max(B.since,x.u);if(x.del){delete B.m[x.mid];continue}if(B.m[x.mid])continue;
         try{const o=await lmOpen(aes,l,x);B.m[x.mid]={mid:x.mid,by:x.by,u:x.u,o};if(x.by==="pro")fresh.push([l,o])}catch(e){}}}
     LS("sustrato-lkmsg",S.lkm)}catch(e){}finally{LM_BUSY=false}
-  if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
+  if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
 async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=await lkCall("/link/send",Object.assign({id:l.id},x));
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
 const lmLink=id=>(S.lk.links||[]).find(x=>x.id===id);
@@ -9897,12 +9911,17 @@ function lmAck(lid,mid,ok){const l=lmLink(lid);if(l&&mid)lmSend(l,{t:"ack",ref:m
 /* lo de cada vínculo, de lo más nuevo a lo más viejo; lo respondido lleva su respuesta */
 function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.u-a.u),ack={};M.forEach(x=>{if(x.o.t==="ack")ack[x.o.ref]=x.o.ok});return{M,ack}}
 function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
-  const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,6);
+  const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,6);
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
+    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort();return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${Object.keys(o.dishes||{}).length} platos</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
+    if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}
     <span class="pa-l">Notas</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}</small><p>${esc(x.o.x)}</p></div>`).join("")}</div>`:""}
     <div class="pp-in"><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
+/* v342 · exclusiones que anota tu profesional (alergias, intolerancias y tipo de dieta): al aplicarlas, tu menú automático las respeta */
+const LM_DIET={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"};
+const lmExclTxt=v=>{v=v||{};const L=EXCL.filter(([k])=>v[k]).map(x=>x[1].toLowerCase());return(L.length?"Sin "+L.join(", "):"Sin exclusiones")+(v.diet&&v.diet!=="omni"?" · dieta "+LM_DIET[v.diet]:"")};
 const lmKcal=d=>{const n=ingNut(d.ing||[],d.serv||1);return fmtInt(4*n.P+4*n.C+9*n.F)};
 /* adjunto: trozos de texto cifrado que se unen y se abren aquí; en la app se guarda y se comparte, en el navegador se descarga */
 async function lmFile(lid,fid){const l=lmLink(lid);if(!l)return;const q=S.ppIn||(S.profile||{}).pro||{},a=(q.att||[]).find(x=>x.fid===fid);if(!a)return;toast("Abriendo "+a.name+"…");
@@ -9912,7 +9931,7 @@ async function lmFile(lid,fid){const l=lmLink(lid);if(!l)return;const q=S.ppIn||
     if(window.__native&&S.dl){await S.dl.save({filename:name,data:lmb64(buf).replace(/-/g,"+").replace(/_/g,"/"),b64:true,mime:a.type});return}
     const u=URL.createObjectURL(new Blob([buf],{type:a.type||"application/octet-stream"})),x=document.createElement("a");x.href=u;x.download=name;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),6e4)}
   catch(e){toast("No se ha podido abrir el adjunto")}}
-document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-lmpp],[data-lmdish],[data-lmnote],[data-lmatt]");if(!t)return;
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-lmpp],[data-lmdish],[data-lmnote],[data-lmatt],[data-lmexcl]");if(!t)return;
   if(t.dataset.lmatt){const[lid,fid]=t.dataset.lmatt.split("|");lmFile(lid,fid);return}
   if(t.dataset.lmpp){const[lid,mid]=t.dataset.lmpp.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],l=lmLink(lid),q=x&&ppNorm(x.o.p);if(!q||!l){toast("Esta pauta no se puede leer");return}
     S.ppIn=Object.assign(q,{lk:lid,mid,n:q.n||l.pro.name});S.ppErr=false;S.ppSh=true;renderModal();return}
@@ -9920,11 +9939,77 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
     const ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([id,g])=>[id,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length){toast("Este plato no trae ingredientes");return}
     const meals=(d.meals||[]).filter(m=>MEALS.some(([id])=>id===m)),nd={id:"p"+mid.replace(/[^\w]/g,""),n:String(d.n||"Plato").slice(0,60),meals:meals.length?meals:pbMeals(ing.map(([id])=>({id}))),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
     S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd]);saveDishes();lmAck(lid,mid,true);toast("Añadido a tus platos · "+nd.n);lkRender();return}
+  if(t.dataset.lmexcl){const[lid,mid]=t.dataset.lmexcl.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],v=x&&x.o.v;if(!v)return;
+    const p=Object.assign({},S.profile);EXCL.forEach(([k])=>{p[k]=!!v[k]});if(LM_DIET[v.diet])p.diet=v.diet;S.profile=p;saveProfile(true);lmAck(lid,mid,true);toast("Aplicado: "+lmExclTxt(v));lkRender();render();return}
   if(t.dataset.lmnote){const l=lmLink(t.dataset.lmnote),i=$("#lmx-"+t.dataset.lmnote),x=String(i&&i.value||"").trim();if(!l||!x)return;t.disabled=true;
     try{await lmSend(l,{t:"note",d:today(),x:x.slice(0,400)});toast("Nota enviada a "+l.pro.name);lkRender()}catch(y){t.disabled=false;toast("No se ha podido enviar")}}});
 /* cuándo: con lo compartido (al abrir y al volver a la app) */
 setTimeout(()=>lmLoad(),11000);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(lmLoad,1500)});
+
+/* ---------- Seguimiento con tu profesional (v342) ----------
+   Lo que te propone tu profesional por el vínculo (110), en su sitio de la app:
+   · Hábitos: un conmutador por hábito y día en Hoy. Lo marcado viaja en el paquete de cada día (109, campo hb).
+   · Revisión de tu semana: de domingo a martes, un aviso en Hoy abre seis preguntas (un minuto). Va como {t:"chk",wk,v,x}.
+   · Medidas de la consulta ({t:"meas",m}): entran solas en tus medidas y Peso › Composición las cuenta como medida real.
+   · Menú de la semana ({t:"menu",days,dishes}): «Aplicar» lo pone en Plan › Menú, sin los platos que no puedes tomar.
+   · Avisos: punto azul en tu avatar y «Ver lo nuevo» en Perfil › Conexiones mientras haya algo sin ver.
+   Datos: S.hab por día (LS sustrato-hab y doc habits), visto (LS sustrato-lkseen). Clases pr- */
+const PR_Q=[["ham","Hambre entre comidas","Poca","Mucha"],["sac","Saciedad al terminar de comer","Poca","Mucha"],["dig","Digestiones","Malas","Buenas"],["ani","Ánimo","Bajo","Alto"],["sue","Descanso","Malo","Bueno"],["adh","Cuánto has seguido la pauta","Nada","Todo"]];
+S.hab=LS("sustrato-hab")||{};
+const prLinks=()=>(S.lk&&S.lk.links||[]).filter(l=>l.state==="active");
+const prMsgs=(l,t)=>Object.values((S.lkm[l.id]||{}).m||{}).filter(x=>x.o.t===t).sort((a,b)=>b.u-a.u);
+/* hábitos: los de la propuesta más reciente de cada profesional */
+function prHabits(){const out=[];prLinks().forEach(l=>{const x=prMsgs(l,"hab").find(y=>y.by==="pro");if(x&&Array.isArray(x.o.L))x.o.L.slice(0,8).forEach(h=>{if(h&&h.id&&h.n)out.push({l,id:String(h.id).slice(0,20),n:String(h.n).slice(0,60)})})});return out}
+function prHabDay(k){const d=S.hab[k];if(!d)return null;const o={};prHabits().forEach(h=>{if(d[h.id])o[h.id]=1});return Object.keys(o).length?o:null}
+function prHabCard(){const H=prHabits();if(!H.length)return"";const d=S.hab[S.day]||{},n=H.filter(h=>d[h.id]).length,fut=S.day>today();
+  return`<section class="glass pad fade pr-hab"><div class="row"><h2>Tus hábitos</h2><span class="note">${n} de ${H.length}</span></div>
+    ${H.map(h=>`<div class="tg-r"><span class="tg-t"><b>${esc(h.n)}</b></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!d[h.id]}" aria-label="${esc(h.n)}" data-prhab="${esc(h.id)}"${fut?" disabled":""}></button></div>`).join("")}
+    <p class="note">Te los propone ${esc(H[0].l.pro.name)}. Lo que marcas le llega con tu día.</p></section>`}
+/* revisión de la semana: la semana que acaba en el último domingo; se pide de domingo a martes */
+function prChkWk(){const d=new Date(today()+"T12:00:00"),dw=d.getDay();if(dw!==0&&dw!==1&&dw!==2)return null;return shiftKey(today(),dw===0?-6:dw===1?-7:-8)}
+function prChkDue(){const wk=prChkWk();if(!wk)return null;return prLinks().find(l=>!prMsgs(l,"chk").some(x=>x.by==="ath"&&x.o.wk===wk))||null}
+function prChkNudge(){const l=prChkDue();if(!l)return"";
+  return`<section class="glass pad fade pr-chk"><h2>Revisión de tu semana</h2><p class="note">Seis preguntas para ${esc(l.pro.name)}. Un minuto.</p><div class="bk-a"><button class="btn sm primary" data-act="prchk">Empezar</button></div></section>`}
+function prChkHtml(){const c=S.prc||{v:{}},l=prChkDue();if(!l)return"";
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.prcSh?"":" fade"} pa-sheet pr-sheet" role="dialog" aria-modal="true" aria-label="Revisión de tu semana">
+    <div class="row"><h3 style="margin:0">Revisión de tu semana</h3><button class="hbtn xclose" data-act="prclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="pa-note">Del ${esc(dateLabel(prChkWk()))} al ${esc(dateLabel(shiftKey(prChkWk(),6)))}. Se la mandas a ${esc(l.pro.name)}.</p>
+    ${PR_Q.map(([k,q,lo,hi])=>`<div class="pa-f"><span class="pa-l">${q}</span><div class="seg pr-sc" role="radiogroup" aria-label="${q}">${[1,2,3,4,5].map(n=>`<button type="button" role="radio" data-prq="${k}|${n}" aria-pressed="${c.v[k]===n}" aria-checked="${c.v[k]===n}">${n}</button>`).join("")}</div><div class="pr-ends"><span>${lo}</span><span>${hi}</span></div></div>`).join("")}
+    <div class="pa-f"><span class="pa-l">¿Algo más que quieras contarle?</span><textarea id="prcx" class="pr-x" maxlength="400" rows="3" placeholder="Opcional">${esc(c.x||"")}</textarea></div>
+    <button type="button" class="btn primary pa-go" data-act="prsend"${PR_Q.every(([k])=>c.v[k])?"":" disabled"}>Enviar a ${esc(l.pro.name)}</button></div></div>`}
+/* medidas de la consulta: entran solas en tus medidas (una por día; la de tu profesional manda ese día) */
+async function prSaveMeasures(){const c=userCol();if(c)try{await c.doc("measures").set({kind:"measures",list:S.measures})}catch(e){}}
+function prMeasIn(l,x){const m=x.o.m||{},d=/^\d{4}-\d{2}-\d{2}$/.test(m.d||"")?m.d:keyOf(new Date(x.u)),n=v=>v==null||v===""||isNaN(+v)?null:+v;
+  const e={d,src:"pro",by:String(l.pro.name||"").slice(0,60),mid:x.mid,kg:n(m.kg),bf:n(m.bf),lean:n(m.lean),waist:n(m.waist),hip:n(m.hip),arm:n(m.arm),thigh:n(m.thigh),sk:n(m.sk),mt:String(m.mt||"").slice(0,20)};
+  if((S.measures||[]).some(y=>y.mid===x.mid))return false;S.measures=(S.measures||[]).filter(y=>!(y.d===d&&y.src==="pro")).concat([e]).sort((a,b)=>a.d<b.d?-1:1);return true}
+function prMeasSync(){let n=0;prLinks().forEach(l=>prMsgs(l,"meas").filter(x=>x.by==="pro").forEach(x=>{if(prMeasIn(l,x)){n++;lmAck(l.id,x.mid,true)}}));if(n){prSaveMeasures();toast(n===1?"Tu profesional ha añadido tus medidas de la consulta":"Tu profesional ha añadido "+n+" medidas de la consulta");render()}}
+/* menú de la semana: platos del profesional a tus platos y a tu menú, día a día; los que no puedes tomar se quedan fuera */
+function prMenuApply(l,x){const o=x.o,D=o.dishes||{};let n=0,skip=0;const ids={};
+  Object.keys(D).forEach(id=>{const d=D[id],ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([i,g])=>[i,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length)return;
+    const nd={id:"p"+String(id).replace(/[^\w]/g,"").slice(0,24),n:String(d.n||"Plato").slice(0,60),meals:(d.meals||[]).filter(m=>MEALS.some(([k])=>k===m)),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
+    if(!nd.meals.length)nd.meals=pbMeals(ing.map(([i])=>({id:i})));if(!dishAllowed(nd)){skip++;return}ids[id]=nd.id;S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd])});
+  Object.keys(o.days||{}).forEach(k=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<today())return;const t=dayTargets(k),mp=t?mealPlan(t,k).meals:[];
+    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{const id=ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;S.menu[k]=Object.assign({},S.menu[k],{[mid]:{d:id,s:m?bestScale(dd,m).s:1,lock:true}});n++})});
+  saveDishes();saveMenu();lmAck(l.id,x.mid,true);return{n,skip}}
+/* avisos: lo que tu profesional ha mandado y aún no has visto */
+function prNew(){const seen=LS("sustrato-lkseen")||0;let n=0;prLinks().forEach(l=>Object.values((S.lkm[l.id]||{}).m||{}).forEach(x=>{if(x.by==="pro"&&x.u>seen&&x.o.t!=="ack")n++}));return n}
+function prBadge(){const b=$("#menuBtn");if(!b)return;const n=prNew();if(n)b.dataset.prnew="1";else delete b.dataset.prnew}
+const prSeen=()=>{LS("sustrato-lkseen",Date.now());prBadge()};
+function prHoy(){return prChkNudge()}
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-prhab],[data-act^='pr'],[data-prq],[data-lmmenu]");if(!t)return;
+  if(t.dataset.prhab){if(t.dataset.tgGo!=="1")return;const k=S.day;S.hab[k]=Object.assign({},S.hab[k]);if(S.hab[k][t.dataset.prhab])delete S.hab[k][t.dataset.prhab];else S.hab[k][t.dataset.prhab]=true;
+    LS("sustrato-hab",S.hab);const c=userCol();if(c)c.doc("habits").set({kind:"habits",map:S.hab}).catch(()=>{});if(typeof lkPush==="function")setTimeout(()=>lkPush(false),400);render();return}
+  if(t.dataset.prq){const[k,n]=t.dataset.prq.split("|");S.prc=S.prc||{v:{}};S.prc.v[k]=+n;const x=$("#prcx");if(x)S.prc.x=x.value;S.prcSh=true;renderModal();return}
+  if(t.dataset.lmmenu){const[lid,mid]=t.dataset.lmmenu.split("|"),l=lmLink(lid),x=((S.lkm[lid]||{}).m||{})[mid];if(!l||!x)return;const r=prMenuApply(l,x);
+    toast(r.n?"Menú aplicado: "+r.n+" comidas en Plan › Menú"+(r.skip?" · "+r.skip+" platos fuera por lo que no tomas":""):"Ese menú ya no tiene días por delante");lkRender();render();return}
+  const a=t.dataset.act;
+  if(a==="prchk"){S.prc={v:{}};S.prcSh=false;S.sheet="prchk";renderModal();return}
+  if(a==="prclose"){S.sheet=null;renderModal();return}
+  if(a==="prsend"){const l=prChkDue(),c=S.prc;if(!l||!c)return;const x=$("#prcx");c.x=x?String(x.value||"").trim().slice(0,400):"";t.disabled=true;
+    try{await lmSend(l,{t:"chk",wk:prChkWk(),v:c.v,x:c.x});S.sheet=null;S.prc=null;renderModal();render();toast("Revisión enviada a "+l.pro.name)}catch(y){t.disabled=false;toast("No se ha podido enviar")}}});
+/* tras cada lectura de mensajes: medidas que entran solas y el aviso del avatar */
+setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links){prMeasSync();prBadge()}},5000);
 
 })();
 </script>
