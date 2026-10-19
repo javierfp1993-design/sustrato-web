@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T20:04:39.991Z">
+<meta name="sustrato-version" content="2026-10-19T20:30:37.613Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3450,7 +3450,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="342";
+const APP_VER="343";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -9952,7 +9952,8 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
    · Hábitos: un conmutador por hábito y día en Hoy. Lo marcado viaja en el paquete de cada día (109, campo hb).
    · Revisión de tu semana: de domingo a martes, un aviso en Hoy abre seis preguntas (un minuto). Va como {t:"chk",wk,v,x}.
    · Medidas de la consulta ({t:"meas",m}): entran solas en tus medidas y Peso › Composición las cuenta como medida real.
-   · Menú de la semana ({t:"menu",days,dishes}): «Aplicar» lo pone en Plan › Menú, sin los platos que no puedes tomar.
+   · Menú de la semana ({t:"menu",days,dishes}): «Aplicar» lo pone en Plan › Menú, sin los platos que no puedes tomar. Los platos
+     del catálogo de la app llegan como «b:id»; los del profesional, con su receta en dishes.
    · Avisos: punto azul en tu avatar y «Ver lo nuevo» en Perfil › Conexiones mientras haya algo sin ver.
    Datos: S.hab por día (LS sustrato-hab y doc habits), visto (LS sustrato-lkseen). Clases pr- */
 const PR_Q=[["ham","Hambre entre comidas","Poca","Mucha"],["sac","Saciedad al terminar de comer","Poca","Mucha"],["dig","Digestiones","Malas","Buenas"],["ani","Ánimo","Bajo","Alto"],["sue","Descanso","Malo","Bueno"],["adh","Cuánto has seguido la pauta","Nada","Todo"]];
@@ -9990,7 +9991,7 @@ function prMenuApply(l,x){const o=x.o,D=o.dishes||{};let n=0,skip=0;const ids={}
     const nd={id:"p"+String(id).replace(/[^\w]/g,"").slice(0,24),n:String(d.n||"Plato").slice(0,60),meals:(d.meals||[]).filter(m=>MEALS.some(([k])=>k===m)),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
     if(!nd.meals.length)nd.meals=pbMeals(ing.map(([i])=>({id:i})));if(!dishAllowed(nd)){skip++;return}ids[id]=nd.id;S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd])});
   Object.keys(o.days||{}).forEach(k=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<today())return;const t=dayTargets(k),mp=t?mealPlan(t,k).meals:[];
-    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{const id=ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;S.menu[k]=Object.assign({},S.menu[k],{[mid]:{d:id,s:m?bestScale(dd,m).s:1,lock:true}});n++})});
+    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{const b=String(did).startsWith("b:")?String(did).slice(2):null,id=b||ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;if(b&&!dishAllowed(dd)){skip++;return} /* «b:id»: plato del catálogo de la app */S.menu[k]=Object.assign({},S.menu[k],{[mid]:{d:id,s:m?bestScale(dd,m).s:1,lock:true}});n++})});
   saveDishes();saveMenu();lmAck(l.id,x.mid,true);return{n,skip}}
 /* avisos: lo que tu profesional ha mandado y aún no has visto */
 function prNew(){const seen=LS("sustrato-lkseen")||0;let n=0;prLinks().forEach(l=>Object.values((S.lkm[l.id]||{}).m||{}).forEach(x=>{if(x.by==="pro"&&x.u>seen&&x.o.t!=="ack")n++}));return n}
