@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T09:05:27.127Z">
+<meta name="sustrato-version" content="2026-10-19T09:39:29.090Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -1685,34 +1685,13 @@ html[data-theme="light"]{--fig-base:#e5e5ea;--fig-on:var(--rojo);--fig-on-v:var(
 .fig svg{height:100%;width:auto;display:block}
 .fig path{stroke:var(--fig-ground,var(--card2));stroke-width:1.6;stroke-linejoin:round}
 .rw-sheet{display:flex;flex-direction:column;gap:18px}
-.rw-hd{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;text-align:center;font-size:calc(15px*var(--tz,1));font-weight:600;color:var(--muted)}
-.rw-sheet h2.rw-h{margin:-6px 0 0!important;font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5)!important;line-height:1.12;letter-spacing:-.02em;font-weight:700}
-.rw-sub{margin:-10px 0 0;font-size:calc(15px*var(--tz,1));color:var(--muted);line-height:1.4}
-.rw-goals{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.rw-goal{appearance:none;border:0;border-radius:14px;padding:12px 4px 10px;min-height:78px;background:var(--card2);color:var(--fg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;font:inherit;transition:background .18s,color .18s,transform .12s}
-.rw-goal b{font-size:calc(13px*var(--tz,1));font-weight:600;line-height:1.1}
-.rw-goal[aria-checked="true"]{background:var(--ac);color:var(--ac-on)}
-.rw-goal:active{transform:scale(.98)}
-.rw-time{display:flex;flex-direction:column;gap:10px}
-.rw-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:calc(15px*var(--tz,1));font-weight:600}
-.rw-seg{display:flex;background:var(--card2);border-radius:14px;padding:3px;gap:3px;width:min(240px,62%)}
-.rw-seg button{flex:1;appearance:none;border:0;border-radius:10px;min-height:38px;background:transparent;color:var(--muted);font:500 calc(15px*var(--tz,1)) var(--font);cursor:pointer}
-.rw-seg button[aria-checked="true"]{background:var(--ac);color:var(--ac-on);font-weight:600}
-.rw-lbl{margin-top:4px}
 .rw-list{display:flex;flex-direction:column;gap:12px}
-.rw-card{background:var(--card2);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;--fig-ground:var(--card2);--fig-ground-v:var(--card2-v,var(--card2))}
-.rw-top{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:14px;align-items:start}
-.rw-top .fig{height:128px}
-.rw-sheet .rw-tx h3{margin:0;font-size:calc(20px*var(--tz,1));line-height:1.15;font-weight:700;letter-spacing:-.01em}
 .rw-meta{display:block;margin-top:4px;font-size:calc(14px*var(--tz,1));color:var(--muted)}
-.rw-tx p{margin:8px 0 0;font-size:calc(14px*var(--tz,1));line-height:1.42;color:var(--fg);opacity:.86}
 .rw-ex{list-style:none;margin:0;padding:0;border-radius:14px;overflow:hidden;background:var(--card)}
 .rw-ex li{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;font-size:calc(15px*var(--tz,1))}
 .rw-ex li:nth-child(even){background:var(--fill2)}
 .rw-ex b{font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .rw-more button{appearance:none;border:0;background:none;padding:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.rw-act{display:flex;gap:10px}.rw-act .btn{flex:1}
-.rw-scratch{appearance:none;border:0;background:none;color:var(--fg);font:600 calc(15px*var(--tz,1)) var(--font);min-height:48px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 /* v274 · objetivo de cada comida: un punto del color de cada macro delante de su cifra; el texto sigue neutro */
 .pm-o{display:flex;align-items:center;flex-wrap:wrap}.pm-o i{width:7px;height:7px;border-radius:50%;background:var(--c);margin:0 4px 0 10px}
 /* v274 · ingrediente propio */
@@ -2730,7 +2709,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .btn,.chip:not([aria-pressed]){min-height:36px;padding:8px 16px;border-radius:999px;font:600 calc(15px*var(--tz,1)) var(--font);background:var(--fill);color:var(--fg)}
 .btn.primary{background:var(--fg);color:var(--card)}
 .btn:not(.primary):hover,.chip:not([aria-pressed]):hover{background:color-mix(in srgb,var(--fg) 10%,var(--fill))}
-.btn.big,.pa-go,.pf-save,.ob-cta,.sh-go,.tr-next,.wc-save,.fz-save .btn,.rw-act .btn{min-height:50px;padding:12px 20px;border-radius:14px;font-size:calc(17px*var(--tz,1))}
+.btn.big,.pa-go,.pf-save,.ob-cta,.sh-go,.tr-next,.wc-save,.fz-save .btn{min-height:50px;padding:12px 20px;border-radius:14px;font-size:calc(17px*var(--tz,1))}
 .chip[aria-pressed]{min-height:34px;padding:7px 12px;border-radius:10px;font:500 calc(14px*var(--tz,1)) var(--font);background:var(--fill2);color:var(--fg)}
 .chip[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .chip.danger{color:var(--rojo)}
@@ -3201,7 +3180,6 @@ header.top.mv-up .mv-ht{opacity:1;transform:none;transition:opacity .18s .1s,tra
 svg{--tz:min(var(--tzs,1),1.12)}
 /* números dentro de círculos o columnas de ancho fijo: crecen poco */
 .daystrip,.ls-m,.dp-ch{--tz:min(var(--tzs,1),1.12)}
-.rw-sheet .rw-goals{--tz:min(var(--tzs,1),1.06)}
 /* tabla densa de bandas: con letra mayor partía las palabras a trozos */
 table.bands{--tz:1}
 /* etiquetas de fichas: con letra grande pasan a dos líneas en vez de cortarse */
@@ -3209,9 +3187,6 @@ table.bands{--tz:1}
 /* cabecera del calendario (mes, Día/Semana/Mes/Año y compartir): baja de línea si no cabe */
 .tzg .strip-h{flex-wrap:wrap!important;row-gap:8px}
 /* Material en Nueva rutina: el selector baja a su propia línea, a todo el ancho */
-.tzg .rw-row{flex-wrap:wrap;row-gap:8px}
-.tzg .rw-seg{width:100%}
-.tzg .rw-seg>button{flex:1}
 
 /* v323 · Aviso de copia en Hoy (bkNudge, 101) */
 .bkn h2{margin:0 0 6px}
@@ -3278,10 +3253,43 @@ table.bands{--tz:1}
 .relev .re-plot{padding-top:30px}.relev .re-tip{top:0}
 /* v329 · Entreno previsto en Hoy: tesela llena con sus esquinas (la línea fina quedaba recortada por el contenedor del gesto) */
 .tc-mw .af.pf.mw-fg{background:var(--card2);box-shadow:none;border-radius:14px;padding:14px 14px 12px}
-/* v329 · Rendimiento: el deporte con su icono, sin palabra (el nombre queda para el lector de pantalla) */
-.pf-pick button{display:flex;align-items:center;gap:10px}
-.pf-pick button .tc-ic{width:34px;height:34px;border-radius:10px;background:var(--fill2);color:var(--fg)}
-.pf-pick button[aria-pressed="true"] .tc-ic{background:color-mix(in srgb,var(--ac-on) 18%,transparent);color:var(--ac-on)}
+/* v329 · Rendimiento: icono del deporte sin tesela, centrado con la cifra; debajo, el nivel (igual en los dos botones) */
+.pf-pick button{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.pf-pick button .tc-ic{width:24px;height:24px;background:none;border-radius:0;color:var(--muted)}
+.pf-pick button .tc-ic svg{width:24px;height:24px}
+.pf-pick .pf-pt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pf-pick .pf-pt b{font-size:calc(20px*var(--tz,1));line-height:1.1;color:var(--fg)}
+.pf-pick .pf-pt>small{font-size:calc(12px*var(--tz,1));color:var(--muted)}
+.pf-pick button[aria-pressed="true"] .tc-ic{background:none;color:var(--ac-on)}
+.pf-pick button[aria-pressed="true"] .pf-pt>small{color:var(--ac-on);opacity:.85}
+/* v330 · Creador de fuerza: la misma hoja que Planificar entreno; la rutina con la silueta grande como protagonista */
+:root{--fig-sec:color-mix(in srgb,var(--rojo) 55%,#fff)}
+html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
+@media (prefers-color-scheme:light){html:not([data-theme="dark"]){--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}}
+.rw-sheet.pa-sheet{gap:20px}.rw-sheet .rw-list{gap:20px}
+.rw-hero{background:var(--card2);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;--fig-ground:var(--card2)}
+.rw-fig .fig{height:230px;gap:18px}
+.rw-zl{display:flex;justify-content:center;gap:16px;font-size:calc(12px*var(--tz,1));color:var(--muted)}
+.rw-zl span{display:inline-flex;align-items:center;gap:6px}.rw-zl i{width:10px;height:10px;border-radius:3px}
+.rw-zl i.on{background:var(--fig-on)}.rw-zl i.sec{background:var(--fig-sec)}
+.rw-hero h3{margin:6px 0 0;font-size:calc(22px + 22px*(var(--tz,1) - 1)*.75);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.rw-hero .rw-meta{margin:0}
+.rw-why{margin:0;font-size:calc(15px*var(--tz,1));line-height:1.4;color:var(--fg)}
+.rw-alts{display:flex;flex-direction:column;gap:8px}
+.rw-alt{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;display:flex;align-items:center;gap:14px;background:var(--card2);border-radius:16px;padding:10px 14px 10px 10px;cursor:pointer;--fig-ground:var(--card2)}
+.rw-afig .fig{height:64px;gap:3px}
+.rw-at{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.rw-at b{font-size:calc(16px*var(--tz,1));font-weight:600}.rw-at small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+/* v330 · Inventario de material: teselas con el dibujo del objeto; lo que tienes, en tinta y con la marca verde; lo que no, tenue. Sin azul,
+   que queda para las elecciones de arriba */
+.rw-inv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rw-it{appearance:none;border:0;font:inherit;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:84px;padding:12px 6px 10px;border-radius:14px;background:var(--card2);color:var(--faint);cursor:pointer;text-align:center}
+.rw-it span{font-size:calc(12px*var(--tz,1));line-height:1.2;color:var(--muted)}
+.rw-it[aria-pressed="true"]{color:var(--fg)}.rw-it[aria-pressed="true"] span{color:var(--fg);font-weight:500}
+.rw-ck{position:absolute;top:7px;right:7px;width:18px;height:18px;border-radius:50%;display:none;place-items:center;background:var(--verde);color:#fff}
+.rw-it[aria-pressed="true"] .rw-ck{display:grid}
+.rw-it:active{transform:scale(.97)}
+.rw-it{justify-content:flex-start;padding-top:18px}.rw-it svg{flex:0 0 26px}
+.rw-it span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 
 </style>
 
@@ -3369,7 +3377,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="329";
+const APP_VER="330";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4245,16 +4253,18 @@ function paWheelFx(w,keep){const r=w.getBoundingClientRect(),c=r.left+r.width/2;
   if(!keep&&best&&best.dataset.sp!==w._cur){const first=w._cur==null;w._cur=best.dataset.sp;w.querySelectorAll(".pa-wi").forEach(b=>b.setAttribute("aria-pressed",b===best));
     const n=w.parentNode.querySelector(".pa-wn");if(n)n.textContent=SPORT_L[w._cur]||"";if(!first)buzz(4)}
   return best}
-function paWheelSync(){const w=document.querySelector(".pa-wheel");if(!w||w._on)return;w._on=1;const sel=w.querySelector('[aria-pressed="true"]');
+/* v330: la misma rueda sirve al planificador y al creador de fuerza (o: estado y qué hacer al elegir) */
+const PA_WO={st:()=>S.pa,set:v=>{S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal()}};
+function paWheelSync(o){o=o||PA_WO;const w=document.querySelector(".pa-wheel");if(!w||w._on)return;w._on=1;const sel=w.querySelector('[aria-pressed="true"]');
   /* v325: la rueda conserva su posición al repintarse (elegir distancia, hora…) y solo viaja si cambia el deporte. Antes el destino se
      medía contra otro contenedor (offsetLeft), caía en otro deporte y volvía: el «va y vuelve». Ahora se mide en pantalla. */
-  const from=S.pa&&S.pa._wl;if(from!=null)w.scrollLeft=from;
+  const st0=o.st(),from=st0&&st0._wl;if(from!=null)w.scrollLeft=from;
   const to=sel?(()=>{const a=sel.getBoundingClientRect(),b=w.getBoundingClientRect();return w.scrollLeft+(a.left+a.width/2)-(b.left+b.width/2)})():0;
   const go=from!=null&&Math.abs(w.scrollLeft-to)>2&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
   /* mientras viaja hacia el deporte tocado, la elección no cambia por el camino (antes parpadeaba el anterior) */
   if(go){w._prog=true;w._cur=sel&&sel.dataset.sp;w.scrollTo({left:to,behavior:"smooth"})}else w.scrollLeft=to;paWheelFx(w,go);let tm=null;
-  w.addEventListener("scroll",()=>{if(S.pa)S.pa._wl=w.scrollLeft;requestAnimationFrame(()=>paWheelFx(w,w._prog));clearTimeout(tm);tm=setTimeout(()=>{if(!S.pa||!w.isConnected)return;w._prog=false;const best=paWheelFx(w),v=best&&best.dataset.sp;
-    if(v&&v!==S.pa.sport){S.pa.sport=v;if(v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal()}},140)},{passive:true})}
+  w.addEventListener("scroll",()=>{{const st=o.st();if(st)st._wl=w.scrollLeft}requestAnimationFrame(()=>paWheelFx(w,w._prog));clearTimeout(tm);tm=setTimeout(()=>{const st=o.st();if(!st||!w.isConnected)return;w._prog=false;const best=paWheelFx(w),v=best&&best.dataset.sp;
+    if(v&&v!==st.sport)o.set(v)},140)},{passive:true})}
 function paHtml(){const p=S.pa,tk=today();
   const D=paDates(p);
   const sp=PA_SPS.map(x=>`<button type="button" class="pa-wi" data-pa="sport:${x}" data-sp="${x}" aria-pressed="${p.sport===x}" aria-label="${SPORT_L[x]}">${spSvg(x)}</button>`).join("");setTimeout(paWheelSync,0);
@@ -5349,14 +5359,33 @@ function bodyFig(P,Sx,label){
   const one=(parts,lb)=>`<svg viewBox="16 0 88 242" role="img" aria-label="${lb}">${half(parts,false)}<g transform="translate(120 0) scale(-1 1)">${half(parts,true)}</g></svg>`;
   return`<div class="fig" aria-label="${esc(label||"")}">${one(FIG_F,"De frente")}${one(FIG_B,"De espalda")}</div>`}
 function routineMuscles(ex){const P=new Set(),Sx=new Set();ex.forEach(x=>{const m=MUSC[x.id]||x.m;if(!m)return;m[0].forEach(k=>P.add(k));m[1].forEach(k=>Sx.add(k))});P.forEach(k=>Sx.delete(k));return{P,Sx}}
-const RW_HOME=new Set(["bulg","zanc","step","gem","puente","flex","plancha","lateralp","deadbug","hip","pall","remoi"]);
-const RW_DB=new Set([...RW_HOME,"gob","pmr","swing","pbm","pinc","pmil","arnold","remo","pull","lat","paj","encog","curl","martillo","tri","frances","granjero","rueda"]);
-const RW_GOALS=[
-  ["run","Correr",'<circle cx="14.5" cy="4.5" r="2"/><path d="M8 21l3-6 3 2v5M6.5 12.5l3-4 4 1.5 2.5 3.5h3"/><path d="M11 15l-1.5-4"/>'],
-  ["mtb","Bici",'<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5L9.5 9h6l3 7.5M9.5 9l3 7.5H5.5M15.5 9l-1-3h-2.5"/>'],
-  ["swim","Nadar",'<circle cx="16.5" cy="6" r="2"/><path d="M4 13.5l5-4 3 2.5 3.5-3"/><path d="M2.5 18c2 0 2.2-1.5 4.4-1.5S9.6 18 12 18s2.4-1.5 4.6-1.5S19 18 21.5 18"/>'],
-  ["gen","Fuerza",'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/>'],
-  ["hyp","Músculo",'<path d="M5.5 19.5c-1.6-3.2-1.2-7.4 1-10.6 1.5-2.2 3.2-3.6 4.8-4.1l1.6 2.1-2 2.6 1.1 2.1c2.6-1.6 6.1-1.1 7.6 1.4 1.5 2.6.4 5.8-2.2 6.8-3.4 1.3-8.6 1.6-11.9-.3z"/>']];
+/* v330 · Material: tres modos (peso libre, máquinas, casa), cada uno con lo que tienes marcado (se guarda en el perfil).
+   RW_REQ: para cada ejercicio, las formas de hacerlo (basta con tener todo lo de una). Sin entrada: solo el cuerpo. */
+const RW_EQ={free:["Peso libre",[["md","Mancuernas"],["bar","Barra"],["kb","Kettlebell"],["banco","Banco"],["dom","Dominadas"],["paralelas","Paralelas"]]],
+  maq:["Máquinas",[["polea","Poleas"],["prensa","Prensa"],["extq","Extensión"],["femoral","Femoral"],["multi","Multipower"],["banco","Banco"]]],
+  casa:["Casa",[["banda","Bandas"],["silla","Silla"],["mesa","Mesa"],["md","Mancuernas"],["kb","Kettlebell"],["dom","Dominadas"]]]};
+const RW_EQ_DEF={free:["md","bar","kb","banco","dom"],maq:["polea","prensa","extq","femoral","multi","banco"],casa:["silla","banda"]};
+const RW_REQ={sent:[["bar"],["multi"]],gob:[["md"],["kb"]],bulg:[["banco"],["silla"]],step:[["banco"],["silla"]],prensa:[["prensa"]],extq:[["extq"]],
+  pmc:[["bar"]],pmr:[["bar"],["md"],["kb"],["multi"]],hip:[["banco"],["silla"]],cfem:[["femoral"]],swing:[["kb"]],pbb:[["bar","banco"],["multi","banco"]],
+  pbm:[["md","banco"]],pinc:[["md","banco"]],fond:[["paralelas"],["banco"],["silla"]],pmil:[["bar"],["md"],["multi"]],arnold:[["md"]],dom:[["dom"]],chin:[["dom"]],
+  jalon:[["polea"]],remob:[["bar"],["multi"]],remo:[["md"],["kb"],["banda"],["polea"]],remoi:[["dom"],["mesa"],["multi"]],pull:[["md","banco"]],lat:[["md"],["banda"],["polea"]],
+  face:[["polea"],["banda"]],paj:[["md"],["banda"]],encog:[["md"],["bar"]],curl:[["md"],["bar"],["banda"],["polea"]],martillo:[["md"]],tri:[["md"],["polea"],["banda"]],
+  frances:[["bar","banco"],["md","banco"]],rueda:[["rueda"]],elev:[["dom"],["paralelas"]],pall:[["polea"],["banda"]],granjero:[["md"],["kb"]]};
+/* dibujos del material (trazo como los iconos de deporte) */
+const RW_EQ_IC={md:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',bar:'<path d="M2 12h20"/><rect x="5" y="6.5" width="2.5" height="11" rx="1"/><rect x="16.5" y="6.5" width="2.5" height="11" rx="1"/>',
+  kb:'<path d="M9 9.5V7.5a3 3 0 0 1 6 0v2"/><circle cx="12" cy="14.5" r="5.5"/>',banco:'<rect x="2.5" y="8" width="19" height="3.5" rx="1.2"/><path d="M6 11.5v8M18 11.5v8"/>',
+  dom:'<path d="M4 4v16M20 4v16M4 7h16M9 7v3M15 7v3"/>',paralelas:'<path d="M2 6h9M13 10h9M4 6v14M9 6v14M15 10v10M20 10v10"/>',
+  polea:'<circle cx="12" cy="5.5" r="2.5"/><path d="M12 8v7"/><rect x="9" y="15" width="6" height="5" rx="1"/>',prensa:'<path d="M3 20h18M6 20l9-11"/><rect x="13" y="4" width="7" height="5" rx="1"/>',
+  extq:'<path d="M5 5v9h6l5 5"/><circle cx="17.5" cy="19.5" r="1.5"/>',femoral:'<path d="M3 13h11l4-5M3 17h14"/><circle cx="19" cy="7" r="1.5"/>',
+  multi:'<path d="M5 3v18M19 3v18M5 10h14M3 21h18"/>',banda:'<ellipse cx="12" cy="12" rx="8" ry="5"/><ellipse cx="12" cy="12" rx="5" ry="2.5"/>',
+  silla:'<path d="M7 3v9h10V3M7 12v9M17 12v9M7 16h10"/>',mesa:'<path d="M3 8h18M5 8v12M19 8v12"/>',rueda:'<circle cx="12" cy="12" r="6"/><path d="M3 12h18"/>'};
+function rwHave(mode){const e=(S.profile||{}).eq||{};return new Set(e[mode]||RW_EQ_DEF[mode]||[])}
+function rwOk(id,have){const r=RW_REQ[id];return!r||r.some(o=>o.every(k=>have.has(k)))}
+/* deporte de la rueda → plantillas */
+const RW_SP={run:"run",trail:"run",walk:"run",hike:"run",road:"mtb",gravel:"mtb",mtb:"mtb",indoor:"mtb",swim:"swim",str:"gen"};
+const RW_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"];
+function rwMainSport(){const from=shiftKey(today(),-60),c={};S.acts.forEach(a=>{if(a.day>=from&&RW_SP[a.sport]&&a.sport!=="str")c[a.sport]=(c[a.sport]||0)+1});
+  const top=Object.entries(c).sort((x,y)=>y[1]-x[1])[0];return top?top[0]:"run"}
 const RW_TPL={
   run:[["Piernas a prueba de bajadas","Cuádriceps fuertes frenando y cadera estable, para bajar rápido sin castigar la rodilla.",[["bulg","zanc","step"],["pmr","puente"],["step","zanc"],["gem"],["sent","gob"],["lateralp"],["pall","deadbug"],["hip","puente"]]],
        ["Tobillo y rodilla sin lesiones","Gemelo, equilibrio a una pierna y cadera fuerte. Ideal la semana de una carrera.",[["gem"],["step","zanc"],["puente","hip"],["pmr"],["lateralp"],["deadbug"],["zanc","bulg"],["pall"]]],
@@ -5374,31 +5403,43 @@ const RW_TPL={
        ["Pierna","Cuádriceps, femoral y glúteo, del básico al aislamiento.",[["sent","gob"],["pmr"],["prensa","bulg"],["cfem","puente"],["extq","zanc"],["hip","puente"],["gem"],["elev","rueda","deadbug"]]],
        ["Hombro y brazos","Hombro completo y brazos, para equilibrar el torso.",[["pmil","arnold"],["lat"],["paj","face"],["curl"],["tri"],["martillo"],["frances"],["encog"]]]]
 };
-function rwBuild(tpl,min,mat){const ok=id=>mat==="gym"||(mat==="db"?RW_DB:RW_HOME).has(id),used=new Set(),ex=[];
-  for(const alts of tpl[2]){const id=alts.find(a=>ok(a)&&!used.has(a)&&EXBY[a]);if(!id)continue;used.add(id);const b=EXBY[id];ex.push({id,n:b.n,s:b.s,r:b.r})}
-  const out=[];let t=6;for(const x of ex){const c=x.s*2.4;if(out.length>=3&&t+c>min+3)break;out.push(x);t+=c}
-  return{name:tpl[0],why:tpl[1],ex:out,min:Math.round(t/5)*5}}
-function rwListHtml(){const w=S.rw,L=(RW_TPL[w.goal]||[]).map(t=>rwBuild(t,w.min,w.mat));
-  const card=(r,i)=>{const {P,Sx}=routineMuscles(r.ex),open=w.open===i,show=open?r.ex:r.ex.slice(0,3);
-    return`<article class="rw-card"><div class="rw-top"><div class="rw-tx"><h3>${esc(r.name)}</h3><span class="rw-meta">${r.min} min · ${r.ex.length} ejercicios</span><p>${esc(r.why)}</p></div>${bodyFig(P,Sx,"Zonas que trabaja")}</div>
-      <ol class="rw-ex">${show.map(x=>`<li><span>${esc(x.n)}</span><b>${x.s} × ${esc(x.r)}</b></li>`).join("")}${!open&&r.ex.length>3?`<li class="rw-more"><button type="button" data-rwopen="${i}">y ${r.ex.length-3} más</button></li>`:""}</ol>
-      <div class="rw-act"><button type="button" class="btn primary" data-rwuse="${i}">Usar esta rutina</button>${open?`<button type="button" class="chip" data-rwopen="-1">Menos</button>`:""}</div></article>`};
-  return L.map(card).join("")}
-function rwHtml(){const w=S.rw;
-  const seg=(key,opts,cur)=>`<div class="rw-seg" role="radiogroup">${opts.map(([v,l])=>`<button type="button" role="radio" aria-checked="${cur===v}" data-rw="${key}:${v}">${l}</button>`).join("")}</div>`;
-  return`<div class="overlay"><div class="sheet glass pad fade rw-sheet" role="dialog" aria-modal="true" aria-label="Nueva rutina">
-    <div class="row"><span class="pkk">Nueva rutina</span><button class="hbtn xclose" data-act="rwclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <h2 class="rw-h">¿Para qué quieres la fuerza?</h2><p class="rw-sub">Elige y te propongo rutinas hechas. Después puedes cambiar cualquier ejercicio.</p>
-    <div class="rw-goals" role="radiogroup" aria-label="Objetivo">${RW_GOALS.map(([k,l,ic])=>`<button type="button" class="rw-goal" role="radio" aria-checked="${w.goal===k}" data-rw="goal:${k}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ic}</svg><b>${l}</b></button>`).join("")}</div>
-    <div class="rw-time"><div class="rw-row"><span>Tiempo</span></div>${durPick("rw",w.min)}</div>
-    <div class="rw-row"><span>Material</span>${seg("mat",[["gym","Gimnasio"],["db","Pesas"],["home","Casa"]],w.mat)}</div>
-    <span class="pkk rw-lbl">Te propongo</span>
+function rwBuild(tpl,min,mode){const have=rwHave(mode),used=new Set(),ex=[];
+  for(const alts of tpl[2]){const id=alts.find(a=>rwOk(a,have)&&!used.has(a)&&EXBY[a]);if(!id)continue;used.add(id);const b=EXBY[id];ex.push({id,n:b.n,s:b.s,r:b.r})}
+  const out=[];let t=4;for(const x of ex){const c=x.s*2.4;if(out.length>=3&&t+c>min+3)break;out.push(x);t+=c}
+  /* con poco tiempo, una serie menos (mínimo 2) antes que pasarse de lo que elegiste */
+  if(t>min+3){t=4;out.forEach((x,i)=>{out[i]=Object.assign({},x,{s:Math.max(2,x.s-1)});t+=out[i].s*2.4})}
+  return{name:tpl[0],why:tpl[1],ex:out,min:Math.max(10,Math.min(Math.round(t/5)*5,Math.ceil(min/5)*5+5))}}
+const rwTpls=w=>{const g=RW_SP[w.sport]||"run";return g==="gen"?RW_TPL.gen.concat(RW_TPL.hyp):RW_TPL[g]};
+/* zonas trabajadas, de más a menos, para nombrarlas con palabras junto a la silueta */
+function rwZones(ex){const c={};ex.forEach(x=>{const m=MUSC[x.id];if(!m)return;m[0].forEach(k=>{const z=ZONE[k];if(z)c[z]=(c[z]||0)+2});m[1].forEach(k=>{const z=ZONE[k];if(z)c[z]=(c[z]||0)+1})});
+  return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0])}
+/* v330 · Misma hoja que Planificar entreno (pa-sheet, pa-f, rueda, durPick, seg, chips, botón principal abajo): la rutina que más te
+   conviene con la silueta grande, y debajo las otras opciones en filas */
+function rwListHtml(){const w=S.rw,L=rwTpls(w).map(t=>rwBuild(t,w.min,w.mat));if(!L.length)return"";const sel=Math.min(w.pick||0,L.length-1),r=L[sel];
+  const {P,Sx}=routineMuscles(r.ex),z=rwZones(r.ex),open=w.open===sel,show=open?r.ex:r.ex.slice(0,3);
+  const alt=(x,i)=>{const m=routineMuscles(x.ex);return`<button type="button" class="rw-alt" data-rwpick="${i}" aria-pressed="${i===sel}"><div class="rw-afig">${bodyFig(m.P,m.Sx,"")}</div><span class="rw-at"><b>${esc(x.name)}</b><small>${x.min} min · ${x.ex.length} ejercicios</small></span></button>`};
+  return`<div class="pa-f"><span class="pa-l">${sel?"Rutina":"Para ti"}</span><article class="rw-hero"><div class="rw-fig">${bodyFig(P,Sx,"Zonas que trabaja: "+joinY(z))}</div>
+      <div class="rw-zl" aria-hidden="true"><span><i class="on"></i>Principal</span><span><i class="sec"></i>Ayuda</span></div>
+      <h3>${esc(r.name)}</h3><p class="rw-meta">${r.min} min · ${r.ex.length} ejercicios · ${esc(joinY(z))}</p><p class="rw-why">${esc(r.why)}</p>
+      <ol class="rw-ex">${show.map(x=>`<li><span>${esc(x.n)}</span><b>${x.s} × ${esc(x.r)}</b></li>`).join("")}${!open&&r.ex.length>3?`<li class="rw-more"><button type="button" data-rwopen="${sel}">y ${r.ex.length-3} más</button></li>`:""}</ol></article></div>
+    ${L.length>1?`<div class="pa-f"><span class="pa-l">Otras opciones</span><div class="rw-alts">${L.map((x,i)=>i===sel?"":alt(x,i)).join("")}</div></div>`:""}
+    <button type="button" class="btn primary pa-go" data-rwuse="${sel}">Usar esta rutina</button>`}
+function rwHtml(){const w=S.rw,have=rwHave(w.mat);
+  const sp=RW_SPS.map(x=>`<button type="button" class="pa-wi" data-rw="sport:${x}" data-sp="${x}" aria-pressed="${w.sport===x}" aria-label="${SPORT_L[x]}">${spSvg(x)}</button>`).join("");
+  setTimeout(()=>paWheelSync({st:()=>S.rw,set:v=>{if(!S.rw)return;S.rw.sport=v;S.rw.open=-1;S.rw.pick=0;renderRw()}}),0);
+  return`<div class="overlay"><div class="sheet glass pad${w._sh?"":" fade"} pa-sheet rw-sheet" role="dialog" aria-modal="true" aria-label="Nueva rutina">
+    <div class="row"><h3 style="margin:0">Nueva rutina</h3><button class="hbtn xclose" data-act="rwclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="pa-f"><span class="pa-l">Deporte</span><div class="pa-wh"><div class="pa-wheel" role="radiogroup" aria-label="Deporte">${sp}</div><b class="pa-wn" aria-hidden="true">${SPORT_L[w.sport]||""}</b></div></div>
+    <div class="pa-f"><span class="pa-l">Duración</span>${durPick("rw",w.min)}</div>
+    <div class="pa-f"><span class="pa-l">Material</span><div class="seg pa-mode" role="radiogroup" aria-label="Material">${Object.entries(RW_EQ).map(([k,[l]])=>`<button type="button" role="radio" data-rw="mat:${k}" aria-checked="${w.mat===k}" aria-pressed="${w.mat===k}">${l}</button>`).join("")}</div>
+      <div class="rw-inv" role="group" aria-label="Lo que tienes">${RW_EQ[w.mat][1].map(([k,l])=>`<button type="button" class="rw-it" data-rweq="${k}" aria-pressed="${have.has(k)}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RW_EQ_IC[k]||""}</svg><span>${l}</span><i class="rw-ck" aria-hidden="true"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i></button>`).join("")}</div>
+      <p class="pa-note">Toca lo que tienes: la rutina solo usa ejercicios que puedes hacer.</p></div>
     <div class="rw-list" id="rw_list">${rwListHtml()}</div>
-    <button type="button" class="rw-scratch" data-act="rwscratch">Empezar desde cero</button>
+    <div class="pa-ex"><button type="button" class="ms-link" data-act="rwscratch">Crear la mía desde cero</button></div>
   </div></div>`}
-function renderRw(){const m=$("#modal"),sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=!!(sh&&sh.classList.contains("rw-sheet"));m.innerHTML=rwHtml();m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}
+function renderRw(){const m=$("#modal"),sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=!!(sh&&sh.classList.contains("rw-sheet"));if(S.rw)S.rw._sh=same;m.innerHTML=rwHtml();m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}
 /* Duración: − / + de 5 en 5 (mantener pulsado acelera) y accesos directos a lo habitual. Sustituye a la ruleta. */
-const DP={pa:{min:5,max:600,ch:[30,45,60,90,120,180]},rw:{min:15,max:180,ch:[20,30,45,60,75,90]}};
+const DP={pa:{min:5,max:600,ch:[30,45,60,90,120,180]},rw:{min:10,max:120,ch:[15,20,25,30,45,60]}};
 const dpLab=c=>c<60?c+"′":Math.floor(c/60)+" h"+(c%60?" "+c%60:"");
 function durPick(k,v){const c=DP[k];return`<div class="dp"><div class="dp-row"><button type="button" class="dp-b" data-dpb="${k}|-5" aria-label="5 minutos menos">−</button><b class="dp-v" id="dpv_${k}" aria-live="polite">${fmtMin(v)}</b><button type="button" class="dp-b" data-dpb="${k}|5" aria-label="5 minutos más">+</button></div>
   <div class="dp-ch" role="group" aria-label="Duraciones habituales">${c.ch.map(x=>`<button type="button" class="dp-c" data-dpc="${k}|${x}" aria-pressed="${v===x}">${dpLab(x)}</button>`).join("")}</div></div>`}
@@ -5950,7 +5991,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   const sp=a.vo2&&a.ftp?(S.pfSp||"run"):a.vo2?"run":"bike",f1=v=>v.toFixed(1).replace(".",",");
   const wkB=kg&&a.ftp?a.ftp/kg:null,lvB=wkB==null?"":wkB<2?"Inicio":wkB<2.8?"Aficionado":wkB<3.5?"Bueno":wkB<4.2?"Muy bueno":"Excelente",lvR=(vo2Norm(a.vo2)||"").replace(/^./,c=>c.toUpperCase());
   /* La elegida muestra su nivel (la cifra ya va grande debajo); la otra, su cifra, para verla sin cambiar */
-  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}">${spIcon(k)}<span class="vh">${l}</span><b>${sp===k&&lv?esc(lv):`${v} <small>${u}</small>`}</b></button>`).join("")}</div>`:"";
+  const sw=a.vo2&&a.ftp?`<div class="pf-pick" role="group" aria-label="Deporte">${[["run","Carrera",r0(a.vo2),"VO2máx",SPC.run,lvR],["bike","Bici",wkB?f1(wkB):r0(a.ftp),wkB?"W/kg":"W",SPC.mtb,lvB]].map(([k,l,v,u,c,lv])=>`<button type="button" data-pfsp="${k}" aria-pressed="${sp===k}">${spIcon(k)}<span class="vh">${l}</span><span class="pf-pt"><b>${v} <small>${u}</small></b><small>${lv?esc(lv):"&nbsp;"}</small></span></button>`).join("")}</div>`:"";
   const scale=(bands,val,c)=>{const j=bands.findIndex(x=>val<x[1]),jj=j<0?bands.length-1:j,b=bands[jj],pos=(jj+Math.max(0,Math.min(1,(val-b[0])/(b[1]-b[0]))))/bands.length*100;
     return`<div class="rh-bar pf-bar">${bands.map((x,i)=>`<span class="${i===jj?"on":""}" style="flex:1;background:color-mix(in srgb,${c} ${[18,32,48,64,82,100][Math.round(i*5/(bands.length-1))]}%,var(--card))!important"><em>${x[2]}</em><u>${x[3]}</u></span>`).join("")}<i style="left:${Math.max(1,Math.min(99,pos)).toFixed(1)}%"></i></div>`};
   const zrow=(z,l,r)=>`<div class="pf-z"><i style="background:${Z_C[z]}"></i><span><b>Z${z}</b> ${l}</span><em>${r}</em></div>`;
@@ -7453,12 +7494,15 @@ document.addEventListener("click",e=>{
   if(t.dataset.fast){toggleFasted(t.dataset.fast);return}
   if(t.dataset.goto){if(S.tab!=="perfil")S.prevTab=S.tab;S.tab=t.dataset.goto;render();window.scrollTo(0,0);return}
   if(t.dataset.routine){S.strRoutine=t.dataset.routine;render();return}
-  if(t.dataset.act==="rnew"){S.rw={goal:"run",min:45,mat:"gym",open:-1};S.sheet="rwiz";renderRw();return}
+  if(t.dataset.act==="rnew"){S.rw={sport:rwMainSport(),min:20,mat:((S.profile||{}).eq||{}).mode||"free",open:-1};S.sheet="rwiz";renderRw();return}
   if(t.dataset.act==="rwclose"){S.rw=null;S.sheet=null;renderModal();return}
   if(t.dataset.act==="rwscratch"){S.rw=null;S.rEd={id:null,name:"",ex:[],pick:true,grp:EXLIB[0][0]};S.sheet="routine";renderRoutineEd();return}
-  if(t.dataset.rw&&S.rw){const [k,v]=t.dataset.rw.split(":");S.rw[k]=k==="min"?+v:v;S.rw.open=-1;renderRw();return}
+  if(t.dataset.rw&&S.rw){const [k,v]=t.dataset.rw.split(":");S.rw[k]=k==="min"?+v:v;S.rw.open=-1;if(k==="sport")S.rw.pick=0;if(k==="mat"){S.profile=Object.assign({},S.profile,{eq:Object.assign({},(S.profile||{}).eq,{mode:v})});saveProfile(true)}renderRw();return}
+  if(t.dataset.rweq&&S.rw){const m=S.rw.mat,h=rwHave(m),k=t.dataset.rweq;if(h.has(k))h.delete(k);else h.add(k);
+    S.profile=Object.assign({},S.profile,{eq:Object.assign({},(S.profile||{}).eq,{[m]:[...h]})});saveProfile(true);S.rw.open=-1;renderRw();return}
+  if(t.dataset.rwpick!=null&&S.rw){S.rw.pick=+t.dataset.rwpick;S.rw.open=-1;renderRw();return}
   if(t.dataset.rwopen!=null&&S.rw){S.rw.open=+t.dataset.rwopen;const L=$("#rw_list");if(L)L.innerHTML=rwListHtml();return}
-  if(t.dataset.rwuse!=null&&S.rw){const w=S.rw,r0=rwBuild(RW_TPL[w.goal][+t.dataset.rwuse],w.min,w.mat);
+  if(t.dataset.rwuse!=null&&S.rw){const w=S.rw,r0=rwBuild(rwTpls(w)[+t.dataset.rwuse],w.min,w.mat);
     S.routines=(S.routines||[]).slice();const r={id:"r"+Date.now().toString(36),name:r0.name,ex:r0.ex};S.routines.push(r);saveRoutines();
     S.strRoutine=r.id;S.rw=null;S.sheet=null;renderModal();render();toast("Rutina añadida · "+r.name);return}
   if(t.dataset.act==="redit"||t.dataset.act==="rdup"){rtOpenEd(t.dataset.act==="rdup");return}
