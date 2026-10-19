@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T13:30:42.149Z">
+<meta name="sustrato-version" content="2026-10-19T14:03:22.313Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3337,6 +3337,12 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 /* v338 · Documento que adjunta el profesional (enlace a su Drive, Dropbox o web) */
 .pp-doc{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;background:var(--card2);color:var(--fg);text-decoration:none;font-size:calc(15px*var(--tz,1))}
 .pp-doc b{color:var(--ac);font-weight:600}
+/* v339 · Vínculo con tu profesional: tarjeta por vínculo con su estado y lo que compartes */
+.lk-card{background:var(--card2);border-radius:14px;padding:14px;display:grid;gap:10px}
+.lk-st{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}.lk-st.active{color:var(--verde)}
+.lk-ver{color:var(--verde)}
+.lk-perms{display:flex;flex-direction:column}.lk-perms .tg-r+.tg-r{border-top:1px solid var(--sep)}
+.lk-new{width:100%}
 
 </style>
 
@@ -3424,7 +3430,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="338";
+const APP_VER="339";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -9740,8 +9746,8 @@ function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||G
   else body=`<p class="pa-note">Tu entrenador o nutricionista rellena su pauta en sustrato.app/pauta y te manda un enlace. Pégalo aquí: verás lo que cambia antes de aceptarlo.</p>
     <div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div>${S.ppErr?`<p class="pp-err" role="alert">Ese enlace no trae una pauta válida.</p>`:""}`;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
-    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${body}</div></div>`}
-function ppOpen(q){S.ppIn=q||null;S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
+    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml()}${body}</div></div>`}
+function ppOpen(q){S.ppIn=q||null;if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act^='pp']");if(!t)return;const a=t.dataset.act;
   if(a==="ppopen"){ppOpen(null);return}
   if(a==="ppclose"||a==="ppno"){S.ppIn=null;S.sheet=null;renderModal();return}
@@ -9750,6 +9756,48 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(a==="ppdel"){const p=Object.assign({},S.profile);delete p.pro;S.profile=p;saveProfile(true);S.ppSh=true;renderModal();render();toast("Pauta quitada");return}});
 /* al abrir la app con el enlace de una pauta (sustrato.app/…#p=…) */
 setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(null,"",location.pathname+location.search);ppOpen(q)}}catch(e){}},1500);
+
+/* ---------- Vínculo con tu profesional (fase B de Sustrato Pro, v339) ----------
+   Perfil › Conexiones › Tu profesional › «Vincular con una llave»: metes la llave de 6 caracteres que te da tu entrenador o
+   nutricionista, ves quién es y eliges qué compartir (al empezar, nada). Él acepta en su panel. Puedes cambiar lo que compartes o
+   terminar cuando quieras. Hace falta tu cuenta de Sustrato. La app guarda su clave privada (ECDH P-256) solo en este móvil;
+   la pública va con la solicitud para cifrar de extremo a extremo lo que compartas (fase C). */
+const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
+const LK_ST={pending:"Esperando su respuesta",active:"Vinculado",ended:"Terminado",rejected:"Rechazado"};
+S.lk=S.lk||{links:null,step:null,code:"",pro:null,perms:{},err:""};
+async function lkKey(){let k=LS("sustrato-ecdh");if(k&&k.pub)return k;
+  const kp=await crypto.subtle.generateKey({name:"ECDH",namedCurve:"P-256"},true,["deriveKey","deriveBits"]);
+  const raw=new Uint8Array(await crypto.subtle.exportKey("raw",kp.publicKey)),jwk=await crypto.subtle.exportKey("jwk",kp.privateKey);
+  let s="";raw.forEach(c=>s+=String.fromCharCode(c));k={pub:btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""),priv:jwk,at:Date.now()};LS("sustrato-ecdh",k);return k}
+async function lkCall(path,body){return syncApi(path,{method:"POST",body:JSON.stringify(body||{})})}
+async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[]}catch(e){S.lk.links=S.lk.links||[]}if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
+function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
+function lkToggles(id,perms){return`<div class="lk-perms">${LK_PERM.map(([k,l,d])=>`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${d}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!(perms&&perms[k])}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`).join("")}</div>`}
+function lkHtml(){const L=S.lk;
+  if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
+  if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
+  if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
+  const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
+  return`<div class="pa-f"><span class="pa-l">Vinculados</span>${L.links===null?`<p class="pa-note">Cargando…</p>`:live.length?live.map(l=>`<div class="lk-card">${lkPro(l.pro)}<span class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}</span>${l.state==="active"?lkToggles(l.id,l.perms):""}<div class="pa-ex"><button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button></div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
+    <button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
+function lkRender(){S.ppSh=true;renderModal()}
+document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp]");if(!t)return;const L=S.lk;
+  if(t.dataset.lkp!=null){if(t.dataset.tgGo!=="1")return;const [id,k]=t.dataset.lkp.split("|");
+    if(id==="new"){L.perms[k]=!L.perms[k];return}
+    const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!l.perms[k]});l.perms=perms;
+    try{await lkCall("/link/perms",{id,perms});toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}return}
+  if(t.dataset.lkend){const l=(L.links||[]).find(x=>x.id===t.dataset.lkend);if(!l)return;
+    if(!confirm(l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+l.pro.name+"? Dejará de ver lo que compartes."))return;
+    try{await lkCall("/link/end",{id:l.id});await lkLoad();toast(l.state==="pending"?"Solicitud cancelada":"Vínculo terminado")}catch(x){L.err="No se ha podido. Prueba en un momento.";lkRender()}return}
+  const a=t.dataset.act;L.err="";
+  if(a==="lkstart"){L.step="code";L.code="";L.pro=null;L.perms={};lkRender();setTimeout(()=>{const i=$("#lkcode");if(i)i.focus()},50);return}
+  if(a==="lkcancel"){L.step=null;lkRender();return}
+  if(a==="lknext"){const code=String(($("#lkcode")||{}).value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");L.code=code;
+    if(code.length!==6){L.err="La llave tiene 6 caracteres.";lkRender();return}
+    t.disabled=true;try{const j=await lkCall("/link/lookup",{code});if(!j.pro){L.err="Esa llave no vale: puede haber caducado o ya se usó. Pide otra a tu profesional.";lkRender();return}L.pro=j.pro;L.step="perms";lkRender()}catch(x){L.err="No se ha podido comprobar. Prueba en un momento.";lkRender()}return}
+  if(a==="lksend"){t.disabled=true;try{const k=await lkKey(),me=S.profile||{};const j=await lkCall("/link/request",{code:L.code,perms:L.perms,pub:k.pub,name:(me.name||"").trim()});
+      if(!j.ok){L.err=j.code==="already"?"Ya estás vinculado o tienes una solicitud con este profesional.":j.code==="self"?"Esa llave es tuya.":"Esa llave ya no vale. Pide otra a tu profesional.";lkRender();return}
+      L.step=null;await lkLoad();toast("Solicitud enviada a "+L.pro.name)}catch(x){L.err="No se ha podido enviar. Prueba en un momento.";lkRender()}return}});
 
 })();
 </script>
