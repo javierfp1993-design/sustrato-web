@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T09:32:57.426Z">
+<meta name="sustrato-version" content="2026-10-20T11:24:19.125Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3395,6 +3395,23 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .wk-card.prc-in{animation:prcIn .55s cubic-bezier(.32,.72,0,1) both}
 @media (prefers-reduced-motion:reduce){.wk-card.prc-in{animation:none}}
 
+/* v348 · Tu salud (113): fila en el Perfil, hoja con cuatro grupos y lo que cambia en azul */
+.hs-card{padding:6px 8px}
+.hs-row{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:6px 8px;border:0;background:none;color:var(--fg);font:inherit;text-align:left;cursor:pointer;border-radius:14px}
+.hs-ic{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--rojo) 14%,transparent);color:var(--rojo)}
+.hs-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.hs-t b{font-size:calc(17px*var(--tz,1));font-weight:600}
+.hs-t small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
+.hs-ch{flex:none;color:var(--faint);font-size:calc(20px*var(--tz,1))}
+.hs-g{background:var(--card2);border-radius:14px;padding:0 14px}
+.hs-r{padding:10px 0}
+.hs-r+.hs-r,.hs-tri+.hs-r{border-top:.5px solid var(--sep)}
+.hs-r .tg-t{display:flex;flex-direction:column;gap:2px}
+.hs-fx{font-size:calc(13px*var(--tz,1));color:var(--ac);line-height:1.35}
+.hs-tri{display:flex;align-items:center;gap:12px;margin:0 0 12px}.hs-tri>span{font-size:calc(15px*var(--tz,1));color:var(--muted)}.hs-tri .seg{flex:1}.hs-tri .seg button{flex:1}
+.hs-sh{margin-top:14px;background:var(--card2);border-radius:14px;padding:10px 14px}
+.hs-priv{margin-top:10px}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3481,7 +3498,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="347";
+const APP_VER="348";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3667,10 +3684,10 @@ function dayTargets(k,raw){
   if(stp!=null){const extra=Math.max(0,stp-actSteps(k));neat=b.bmr*0.12+extra*0.0005*w;bySteps=true}
   if(!raw&&p.adaptOn&&S.adaptF&&S.adaptF!==1){adapt=(b.bmr+neat)*(S.adaptF-1);neat+=adapt}
   const tdee=b.bmr+neat+ex;
-  const g=ppGoal(p); /* v333: con la pauta del profesional encima, si la hay */
+  const g=typeof hsGoal==="function"?hsGoal(ppGoal(p)):ppGoal(p); /* v333: con la pauta del profesional encima, si la hay; v348: «Tu salud» quita el déficit si hace falta (113) */
   /* v317 · Alrededor de una carrera no se recorta: el día de la carrera y el siguiente (recuperación) van sin déficit */
   const rcOf=d=>plannedFor(d).find(x=>x.race&&!x.skip),raceDay=rcOf(k),recRace=rcOf(shiftKey(k,-1)),recDay=recRace&&(recRace.dur||0)>=60?recRace:null;
-  let kcal=tdee*(1+(raceDay||recDay?Math.max(0,g.adj):g.adj));if(kcal<b.bmr)kcal=b.bmr;
+  let kcal=tdee*(1+(raceDay||recDay?Math.max(0,g.adj):g.adj));if(kcal<b.bmr)kcal=b.bmr;if(typeof hsKcal==="function")kcal+=hsKcal(); /* v348: embarazo y lactancia */
   let eaFloor=0;{const L=eaLean();if(L){const mk=ex+eaThr().lo*L;if(kcal<mk){eaFloor=mk-kcal;kcal=mk}}}
   let choBurn=0,fatBurn=0,pending=0;
   acts.forEach(a=>{const s=S.subs[a.id];if(s){choBurn+=s.cho/4;fatBurn+=s.fat/9}else if(a.kcal)pending++});
@@ -7460,7 +7477,7 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return meCard()+(typeof proCard==="function"?proCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
+  return meCard()+(typeof proCard==="function"?proCard():"")+(typeof hsCard==="function"?hsCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
@@ -7535,7 +7552,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -9894,7 +9911,8 @@ function lkMeals(k){const L=(S.log||{})[k]||{},t=dayTargets(k),mp=t?mealPlan(t,k
   return ml.some(x=>x.st)?ml:null}
 function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
   if(P.food){const p=S.profile||{};o.excl={diet:p.diet||"omni"};EXCL.forEach(([k])=>{if(p[k])o.excl[k]=true})} /* v342: sus exclusiones, para la ficha del profesional */
-  if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}return o}
+  if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}
+  if(typeof hsShared==="function"){const h=hsShared();if(h)o.hs=h} /* v348: Tu salud, si lo compartes */return o}
 async function lkAes(l){const k=await lkKey(),priv=await crypto.subtle.importKey("jwk",k.priv,{name:"ECDH",namedCurve:"P-256"},false,["deriveKey"]);
   const pub=await crypto.subtle.importKey("raw",lkun64(l.proPub),{name:"ECDH",namedCurve:"P-256"},false,[]);
   return crypto.subtle.deriveKey({name:"ECDH",public:pub},priv,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
@@ -10114,6 +10132,65 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.prmv){const[lid,mid]=t.dataset.prmv.split("|");S.prmv={lid,mid};S.prmvSh=false;S.sheet="prmenu";renderModal();S.prmvSh=true;return}
   if(t.dataset.prhide){const h=LS("sustrato-prhide")||{};h[t.dataset.prhide]=today();LS("sustrato-prhide",h);render();return}
   S.sheet=null;S.prmv=null;renderModal()});
+
+/* ---------- Tu salud (v348) ----------
+   Etapa, condiciones, analíticas y medicación que cambian la dieta. Lista cerrada (unas quince cosas) para que la app actúe con seguridad
+   y tu profesional lea siempre lo mismo. Debajo de cada cosa activa, en azul, lo que cambia en tu plan.
+   La app solo aplica sola lo bien establecido, y nunca encima de la pauta de tu profesional (si hay pauta, manda la pauta):
+   · Calorías extra: embarazo +0 / +340 / +452 kcal por trimestre (IOM) y lactancia +400 kcal.
+   · Sin déficit: embarazo, lactancia, diabetes tipo 1, enfermedad renal y riesgo de RED-S (si tu objetivo es perder grasa, se queda en mantener).
+   Lo demás son indicaciones. Se guarda en tu perfil (S.profile.hs); a tu profesional le llega en el paquete «meta» si lo compartes (hs.sh, por defecto sí).
+   Nada de esto va a la IA. Clases hs- */
+const HS_G=[["etapa","Etapa"],["cond","Condiciones"],["lab","Analíticas"],["med","Medicación"]];
+const HS=[
+  ["preg","etapa","Embarazo",o=>(o.preg===1?"Sin calorías extra en el 1.er trimestre":"+"+(o.preg===2?340:452)+" kcal")+" · sin déficit · cafeína ≤ 200 mg · sin alcohol, pescado crudo ni quesos sin pasteurizar"],
+  ["lact","etapa","Lactancia",()=>"+400 kcal · sin déficit · bebe a demanda"],
+  ["cyc","etapa","Seguir mi ciclo",()=>"Tu profesional lo tendrá en cuenta al pautarte"],
+  ["dm1","cond","Diabetes tipo 1",()=>"Sin déficit · los hidratos de tus entrenos, con tu endocrino o tu dietista"],
+  ["dm2","cond","Diabetes tipo 2",()=>"Hidratos repartidos en el día · tus objetivos, con tu profesional"],
+  ["hta","cond","Hipertensión",()=>"Sal moderada · en los avituallamientos, solo el sodio que pierdes"],
+  ["renal","cond","Enfermedad renal",()=>"Sin déficit · la proteína y el potasio los fija tu nefrólogo o tu dietista"],
+  ["sii","cond","Colon irritable (FODMAP)",()=>"Tu profesional adaptará tus platos"],
+  ["eii","cond","Enfermedad inflamatoria intestinal",()=>"Tu profesional adaptará tus platos en los brotes"],
+  ["tir","cond","Tiroides",()=>"Con levotiroxina: en ayunas, y lejos del café, el calcio y el hierro"],
+  ["reds","cond","Riesgo de déficit energético (RED‑S)",()=>"Sin déficit · tu energía nunca baja de lo que gastas entrenando"],
+  ["fe","lab","Ferritina baja",()=>"Platos con hierro y vitamina C · el café y el té, lejos de las comidas"],
+  ["vitd","lab","Vitamina D baja",()=>"Pescado azul, huevo y algo de sol · el suplemento, con tu médico"],
+  ["ldl","lab","Colesterol LDL alto",()=>"Más fibra, legumbre y grasa insaturada"],
+  ["glu","lab","Glucosa alta",()=>"Hidratos de absorción lenta fuera de los entrenos"],
+  ["uric","lab","Ácido úrico alto",()=>"Menos vísceras, marisco y alcohol · más agua"],
+  ["acog","med","Anticoagulantes",()=>"Verdura de hoja verde, sí, pero en cantidad parecida cada día"],
+  ["gluc","med","Insulina o fármacos para la glucosa",()=>"Lleva hidratos rápidos al entrenar · la dosis, con tu médico"]];
+const HS_NODEF=["preg","lact","dm1","renal","reds"];
+const hsOf=()=>((S.profile||{}).hs)||{};
+const hsOn=()=>HS.filter(([k])=>hsOf()[k]);
+const hsUnder=()=>typeof ppActive==="function"&&ppActive(); /* con pauta de tu profesional, manda la pauta */
+/* enganches de dayTargets (003): sin déficit y calorías extra */
+function hsGoal(g){const o=hsOf();if(hsUnder()||!HS_NODEF.some(k=>o[k])||!(g.adj<0))return g;return Object.assign({},g,{adj:0})}
+function hsKcal(){const o=hsOf();if(hsUnder())return 0;return(o.preg?[0,0,340,452][o.preg]||0:0)+(o.lact?400:0)}
+function hsSum(){const L=hsOn().map(([k,,n])=>k==="preg"?"Embarazo, "+["","1.er","2.º","3.er"][hsOf().preg]+" trimestre":n);if(hsOf().otro)L.push("otras");return L.join(" · ")}
+/* lo que viaja a tu profesional (109, meta) */
+function hsShared(){const o=hsOf();if(o.sh===false)return null;const x={};HS.forEach(([k])=>{if(o[k])x[k]=o[k]});if(o.otro)x.otro=String(o.otro).slice(0,300);return Object.keys(x).length?Object.assign(x,{u:o.u||null}):null}
+function hsCard(){const s=hsSum();
+  return`<section class="glass pad fade hs-card"><button type="button" class="hs-row" data-act="hsopen"><span class="hs-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><span class="hs-t"><b>Tu salud</b><small>${s?esc(s):"Añade embarazo, analíticas o medicación si afectan a tu dieta"}</small></span><span class="hs-ch" aria-hidden="true">›</span></button></section>`}
+function hsHtml(){const o=hsOf(),lk=typeof prLinks==="function"&&prLinks().length;
+  const sw=(k,n,fx)=>`<div class="tg-r hs-r"><span class="tg-t"><b>${esc(n)}</b>${o[k]&&fx?`<small class="hs-fx">${esc(fx(o))}</small>`:""}</span><button type="button" class="tg-sw" role="switch" aria-checked="${!!o[k]}" aria-label="${esc(n)}" data-hs="${k}"></button></div>`;
+  const tri=o.preg?`<div class="hs-tri"><span>Trimestre</span><div class="seg" role="radiogroup" aria-label="Trimestre">${[1,2,3].map(t=>`<button type="button" role="radio" data-hstri="${t}" aria-pressed="${o.preg===t}" aria-checked="${o.preg===t}">${t}.º</button>`).join("")}</div></div>`:"";
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.hsSh?"":" fade"} pa-sheet hs-sheet" role="dialog" aria-modal="true" aria-label="Tu salud">
+    <div class="row"><h3 style="margin:0">Tu salud</h3><button class="hbtn xclose" data-act="hsclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="pa-note">Marca lo que afecta a tu dieta. Debajo verás lo que cambia en tu plan.${hsUnder()?" Ahora manda la pauta de tu profesional: lo tiene en cuenta él.":""} No sustituye a tu médico.</p>
+    ${HS_G.map(([g,gn])=>`<span class="pa-l">${gn}</span><div class="hs-g">${HS.filter(x=>x[1]===g).map(([k,,n,fx])=>sw(k,n,fx)+(k==="preg"?tri:"")).join("")}</div>`).join("")}
+    <span class="pa-l">Otras cosas</span><textarea id="hsotro" class="pr-x" maxlength="300" rows="2" placeholder="Por ejemplo: hipotiroidismo, levotiroxina en ayunas">${esc(o.otro||"")}</textarea>
+    ${lk?`<div class="tg-r hs-r hs-sh"><span class="tg-t"><b>Compartir con tu profesional</b><small>Lo verá en tu ficha, con la fecha del último cambio</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${o.sh!==false}" aria-label="Compartir con tu profesional" data-hs="sh"></button></div>`:""}
+    <p class="pa-note hs-priv">Solo lo ves tú${lk?" y, si lo compartes, tu profesional":""}. Nunca se usa para nada más.</p></div></div>`}
+function hsSave(o){o.u=Date.now();S.profile=Object.assign({},S.profile,{hs:o});saveProfile(true);if(typeof lkPush==="function")setTimeout(()=>lkPush(false),600)}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-hs],[data-hstri],[data-act='hsopen'],[data-act='hsclose']");if(!t)return;
+  if(t.dataset.act==="hsopen"){S.hsSh=false;S.sheet="salud";renderModal();S.hsSh=true;return}
+  if(t.dataset.act==="hsclose"){S.sheet=null;renderModal();render();return}
+  const o=Object.assign({},hsOf());
+  if(t.dataset.hstri){o.preg=+t.dataset.hstri;hsSave(o);renderModal();return}
+  if(t.dataset.hs){if(t.dataset.tgGo!=="1")return;const k=t.dataset.hs;if(k==="sh")o.sh=o.sh===false;else if(k==="preg")o.preg=o.preg?0:1;else o[k]=!o[k];if(!o[k]&&k!=="sh")delete o[k];hsSave(o);renderModal();render()}});
+document.addEventListener("change",e=>{if(e.target.id!=="hsotro")return;const o=Object.assign({},hsOf()),v=String(e.target.value||"").trim().slice(0,300);if(v)o.otro=v;else delete o.otro;hsSave(o)});
 
 })();
 </script>
