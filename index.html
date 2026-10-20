@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T14:07:12.733Z">
+<meta name="sustrato-version" content="2026-10-20T16:10:38.437Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3452,6 +3452,23 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .td2-v{flex:1;min-width:0;font-weight:500;font-size:calc(14px*var(--tz,1));line-height:1.35;text-align:right}
 .lm-del{appearance:none;border:0;background:none;padding:0;font:inherit;color:var(--rojo);cursor:pointer}
 
+/* v354 · Formulario de admisión (116) */
+.ik-g{display:grid;gap:14px;background:var(--card2);border-radius:14px;padding:14px}
+.ik-f{display:grid;gap:8px}
+.ik-l{font-size:calc(15px*var(--tz,1));font-weight:600}
+.ik-l small{font-weight:400;color:var(--muted);font-size:calc(13px*var(--tz,1))}
+.ik-ro{grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
+.ik-ro .ik-l{grid-column:1}.ik-ro>span:not(.ik-l){grid-column:1;font-size:calc(13px*var(--tz,1));color:var(--muted)}.ik-ro .btn{grid-column:2;grid-row:1/span 2}
+.ik-ch{display:flex;flex-wrap:wrap;gap:8px}
+.ik-ch button{appearance:none;border:0;min-height:36px;padding:7px 14px;border-radius:999px;background:var(--fill2);color:var(--fg);font:calc(15px*var(--tz,1)) var(--font);cursor:pointer}
+.ik-ch button[aria-checked="true"]{background:var(--ac);color:var(--ac-on,#fff);font-weight:600}
+.ik-i{width:100%;min-height:44px;border:1px solid var(--sep);border-radius:10px;background:var(--card);color:var(--fg);font:calc(17px*var(--tz,1)) var(--font);padding:10px 12px;outline:none}
+.ik-i:focus,.ik-x:focus{border-color:var(--ac)}
+.ik-x{background:var(--card);border:1px solid var(--sep);min-height:64px}
+.ik-ok{background:var(--card2);border-radius:14px;padding:12px 14px}
+.ik-ok .tg-t{display:flex;flex-direction:column;gap:4px}.ik-ok small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.4}
+.ik-sheet>*{flex-shrink:0}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3538,7 +3555,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="353";
+const APP_VER="354";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7593,7 +7610,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -10141,6 +10158,7 @@ function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
     const ex=first("excl");if(ex&&ack[ex.mid]!==true)out.push({l,x:ex,w:70,t:"Ha anotado lo que no tomas",s:lmExclTxt(ex.o.v),a:[["Aplicar",`data-lmexcl="${l.id}|${ex.mid}"`,1]]});
     const ds=pro.filter(x=>x.o.t==="dish"&&ack[x.mid]!==true);if(ds.length)out.push({l,x:ds[0],w:60,t:ds.length===1?"Te ha enviado un plato":"Te ha enviado "+ds.length+" platos",s:ds.map(x=>(x.o.d&&x.o.d.n)||"Plato").slice(0,2).join(" · "),a:[["Añadir",`data-lmdish="${l.id}|${ds[0].mid}"`,1]]});
     const nt=pro.filter(x=>x.o.t==="note"&&x.u>seen);if(nt.length)out.push({l,x:nt[0],w:80,t:nt.length===1?"Te ha escrito":"Te ha escrito "+nt.length+" notas",s:"«"+String(nt[0].o.x||"").slice(0,90)+(String(nt[0].o.x||"").length>90?"…":"")+"»",a:[["Responder",`data-act="ppopen"`,1]]})});
+  if(typeof ikPending==="function")ikPending().forEach(({l,x})=>out.push({l,x,w:96,t:"Te pide el formulario de tu primera consulta",s:"Unos 3 minutos, casi todo de tocar",a:[["Rellenar",`data-intk="${l.id}|${x.mid}"`,1]]})); /* v354 */
   const ck=prChkDue();if(ck)out.push({l:ck,w:50,t:"Revisión de tu semana",s:"Seis preguntas. Un minuto.",a:[["Empezar",`data-act="prchk"`,1]]});
   return out.sort((a,b)=>b.w-a.w)}
 const prAv=n=>`<span class="pp-av prc-av" aria-hidden="true">${esc(String(n||"?").trim().charAt(0).toUpperCase())}</span>`;
@@ -10246,7 +10264,7 @@ function hsHtml(){const o=hsOf(),lk=typeof prLinks==="function"&&prLinks().lengt
 function hsSave(o){o.u=Date.now();S.profile=Object.assign({},S.profile,{hs:o});saveProfile(true);if(typeof lkPush==="function")setTimeout(()=>lkPush(false),600)}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-hs],[data-hstri],[data-act='hsopen'],[data-act='hsclose']");if(!t)return;
   if(t.dataset.act==="hsopen"){S.hsSh=false;S.sheet="salud";renderModal();S.hsSh=true;return}
-  if(t.dataset.act==="hsclose"){S.sheet=null;renderModal();render();return}
+  if(t.dataset.act==="hsclose"){S.sheet=S.ikBack?"intake":null;S.ikBack=false;S.ikSh=true;renderModal();render();return}
   const o=Object.assign({},hsOf());
   if(t.dataset.hstri){o.preg=+t.dataset.hstri;hsSave(o);renderModal();return}
   if(t.dataset.hs){if(t.dataset.tgGo!=="1")return;const k=t.dataset.hs;if(k==="sh")o.sh=o.sh===false;else if(k==="preg")o.preg=o.preg?0:1;else o[k]=!o[k];if(!o[k]&&k!=="sh")delete o[k];hsSave(o);renderModal();render()}});
@@ -10325,6 +10343,72 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.lmdel){const[lid,mid]=t.dataset.lmdel.split("|"),B=(S.lkm[lid]||{}).m||{},x=B[mid];if(!x)return;delete B[mid];LS("sustrato-lkmsg",S.lkm);if(typeof lkRender==="function")lkRender();
     clearTimeout(LMDEL);LMDEL=setTimeout(()=>{lkCall("/link/unsend",{id:lid,mid}).catch(()=>{})},5200);
     undoToast("Nota borrada",()=>{clearTimeout(LMDEL);B[mid]=x;LS("sustrato-lkmsg",S.lkm);if(typeof lkRender==="function")lkRender()})}});
+
+/* ---------- Formulario de admisión (v354) ----------
+   Tu profesional te lo pide por el vínculo ({t:"ask",k:"intake",q:[sus preguntas]}) y lo rellenas aquí antes de la primera consulta:
+   unos 3 minutos, casi todo de tocar, con lo que la app ya sabe (edad, altura, peso, Tu salud, lo que no tomas) puesto de antemano.
+   Sin tu consentimiento explícito no se envía (datos de salud: RGPD, art. 9.2.a). Lo que le llega: {t:"intake",ref,v:{respuestas},c:{ok,at,txt}}.
+   El borrador se guarda en este móvil (LS sustrato-intk) por si lo dejas a medias. Funciones declaradas (no const). Clases ik- */
+function ikQs(){return[
+  ["tu","ocup","Ocupación","txt","Por ejemplo: enfermera a turnos"],
+  ["tu","sue","Horas de sueño","ch",["Menos de 6","6–7","7–8","Más de 8"]],
+  ["dep","dep","Deporte principal","ch",["Running","Trail","Ciclismo","Triatlón","Natación","Otro"]],
+  ["dep","anos","Años practicándolo","num","Años"],
+  ["dep","hsem","Horas de entreno a la semana","num","Horas"],
+  ["dep","obj","Qué quieres conseguir con la consulta","area","Por ejemplo: llegar fuerte al maratón de marzo sin molestias de estómago",1],
+  ["sal","med","Medicación y suplementos","area","Lo que tomes de forma habitual"],
+  ["sal","les","Lesiones o molestias recientes","area","Si las hay"],
+  ["sal","tca","¿Has tenido alguna vez una relación difícil con la comida o con el peso?","ch",["No","Sí","Prefiero hablarlo en consulta"]],
+  ["com","nco","Comidas al día","ch",["2","3","4","5 o más"]],
+  ["com","coc","Quién cocina en casa","ch",["Yo","Otra persona","A medias"]],
+  ["com","fue","Comes fuera de casa","ch",["Casi nunca","Algunas veces","A menudo"]],
+  ["com","alc","Alcohol","ch",["Nunca","Ocasional","Cada semana","A diario"]],
+  ["com","nog","Alimentos que no te gustan","txt","Por ejemplo: el pescado azul"]]}
+function ikGs(){return[["tu","Tú"],["dep","Tu deporte"],["sal","Tu salud"],["com","Cómo comes"],["pro","Sus preguntas"]]}
+/* lo que te ha pedido y aún no has enviado */
+function ikPending(){const out=[];(typeof prLinks==="function"?prLinks():[]).forEach(l=>{const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.u-a.u),ask=M.find(x=>x.by==="pro"&&x.o.t==="ask"&&x.o.k==="intake");
+  if(ask&&!M.some(x=>x.by==="ath"&&x.o.t==="intake"&&x.o.ref===ask.mid))out.push({l,x:ask})});return out}
+function ikOpen(lid,mid){let D={};try{D=(JSON.parse(localStorage.getItem("sustrato-intk")||"{}"))[mid]||{}}catch(e){}S.intk={lid,mid,v:D.v||{},ok:false};S.ikSh=false;S.sheet="intake";renderModal();S.ikSh=true}
+/* repinta la hoja sin perder por dónde ibas */
+function ikRe(){const q=()=>document.querySelector(".ik-sheet"),y=q()?q().scrollTop:0;renderModal();if(q())q().scrollTop=y}
+function ikDraft(){const k=S.intk;if(!k)return;try{const A=JSON.parse(localStorage.getItem("sustrato-intk")||"{}");A[k.mid]={v:k.v,u:Date.now()};localStorage.setItem("sustrato-intk",JSON.stringify(A))}catch(e){}}
+function ikHtml(){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x)return"";const p=S.profile||{},pro=l.pro||{},V=k.v,Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,5).map(String);
+  const fld=([g,id,lab,ty,o,req])=>{const v=V[id];
+    if(ty==="ch")return`<div class="ik-f"><span class="ik-l">${esc(lab)}</span><div class="ik-ch" role="radiogroup" aria-label="${esc(lab)}">${o.map(c=>`<button type="button" role="radio" aria-checked="${v===c}" data-ikc="${id}|${esc(c)}">${esc(c)}</button>`).join("")}</div></div>`;
+    if(ty==="area")return`<label class="ik-f"><span class="ik-l">${esc(lab)}${req?"":` <small>opcional</small>`}</span><textarea class="pr-x ik-x" rows="2" maxlength="400" data-ik="${id}" placeholder="${esc(o)}">${esc(v||"")}</textarea></label>`;
+    return`<label class="ik-f"><span class="ik-l">${esc(lab)}</span><input class="ik-i" ${ty==="num"?'inputmode="decimal"':""} maxlength="80" data-ik="${id}" placeholder="${esc(o)}" value="${esc(v||"")}"></label>`};
+  const yo=[p.age&&p.age+" años",{f:"Mujer",m:"Hombre"}[p.sex],p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos en el Perfil";
+  const sal=[typeof hsSum==="function"&&hsSum(),typeof lmExclTxt==="function"&&lmExclTxt(p)].filter(Boolean).join(" · ");
+  const txt=ikConsent(pro),can=!!(String(V.obj||"").trim()&&k.ok);
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ikSh?"":" fade"} pa-sheet ik-sheet" role="dialog" aria-modal="true" aria-label="Formulario de admisión">
+    <div class="row"><h3 style="margin:0">Antes de tu primera consulta</h3><button class="hbtn xclose" data-act="ikclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="pa-note">${esc(pro.name||"Tu profesional")} te pide estos datos. Son unos 3 minutos; lo que ya sabe la app va puesto. Se guarda solo si lo dejas a medias.</p>
+    ${ikGs().filter(([g])=>g!=="pro"||Q.length).map(([g,gn])=>`<span class="pa-l">${g==="pro"?"Preguntas de "+esc(pro.name||"tu profesional"):gn}</span><div class="ik-g">
+      ${g==="tu"?`<div class="ik-f ik-ro"><span class="ik-l">Tus datos</span><span>${esc(yo)}</span></div>`:""}
+      ${g==="sal"?`<div class="ik-f ik-ro"><span class="ik-l">Tu salud y lo que no tomas</span><span>${esc(sal||"Nada marcado")}</span><button type="button" class="btn sm" data-act="ikhs">Revisar</button></div>`:""}
+      ${g==="pro"?Q.map((q,i)=>fld(["pro","q"+i,q,"area","Tu respuesta"])).join(""):ikQs().filter(f=>f[0]===g).map(fld).join("")}</div>`).join("")}
+    <div class="tg-r ik-ok"><span class="tg-t"><b>Doy mi consentimiento</b><small>${esc(txt)}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!k.ok}" aria-label="Doy mi consentimiento" data-ikok="1"></button></div>
+    <p class="pa-note">Más información en sustrato.app/privacidad.</p>
+    <button type="button" class="btn primary pa-go" data-act="iksend"${can?"":" disabled"}>Enviar a ${esc(pro.name||"tu profesional")}</button>
+    ${can?"":`<p class="pa-note ik-falta">${!String(V.obj||"").trim()?"Falta qué quieres conseguir con la consulta.":"Falta tu consentimiento."}</p>`}</div></div>`}
+function ikConsent(pro){return`Para que ${pro.name||"tu profesional"}${pro.role&&typeof PP_ROLE!=="undefined"?", "+(PP_ROLE[pro.role]||"").toLowerCase():""}${pro.col?" (n.º "+pro.col+")":""}, trate estos datos, también los de salud, solo para tu seguimiento nutricional. Lo retiras cuando quieras terminando el vínculo.`}
+async function ikSend(btn){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x||!k.ok)return;const p=S.profile||{},Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,5).map(String);
+  const v={tu:{age:p.age||null,sex:p.sex||null,height:p.height||null,weight:p.weight||null}};ikQs().forEach(([,id])=>{if(k.v[id]!=null&&String(k.v[id]).trim())v[id]=String(k.v[id]).slice(0,400)});
+  if(typeof hsOf==="function"){const h=hsOf();if(Object.keys(h).length)v.hs=h}const ex={diet:p.diet||"omni"};EXCL.forEach(([e])=>{if(p[e])ex[e]=true});v.excl=ex;
+  if(Q.length)v.pq=Q.map((q,i)=>[q,String(k.v["q"+i]||"").slice(0,400)]);
+  btn.disabled=true;try{await lmSend(l,{t:"intake",ref:k.mid,v,c:{ok:true,at:Date.now(),v:1,txt:ikConsent(l.pro||{})}});lmAck(l.id,k.mid,true);
+    try{const A=JSON.parse(localStorage.getItem("sustrato-intk")||"{}");delete A[k.mid];localStorage.setItem("sustrato-intk",JSON.stringify(A))}catch(e){}
+    S.sheet=null;S.intk=null;renderModal();render();toast("Formulario enviado a "+(l.pro.name||"tu profesional"))}catch(e){btn.disabled=false;toast("No se ha podido enviar")}}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-intk],[data-ikc],[data-ikok],[data-act='ikclose'],[data-act='iksend'],[data-act='ikhs']");if(!t)return;
+  if(t.dataset.intk){const[lid,mid]=t.dataset.intk.split("|");ikOpen(lid,mid);return}
+  const k=S.intk;if(!k)return;
+  if(t.dataset.act==="ikclose"){ikDraft();S.sheet=null;renderModal();return}
+  if(t.dataset.act==="iksend"){ikSend(t);return}
+  if(t.dataset.act==="ikhs"){ikDraft();S.ikBack=true;S.hsSh=false;S.sheet="salud";renderModal();S.hsSh=true;return}
+  if(t.dataset.ikc){const[id,v]=t.dataset.ikc.split("|");k.v[id]=k.v[id]===v?"":v;ikDraft();ikRe();return}
+  if(t.dataset.ikok){if(t.dataset.tgGo!=="1")return;k.ok=!k.ok;ikRe()}});
+document.addEventListener("input",e=>{const t=e.target;if(!t.dataset||!t.dataset.ik||!S.intk)return;S.intk.v[t.dataset.ik]=t.value;clearTimeout(ikDraft.t);ikDraft.t=setTimeout(ikDraft,500);
+  const b=document.querySelector('[data-act="iksend"]');if(b&&t.dataset.ik==="obj"){b.disabled=!(String(t.value).trim()&&S.intk.ok);const f=document.querySelector(".ik-falta");if(f)f.hidden=!b.disabled}});
 
 })();
 </script>
