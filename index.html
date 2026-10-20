@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T16:48:42.202Z">
+<meta name="sustrato-version" content="2026-10-20T17:00:00.620Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3469,6 +3469,15 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .ik-ok .tg-t{display:flex;flex-direction:column;gap:4px}.ik-ok small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.4}
 .ik-sheet>*{flex-shrink:0}
 
+/* v357 · Fotos con tu profesional (117) */
+.lph-i{display:block;max-width:100%;height:auto;margin:6px 0 2px;border-radius:14px;background:var(--fill2);opacity:0;transition:opacity .2s}
+.lph-i.on,.lph-i.bad{opacity:1}
+.lph-av{overflow:hidden;padding:0}
+.lph-avi{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .2s}.lph-avi.on{opacity:1}
+.lph-bio{margin:6px 0 0;font-size:calc(15px*var(--tz,1));line-height:1.4;color:var(--muted)}
+.lph-cam{flex:none;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--fill2);color:var(--fg);cursor:pointer}
+@media (prefers-reduced-motion:reduce){.lph-i,.lph-avi{transition:none}}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3555,7 +3564,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="356";
+const APP_VER="357";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6313,6 +6322,7 @@ function mealSheetHtml(){const p=S.msh,m=mshMeal();if(!m)return"";const k=p.k,e=
     <button type="button" class="bc-open" data-bcopen="1"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M20 17v2a1 1 0 0 1-1 1h-2M7 20H5a1 1 0 0 1-1-1v-2M8 8v8M11 8v8M14 8v8M17 8v8"/></svg>Escanear código de barras</button>
     <div class="ms-list" id="msl">${mshList(m)}</div>`}
     ${S.sampleImg?`<label class="ms-photo ia">${IC_CAM}<span>Hacer foto de lo que comí</span><input type="file" id="lgf_${m.id}" accept="image/*" hidden></label>`:""}
+    ${typeof lphMealRow==="function"?lphMealRow(m.id,k):""}
     <div class="ms-foot"><button class="ms-link" data-msskip="1" aria-pressed="${st==="skip"}">${st==="skip"?"Desmarcar «me la salté»":"Me la salté"}</button>${st?'<button class="ms-link red" data-msdel="1">Quitar registro</button>':""}</div>
   </div></div>`}
 function mshDone(prev,msg){const p=S.msh,k=p.k,mid=p.mid;S.sheet=null;S.msh=null;renderModal();S.pop=mid;buzz(10);render();undoToast(msg,()=>{setLog(k,mid,prev);render()})}
@@ -10045,8 +10055,8 @@ function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}
-    <span class="pa-l">Notas</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small><p>${esc(x.o.x)}</p></div>`).join("")}</div>`:""}
-    <div class="pp-in"><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
+    <span class="pa-l">Notas</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
+    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
 /* v342 · exclusiones que anota tu profesional (alergias, intolerancias y tipo de dieta): al aplicarlas, tu menú automático las respeta */
 const LM_DIET={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"};
 const lmExclTxt=v=>{v=v||{};const L=EXCL.filter(([k])=>v[k]).map(x=>x[1].toLowerCase());return(L.length?"Sin "+L.join(", "):"Sin exclusiones")+(v.diet&&v.diet!=="omni"?" · dieta "+LM_DIET[v.diet]:"")};
@@ -10174,7 +10184,7 @@ const prAv=n=>`<span class="pp-av prc-av" aria-hidden="true">${esc(String(n||"?"
 const prBtns=a=>a.map(([t,at,pri])=>`<button type="button" class="btn sm${pri?" primary":""}" ${at}>${t}</button>`).join("");
 /* Hoy: lo más importante que te ha mandado, arriba */
 function prHoyCard(){const P=prPend(),hid=LS("sustrato-prhide")||{};if(!P.length)return"";const p=P[0];if(p.x&&hid[p.x.mid]===today())return"";
-  return`<section class="glass pad fade prc-hoy"><div class="prc-h">${prAv(p.l.pro.name)}<div class="prc-t"><small>${esc(p.l.pro.name||"Tu profesional")}</small><b>${esc(p.t)}</b>${p.s?`<span>${esc(p.s)}</span>`:""}</div>${p.x?`<button type="button" class="hbtn prc-x" data-prhide="${esc(p.x.mid)}" aria-label="Ocultar hasta mañana"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`:""}</div>
+  return`<section class="glass pad fade prc-hoy"><div class="prc-h">${typeof lphAv==="function"?lphAv(p.l,p.l.pro.name,"prc-av"):prAv(p.l.pro.name)}<div class="prc-t"><small>${esc(p.l.pro.name||"Tu profesional")}</small><b>${esc(p.t)}</b>${p.s?`<span>${esc(p.s)}</span>`:""}</div>${p.x?`<button type="button" class="hbtn prc-x" data-prhide="${esc(p.x.mid)}" aria-label="Ocultar hasta mañana"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`:""}</div>
     <div class="bk-a prc-a">${prBtns(p.a)}${P.length>1?`<button type="button" class="ms-link" data-act="ppopen">${P.length-1===1?"y 1 cosa más":"y "+(P.length-1)+" cosas más"}</button>`:""}</div></section>`}
 /* Perfil: su tarjeta, debajo de la tuya */
 function proCard(){const L=prLinks(),q=(S.profile||{}).pro;
@@ -10182,7 +10192,7 @@ function proCard(){const L=prLinks(),q=(S.profile||{}).pro;
   if(!L.length&&!q)return`<section class="glass pad fade hs-card"><button type="button" class="hs-row" data-act="ppopen"><span class="hs-ic prc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span><span class="hs-t"><b>Tu profesional</b><small>Si tienes nutricionista o entrenador, vincúlate con su llave</small></span><span class="hs-ch" aria-hidden="true">›</span></button></section>`;
   const l=L[0],P=prPend(),who=l?l.pro:{name:q.n,role:q.r};
   const rows=P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("");
-  return`<section class="glass pad fade prc-card"><span class="pkk">Tu profesional</span><div class="prc-h prc-who">${prAv(who.name)}<div class="prc-t"><b>${esc(who.name||"")}</b><span>${esc(PP_ROLE[who.role]||"Profesional")}${l?" · vinculados":""}</span></div></div>
+  return`<section class="glass pad fade prc-card"><span class="pkk">Tu profesional</span><div class="prc-h prc-who">${l&&typeof lphAv==="function"?lphAv(l,who.name,"prc-av"):prAv(who.name)}<div class="prc-t"><b>${esc(who.name||"")}</b><span>${esc(PP_ROLE[who.role]||"Profesional")}${l?" · vinculados":""}</span></div></div>${(()=>{const pf=l&&typeof lphProf==="function"&&lphProf(l);return pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""})()}
     ${rows?`<div class="prc-l"><span class="prc-lh">Pendiente</span>${rows}</div>`:`<p class="note prc-ok">Nada pendiente. Lo nuevo que te mande aparecerá aquí y en Hoy.</p>`}
     ${prPushRow()}<button type="button" class="prc-go" data-act="ppopen"><span>${q&&ppActive()?"Pauta en vigor, notas y lo que compartes":"Notas, pautas y lo que compartes"}</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></section>`}
 /* vista previa del menú antes de aplicarlo */
@@ -10431,6 +10441,37 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.ikok){if(t.dataset.tgGo!=="1")return;k.ok=!k.ok;ikRe()}});
 document.addEventListener("input",e=>{const t=e.target;if(!t.dataset||!t.dataset.ik||!S.intk)return;S.intk.v[t.dataset.ik]=t.value;clearTimeout(ikDraft.t);ikDraft.t=setTimeout(ikDraft,500);
   const b=document.querySelector('[data-act="iksend"]');if(b&&t.dataset.ik==="obj"){b.disabled=!(String(t.value).trim()&&S.intk.ok);const f=document.querySelector(".ik-falta");if(f)f.hidden=!b.disabled}});
+
+/* ---------- Fotos con tu profesional (v357) ----------
+   · Notas con foto en las dos direcciones: {t:"note",d,m?,x,ph:{fid,iv,w,h}}. La foto se reduce aquí a 1280 px (JPEG), se cifra
+     con la clave del vínculo (dato adicional id|f, como sus adjuntos) y sube en trozos (/link/file/put, servidor v27).
+   · Comida con foto: en la hoja de cada comida, «Enviar una foto a …» manda la foto con el día y la comida (m).
+   · Su foto y su presentación: {t:"prof",ph,bio}; la última sale en su avatar (Hoy y Perfil) y bajo su nombre.
+   Solo se activa con un vínculo (la app no depende de Pro). Funciones declaradas (no const). Clases lph- */
+var LPH={};
+function lphShrink(file){return new Promise((ok,ko)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+  c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok({b,w:c.width,h:c.height}):ko({code:"bad_image"}),"image/jpeg",.82)};im.onerror=()=>{URL.revokeObjectURL(u);ko({code:"bad_image"})};im.src=u})}
+async function lphUp(l,file){const s=await lphShrink(file),buf=await s.b.arrayBuffer(),aes=await lkAes(l),iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=lkb64(new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode(l.id+"|f")},aes,buf))),fid=lkb64(crypto.getRandomValues(new Uint8Array(12))),CH=96000,P=[];
+  for(let i=0;i<ct.length;i+=CH)P.push(ct.slice(i,i+CH));for(let n=0;n<P.length;n++){const j=await lkCall("/link/file/put",{id:l.id,fid,n,tot:P.length,data:P[n]});if(!j||!j.ok)throw j||{}}
+  return{fid,iv:lkb64(iv),w:s.w,h:s.h}}
+function lphUrl(l,ph){if(LPH[ph.fid])return LPH[ph.fid];const p=LPH[ph.fid]=(async()=>{const parts=[];let n=0,tot=1;while(n<tot){const j=await lkCall("/link/file",{id:l.id,fid:ph.fid,n});if(!j.data)throw 0;parts.push(j.data);tot=j.tot;n++}
+  const b=await crypto.subtle.decrypt({name:"AES-GCM",iv:lkun64(ph.iv),additionalData:new TextEncoder().encode(l.id+"|f")},await lkAes(l),lkun64(parts.join("")));return URL.createObjectURL(new Blob([b],{type:"image/jpeg"}))})();p.catch(()=>{delete LPH[ph.fid]});return p}
+function lphImg(l,ph,cls){return ph&&ph.fid?`<img class="${cls||"lph-i"}" alt="Foto" data-lmph="${l.id}|${esc(ph.fid)}|${esc(ph.iv)}" width="${+ph.w||4}" height="${+ph.h||3}">`:""}
+function lphScan(){document.querySelectorAll("img[data-lmph]:not([data-lphs])").forEach(im=>{im.dataset.lphs="1";const[lid,fid,iv]=im.dataset.lmph.split("|"),l=typeof lmLink==="function"&&lmLink(lid);if(!l)return;
+  lphUrl(l,{fid,iv}).then(u=>{im.src=u;im.classList.add("on")}).catch(()=>{im.classList.add("bad")})})}
+new MutationObserver(lphScan).observe(document.documentElement,{childList:true,subtree:true});
+/* su foto y su presentación: lo último que ha mandado */
+function lphProf(l){const x=l&&Object.values((S.lkm[l.id]||{}).m||{}).filter(y=>y.by==="pro"&&y.o.t==="prof").sort((a,b)=>b.u-a.u)[0];return x?x.o:null}
+function lphAv(l,name,cls){const p=lphProf(l);return p&&p.ph?`<span class="pp-av ${cls||""} lph-av" aria-hidden="true">${lphImg(l,p.ph,"lph-avi")}</span>`:`<span class="pp-av ${cls||""}" aria-hidden="true">${esc(String(name||"?").trim().charAt(0).toUpperCase())}</span>`}
+/* hoja de una comida: mandar la foto de lo que comes */
+function lphMealRow(mid,k){const l=typeof prLinks==="function"&&prLinks()[0];if(!l)return"";
+  return`<label class="ms-photo lph-ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><span>Enviar una foto a ${esc(l.pro.name||"tu profesional")}</span><input type="file" accept="image/*" hidden data-lphm="${esc(mid)}|${esc(k)}"></label>`}
+async function lphSend(l,file,o,what){toast("Enviando la foto…");try{const ph=await lphUp(l,file);await lmSend(l,Object.assign({t:"note",x:""},o,{ph}));toast((what||"Foto")+" enviada a "+(l.pro.name||"tu profesional"));if(typeof lkRender==="function")lkRender()}
+  catch(e){toast(e&&e.code==="bad_image"?"No se ha podido abrir la foto":"No se ha podido enviar la foto")}}
+document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.files||!t.files[0])return;
+  if(t.dataset.lphm){const l=prLinks()[0],[mid,k]=t.dataset.lphm.split("|");if(l)lphSend(l,t.files[0],{d:k,m:mid},"Foto de tu "+((MEALS.find(m=>m[0]===mid)||[])[1]||"comida").toLowerCase());t.value="";return}
+  if(t.dataset.lphn){const l=lmLink(t.dataset.lphn),i=$("#lmx-"+t.dataset.lphn),x=String(i&&i.value||"").trim().slice(0,400);if(l){lphSend(l,t.files[0],{d:today(),x});if(i)i.value=""}t.value=""}});
 
 })();
 </script>
