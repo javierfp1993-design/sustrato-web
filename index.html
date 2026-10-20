@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T07:53:25.081Z">
+<meta name="sustrato-version" content="2026-10-20T09:11:19.195Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3367,6 +3367,34 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pr-mn{display:flex;align-items:center;gap:6px;margin:6px 0 2px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .pr-mn::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--ac)}
 
+/* v346 · Tu profesional (112): tarjeta en Hoy cuando te manda algo, tarjeta propia en el Perfil y vista previa del menú */
+.prc-h{display:flex;align-items:center;gap:12px}
+.prc-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.prc-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.prc-t b{font-size:calc(17px*var(--tz,1));font-weight:600;line-height:1.25}
+.prc-t span{font-size:calc(15px*var(--tz,1));color:var(--muted);line-height:1.35}
+.prc-x{flex:none;align-self:flex-start;margin:-6px -8px 0 0;color:var(--muted)}
+.prc-a{margin-top:14px;align-items:center}
+.prc-who{margin:10px 0 4px}
+.prc-intro{margin:6px 0 12px}
+.prc-l{margin-top:10px}
+.prc-lh{display:block;font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted);margin:4px 0 2px}
+.prc-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 0;border-top:.5px solid var(--sep)}
+.prc-lh+.prc-r{border-top:0}
+.prc-rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.prc-rt b{font-size:calc(15px*var(--tz,1));font-weight:600}
+.prc-rt small{font-size:calc(13px*var(--tz,1));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prc-ra{flex:none}
+.prc-ok{margin:10px 0 4px}
+.prc-go{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;margin-top:8px;padding:0;border:0;border-top:.5px solid var(--sep);background:none;color:var(--fg);font:400 calc(17px*var(--tz,1)) var(--font);text-align:left;cursor:pointer}
+.prc-go svg{flex:none;color:var(--faint)}
+.prc-dn{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);margin-top:2px}
+.prc-sheet .pp-r{padding:6px 0}.prc-sheet .pp-v{flex:none;white-space:nowrap;color:var(--muted)}
+/* los días que llegan de tu profesional entran con el mismo muelle de las hojas */
+@keyframes prcIn{from{opacity:.4;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+.wk-card.prc-in{animation:prcIn .55s cubic-bezier(.32,.72,0,1) both}
+@media (prefers-reduced-motion:reduce){.wk-card.prc-in{animation:none}}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3453,7 +3481,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="345";
+const APP_VER="346";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6965,12 +6993,12 @@ function vHoy(){
       :`<span class="tchip plan off">${spIcon(s.sport,"xs")}<b>${esc(sessName(s))}</b>${s.dur}′ ${pst(x.st)}${x.st!=="chg"?`<button class="tskip" data-plskip="${x.i}" data-k="${S.day}" aria-label="${x.st==="skip"?"Recuperar":"Marcar saltado"}" title="${x.st==="skip"?"Recuperar":"Marcar saltado"}">${x.st==="skip"?"↺":"✕"}</button>`:""}</span>`}).join("");
   const panel=mealsCard(t)+fuelCard(t); /* v315: la tarjeta de carrera va arriba */
   return `
+  ${typeof prHoyCard==="function"?prHoyCard():""}
   ${raceCard(t)}
   ${weightBar()}
   ${glyCard()}
   ${recovCard()}
   ${bkNudge()}
-  ${typeof prHoy==="function"?prHoy():""}
   ${flPrompt()}
   ${weekTeaser()}
   <section class="glass pad fade dsec">${strip}</section>
@@ -7432,7 +7460,7 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return meCard()+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
+  return meCard()+(typeof proCard==="function"?proCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
@@ -7507,7 +7535,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -7901,9 +7929,7 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
   /* v286: archivos FIT, sin cuenta; completan lo que ya hay o añaden lo que falte */
   {const n=Object.keys(S.fit||{}).length;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 18v-6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/></svg></span>`,"Archivos FIT",`<span>${S.fitLast?esc(S.fitLast):"De tu reloj o de Garmin Connect, COROS, Suunto… Completan los entrenos que ya tienes o añaden los que falten."}</span>`,n?`<span class="cn-st">${n} importado${n>1?"s":""}</span>`:"")
     +`<label class="cn-a${S.fitBusy?" fit-busy":""}" for="fitin">${S.fitBusy?"Importando…":"Importar archivos"}</label><input type="file" id="fitin" accept=".fit,application/octet-stream" multiple hidden${S.fitBusy?" disabled":""}>`)}
-  /* v333: tu profesional (pauta por enlace) */
-  {const q=(S.profile||{}).pro;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span>`,"Tu profesional",`<span>${q?"Pauta de "+esc(q.n)+" · "+esc(PP_ROLE[q.r]||"")+(ppActive()?"":" · ya no está en vigor"):"Tu entrenador o nutricionista te manda su pauta con un enlace."}</span>`,q?(ppActive()?`<span class="cn-st cx-ok">Pauta activa</span>`:`<span class="cn-st">Caducada</span>`):"")
-    +`<button type="button" class="cn-a" data-act="ppopen">${typeof prNew==="function"&&prNew()?"Ver lo nuevo · "+prNew():q?"Ver pauta":"Añadir pauta"}</button>`)}
+  /* v346: tu profesional ya no va aquí: tiene su tarjeta propia en el Perfil (112) */
   return`<section class="glass pad fade cx-card"><span class="pkk">Conexiones</span>${G.map(g=>`<div class="cn-g">${g}</div>`).join("")}</section>`
     +(a&&!S.acDel?`<div class="cn-del"><button type="button" data-act="acdel">Borrar mi cuenta y mis datos</button><p>Borra del servidor todo lo sincronizado. Pide confirmación.</p></div>`:"")}
 function knowCard(){return`<section class="glass pad fade kn-card"><span class="pkk">Conoce Sustrato</span><div class="kn">
@@ -9979,8 +10005,6 @@ function prHabCard(){const H=prHabits();if(!H.length)return"";const d=S.hab[S.da
 /* revisión de la semana: la semana que acaba en el último domingo; se pide de domingo a martes */
 function prChkWk(){const d=new Date(today()+"T12:00:00"),dw=d.getDay();if(dw!==0&&dw!==1&&dw!==2)return null;return shiftKey(today(),dw===0?-6:dw===1?-7:-8)}
 function prChkDue(){const wk=prChkWk();if(!wk)return null;return prLinks().find(l=>!prMsgs(l,"chk").some(x=>x.by==="ath"&&x.o.wk===wk))||null}
-function prChkNudge(){const l=prChkDue();if(!l)return"";
-  return`<section class="glass pad fade pr-chk"><h2>Revisión de tu semana</h2><p class="note">Seis preguntas para ${esc(l.pro.name)}. Un minuto.</p><div class="bk-a"><button class="btn sm primary" data-act="prchk">Empezar</button></div></section>`}
 function prChkHtml(){const c=S.prc||{v:{}},l=prChkDue();if(!l)return"";
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.prcSh?"":" fade"} pa-sheet pr-sheet" role="dialog" aria-modal="true" aria-label="Revisión de tu semana">
     <div class="row"><h3 style="margin:0">Revisión de tu semana</h3><button class="hbtn xclose" data-act="prclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -10011,18 +10035,17 @@ function prMenuApply(l,x){const o=x.o,D=o.dishes||{},pro=String(l.pro.name||"Tu 
     if(Object.keys(day).length){S.menu[k]=day;autoAssignDay(k)}});
   saveDishes();saveMenu();
   if(n){clearTimeout(prMenuApply.t);S.prMnPend=x.mid;prMenuApply.t=setTimeout(()=>{S.prMnPend=null;lmAck(l.id,x.mid,true);lkRender()},5200);
-    undoToast("Menú de "+pro+" aplicado"+(skip?" · "+skip+" platos fuera por lo que no tomas":""),()=>{clearTimeout(prMenuApply.t);S.prMnPend=null;S.menu=prev.menu;S.dishes=prev.dishes;saveMenu();saveDishes();lkRender();render()})}
-  return{n,skip}}
+    undoToast("Listo: tu semana con "+pro+(skip?" · "+skip+" platos fuera por lo que no tomas":""),()=>{clearTimeout(prMenuApply.t);S.prMnPend=null;S.menu=prev.menu;S.dishes=prev.dishes;saveMenu();saveDishes();lkRender();render()})}
+  return{n,skip,first:Object.keys(o.days||{}).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=today()).sort()[0]}}
 /* avisos: lo que tu profesional ha mandado y aún no has visto */
 function prNew(){const seen=LS("sustrato-lkseen")||0;let n=0;prLinks().forEach(l=>Object.values((S.lkm[l.id]||{}).m||{}).forEach(x=>{if(x.by==="pro"&&x.u>seen&&x.o.t!=="ack")n++}));return n}
 function prBadge(){const b=$("#menuBtn");if(!b)return;const n=prNew();if(n)b.dataset.prnew="1";else delete b.dataset.prnew}
 const prSeen=()=>{LS("sustrato-lkseen",Date.now());prBadge()};
-function prHoy(){return prChkNudge()}
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-prhab],[data-act^='pr'],[data-prq],[data-lmmenu]");if(!t)return;
   if(t.dataset.prhab){if(t.dataset.tgGo!=="1")return;const k=S.day;S.hab[k]=Object.assign({},S.hab[k]);if(S.hab[k][t.dataset.prhab])delete S.hab[k][t.dataset.prhab];else S.hab[k][t.dataset.prhab]=true;
     LS("sustrato-hab",S.hab);const c=userCol();if(c)c.doc("habits").set({kind:"habits",map:S.hab}).catch(()=>{});if(typeof lkPush==="function")setTimeout(()=>lkPush(false),400);render();return}
   if(t.dataset.prq){const[k,n]=t.dataset.prq.split("|");S.prc=S.prc||{v:{}};S.prc.v[k]=+n;const x=$("#prcx");if(x)S.prc.x=x.value;S.prcSh=true;renderModal();return}
-  if(t.dataset.lmmenu){const[lid,mid]=t.dataset.lmmenu.split("|"),l=lmLink(lid),x=((S.lkm[lid]||{}).m||{})[mid];if(!l||!x)return;const r=prMenuApply(l,x);if(!r.n)toast("Ese menú ya no tiene días por delante");lkRender();render();return}
+  if(t.dataset.lmmenu){const[lid,mid]=t.dataset.lmmenu.split("|"),l=lmLink(lid),x=((S.lkm[lid]||{}).m||{})[mid];if(!l||!x)return;const r=prMenuApply(l,x);if(!r.n){toast("Ese menú ya no tiene días por delante");lkRender();render();return}if(typeof prMenuGo==="function")prMenuGo(r.first);else{lkRender();render()}return}
   const a=t.dataset.act;
   if(a==="prchk"){S.prc={v:{}};S.prcSh=false;S.sheet="prchk";renderModal();return}
   if(a==="prclose"){S.sheet=null;renderModal();return}
@@ -10030,6 +10053,65 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
     try{await lmSend(l,{t:"chk",wk:prChkWk(),v:c.v,x:c.x});S.sheet=null;S.prc=null;renderModal();render();toast("Revisión enviada a "+l.pro.name)}catch(y){t.disabled=false;toast("No se ha podido enviar")}}});
 /* tras cada lectura de mensajes: medidas que entran solas y el aviso del avatar */
 setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links){prMeasSync();prBadge()}},5000);
+
+/* ---------- Tu profesional, en primer plano (v346) ----------
+   El vínculo con tu nutricionista o entrenador deja de ser una fila más de Conexiones:
+   · Perfil: tarjeta propia justo debajo de ti (quién es, lo pendiente con su acción y el acceso a pauta, notas y lo que compartes).
+   · Hoy: cuando te manda algo sin responder, una tarjeta arriba con la acción directa (menú, pauta, plato, notas, revisión).
+   · Menú de la semana: «Ver el menú» abre una vista previa; «Aplicar» lo pone en tus días y te lleva a Plan › Menú.
+   Lo pendiente sale de los mensajes del vínculo (110) y sus respuestas (ack). Ocultar la tarjeta de Hoy dura hasta mañana (LS sustrato-prhide). Clases prc- */
+function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
+  prLinks().forEach(l=>{const{M,ack}=lmList(l),pro=M.filter(x=>x.by==="pro"),first=t=>pro.find(x=>x.o.t===t);
+    const mn=first("menu");if(mn&&ack[mn.mid]!==true&&S.prMnPend!==mn.mid&&Object.keys(mn.o.days||{}).some(k=>k>=today())){const ks=Object.keys(mn.o.days).sort();
+      out.push({l,x:mn,w:100,t:"Te ha preparado el menú de la semana",s:"Del "+dateLabel(ks[0])+" al "+dateLabel(ks[ks.length-1]),a:[["Ver el menú",`data-prmv="${l.id}|${mn.mid}"`],["Aplicar",`data-lmmenu="${l.id}|${mn.mid}"`,1]]})}
+    const pa=first("pauta");if(pa&&ack[pa.mid]===undefined&&((S.profile||{}).pro||{}).mid!==pa.mid)out.push({l,x:pa,w:90,t:"Te ha enviado una pauta nueva",s:"Mira lo que cambia antes de aceptarla",a:[["Ver la pauta",`data-lmpp="${l.id}|${pa.mid}"`,1]]});
+    const ex=first("excl");if(ex&&ack[ex.mid]!==true)out.push({l,x:ex,w:70,t:"Ha anotado lo que no tomas",s:lmExclTxt(ex.o.v),a:[["Aplicar",`data-lmexcl="${l.id}|${ex.mid}"`,1]]});
+    const ds=pro.filter(x=>x.o.t==="dish"&&ack[x.mid]!==true);if(ds.length)out.push({l,x:ds[0],w:60,t:ds.length===1?"Te ha enviado un plato":"Te ha enviado "+ds.length+" platos",s:ds.map(x=>(x.o.d&&x.o.d.n)||"Plato").slice(0,2).join(" · "),a:[["Añadir",`data-lmdish="${l.id}|${ds[0].mid}"`,1]]});
+    const nt=pro.filter(x=>x.o.t==="note"&&x.u>seen);if(nt.length)out.push({l,x:nt[0],w:80,t:nt.length===1?"Te ha escrito":"Te ha escrito "+nt.length+" notas",s:"«"+String(nt[0].o.x||"").slice(0,90)+(String(nt[0].o.x||"").length>90?"…":"")+"»",a:[["Responder",`data-act="ppopen"`,1]]})});
+  const ck=prChkDue();if(ck)out.push({l:ck,w:50,t:"Revisión de tu semana",s:"Seis preguntas. Un minuto.",a:[["Empezar",`data-act="prchk"`,1]]});
+  return out.sort((a,b)=>b.w-a.w)}
+const prAv=n=>`<span class="pp-av prc-av" aria-hidden="true">${esc(String(n||"?").trim().charAt(0).toUpperCase())}</span>`;
+const prBtns=a=>a.map(([t,at,pri])=>`<button type="button" class="btn sm${pri?" primary":""}" ${at}>${t}</button>`).join("");
+/* Hoy: lo más importante que te ha mandado, arriba */
+function prHoyCard(){const P=prPend(),hid=LS("sustrato-prhide")||{};if(!P.length)return"";const p=P[0];if(p.x&&hid[p.x.mid]===today())return"";
+  return`<section class="glass pad fade prc-hoy"><div class="prc-h">${prAv(p.l.pro.name)}<div class="prc-t"><small>${esc(p.l.pro.name||"Tu profesional")}</small><b>${esc(p.t)}</b>${p.s?`<span>${esc(p.s)}</span>`:""}</div>${p.x?`<button type="button" class="hbtn prc-x" data-prhide="${esc(p.x.mid)}" aria-label="Ocultar hasta mañana"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`:""}</div>
+    <div class="bk-a prc-a">${prBtns(p.a)}${P.length>1?`<button type="button" class="ms-link" data-act="ppopen">${P.length-1===1?"y 1 cosa más":"y "+(P.length-1)+" cosas más"}</button>`:""}</div></section>`}
+/* Perfil: su tarjeta, debajo de la tuya */
+function proCard(){const L=prLinks(),q=(S.profile||{}).pro;
+  if(!L.length&&!q)return`<section class="glass pad fade prc-card"><span class="pkk">Tu profesional</span><p class="note prc-intro">Vincúlate con tu nutricionista o entrenador: te prepara la pauta y el menú de la semana, y ve tu progreso con lo que tú decidas compartir.</p><div class="bk-a"><button type="button" class="btn sm primary" data-act="ppopen">Vincular con su llave</button></div></section>`;
+  const l=L[0],P=prPend(),who=l?l.pro:{name:q.n,role:q.r};
+  const rows=P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("");
+  return`<section class="glass pad fade prc-card"><span class="pkk">Tu profesional</span><div class="prc-h prc-who">${prAv(who.name)}<div class="prc-t"><b>${esc(who.name||"")}</b><span>${esc(PP_ROLE[who.role]||"Profesional")}${l?" · vinculados":""}</span></div></div>
+    ${rows?`<div class="prc-l"><span class="prc-lh">Pendiente</span>${rows}</div>`:`<p class="note prc-ok">Nada pendiente. Lo nuevo que te mande aparecerá aquí y en Hoy.</p>`}
+    ${prPushRow()}<button type="button" class="prc-go" data-act="ppopen"><span>${q&&ppActive()?"Pauta en vigor, notas y lo que compartes":"Notas, pautas y lo que compartes"}</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></section>`}
+/* vista previa del menú antes de aplicarlo */
+function prMenuHtml(){const v=S.prmv||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}).m||{})[v.mid];if(!x)return"";const o=x.o,D=o.dishes||{};
+  const nm=id=>{const s=String(id);if(s.startsWith("b:")){const d=dishById(s.slice(2));return d?d.n:"Plato de la app"}const d=D[id];return d?d.n:"Plato"};
+  const kc=id=>{const d=D[id];if(!d||!Array.isArray(d.ing))return"";const n=ingNut(d.ing.filter(r=>INGR_BY[r[0]]),d.serv||1);return fmtInt(4*n.P+4*n.C+9*n.F)+" kcal"};
+  const days=Object.keys(o.days||{}).filter(k=>k>=today()).sort();
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.prmvSh?"":" fade"} pa-sheet prc-sheet" role="dialog" aria-modal="true" aria-label="Menú de la semana">
+    <div class="row"><h3 style="margin:0">Menú de ${esc(l.pro.name||"tu profesional")}</h3><button class="hbtn xclose" data-act="prmvclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="pa-note">Ajustado a tus objetivos de cada día. Al aplicarlo sustituye esos días de tu menú; lo puedes deshacer.</p>
+    ${days.map(k=>`<span class="pa-l">${esc(dateLabel(k))}</span><div class="pp-rows">${MEALS.filter(([m])=>o.days[k][m]).map(([m,n])=>`<div class="pp-r"><span>${n}<small class="prc-dn">${esc(nm(o.days[k][m]))}</small></span><span class="pp-v">${kc(o.days[k][m])}</span></div>`).join("")}</div>`).join("")}
+    <button type="button" class="btn primary pa-go" data-lmmenu="${l.id}|${x.mid}">Aplicar a mi semana</button></div></div>`}
+/* tras aplicar: a Plan › Menú, con los días nuevos entrando */
+function prMenuGo(first){S.sheet=null;S.prmv=null;renderModal();S.tab="plan";S.planView="week";S.planWeek=mondayOf(first||today());render();window.scrollTo(0,0);
+  if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.querySelectorAll(".wk-card").forEach(c=>{c.classList.add("prc-in");setTimeout(()=>c.classList.remove("prc-in"),900)})}
+/* avisos en el móvil: el token va al buzón de cada vínculo y el servidor avisa con el tipo (nunca el contenido), de 7 a 22 y agrupados */
+async function prPushReg(ask){const N=window.__native;if(!N||!N.pushToken||!S.acct||!prLinks().length)return;let r;try{r=await N.pushToken(ask)}catch(e){return}if(!r)return;
+  const was=S.prPush;S.prPush=r.tok?"on":r.perm?"nocred":"noperm";
+  if(r.tok){const old=LS("sustrato-pushtok")||"",done=old===r.tok?(LS("sustrato-pushlk")||{}):{};for(const l of prLinks()){if(done[l.id])continue;try{await lkCall("/link/pushtok",{id:l.id,tok:r.tok,old});done[l.id]=1}catch(e){}}LS("sustrato-pushtok",r.tok);LS("sustrato-pushlk",done)}
+  if(ask)toast(r.tok?"Te avisaremos cuando te mande algo":r.perm?"Los avisos llegarán con la próxima versión de la app":"Actívalos en los ajustes del móvil");if(was!==S.prPush&&S.tab==="perfil")render()}
+function prPushRow(){if(!window.__native||!window.__native.pushToken||!prLinks().length)return"";const st=S.prPush;
+  return`<div class="prc-r prc-push"><span class="prc-rt"><b>Avisos en este móvil</b><small>${st==="on"?"Cuando te mande algo, de 7 a 22":st==="nocred"?"Llegarán con la próxima versión de la app":"Para enterarte cuando te mande algo"}</small></span>${st==="on"?`<span class="cn-st cx-ok">Activados</span>`:st==="nocred"?"":`<button type="button" class="btn sm" data-act="prpush">Activar</button>`}</div>`}
+setTimeout(()=>prPushReg(false),14000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(()=>prPushReg(false),2500)});
+/* al tocar el aviso: a Hoy, con lo nuevo ya leído */
+{const g0=window.__ntfGo;window.__ntfGo=function(d){if(g0)g0(d);if(d&&d.go==="pro"&&typeof lmLoad==="function")lmLoad().then(()=>{render();window.scrollTo(0,0)})}}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-prmv],[data-prhide],[data-act='prmvclose'],[data-act='prpush']");if(!t)return;
+  if(t.dataset.act==="prpush"){prPushReg(true);return}
+  if(t.dataset.prmv){const[lid,mid]=t.dataset.prmv.split("|");S.prmv={lid,mid};S.prmvSh=false;S.sheet="prmenu";renderModal();S.prmvSh=true;return}
+  if(t.dataset.prhide){const h=LS("sustrato-prhide")||{};h[t.dataset.prhide]=today();LS("sustrato-prhide",h);render();return}
+  S.sheet=null;S.prmv=null;renderModal()});
 
 })();
 </script>
