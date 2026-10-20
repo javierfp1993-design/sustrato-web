@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T20:23:16.539Z">
+<meta name="sustrato-version" content="2026-10-20T20:42:15.292Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3489,6 +3489,13 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .dg.open .dg-ch{transform:rotate(90deg)}
 .dg-b{padding:0 14px 8px}
 .lk-pend{margin-top:0}.lk-pend .prc-r:first-child{border-top:0} /* v359 */
+/* v360 · Tu próxima consulta (120) */
+.ap-c{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--fill2);margin-bottom:8px}
+.ap-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.ap-t b{font-size:calc(17px*var(--tz,1));font-weight:600}.ap-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.ap-l{font-size:calc(15px*var(--tz,1));color:var(--fg);text-decoration:underline;margin-top:2px}
+.lk-card{grid-template-columns:minmax(0,1fr)} /* v360: nada la ensancha más allá de la hoja */
+.ap-c{flex-direction:column;align-items:stretch;gap:10px}
+.ap-a{display:flex;flex-wrap:wrap;gap:8px}.ap-a .btn{text-decoration:none}
 
 </style>
 
@@ -3576,7 +3583,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="359";
+const APP_VER="360";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -9590,10 +9597,10 @@ function icHtml(){const q=S.ic||{},u=(()=>{try{return localStorage.getItem(IC_LS
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade ic" role="dialog" aria-modal="true" aria-label="Importar plan"><div class="rp-h"><div><b>Importar plan</b><small>TrainingPeaks o intervals.icu</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${q.res?`<p class="ic-s">${q.res.L.length?`${q.res.L.length} ${q.res.L.length===1?"entreno":"entrenos"} de hoy a 2 meses vista`:"No hay entrenos de hoy a 2 meses vista"}${q.res.skip?` · ${q.res.skip} sin deporte o duración reconocibles, fuera`:""}</p>
       <div class="ic-l">${list}</div>
-      <div class="ic-a"><button type="button" class="btn primary big" data-icadd="1" ${n?"":"disabled"}>${n?`Añadir ${n} ${n===1?"entreno":"entrenos"}`:"Elige alguno"}</button><button type="button" class="chip" data-icback="1">Otro enlace</button></div>`
+      ${typeof icAutoRow==="function"?icAutoRow():""}<div class="ic-a"><button type="button" class="btn primary big" data-icadd="1" ${n?"":"disabled"}>${n?`Añadir ${n} ${n===1?"entreno":"entrenos"}`:"Elige alguno"}</button><button type="button" class="chip" data-icback="1">Otro enlace</button></div>`
     :`<label class="sw-f ic-u" for="ic_u"><span>Enlace del calendario (iCal)</span><input id="ic_u" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://… .ics" value="${esc(u)}"></label>
       <details class="inote"><summary>${IC_INFO}Dónde está el enlace</summary><p class="note"><b>TrainingPeaks:</b> en la web, en los ajustes de tu cuenta, busca la sincronización de calendario (iCal) y copia el enlace.<br><b>intervals.icu:</b> en los ajustes, busca el calendario en formato iCal (ICS) y copia el enlace.<br>Es privado: solo se guarda en este móvil.</p></details>
-      ${q.err?`<p class="ic-e">${esc(q.err)}</p>`:""}
+      ${u&&typeof icAutoRow==="function"?icAutoRow():""}${q.err?`<p class="ic-e">${esc(q.err)}</p>`:""}
       <button type="button" class="btn primary big" data-icread="1" ${q.busy?"disabled":""}>${q.busy?"Leyendo…":"Leer calendario"}</button>`}</div></div>`}
 async function icRead(){const el=$("#ic_u"),u=(el&&el.value||"").trim();if(!u){S.ic={err:"Pega el enlace de tu calendario."};renderModal();return}
   try{localStorage.setItem(IC_LS,u)}catch(e){}S.ic={busy:true};renderModal();
@@ -9604,7 +9611,7 @@ async function icRead(){const el=$("#ic_u"),u=(el&&el.value||"").trim();if(!u){S
 function icAdd(){const q=S.ic;if(!q||!q.res)return;let n=0;S.plan=S.plan||{};
   q.res.L.forEach((x,i)=>{if(!q.sel[i])return;Object.keys(S.plan).forEach(k=>{S.plan[k]=(S.plan[k]||[]).filter(s=>s.uid!==x.uid);if(!S.plan[k].length)delete S.plan[k]});
     (S.plan[x.k]=S.plan[x.k]||[]).push({sport:x.sport,dur:x.dur,int:x.int,time:x.time||"",uid:x.uid,src:"ical"});n++});
-  savePlan();S.sheet=null;S.ic=null;renderModal();$("#modal").hidden=true;buzz(10);toast(`${n} ${n===1?"entreno añadido":"entrenos añadidos"} al plan`);render()}
+  savePlan();if(typeof icAuto==="function"&&!icAuto())icAutoSet({on:true,at:Date.now()}); /* v360: al importar, queda sincronizado */S.sheet=null;S.ic=null;renderModal();$("#modal").hidden=true;buzz(10);toast(`${n} ${n===1?"entreno añadido":"entrenos añadidos"} al plan`);render()}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-icopen],[data-icread],[data-icadd],[data-icback]");if(!t)return;e.stopPropagation();
   if(t.dataset.icopen!=null){S.ic=null;S.sheet="ical";renderModal()}else if(t.dataset.icread){icRead()}else if(t.dataset.icadd){icAdd()}else{S.ic=null;renderModal()}},true);
 document.addEventListener("change",e=>{const c=e.target.closest&&e.target.closest("[data-icsel]");if(!c||!S.ic||!S.ic.res)return;S.ic.sel[+c.dataset.icsel]=c.checked;const b=document.querySelector("[data-icadd]"),n=S.ic.sel.filter(Boolean).length;if(b){b.disabled=!n;b.textContent=n?`Añadir ${n} ${n===1?"entreno":"entrenos"}`:"Elige alguno"}});
@@ -9951,8 +9958,8 @@ function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en v
    notas; avisos; lo que compartes, plegado (se configura una vez) y en directo dentro */
 function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
   return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
-function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id):[],pm=l.perms||{},n=LK_PERM.filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
-  return(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
+function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=LK_PERM.filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
+  return(typeof apptHtml==="function"?apptHtml(l):"")+(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
     +(pauta||"")+(typeof lmHtml==="function"?lmHtml(l,"props")+lmHtml(l,"notes"):"")+(typeof prPushRow==="function"?prPushRow():"")
     +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${LK_PERM.length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
 /* desplegable con muelle (como los de Hoy): altura y giro de la flecha del mismo valor */
@@ -10031,7 +10038,7 @@ async function lkPush(force){if(!S.acct||LKP_BUSY||!S.lk||!S.lk.links)return;LKP
       const P=l.perms||{},sig=lkHash(JSON.stringify(P)),s0=st[l.id]||{},reset=s0.pk!==l.proPub||s0.sig!==sig,days=reset?{}:Object.assign({},s0.days||{});
       if(!force&&!reset&&!l.live&&s0.at&&Date.now()-s0.at<10*60e3)continue; /* v359: cada vez que abres la app (como mucho cada 10 min); antes, una vez al día */
       const from=P.hist?shiftKey(today(),-LKP_HIST):(l.acc?new Date(l.acc).toISOString().slice(0,10):today()),items=[],aes=await lkAes(l);
-      for(let k=from;k<=shiftKey(today(),7);k=shiftKey(k,1)){const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;if(!d&&!days[k])continue; /* v359: un día sin datos que nunca enviaste no se manda vacío (si no, otro aparato tuyo con menos datos borraba lo bueno) */
+      for(let k=from;k<=shiftKey(today(),14);k=shiftKey(k,1)){ /* v360: 14 días por delante (antes 7), para periodizar con antelación */const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;if(!d&&!days[k])continue; /* v359: un día sin datos que nunca enviaste no se manda vacío (si no, otro aparato tuyo con menos datos borraba lo bueno) */
         items.push(Object.assign({k},await lkSeal(aes,l.id,d||{empty:true})));days[k]=h}
       const meta=lkMeta(P),mh=lkHash(JSON.stringify(meta));if(mh!==days.meta){items.push(Object.assign({k:"meta"},await lkSeal(aes,l.id,meta)));days.meta=mh}
       if(!items.length&&!reset){st[l.id]=Object.assign({},s0,{at:Date.now()});continue}
@@ -10208,6 +10215,7 @@ function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
     const nt=pro.filter(x=>x.o.t==="note"&&x.u>seen);if(nt.length)out.push({l,x:nt[0],w:80,t:nt.length===1?"Te ha escrito":"Te ha escrito "+nt.length+" notas",s:"«"+String(nt[0].o.x||"").slice(0,90)+(String(nt[0].o.x||"").length>90?"…":"")+"»",a:[["Responder",`data-act="ppopen"`,1]]})});
   if(typeof ikPending==="function")ikPending().forEach(({l,x})=>out.push({l,x,w:96,t:"Te pide el formulario de tu primera consulta",s:"Unos 3 minutos, casi todo de tocar",a:[["Rellenar",`data-intk="${l.id}|${x.mid}"`,1]]})); /* v354 */
   const ck=prChkDue();if(ck)out.push({l:ck,w:50,t:"Revisión de tu semana",s:"Seis preguntas. Un minuto.",a:[["Empezar",`data-act="prchk"`,1]]});
+  if(typeof apptPend==="function")apptPend().forEach(x=>out.push(x)); /* v360: la consulta de hoy o de los próximos 2 días */
   return out.sort((a,b)=>b.w-a.w)}
 const prAv=n=>`<span class="pp-av prc-av" aria-hidden="true">${esc(String(n||"?").trim().charAt(0).toUpperCase())}</span>`;
 const prBtns=a=>a.map(([t,at,pri])=>`<button type="button" class="btn sm${pri?" primary":""}" ${at}>${t}</button>`).join("");
@@ -10514,6 +10522,41 @@ function psSpring(d,open){const sm=d.querySelector(":scope>summary"),ch=sm&&sm.q
   MU.spring(d,h0,row,0,x=>{d.style.height=x+"px";rot(x,row,h0)},{resp:.35,done:()=>{d.open=false;end()}})}
 document.addEventListener("click",e=>{const sm=e.target.closest&&e.target.closest("details.psec>summary");if(!sm||MU.reduce())return;const d=sm.parentElement;e.preventDefault();
   const want=d._mu?!d._tgt:!d.open;d._tgt=want;psSpring(d,want)},true);
+
+/* ---------- Plan sincronizado con TrainingPeaks o intervals.icu (v360) ----------
+   Al importar el plan (097) queda activado «Mantener sincronizado»: cada vez que abres la app (como mucho cada 6 h) se vuelve a
+   leer el mismo enlace y se añaden los entrenos nuevos, se actualizan los que cambian (por su uid) y se quitan los que ya no
+   están, de hoy en adelante; lo que añades tú a mano no se toca. Así tu profesional ve 14 días por delante (109) y periodiza
+   con antelación. El enlace sigue solo en este móvil. Funciones declaradas (no const). */
+function icAuto(){try{return JSON.parse(localStorage.getItem("sustrato-ical-auto")||"null")}catch(e){return null}}
+function icAutoSet(o){try{localStorage.setItem("sustrato-ical-auto",JSON.stringify(o))}catch(e){}}
+async function icSync(force){const a=icAuto(),u=(()=>{try{return localStorage.getItem(IC_LS)||""}catch(e){return""}})();if(!a||!a.on||!u)return;if(!force&&a.at&&Date.now()-a.at<6*36e5)return;
+  try{const c=await cloudCfg(),r=await fetch(c.api.replace(/\/$/,"")+"/ical",{method:"POST",headers:{"Content-Type":"application/json","X-Sustrato-Key":c.key||""},body:JSON.stringify({u})}),j=await r.json().catch(()=>({}));if(!r.ok||!j.ics)return;
+    const res=icParse(j.ics),tk=today(),ids=new Set(res.L.map(x=>x.uid)),before=JSON.stringify(S.plan||{});S.plan=S.plan||{};
+    Object.keys(S.plan).forEach(k=>{if(k<tk)return;S.plan[k]=(S.plan[k]||[]).filter(s=>s.src!=="ical"||ids.has(s.uid));if(!S.plan[k].length)delete S.plan[k]});
+    res.L.forEach(x=>{Object.keys(S.plan).forEach(k=>{if(k>=tk){S.plan[k]=(S.plan[k]||[]).filter(s=>s.uid!==x.uid);if(!S.plan[k].length)delete S.plan[k]}});(S.plan[x.k]=S.plan[x.k]||[]).push({sport:x.sport,dur:x.dur,int:x.int,time:x.time||"",uid:x.uid,src:"ical"})});
+    icAutoSet(Object.assign({},a,{at:Date.now()}));if(JSON.stringify(S.plan)!==before){savePlan();render();if(typeof lkPush==="function")lkPush(true)}}catch(e){}}
+function icAutoRow(){const a=icAuto();return`<div class="tg-r ic-auto"><span class="tg-t"><b>Mantener sincronizado</b><small>${a&&a.on&&a.at?"Última lectura: "+esc(dateLabel(keyOf(new Date(a.at))))+" · ":""}Cada vez que abres la app, añade lo nuevo y quita lo que borres allí</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!(a&&a.on)}" aria-label="Mantener sincronizado" data-icauto="1"></button></div>`}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-icauto]");if(!t)return;
+  if(t.dataset.tgGo!=="1")return;const a=icAuto()||{};icAutoSet(Object.assign({},a,{on:!a.on}));toast(a.on?"Ya no se sincroniza solo":"Se sincronizará cada vez que abras la app");if(!a.on)icSync(true)});
+setTimeout(()=>icSync(false),16000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(()=>icSync(false),3000)});
+
+/* ---------- Tu próxima consulta (v360) ----------
+   Tu profesional te cita desde su panel ({t:"appt",id,at,dur,how,where}; al anularla, {t:"apptx",id}). La siguiente sale arriba en
+   la página de Tu profesional, con «Añadir a mi calendario» (Google Calendar, sin permisos), y en lo pendiente (Hoy y Perfil)
+   cuando faltan 2 días o menos. Solo con vínculo (la app no depende de Pro). Funciones declaradas (no const). Clases ap- */
+function apIso(d){const p=n=>String(n).padStart(2,"0");return`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
+function apptOf(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).filter(x=>x.by==="pro"&&(x.o.t==="appt"||x.o.t==="apptx")).sort((a,b)=>a.u-b.u),A={};
+  M.forEach(x=>{if(x.o.t==="apptx")delete A[x.o.id];else if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(x.o.at||""))A[x.o.id]=x.o});
+  const lim=apIso(new Date(Date.now()-60*6e4));return Object.values(A).filter(a=>a.at>=lim).sort((a,b)=>a.at<b.at?-1:1)[0]||null}
+function apLab(at){const[k,t]=at.split("T");return(k===today()?"Hoy":k===shiftKey(today(),1)?"Mañana":dateLabel(k))+" a las "+t}
+function apHow(a){return{pres:"En consulta",video:"Videollamada",tel:"Por teléfono"}[a.how]||"Consulta"}
+function apGcal(l,a){const s=new Date(a.at),e=new Date(s.getTime()+(a.dur||45)*6e4),f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("Consulta con "+(l.pro.name||"tu profesional"))+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent(apHow(a)+(a.where?" · "+a.where:""))+(a.where&&a.how==="pres"?"&location="+encodeURIComponent(a.where):"")}
+function apptHtml(l){const a=apptOf(l);if(!a)return"";const w=String(a.where||""),url=/^https:\/\/\S+$/.test(w);
+  return`<span class="pa-l">Próxima consulta</span><div class="ap-c"><span class="ap-t"><b>${esc(apLab(a.at))}</b><small>${a.dur||45} min · ${esc(apHow(a))}${w&&!url?" · "+esc(w):""}</small></span><div class="ap-a">${url?`<a class="btn sm primary" href="${esc(w)}" target="_blank" rel="noopener">Abrir la videollamada</a>`:""}<a class="btn sm" href="${esc(apGcal(l,a))}" target="_blank" rel="noopener">Añadir a mi calendario</a></div></div>`}
+function apptPend(){const out=[];(typeof prLinks==="function"?prLinks():[]).forEach(l=>{const a=apptOf(l);if(!a)return;const k=a.at.slice(0,10);if(k>shiftKey(today(),2))return;
+  out.push({l,w:k===today()?97:85,t:"Tienes consulta "+apLab(a.at).replace(/^Hoy/,"hoy").replace(/^Mañana/,"mañana").replace(/^(\S+ \d+ \S+)/,"el $1"),s:apHow(a)+(a.where&&!/^https:/.test(a.where)?" · "+a.where:""),a:[["Ver",'data-act="ppopen"',1]]})});return out}
 
 })();
 </script>
