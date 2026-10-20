@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-19T21:22:07.831Z">
+<meta name="sustrato-version" content="2026-10-20T07:53:25.081Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3363,6 +3363,9 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pr-x{width:100%;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:calc(15px*var(--tz,1))/1.4 var(--font);padding:12px 14px;resize:none;outline:none}
 #menuBtn{position:relative}
 #menuBtn[data-prnew]::before{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 2px var(--bg);z-index:1}
+/* v345 · aviso discreto en Plan › Menú cuando el día es el de tu profesional */
+.pr-mn{display:flex;align-items:center;gap:6px;margin:6px 0 2px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.pr-mn::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--ac)}
 
 </style>
 
@@ -3450,7 +3453,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="344";
+const APP_VER="345";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3947,7 +3950,10 @@ function withNut(d){const n=d.ing?ingNut(d.ing,d.serv):{P:d.P||0,C:d.C||0,F:d.F|
 const MEAL_N={breakfast:"Desayuno",lunch:"Comida",snack:"Merienda",dinner:"Cena"};
 let _dishCache=null,_dishSig="";
 function allDishes(){const sig=JSON.stringify(S.dishes||[]);if(_dishCache&&sig===_dishSig)return _dishCache;_dishSig=sig;_dishCache=DISHES_BASE.concat((S.dishes||[]).map(d=>Object.assign({custom:true},d))).map(withNut);return _dishCache}
-function dishById(id){return allDishes().find(d=>d.id===id)}
+function dishById(id){return allDishes().find(d=>d.id===id)||prEmb(id)}
+/* v345 · platos que tu profesional ajusta a tus objetivos de un día (menús tipo): van dentro del propio menú (campo x), no en tus platos */
+const _embC={};function prEmb(id){if(!id||!String(id).startsWith("xp"))return null;if(_embC[id])return _embC[id];
+  for(const k in S.menu){const D=S.menu[k]||{};for(const m in D){const a=D[m];if(a&&a.x&&a.d===id)return _embC[id]=withNut(Object.assign({custom:true,emb:true},a.x,{id}))}}return null}
 
 const SCALES=[.5,.75,1,1.25,1.5,1.75,2,2.5];
 function fitErr(d,s,m){const e=(a,b,w)=>w*Math.pow((a-b)/Math.max(b,8),2);return e(d.P*s,m.P,1.2)+e(d.C*s,m.C,1)+e(d.F*s,m.F,.8)}
@@ -7195,9 +7201,10 @@ function vPlan(){
         const tags=(m.pre?'<span class="pill tag-pre">Antes</span>':"")+(m.post?'<span class="pill tag-post">Después</span>':"")+(m.id==="dinner"&&t.bonus?'<span class="pill tag-load">Carga</span>':"");
         return`<div class="pm"><div class="pmh"><span><b>${m.n}</b> <span class="mt">${fromMin(m.min)}</span></span><span class="tags">${tags}</span></div>
           <div class="pmsel"><button type="button" class="pmpick${ds?"":" pm-nil"}" data-dpk="${k}|${m.id}" aria-label="${esc(m.n)}: elegir plato"><span>${ds?esc(ds.n):"Elegir plato"}</span><span class="mb-go" aria-hidden="true">›</span></button>${a?`<button type="button" class="pm-x" data-pmx="${k}|${m.id}" aria-expanded="${S.pmx===k+"|"+m.id}" aria-label="Ración ${fmtS(a.s)}, cambiar">${fmtS(a.s)}</button>`:""}</div>${a&&S.pmx===k+"|"+m.id?pmxRow(k,m.id,a.s):""}
-          <div class="pmm"><span class="pm-o">Objetivo<i style="--c:var(--prot)"></i>P ${fmtInt(m.P)}<i style="--c:var(--carb)"></i>H ${fmtInt(m.C)}<i style="--c:var(--fat)"></i>G ${fmtInt(m.F)}</span>${got?`<span class="pmgot">Plato P ${fmtInt(got.P)} · H ${fmtInt(got.C)} · G ${fmtInt(got.F)} · ${fmtInt(gk)} kcal</span>`:""}${got?complement(m,got):""}</div></div>`}).join("");
+          <div class="pmm"><span class="pm-o">Objetivo<i style="--c:var(--prot)"></i>P ${fmtInt(m.P)}<i style="--c:var(--carb)"></i>H ${fmtInt(m.C)}<i style="--c:var(--fat)"></i>G ${fmtInt(m.F)}</span>${got?`<span class="pmgot">Plato P ${fmtInt(got.P)} · H ${fmtInt(got.C)} · G ${fmtInt(got.F)} · ${fmtInt(gk)} kcal</span>`:""}${got&&!a.pro?complement(m,got):""}</div></div>`}).join("");
     }else body='<p class="empty">Completa el perfil para calcular este día.</p>';
     return`<section class="glass pad fade wk-card">${wkStrip(wk,"menu")}<div class="wk-det" data-wkdet="${k}">${wkDayHead(k,(t?`${nAs}/4 platos`:"")+(t&&k>=tk?`<button class="dl-ib" data-mdmo="${k}" aria-haspopup="dialog" aria-label="Opciones del menú de este día"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button>`:""))}
+      ${(()=>{const pr=Object.values(menu).find(a=>a&&a.pro);return pr?`<p class="note pr-mn">Menú de ${esc(pr.pro)}</p>`:""})()}
       ${chips?`<div class="pchips wk-sp">${chips}${pl.length&&!real.length?`<small>previsto ${pl.reduce((x,s)=>x+(+s.dur||0),0)} min</small>`:""}</div>`:""}
       ${t?`<div class="mbar" style="height:6px"><i style="width:${(4*t.P/t.kcal*100).toFixed(1)}%;background:var(--prot)"></i><i style="width:${(4*t.C/t.kcal*100).toFixed(1)}%;background:var(--carb)"></i><i style="width:${(9*t.F/t.kcal*100).toFixed(1)}%;background:var(--fat)"></i></div><div class="pm-o wk-mac">${fmtInt(t.kcal)} kcal<i style="--c:var(--prot)"></i>P ${fmtInt(t.P)} g<i style="--c:var(--carb)"></i>H ${fmtInt(t.C)} g<i style="--c:var(--fat)"></i>G ${fmtInt(t.F)} g</div>`:""}
       ${body}
@@ -9842,7 +9849,7 @@ function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
   if(P.train){const A=S.acts.filter(a=>a.day===k&&a.sport!=="oth").map(a=>{const u=(S.subs||{})[a.id],f=flEntry(a),x={s:a.sport,h:(a.start||"").slice(11,16),m:Math.round((a.mov||0)/60),kcal:Math.round(a.kcal||0),i:actInt(a)};
       if(u)x.cho=Math.round(u.cho/4);if(f&&f.cph)x.gh=f.cph;if(!lkStrava(a)){x.km=r1((a.dist||0)/1000);x.up=Math.round(a.elev||0)}return x});
     const pl=plannedFor(k).filter(x=>!x.skip).map(x=>({s:x.sport,m:x.dur||0,i:x.int||"m",race:!!x.race}));if(A.length)o.a=A;if(pl.length&&k>=today())o.pl=pl}
-  if(P.food&&k<=today()){const t=dayTargets(k),e=dayEaten(k);if(t)o.t={kcal:Math.round(t.kcal),P:Math.round(t.P),C:Math.round(t.C),F:Math.round(t.F),dt:typeof ppDayType==="function"?ppDayType(k,t.acts,t.plan):null};if(e)o.e={kcal:Math.round(e.kcal),P:Math.round(e.P),C:Math.round(e.C),F:Math.round(e.F)}
+  if(P.food){const t=dayTargets(k),e=k<=today()?dayEaten(k):null; /* v345: también los objetivos de los próximos días (menús tipo del profesional) */if(t)o.t={kcal:Math.round(t.kcal),P:Math.round(t.P),C:Math.round(t.C),F:Math.round(t.F),dt:typeof ppDayType==="function"?ppDayType(k,t.acts,t.plan):null};if(e)o.e={kcal:Math.round(e.kcal),P:Math.round(e.P),C:Math.round(e.C),F:Math.round(e.F)}
     /* v341 · cotejo: si ese día regía una pauta, lo que pauta (hidratos según el tipo de día, proteína y sus tomas) */
     const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)}}}
   if(P.meals&&k<=today()){const ml=lkMeals(k);if(ml)o.ml=ml}
@@ -9903,7 +9910,9 @@ async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=t
       for(const x of j.items||[]){B.since=Math.max(B.since,x.u);if(x.del){delete B.m[x.mid];continue}if(B.m[x.mid])continue;
         try{const o=await lmOpen(aes,l,x);B.m[x.mid]={mid:x.mid,by:x.by,u:x.u,o};if(x.by==="pro")fresh.push([l,o])}catch(e){}}}
     LS("sustrato-lkmsg",S.lkm)}catch(e){}finally{LM_BUSY=false}
-  if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
+  fresh=fresh.filter(([,o])=>o.t!=="ack"&&o.t!=="meas"); /* v345: las medidas avisan solas (111) y las respuestas no avisan; varias cosas a la vez, un solo aviso */
+  if(fresh.length>1){const l=fresh[0][0],n=fresh.length;toast((l.pro.name||"Tu profesional")+" te ha enviado "+n+" cosas · míralas en tu perfil");if(S.sheet==="pauta")lkRender()}
+  else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
 async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=await lkCall("/link/send",Object.assign({id:l.id},x));
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
 const lmLink=id=>(S.lk.links||[]).find(x=>x.id===id);
@@ -9913,7 +9922,7 @@ function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.
 function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
   const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,6);
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
-    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort();return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${Object.keys(o.dishes||{}).length} platos</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
+    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort();return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${Object.keys(o.dishes||{}).length} platos</small></span>${a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}
@@ -9985,14 +9994,25 @@ function prMeasIn(l,x){const m=x.o.m||{},d=/^\d{4}-\d{2}-\d{2}$/.test(m.d||"")?m
   const e={d,src:"pro",by:String(l.pro.name||"").slice(0,60),mid:x.mid,kg:n(m.kg),bf:n(m.bf),lean:n(m.lean),waist:n(m.waist),hip:n(m.hip),arm:n(m.arm),thigh:n(m.thigh),sk:n(m.sk),mt:String(m.mt||"").slice(0,20)};
   if((S.measures||[]).some(y=>y.mid===x.mid))return false;S.measures=(S.measures||[]).filter(y=>!(y.d===d&&y.src==="pro")).concat([e]).sort((a,b)=>a.d<b.d?-1:1);return true}
 function prMeasSync(){let n=0;prLinks().forEach(l=>prMsgs(l,"meas").filter(x=>x.by==="pro").forEach(x=>{if(prMeasIn(l,x)){n++;lmAck(l.id,x.mid,true)}}));if(n){prSaveMeasures();toast(n===1?"Tu profesional ha añadido tus medidas de la consulta":"Tu profesional ha añadido "+n+" medidas de la consulta");render()}}
-/* menú de la semana: platos del profesional a tus platos y a tu menú, día a día; los que no puedes tomar se quedan fuera */
-function prMenuApply(l,x){const o=x.o,D=o.dishes||{};let n=0,skip=0;const ids={};
+/* menú de la semana: sustituye tus días por los de tu profesional (las comidas que no trae se rellenan solas). Sus platos van a tus platos;
+   los que ha ajustado a tus objetivos de ese día (fx, menús tipo) van dentro del menú, con su cantidad exacta. Los que no puedes tomar se quedan fuera.
+   v345: «Deshacer» durante 5 s; la respuesta a tu profesional sale al acabar ese plazo. Cada comida lleva pro (su nombre) para el aviso de Plan › Menú. */
+function prMenuApply(l,x){const o=x.o,D=o.dishes||{},pro=String(l.pro.name||"Tu profesional").slice(0,60),ids={},emb={};let n=0,skip=0;
+  const prev={menu:JSON.parse(JSON.stringify(S.menu)),dishes:(S.dishes||[]).slice()};
   Object.keys(D).forEach(id=>{const d=D[id],ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([i,g])=>[i,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length)return;
-    const nd={id:"p"+String(id).replace(/[^\w]/g,"").slice(0,24),n:String(d.n||"Plato").slice(0,60),meals:(d.meals||[]).filter(m=>MEALS.some(([k])=>k===m)),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
-    if(!nd.meals.length)nd.meals=pbMeals(ing.map(([i])=>({id:i})));if(!dishAllowed(nd)){skip++;return}ids[id]=nd.id;S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd])});
-  Object.keys(o.days||{}).forEach(k=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<today())return;const t=dayTargets(k),mp=t?mealPlan(t,k).meals:[];
-    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{const b=String(did).startsWith("b:")?String(did).slice(2):null,id=b||ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;if(b&&!dishAllowed(dd)){skip++;return} /* «b:id»: plato del catálogo de la app */S.menu[k]=Object.assign({},S.menu[k],{[mid]:{d:id,s:m?bestScale(dd,m).s:1,lock:true}});n++})});
-  saveDishes();saveMenu();lmAck(l.id,x.mid,true);return{n,skip}}
+    const nd={id:"p"+String(id).replace(/[^\w]/g,"").slice(0,24),n:String(d.n||"Plato").slice(0,60),meals:(d.meals||[]).filter(m=>MEALS.some(([k])=>k===m)),serv:1,ing,ov:{},src:pro};
+    if(!nd.meals.length)nd.meals=pbMeals(ing.map(([i])=>({id:i})));if(!dishAllowed(nd)){skip++;return}
+    if(d.fx){nd.id="xp"+String(x.mid).replace(/[^\w]/g,"").slice(0,10)+String(id).replace(/[^\w]/g,"").slice(0,24);emb[id]=nd;return}
+    ids[id]=nd.id;S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd])});
+  Object.keys(o.days||{}).forEach(k=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<today())return;const t=dayTargets(k),mp=t?mealPlan(t,k).meals:[],day={};
+    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{if(!MEALS.some(([q])=>q===mid))return;const e=emb[did];if(e){day[mid]={d:e.id,s:1,lock:true,pro,x:e};n++;return}
+      const b=String(did).startsWith("b:")?String(did).slice(2):null,id=b||ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;if(b&&!dishAllowed(dd)){skip++;return} /* «b:id»: plato del catálogo de la app */
+      day[mid]={d:id,s:m?bestScale(dd,m).s:1,lock:true,pro};n++});
+    if(Object.keys(day).length){S.menu[k]=day;autoAssignDay(k)}});
+  saveDishes();saveMenu();
+  if(n){clearTimeout(prMenuApply.t);S.prMnPend=x.mid;prMenuApply.t=setTimeout(()=>{S.prMnPend=null;lmAck(l.id,x.mid,true);lkRender()},5200);
+    undoToast("Menú de "+pro+" aplicado"+(skip?" · "+skip+" platos fuera por lo que no tomas":""),()=>{clearTimeout(prMenuApply.t);S.prMnPend=null;S.menu=prev.menu;S.dishes=prev.dishes;saveMenu();saveDishes();lkRender();render()})}
+  return{n,skip}}
 /* avisos: lo que tu profesional ha mandado y aún no has visto */
 function prNew(){const seen=LS("sustrato-lkseen")||0;let n=0;prLinks().forEach(l=>Object.values((S.lkm[l.id]||{}).m||{}).forEach(x=>{if(x.by==="pro"&&x.u>seen&&x.o.t!=="ack")n++}));return n}
 function prBadge(){const b=$("#menuBtn");if(!b)return;const n=prNew();if(n)b.dataset.prnew="1";else delete b.dataset.prnew}
@@ -10002,8 +10022,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(t.dataset.prhab){if(t.dataset.tgGo!=="1")return;const k=S.day;S.hab[k]=Object.assign({},S.hab[k]);if(S.hab[k][t.dataset.prhab])delete S.hab[k][t.dataset.prhab];else S.hab[k][t.dataset.prhab]=true;
     LS("sustrato-hab",S.hab);const c=userCol();if(c)c.doc("habits").set({kind:"habits",map:S.hab}).catch(()=>{});if(typeof lkPush==="function")setTimeout(()=>lkPush(false),400);render();return}
   if(t.dataset.prq){const[k,n]=t.dataset.prq.split("|");S.prc=S.prc||{v:{}};S.prc.v[k]=+n;const x=$("#prcx");if(x)S.prc.x=x.value;S.prcSh=true;renderModal();return}
-  if(t.dataset.lmmenu){const[lid,mid]=t.dataset.lmmenu.split("|"),l=lmLink(lid),x=((S.lkm[lid]||{}).m||{})[mid];if(!l||!x)return;const r=prMenuApply(l,x);
-    toast(r.n?"Menú aplicado: "+r.n+" comidas en Plan › Menú"+(r.skip?" · "+r.skip+" platos fuera por lo que no tomas":""):"Ese menú ya no tiene días por delante");lkRender();render();return}
+  if(t.dataset.lmmenu){const[lid,mid]=t.dataset.lmmenu.split("|"),l=lmLink(lid),x=((S.lkm[lid]||{}).m||{})[mid];if(!l||!x)return;const r=prMenuApply(l,x);if(!r.n)toast("Ese menú ya no tiene días por delante");lkRender();render();return}
   const a=t.dataset.act;
   if(a==="prchk"){S.prc={v:{}};S.prcSh=false;S.sheet="prchk";renderModal();return}
   if(a==="prclose"){S.sheet=null;renderModal();return}
