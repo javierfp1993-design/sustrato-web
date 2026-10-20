@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T13:21:16.825Z">
+<meta name="sustrato-version" content="2026-10-20T13:45:28.430Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3442,8 +3442,8 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hz-row[aria-expanded="true"] .hz-ch{transform:rotate(90deg)}
 @media (prefers-reduced-motion:reduce){.hz-ch{transition:none}}
 .td-sw{padding:4px 2px}
-/* vista sencilla: platos y raciones, sin calorías ni gramos */
-body.simple .mb-k,body.simple .mbar,body.simple .mprot,body.simple .pmm,body.simple .wk-mac,body.simple .pm-o{display:none!important}
+/* vista sencilla: platos y raciones, sin calorías, gramos ni peso */
+body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,body.simple section:has(.whl),body.simple .mb-k,body.simple .mbar,body.simple .mprot,body.simple .pmm,body.simple .wk-mac,body.simple .pm-o{display:none!important}
 
 </style>
 
@@ -3531,7 +3531,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="351";
+const APP_VER="352";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7503,7 +7503,7 @@ function vPerfil(){
     return`<tr><td><span class="sw" style="display:inline-block;vertical-align:middle;margin-right:8px;background:${bd.col}"></span>${bd.name}</td><td class="num">${rng}</td><td class="num">${bd.lo<=0?"<35":r0(bd.lo*100)+"–"+Math.min(100,r0(bd.hi*100))}</td><td style="color:var(--muted);font-size:calc(13px*var(--tz,1))">${bd.desc}</td></tr>`}).join(""):"";
   const MT=MEALS.map(([id,n,def])=>p["meal_"+id]||def).sort(),EX=EXCL.filter(([k])=>p[k]).map(x=>x[1].toLowerCase());
   const DI={omni:"Omnívora",pesce:"Pescetariana",veggie:"Vegetariana",vegan:"Vegana"};
-  const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
+  const psSum={per:[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&!(typeof simpleOn==="function"&&simpleOn())&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos",
     med:[p.waist&&"Cintura "+p.waist+" cm",p.neck&&"cuello "+p.neck+" cm"].filter(Boolean).join(" · ")||"Sin medidas",
     fc:p.lthr?"Umbral "+p.lthr+" ppm"+(p.hrmax?" · máx. "+p.hrmax:""):autoLthr()?"Umbral estimado "+autoLthr()+" ppm (±8)"+(p.hrmax?" · máx. "+p.hrmax:(()=>{const d=autoHrmax(),e=num(p.age)?Math.round(208-0.7*num(p.age)):null;return d&&(!e||d.v>e)?" · máx. detectada "+d.v:e?" · máx. estimada "+e+" (±6)":""})()):p.hrmax?"Máx. "+p.hrmax+(p.hrrest?" · reposo "+p.hrrest:"")+" ppm":(()=>{const h=hrParams(p);return h&&h.maxSrc==="auto"?"Máx. detectada "+Math.round(h.max)+" ppm":h&&h.maxSrc==="edad"?"Máx. estimada "+Math.round(h.max)+" ppm (±6)":"Sin datos de pulso"})(),
     ali:(DI[p.diet||"omni"])+(EX.length?" · sin "+EX.join(", "):""),
@@ -7959,7 +7959,7 @@ const AP_LOGO=`<svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0
 const AP_BTN=`<button type="button" class="ap-btn" data-act="acapple">${AP_LOGO}<span>Continuar con Apple</span></button>`;
 const G_BTN=`<button class="gsi-material-button" data-act="aclogin"><div class="gsi-material-button-state"></div><div class="gsi-material-button-content-wrapper"><div class="gsi-material-button-icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style="display:block"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg></div><span class="gsi-material-button-contents">Continuar con Google</span></div></button>`,G_ICON=`<svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
 function meCard(){const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"";
-  const sub=[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos";
+  const sub=[p.age&&p.age+" años",p.height&&p.height+" cm",p.weight&&!(typeof simpleOn==="function"&&simpleOn())&&String(p.weight).replace(".",",")+" kg"].filter(Boolean).join(" · ")||"Completa tus datos";
   return`<section class="glass pad fade me-card"><label class="me-av" aria-label="${p.avatar?"Cambiar tu foto":"Poner una foto"}">${p.avatar?`<img src="${p.avatar}" alt="">`:ini?`<span>${esc(ini)}</span>`:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/></svg>`}<i class="me-cam" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></i><input type="file" id="avin" accept="image/*"></label>
     <div class="me-t"><b>${nm?esc(nm):"Tu perfil"}</b><span>${esc(sub)}</span><span class="me-priv"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Solo lo ves tú</span>${p.avatar?`<button type="button" class="cl-l" data-act="avdel">Quitar foto</button>`:""}</div></section>`}
 /* v257 · Conexiones con una sola retícula (como Ajustes de iOS): icono a 18 px, texto a 70 px; cada servicio es un grupo
@@ -10287,7 +10287,7 @@ function prViewSync(){if(typeof prLinks!=="function")return;let ch=false;prLinks
 setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links)prViewSync()},5000);
 /* Perfil: el interruptor */
 function simpleCard(){const p=S.profile||{};
-  return`<section class="glass pad fade hs-card"><div class="tg-r hs-r td-sw"><span class="tg-t"><b>Vista sencilla</b><small>${p.simpleBy?"La ha activado "+esc(p.simpleBy)+". Platos y raciones, sin calorías ni gramos":"Platos y raciones, sin calorías ni gramos"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${simpleOn()}" aria-label="Vista sencilla" data-simple="1"${p.simpleBy?" disabled":""}></button></div></section>`}
+  return`<section class="glass pad fade hs-card"><div class="tg-r hs-r td-sw"><span class="tg-t"><b>Vista sencilla</b><small>${p.simpleBy?"La ha activado "+esc(p.simpleBy)+". Platos y raciones, sin calorías, gramos ni peso":"Platos y raciones, sin calorías, gramos ni peso"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${simpleOn()}" aria-label="Vista sencilla" data-simple="1"${p.simpleBy?" disabled":""}></button></div></section>`}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-hzt],[data-simple]");if(!t)return;
   if(t.dataset.simple){if(t.dataset.tgGo!=="1")return;S.profile=Object.assign({},S.profile,{simple:!(S.profile||{}).simple});saveProfile(true);render();return}
   const id=t.dataset.hzt,HZ=hzS();HZ[id]=!HZ[id];try{localStorage.setItem("sustrato-hz",JSON.stringify(HZ))}catch(x){}render();
