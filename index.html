@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T20:02:15.842Z">
+<meta name="sustrato-version" content="2026-10-20T20:23:16.539Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3478,6 +3478,17 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .lph-cam{flex:none;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--fill2);color:var(--fg);cursor:pointer}
 @media (prefers-reduced-motion:reduce){.lph-i,.lph-avi{transition:none}}
 .lm-top{margin:4px 0 8px} /* v358: notas y lo que te manda, justo bajo su nombre */
+/* v359 · página de Tu profesional: fila en Perfil, pendientes y «Lo que compartes» plegado (108, 112) */
+.hs-av{width:40px;height:40px;font-size:calc(17px*var(--tz,1))}
+.prc-n{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--rojo);color:#fff;font-size:calc(13px*var(--tz,1));font-weight:600;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.lk-pend{margin-bottom:8px}
+.dg{margin-top:16px;border-radius:14px;background:var(--fill2)}
+.dg-h{appearance:none;border:0;background:none;width:100%;min-height:56px;display:flex;align-items:center;gap:12px;padding:10px 14px;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.dg-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.dg-t b{font-size:calc(17px*var(--tz,1));font-weight:600}.dg-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.dg-ch{flex:none;display:inline-flex;color:var(--muted)}
+.dg.open .dg-ch{transform:rotate(90deg)}
+.dg-b{padding:0 14px 8px}
+.lk-pend{margin-top:0}.lk-pend .prc-r:first-child{border-top:0} /* v359 */
 
 </style>
 
@@ -3565,7 +3576,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="358";
+const APP_VER="359";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6178,7 +6189,10 @@ function perfAt(end){const P=S.pmx||{},hot=id=>{const a=S.acts.find(x=>x.id===id
   /* v268: manda la carrera, como en los relojes. Antes se tomaba el mayor de carrera y bici, y el de bici (FTP estimado con la física de las subidas) lo inflaba */
   return{vo2:vr!=null?vr:vb,vr,vb,nr:r.length,ftp,nb:b.length,pm:!!pm.length}}
 function perfAgg(){const tk=today(),k=(S.pmxRev||0)+"|"+Object.keys(S.pmx||{}).length+"|"+S.acts.length+"|"+tk+"|"+(S.profile||{}).weight;if(perfAgg.k===k&&perfAgg.v)return perfAgg.v;
-  const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,ftp:x.ftp})}
+  const now=perfAt(tk),prev=perfAt(shiftKey(tk,-42)),trend=[];for(let i=15;i>=0;i--){const e=shiftKey(tk,-7*i),x=perfAt(e);trend.push({k:e,vo2:x.vo2,vr:x.vr,vb:x.vb,ftp:x.ftp})}
+  /* v359 · una sola fuente para la cifra, la gráfica y la variación: la carrera si la hay ahora; si no, la estimada desde la bici.
+     Antes cada semana tomaba la suya y, al mezclarlas, salían saltos (40 → 45 → 40) y variaciones imposibles («↑ 8 en 6 semanas»). */
+  const src=now.vr!=null?"vr":"vb";trend.forEach(t=>{t.vo2=t[src]!=null?t[src]:null});prev.vo2=prev[src]!=null?prev[src]:null;now.src=src==="vr"?"run":"bike";
   const cadR=med(S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.cad).slice(0,12).map(a=>a.cad*2)),cadB=med(S.acts.filter(a=>isBike(a.sport)&&a.cad).slice(0,12).map(a=>a.cad));
   const thr=now.vo2?(()=>{const tg=.88*now.vo2;let lo=60,hi=500;for(let i=0;i<40;i++){const m=(lo+hi)/2;if(danCost(m)<tg)lo=m;else hi=m}return 60000/lo})():null;
   perfAgg.k=k;perfAgg.v={...now,prev,trend,cadR,cadB,thr};return perfAgg.v}
@@ -6208,7 +6222,7 @@ function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const 
   if(sp==="run"){const v=a.vo2,dv=a.prev.vo2?Math.round(v)-Math.round(a.prev.vo2):null,age=num((S.profile||{}).age)||35,row=(VO2N[(S.profile||{}).sex==="f"?"f":"m"]).find(r=>age<=r[0]);
     const bands=[[row[1]-12,row[1],"Bajo","<"+r0(row[1])],[row[1],row[2],"Regular",r0(row[1])+"–"+r0(row[2]-.1)],[row[2],row[3],"Bueno",r0(row[2])+"–"+r0(row[3]-.1)],[row[3],row[4],"Excelente",r0(row[3])+"–"+r0(row[4]-.1)],[row[4],row[4]+8,"Superior",r0(row[4])+"+"]];
     const P=fr=>fmtClock(paceAt(fr,v));
-    body=`<div class="vhead" data-vzread><b class="pf-hero">${r0(v)}</b><span class="pf-pm" aria-label="más o menos 4">±4</span><span>ml/kg/min · VO2max</span></div>
+    body=`<div class="vhead" data-vzread><b class="pf-hero">${r0(v)}</b><span class="pf-pm" aria-label="más o menos 4">±4</span><span>ml/kg/min · VO2max${a.src==="bike"?" · estimado con la bici":""}</span></div>
       <p class="vplan-t">${dv!=null&&dv!==0?`<span class="rh-v ${dv>0?"up":"dn"}">${dv>0?"↑":"↓"} ${Math.abs(dv)}</span> en 6 semanas · `:"Estable en 6 semanas · "}${esc(vo2Norm(v)||"")} para tu edad</p>
       ${scale(bands,v,VO2_C)}
       ${VZ.line({id:"pfr",color:VO2_C,label:"Evolución del VO2max",pts:a.trend.filter(x=>x.vo2).map(x=>({d:x.k,v:x.vo2})),minPad:.8,h:140,fmt:v=>r0(v),read:p=>`<b class="pf-hero">${f1(p.v)}</b><span>ml/kg/min · semana del ${VZ.sd(shiftKey(p.d,-6))}</span>`})}
@@ -7552,8 +7566,9 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return meCard()+(typeof proCard==="function"?proCard():"")+(typeof hsCard==="function"?hsCard():"")+(typeof simpleCard==="function"?simpleCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
-  <section class="glass pad fade"><form id="pform" novalidate>
+  /* v359: arriba lo tuyo (datos personales y apariencia); después tu profesional, tu salud y conexiones; notificaciones y ayuda,
+     plegadas; al final, lo de consulta */
+  return meCard()+appear+`<section class="glass pad fade pf-datos"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
       ${pkField("sex","Sexo",[["","Sin indicar"],["m","Hombre"],["f","Mujer"]],p.sex||"")}
@@ -7579,10 +7594,9 @@ function vPerfil(){
     </div></fieldset></details>
     <details class="psec" data-ps="obj" ${psOpen("obj")}><summary><span class="ps-t"><b>Objetivo</b><small>${psSum.obj}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Objetivo</legend><div class="fields">${pkField("goal","Objetivo",Object.entries(GOALS).map(([k,g])=>[k,g.label,g.adj?`Comer un ${Math.round(Math.abs(g.adj)*100)} % ${g.adj<0?"menos":"más"} de lo que gastas${g.p>2?", con más proteína":""}`:"Comer lo que gastas"]),p.goal||"recomp")}</div></fieldset></details>
     <div class="row"><span class="note" style="margin:0">${S.db&&S.uid?"Tu perfil es privado: cada persona que abra la app ve solo el suyo.":"Esta vista no puede guardar el perfil."}</span><button class="btn primary pf-save${S.pfJust?" done":""}" type="submit" ${S.pfDirty?"":"disabled"}>${S.pfJust?'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Guardado':"Guardar cambios"}</button></div>
-  </form></section>
+  </form></section>`+(typeof proCard==="function"?proCard():"")+(typeof hsCard==="function"?hsCard():"")+(typeof simpleCard==="function"?simpleCard():"")+connCard()+ntfCard()+fbCard()+`<div class="grid2">
   ${cyCard()}
   <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
-    ${appear}
     ${dataCard()}
     <section class="glass pad fade hue-body"><h2>Composición y basal</h2>
       ${b?`<div class="kv"><div><span>Gasto basal</span><b>${reInt(b.bmr)} kcal</b></div><div><span>Grasa</span><b>${b.bf!=null?b.bf.toFixed(1).replace(".",",")+" %":"—"}</b></div><div><span>Masa magra</span><b>${b.bf!=null?(num(p.weight)*(1-b.bf/100)).toFixed(1).replace(".",",")+" kg":"—"}</b></div></div><details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Basal: ${esc(b.method)}.${b.bf!=null?" Grasa: "+esc(b.bfHow)+".":""}${b.bfSrc!=="med"?" Añade cuello y cintura para afinarlo: con medidas el basal se apoya sobre todo en tu masa magra.":""} Después se corrige solo con la evolución de tu peso.</p></details>`:'<p class="empty">Rellena sexo, edad, altura y peso para calcular tu gasto basal.</p>'}
@@ -7594,7 +7608,7 @@ function vPerfil(){
     <section class="glass pad fade hue-aer"><h2>Bandas de sustrato</h2>
       ${hp?`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note" style="margin:4px 0 10px">Qué combustible predomina según tu pulso, ${hp.mode==="lt"?"anclado a tu umbral de lactato ("+r0(hp.lthr)+" ppm)":"con FC máx. "+r0(hp.max)+" y reposo "+r0(hp.rest)}. Forma aeróbica: ${hp.lvSrc==="vo2"?"según el VO2max estimado de tus actividades ("+esc(vo2Norm(perfAgg().vo2).toLowerCase())+")":"nivel "+esc((LEVELS[p.level]||LEVELS.mid).l.toLowerCase())+" del perfil, hasta que haya datos de VO2max"}.${hp.whs?" Tu cintura supera la mitad de tu altura, así que la grasa entra algo más tarde.":""} Valores al inicio de la sesión; en salidas de más de una hora la grasa gana peso.</p></details><div class="scroll-x" tabindex="0"><table class="bands"><thead><tr><th>Banda</th><th>Pulso <small>ppm</small></th><th>Hidratos <small>%</small></th><th>Combustible</th></tr></thead><tbody>${bands}</tbody></table></div><p class="note">Estimación basada en la curva de cruce de sustratos. Con mejor forma aeróbica, cada banda se desplaza hacia pulsos más altos.</p>`:'<p class="empty">Indica tu umbral de lactato, tu FC máxima o al menos tu edad.</p>'}
     </section>
-  </div></div>`;
+  </div></div>`+knowCard();
 }
 /* v278b: mientras el dedo está en el calendario del Resumen (S._hold), los repintados esperan: si la página se rehiciera
    bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
@@ -8926,11 +8940,11 @@ function fbTech(){const ua=navigator.userAgent,an=(ua.match(/Android [\d.]+/)||[
 const PRIV_URL="https://sustrato.app/privacidad"; /* v288: la web ya vive en sustrato.app (la app abre fuera sus páginas) */
 function fbCard(){const I=(d,c)=>`<span class="fb-ic" style="--c:var(--${c});--c-v:var(--${c}-v,var(--${c}))"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg></span>`,
   ch='<svg class="fb-ch" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',q=fbQueue().length;
-  return`<section class="glass pad fade fb-card"><span class="pkk">Ayuda y sugerencias</span><p class="fb-sub">Lo leo todo. Si algo falla, cuanto más concreto, antes lo arreglo.</p>
+  return`<section class="glass pad fade fb-card"><details class="psec" data-ps="fb" ${(S.psOpen||{}).fb?"open":""}><summary><span class="ps-t"><b>Ayuda y sugerencias</b><small>${q?(q===1?"Un envío pendiente":q+" envíos pendientes"):"Algo que falla, ideas y privacidad"}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><div class="ps-b"><p class="fb-sub">Lo leo todo. Si algo falla, cuanto más concreto, antes lo arreglo.</p>
   <button type="button" class="fb-row" data-fb="bug">${I('<path d="M12 3.5 21 19H3z"/><path d="M12 10v4M12 16.6v.1"/>',"naranja")}<span><b>Algo no funciona</b><small>Cuéntame qué ha pasado y dónde</small></span>${ch}</button>
   <button type="button" class="fb-row" data-fb="idea">${I('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',"amarillo")}<span><b>Tengo una idea</b><small>Algo que añadirías o cambiarías</small></span>${ch}</button>
   <a class="fb-row" href="${PRIV_URL}" target="_blank" rel="noopener">${I('<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',"azul")}<span><b>Privacidad</b><small>Qué datos usa Sustrato y cómo borrarlos</small></span>${ch}</a>
-  ${q?`<p class="fb-q">${q===1?"Un envío pendiente":q+" envíos pendientes"}: saldrá en cuanto sea posible.</p>`:""}</section>`}
+  ${q?`<p class="fb-q">${q===1?"Un envío pendiente":q+" envíos pendientes"}: saldrá en cuanto sea posible.</p>`:""}</div></details></section>`}
 function fbHtml(){const f=S.fb,bug=f.k==="bug",acc=!!(S.acct&&S.acct.t);
   if(f.sent)return`<div class="overlay" data-close="1"><div class="sheet glass pad fade fb-sh" role="dialog" aria-modal="true" aria-label="Enviado">
     <div class="row"><h3 style="margin:0">${bug?"Algo no funciona":"Tengo una idea"}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
@@ -9359,11 +9373,12 @@ async function ntfSave(){const c=userCol();if(!c)return;try{await c.doc("notif")
 function ntfCard(){if(!ntfOk())return"";const c=ntfCfg();
   const row=(k,t,sub,dis)=>`<div class="tg-r ntf-r"><span class="tg-t"><b>${t}</b><small>${sub}</small></span><button type="button" class="tg-sw" role="switch" data-ntf="${k}" aria-checked="${!!c[k].on&&!dis}" aria-label="${t}"${dis?" disabled":""}></button></div>`
     +(c[k].on&&!dis?`<div class="ntf-h"><span>${k==="morn"?"No antes de las":"A las"}</span>${fdField("ntf_"+k,"time",c[k].t,"Hora",`min="07:00" max="21:59"`)}</div>`:"");
-  return`<section class="glass pad fade ntf-card"><span class="pkk">Notificaciones</span>
+  const n=["eve","week","morn"].filter(k=>c[k].on&&(k!=="morn"||ntfMorn())).length; /* v359: plegadas, como los datos personales */
+  return`<section class="glass pad fade ntf-card"><details class="psec" data-ps="ntf" ${(S.psOpen||{}).ntf?"open":""}><summary><span class="ps-t"><b>Notificaciones del ejercicio</b><small>${n?n+(n===1?" activada":" activadas"):"Desactivadas"}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><div class="ps-b">
     ${row("eve","La víspera","La tarde antes de un entreno largo o una carrera: qué preparar.")}
     ${row("week","Revisión semanal","Los domingos: cómo ha ido la semana y planificar la siguiente.")}
     ${row("morn","Cómo llegas hoy",ntfMorn()?"Por la mañana, cuando tu reloj mande la noche.":"Llega con la próxima actualización de la app.",!ntfMorn())}
-    <p class="ntf-n">Como mucho una al día y nunca entre las 22 y las 7.</p></section>`}
+    <p class="ntf-n">Como mucho una al día y nunca entre las 22 y las 7.</p></div></details></section>`}
 document.addEventListener("click",async e=>{const b=e.target.closest&&e.target.closest("[data-ntf]");if(!b||b.disabled)return;const k=b.dataset.ntf,c=ntfCfg();
   if(!c[k].on){let ok=false;try{ok=await window.__native.notif.perm()}catch(err){}
     if(!ok){toast("Activa las notificaciones de Sustrato en los ajustes del teléfono");try{window.__native.notif.settings()}catch(err){}return}}
@@ -9894,13 +9909,11 @@ function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||G
   let body;
   if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${rows(q,base,true)}${note(q)}
     <button type="button" class="btn primary pa-go" data-act="ppok">Aceptar pauta</button><div class="pa-ex"><button type="button" class="ms-link" data-act="ppno">Ahora no</button></div>`;
-  else if(act)body=`${who(act)}<p class="pa-note">${ppActive()?"Pauta activa: tus objetivos de cada día se calculan con ella.":"Esta pauta ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}
-    <div class="pa-f"><span class="pa-l">¿Te ha mandado otra?</span><div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div></div>
-    <div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`;
-  else body=`<p class="pa-note">Tu entrenador o nutricionista rellena su pauta en sustrato.app/pauta y te manda un enlace. Pégalo aquí: verás lo que cambia antes de aceptarlo.</p>
-    <div class="pp-in"><input id="ppurl" type="url" inputmode="url" autocomplete="off" placeholder="Pega el enlace de la pauta" aria-label="Enlace de la pauta"><button type="button" class="chip" data-act="ppread">Ver</button></div>${S.ppErr?`<p class="pp-err" role="alert">Ese enlace no trae una pauta válida.</p>`:""}`;
+  /* v359: sin «pegar el enlace»: la pauta llega por el vínculo; la que está en vigor va dentro de la página, debajo de lo pendiente */
+  const actB=act?`<span class="pa-l">Pauta en vigor</span><p class="pa-note">${ppActive()?"Tus objetivos de cada día se calculan con ella.":"Ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}<div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`:"";
+  const hasLk=((S.lk||{}).links||[]).some(l=>l.state==="active");if(!q)body=hasLk?"":actB;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
-    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml()}${body}</div></div>`}
+    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml(actB)}${body}</div></div>`}
 function ppOpen(q){S.ppIn=q||null;if(typeof prSeen==="function")prSeen();if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act^='pp']");if(!t)return;const a=t.dataset.act;
   if(a==="ppopen"){ppOpen(null);return}
@@ -9927,16 +9940,31 @@ async function lkCall(path,body){return syncApi(path,{method:"POST",body:JSON.st
 async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[]}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
 function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
 function lkToggles(id,perms){return`<div class="lk-perms">${LK_PERM.map(([k,l,d])=>`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${d}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!(perms&&perms[k])}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`).join("")}</div>`}
-function lkHtml(){const L=S.lk;
+function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en vigor, para ponerlo arriba */
   if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
-  return`<div class="pa-f"><span class="pa-l">Vinculados</span>${L.links===null?`<p class="pa-note">Cargando…</p>`:live.length?live.map(l=>`<div class="lk-card">${lkPro(l.pro)}<span class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}</span>${l.state==="active"&&typeof lmHtml==="function"?`<div class="lm-top">${lmHtml(l)}</div>`:""}${l.state==="active"?`<div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega un resumen al día"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div><span class="pa-l">Compartes</span>`+lkToggles(l.id,l.perms):""}<div class="pa-ex"><button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button></div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
-    <button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
+  return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<p class="pa-note">Cargando…</p>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.state==="active"?lkPage(l,pauta):""}<div class="pa-ex"><button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button></div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
+    ${live.some(l=>l.state==="active")?`<div class="pa-ex"><button type="button" class="ms-link" data-act="lkstart">Vincular con otro profesional</button></div>`:`<button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>`}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
+/* v359 · la página de Tu profesional: su cabecera con foto y presentación; lo pendiente; la pauta en vigor; lo que te manda; las
+   notas; avisos; lo que compartes, plegado (se configura una vez) y en directo dentro */
+function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
+  return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
+function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id):[],pm=l.perms||{},n=LK_PERM.filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
+  return(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
+    +(pauta||"")+(typeof lmHtml==="function"?lmHtml(l,"props")+lmHtml(l,"notes"):"")+(typeof prPushRow==="function"?prPushRow():"")
+    +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${LK_PERM.length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
+/* desplegable con muelle (como los de Hoy): altura y giro de la flecha del mismo valor */
+function dgToggle(b){const g=b.closest(".dg"),open=!S.lkPermOpen,h0=g.getBoundingClientRect().height,row=b.getBoundingClientRect().height;
+  if(!open){if(MU.reduce()){S.lkPermOpen=false;lkRender();return}const ch=b.querySelector(".dg-ch");g.style.height=h0+"px";g.style.overflow="hidden";b.setAttribute("aria-expanded","false");
+    MU.spring(g,h0,row,0,x=>{g.style.height=x+"px";if(ch)ch.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-row)/Math.max(1,h0-row)))).toFixed(1)}deg)`},{resp:.35,done:()=>{S.lkPermOpen=false;lkRender()}});return}
+  S.lkPermOpen=true;lkRender();const b2=document.querySelector('#modal [data-dg="perm"]'),n=b2&&b2.closest(".dg");if(!n||MU.reduce())return;const h1=n.getBoundingClientRect().height,c2=b2.querySelector(".dg-ch");n.style.height=h0+"px";n.style.overflow="hidden";
+  MU.spring(n,h0,h1,0,x=>{n.style.height=x+"px";if(c2)c2.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-h0)/Math.max(1,h1-h0)))).toFixed(1)}deg)`},{resp:.35,done:()=>{n.style.height="";n.style.overflow="";if(c2)c2.style.transform=""}})}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dg]");if(b)dgToggle(b)});
 function lkRender(){S.ppSh=true;renderModal()}
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp],[data-lklive]");if(!t)return;const L=S.lk;
-  if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});toast(v?"Compartes en directo":"Le llega un resumen al día");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
+  if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});if(v&&LK_PERM.some(([k])=>!(l.perms||{})[k])){const pm={};LK_PERM.forEach(([k])=>pm[k]=true);l.perms=pm;await lkCall("/link/perms",{id:l.id,perms:pm})} /* v359: en directo marca todo; luego se puede quitar cada cosa */toast(v?"Compartes en directo, todo; quita lo que no quieras":"Le llega cada vez que abres la app");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
   if(t.dataset.lkp!=null){if(t.dataset.tgGo!=="1")return;const [id,k]=t.dataset.lkp.split("|");
     if(id==="new"){L.perms[k]=!L.perms[k];return}
     const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!l.perms[k]});l.perms=perms;
@@ -9959,7 +9987,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
    cómo llega) y uno de «meta» (próximas carreras). Se cifra aquí con AES-GCM y la clave común del vínculo (ECDH P-256 entre la
    clave de este móvil y la pública del profesional); el servidor solo guarda paquetes ilegibles. De Strava solo va lo calculado
    por Sustrato (duración, energía, hidratos, intensidad), sin distancia, desnivel, ruta ni nombre.
-   Cuándo: un resumen al día; «En directo», con cada cambio mientras usas la app. Si cambian los permisos o la clave del
+   Cuándo: cada vez que abres la app (v359; antes, un resumen al día); «En directo», con cada cambio mientras usas la app. Si cambian los permisos o la clave del
    profesional, se reenvía todo. */
 const LKP_HIST=56;
 const lkb64=u8=>{let s="";new Uint8Array(u8).forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
@@ -10001,9 +10029,9 @@ async function lkPush(force){if(!S.acct||LKP_BUSY||!S.lk||!S.lk.links)return;LKP
   try{const st=LS("sustrato-lkpush")||{};
     for(const l of S.lk.links.filter(x=>x.state==="active"&&x.proPub)){
       const P=l.perms||{},sig=lkHash(JSON.stringify(P)),s0=st[l.id]||{},reset=s0.pk!==l.proPub||s0.sig!==sig,days=reset?{}:Object.assign({},s0.days||{});
-      if(!force&&!reset&&!l.live&&s0.at&&Date.now()-s0.at<20*36e5)continue; /* resumen diario */
+      if(!force&&!reset&&!l.live&&s0.at&&Date.now()-s0.at<10*60e3)continue; /* v359: cada vez que abres la app (como mucho cada 10 min); antes, una vez al día */
       const from=P.hist?shiftKey(today(),-LKP_HIST):(l.acc?new Date(l.acc).toISOString().slice(0,10):today()),items=[],aes=await lkAes(l);
-      for(let k=from;k<=shiftKey(today(),7);k=shiftKey(k,1)){const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;
+      for(let k=from;k<=shiftKey(today(),7);k=shiftKey(k,1)){const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;if(!d&&!days[k])continue; /* v359: un día sin datos que nunca enviaste no se manda vacío (si no, otro aparato tuyo con menos datos borraba lo bueno) */
         items.push(Object.assign({k},await lkSeal(aes,l.id,d||{empty:true})));days[k]=h}
       const meta=lkMeta(P),mh=lkHash(JSON.stringify(meta));if(mh!==days.meta){items.push(Object.assign({k:"meta"},await lkSeal(aes,l.id,meta)));days.meta=mh}
       if(!items.length&&!reset){st[l.id]=Object.assign({},s0,{at:Date.now()});continue}
@@ -10049,15 +10077,15 @@ const lmLink=id=>(S.lk.links||[]).find(x=>x.id===id);
 function lmAck(lid,mid,ok){const l=lmLink(lid);if(l&&mid)lmSend(l,{t:"ack",ref:mid,ok:!!ok}).catch(()=>{})}
 /* lo de cada vínculo, de lo más nuevo a lo más viejo; lo respondido lleva su respuesta */
 function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.u-a.u),ack={};M.forEach(x=>{if(x.o.t==="ack")ack[x.o.ref]=x.o.ok});return{M,ack}}
-function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
+function lmHtml(l,o){ /* v359: o = "props" (lo que te manda) o "notes" (la conversación) para la página de Tu profesional */const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
   const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,20).reverse() /* v358: primero, como una conversación (lo más nuevo abajo, junto al campo) */;
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
     if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort(),ok=prMenuDays(o).length;return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${ok?Object.keys(o.dishes||{}).length+" platos":"llegó sin platos"}</small></span>${!ok?"":a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
-  return`<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
-    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>
-    <span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}`}
+  return o==="notes"?`<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
+    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`:o==="props"?`<span class="pa-l">Pautas, menús y platos</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}`:`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
+    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
 /* v342 · exclusiones que anota tu profesional (alergias, intolerancias y tipo de dieta): al aplicarlas, tu menú automático las respeta */
 const LM_DIET={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"};
 const lmExclTxt=v=>{v=v||{};const L=EXCL.filter(([k])=>v[k]).map(x=>x[1].toLowerCase());return(L.length?"Sin "+L.join(", "):"Sin exclusiones")+(v.diet&&v.diet!=="omni"?" · dieta "+LM_DIET[v.diet]:"")};
@@ -10191,11 +10219,9 @@ function prHoyCard(){const P=prPend(),hid=LS("sustrato-prhide")||{};if(!P.length
 function proCard(){const L=prLinks(),q=(S.profile||{}).pro;
   /* sin profesional, una fila discreta: la app es completa sin él (PROCEDIMIENTOS: la app, independiente de Pro) */
   if(!L.length&&!q)return`<section class="glass pad fade hs-card"><button type="button" class="hs-row" data-act="ppopen"><span class="hs-ic prc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/></svg></span><span class="hs-t"><b>Tu profesional</b><small>Si tienes nutricionista o entrenador, vincúlate con su llave</small></span><span class="hs-ch" aria-hidden="true">›</span></button></section>`;
-  const l=L[0],P=prPend(),who=l?l.pro:{name:q.n,role:q.r};
-  const rows=P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("");
-  return`<section class="glass pad fade prc-card"><span class="pkk">Tu profesional</span><div class="prc-h prc-who">${l&&typeof lphAv==="function"?lphAv(l,who.name,"prc-av"):prAv(who.name)}<div class="prc-t"><b>${esc(who.name||"")}</b><span>${esc(PP_ROLE[who.role]||"Profesional")}${l?" · vinculados":""}</span></div></div>${(()=>{const pf=l&&typeof lphProf==="function"&&lphProf(l);return pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""})()}
-    ${rows?`<div class="prc-l"><span class="prc-lh">Pendiente</span>${rows}</div>`:`<p class="note prc-ok">Nada pendiente. Lo nuevo que te mande aparecerá aquí y en Hoy.</p>`}
-    ${prPushRow()}<button type="button" class="prc-go" data-act="ppopen"><span>${q&&ppActive()?"Pauta en vigor, notas y lo que compartes":"Notas, pautas y lo que compartes"}</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></section>`}
+  /* v359: en Perfil, una fila (como Tu salud) que abre su página; lo pendiente se cuenta, no se lista */
+  const l=L[0],P=prPend(),who=l?l.pro:{name:q.n,role:q.r},sub=P.length?(P.length===1?"1 cosa pendiente":P.length+" cosas pendientes"):q&&ppActive()?"Pauta en vigor":l?"Vinculados":"";
+  return`<section class="glass pad fade hs-card"><button type="button" class="hs-row" data-act="ppopen">${l&&typeof lphAv==="function"?lphAv(l,who.name,"prc-av hs-av"):prAv(who.name)}<span class="hs-t"><b>${esc(who.name||"Tu profesional")}</b><small>Tu profesional${sub?" · "+esc(sub):""}</small></span>${P.length?`<span class="prc-n" aria-label="${P.length} pendientes">${P.length}</span>`:""}<span class="hs-ch" aria-hidden="true">›</span></button></section>`}
 /* vista previa del menú antes de aplicarlo */
 function prMenuHtml(){const v=S.prmv||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}).m||{})[v.mid];if(!x)return"";const o=x.o,D=o.dishes||{};
   const nm=id=>{const s=String(id);if(s.startsWith("b:")){const d=dishById(s.slice(2));return d?d.n:"Plato de la app"}const d=D[id];return d?d.n:"Plato"};
@@ -10473,6 +10499,21 @@ async function lphSend(l,file,o,what){toast("Enviando la foto…");try{const ph=
 document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.files||!t.files[0])return;
   if(t.dataset.lphm){const l=prLinks()[0],[mid,k]=t.dataset.lphm.split("|");if(l)lphSend(l,t.files[0],{d:k,m:mid},"Foto de tu "+((MEALS.find(m=>m[0]===mid)||[])[1]||"comida").toLowerCase());t.value="";return}
   if(t.dataset.lphn){const l=lmLink(t.dataset.lphn),i=$("#lmx-"+t.dataset.lphn),x=String(i&&i.value||"").trim().slice(0,400);if(l){lphSend(l,t.files[0],{d:today(),x});if(i)i.value=""}t.value=""}});
+
+/* ---------- Desplegables con muelle (v359) ----------
+   Los grupos plegables del Perfil (<details class="psec">: datos personales, medidas, notificaciones, ayuda…) se abrían de golpe.
+   Ahora, como los de Hoy: la altura y el giro de la flecha salen del mismo muelle (guía 2.5: lo que se toca, muelle sin rebote,
+   respuesta 0,35 s), se pueden volver a tocar a medio camino y, con «reducir movimiento», saltan al final. El <details> sigue
+   abriéndose y cerrándose de verdad (evento toggle, S.psOpen), así que lectores de pantalla y teclado no cambian. */
+function psSpring(d,open){const sm=d.querySelector(":scope>summary"),ch=sm&&sm.querySelector(".xb-ch"),row=sm?sm.getBoundingClientRect().height:0;
+  const from=d._mu?MU.stop(d):d.getBoundingClientRect().height,rot=(x,a,b)=>{if(ch)ch.style.transform=`rotate(${(180*Math.max(0,Math.min(1,(x-a)/Math.max(1,b-a)))).toFixed(1)}deg)`};
+  const end=()=>{d.style.height="";d.style.overflow="";if(ch)ch.style.transform=""};
+  if(open){d.open=true;d.style.height="";const h1=d.getBoundingClientRect().height;d.style.height=from+"px";d.style.overflow="hidden";
+    MU.spring(d,from,h1,0,x=>{d.style.height=x+"px";rot(x,row,h1)},{resp:.35,done:end});return}
+  const h0=from;d.style.height=h0+"px";d.style.overflow="hidden";
+  MU.spring(d,h0,row,0,x=>{d.style.height=x+"px";rot(x,row,h0)},{resp:.35,done:()=>{d.open=false;end()}})}
+document.addEventListener("click",e=>{const sm=e.target.closest&&e.target.closest("details.psec>summary");if(!sm||MU.reduce())return;const d=sm.parentElement;e.preventDefault();
+  const want=d._mu?!d._tgt:!d.open;d._tgt=want;psSpring(d,want)},true);
 
 })();
 </script>
