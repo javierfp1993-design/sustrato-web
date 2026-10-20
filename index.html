@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T13:45:28.430Z">
+<meta name="sustrato-version" content="2026-10-20T14:07:12.733Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3445,6 +3445,13 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 /* vista sencilla: platos y raciones, sin calorías, gramos ni peso */
 body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,body.simple section:has(.whl),body.simple .mb-k,body.simple .mbar,body.simple .mprot,body.simple .pmm,body.simple .wk-mac,body.simple .pm-o{display:none!important}
 
+/* v353 · Tus datos (115): medidas de la consulta en Progreso › Cuerpo y borrar tus notas */
+.td2-m{align-items:center;gap:12px}
+.td2-m>span:first-child{flex:none;white-space:nowrap}
+.td2-m span small{display:block;font-size:calc(12px*var(--tz,1));color:var(--muted)}
+.td2-v{flex:1;min-width:0;font-weight:500;font-size:calc(14px*var(--tz,1));line-height:1.35;text-align:right}
+.lm-del{appearance:none;border:0;background:none;padding:0;font:inherit;color:var(--rojo);cursor:pointer}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3531,7 +3538,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="352";
+const APP_VER="353";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6212,7 +6219,7 @@ function progSection(sec){
     ent:()=>[volCard(),bandsCard(),heatCard(),strSumCard()||E("Fuerza","Registra una sesión en Fuerza con peso y repeticiones"),recordsCard()], /* v269: el detalle de fuerza está en Fuerza › Progreso */
     com:()=>{const mi=comMicroCard(),ma=comMacroCard(),ea=eatCard(),P=x=>typeof x==="string"?x:E(x.t,x.need); /* v278: «Comer según el plan» viene de Energía */
       const al=typeof mi==="string"&&mi.includes("com-al");return[al?mi:"",P(ma),al?"":P(mi),ea||E("Comer según el plan","Apunta lo que comes al menos 3 días")].filter(x=>x!=="")}, /* con aviso, los micros van primero */
-    cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil o conecta una báscula",bo):bo,stepsChart(),weightHistory()]}
+    cue:()=>{const bo=bodyCard();return[bo.includes('data-goto="perfil"')?E("Composición corporal","Añade tu cintura en el perfil o conecta una báscula",bo):bo,stepsChart(),weightHistory(),measHistory()]}
   }[sec]();
   const ok=L.filter(x=>typeof x==="string"&&x),pend=L.filter(x=>x&&typeof x==="object");
   return ok.join("")+(pend.length?`<section class="glass pad fade pg-pend"><h2>Cuando haya datos</h2>${pend.map(p=>p.h?`<details class="pg-p"><summary><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span>${IC_CHEV_D}</summary><div class="pg-pb">${p.h.replace(/^<section[^>]*>/,"").replace(/<\/section>\s*$/,"")}</div></details>`:`<div class="pg-p"><span><b>${esc(p.t)}</b><small>${esc(p.need)}</small></span></div>`).join("")}</section>`:"");
@@ -6241,7 +6248,7 @@ function dpkHtml(){const p=S.dpk,t=dayTargets(p.k),m=t&&mealPlan(t,p.k).meals.fi
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade ms-sheet" role="dialog" aria-modal="true" aria-label="Plato para ${esc(m.n)}">
     <div class="row"><h3>${esc(m.n)} · ${esc(dateLabel(p.k))}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="ms-sub">Objetivo ${fmtInt(m.kcal)} kcal · P ${fmtInt(m.P)} · H ${fmtInt(m.C)} · G ${fmtInt(m.F)}</p>
-    <div class="dpk-a"><button type="button" class="btn sm" data-dpka="auto">Elegir por mí</button>${a?'<button type="button" class="btn sm" data-dpka="none">Quitar plato</button>':""}<button type="button" class="btn sm" data-dpka="new">＋ Plato nuevo</button></div>
+    <div class="dpk-a"><button type="button" class="btn sm" data-dpka="auto">Elegir por mí</button>${a?'<button type="button" class="btn sm" data-dpka="none">Quitar plato</button><button type="button" class="btn sm" data-dpka="copy">Copiar a otros días</button>':""}<button type="button" class="btn sm" data-dpka="new">＋ Plato nuevo</button></div>
     <label class="ms-q">${IC_SRCH}<input id="dpkq" type="search" placeholder="Buscar plato…" autocomplete="off" value="${esc(p.q||"")}" aria-label="Buscar plato"></label>
     <div class="ms-list" id="dpkl">${dpkList(m,L,a)}</div></div></div>`}
 function dpkList(m,L,a){return L.length?`<div class="ms-lbl2">${S.dpk.q?"Resultados":"Los que mejor encajan"}</div>`+L.map(({x,b})=>`<button class="ms-it${a&&a.d===x.id?" on":""}" data-dpkp="${x.id}"><span>${esc(x.n)}${b.s!==1?` <small>${fmtS(b.s)}</small>`:""}</span><small>${fmtInt(kcOf(x)*b.s)} kcal</small></button>`).join(""):`<p class="ms-none">No hay platos con ese nombre.</p>`}
@@ -7342,8 +7349,8 @@ function vActs(){
 }
 /* v309 · «···» del día en Plan › Menú: rellenar, proponer otros platos o vaciar, siempre con «Deshacer» */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mdmo]");if(!b)return;const k=b.dataset.mdmo,full=mdFull(k),has=Object.keys(S.menu[k]||{}).length;
-  const O=[full?["alt","Proponer otros platos"]:["fill","Rellenar este día"]].concat(has?[["clear","Vaciar este día"]]:[]);
-  pkSheet(dateLabel(k),O,"",a=>{const prev=JSON.parse(JSON.stringify(S.menu));
+  const O=[full?["alt","Proponer otros platos"]:["fill","Rellenar este día"]].concat(has?[["copy","Copiar este día a…"],["clear","Vaciar este día"]]:[]);
+  pkSheet(dateLabel(k),O,"",a=>{if(a==="copy"){setTimeout(()=>mdCopy(k),150);return}const prev=JSON.parse(JSON.stringify(S.menu));
     if(a==="clear")delete S.menu[k];else autoAssignDay(k,false,a==="alt");
     saveMenu();render();undoToast(a==="clear"?"Día vaciado":a==="alt"?"Otros platos propuestos":"Día rellenado",()=>{S.menu=prev;saveMenu();render()})},b)});
 
@@ -7605,7 +7612,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.optv!=null&&S.opt){const d=optDef(S.opt.k);d.set(t.dataset.optv);S.opt=null;S.sheet=null;renderModal();buzz(8);render();return}
   if(t.dataset.dpk){const[k,mid]=t.dataset.dpk.split("|");S.dpk={k,mid,q:""};S.sheet="dpk";renderModal();return}
   if(t.dataset.dpkp){dpkAssign(t.dataset.dpkp);return}
-  if(t.dataset.dpka){const v=t.dataset.dpka;if(v==="new"){const p=S.dpk;S.dpk=null;S.sheet=null;renderModal();pbOpen(null,{k:p.k,mid:p.mid});return}dpkAssign(v);return}
+  if(t.dataset.dpka){const v=t.dataset.dpka;if(v==="copy"){const p=S.dpk;S.dpk=null;S.sheet=null;renderModal();mdCopy(p.k,p.mid);return}if(v==="new"){const p=S.dpk;S.dpk=null;S.sheet=null;renderModal();pbOpen(null,{k:p.k,mid:p.mid});return}dpkAssign(v);return}
   if(t.dataset.perf){/* v206: lleva a Rendimiento (Progreso › Forma) con el deporte elegido, no a la hoja antigua */S.pfSp=t.dataset.perf==="bike"?"bike":"run";S.prevTab=S.tab;S.tab="prog";S.progSec="for";render();setTimeout(()=>{const el=document.getElementById("pfcard");if(el)el.scrollIntoView({block:"start",behavior:"smooth"})},60);return}
   if(t.dataset.perfsp){S.perfSp=t.dataset.perfsp;S.perfTab=null;renderModal();return}
   if(t.dataset.perftab){S.perfTab=t.dataset.perftab;renderModal();return}
@@ -10012,7 +10019,7 @@ function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}
-    <span class="pa-l">Notas</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}</small><p>${esc(x.o.x)}</p></div>`).join("")}</div>`:""}
+    <span class="pa-l">Notas</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small><p>${esc(x.o.x)}</p></div>`).join("")}</div>`:""}
     <div class="pp-in"><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
 /* v342 · exclusiones que anota tu profesional (alergias, intolerancias y tipo de dieta): al aplicarlas, tu menú automático las respeta */
 const LM_DIET={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"};
@@ -10292,6 +10299,32 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.simple){if(t.dataset.tgGo!=="1")return;S.profile=Object.assign({},S.profile,{simple:!(S.profile||{}).simple});saveProfile(true);render();return}
   const id=t.dataset.hzt,HZ=hzS();HZ[id]=!HZ[id];try{localStorage.setItem("sustrato-hz",JSON.stringify(HZ))}catch(x){}render();
 });
+
+/* ---------- Tus datos, en tus manos (v353) ----------
+   Lo que señalan las reseñas de otras apps de nutrición, resuelto aquí:
+   · Copiar un día del menú, o una sola comida, a otros días (Plan › Menú: «···» del día y la hoja de cada comida).
+   · Medidas de la consulta a la vista en Progreso › Cuerpo, y se pueden borrar (tu profesional conserva las suyas).
+   · Tus notas a tu profesional se pueden borrar: desaparecen también de su panel (/link/unsend), con 5 s para deshacer.
+   Funciones declaradas (no const): Progreso y Plan se pintan al arrancar, antes de que este módulo termine de cargar. Clases td2- */
+function mdCopy(k,mid){const D=[];for(let i=0;i<14;i++){const d=shiftKey(today(),i);if(d!==k)D.push([d,dateLabel(d)])}
+  const mn=mid&&(MEALS.find(m=>m[0]===mid)||[])[1];
+  pkSheet(mn?`Copiar ${mn.toLowerCase()} a…`:"Copiar el día a…",D,[],sel=>{if(!sel||!sel.length)return;const prev=JSON.parse(JSON.stringify(S.menu)),src=S.menu[k]||{};
+    sel.forEach(d=>{if(mid){if(src[mid])S.menu[d]=Object.assign({},S.menu[d],{[mid]:Object.assign({},src[mid],{lock:true})})}
+      else{S.menu[d]={};Object.entries(src).forEach(([m,a])=>{S.menu[d][m]=Object.assign({},a,{lock:true})});autoAssignDay(d)}});
+    saveMenu();render();undoToast(sel.length===1?"Copiado al "+dateLabel(sel[0]):"Copiado a "+sel.length+" días",()=>{S.menu=prev;saveMenu();render()})},null,true)}
+/* medidas de la consulta: las que te anota tu profesional (src:"pro") y las tuyas */
+function measHistory(){const M=(S.measures||[]).slice().sort((a,b)=>a.d<b.d?1:-1);if(!M.length)return"";
+  const f=(v,u)=>String(Math.round(v*10)/10).replace(".",",")+"\u00a0"+u,txt=m=>[m.kg&&"Peso\u00a0"+f(m.kg,"kg"),m.bf&&"grasa\u00a0"+f(m.bf,"%"),m.lean&&"magra\u00a0"+f(m.lean,"kg"),m.waist&&"cintura\u00a0"+f(m.waist,"cm")].filter(Boolean).join(" · ")||"Medidas";
+  return`<section class="glass pad fade"><div class="row"><h2>Medidas de la consulta</h2></div><div class="whl">${M.slice(0,S.msAll?M.length:5).map(m=>`<div class="wh td2-m"><span>${esc(dateLabel(m.d))}<small>${m.src==="pro"?esc(m.by||"Tu profesional"):"Tuya"}</small></span><b class="td2-v">${esc(txt(m))}</b><button class="tskip" data-msdel="${esc(m.mid||m.d)}" aria-label="Borrar la medida del ${esc(dateLabel(m.d))}">✕</button></div>`).join("")}</div>
+    ${M.length>5?`<button class="chip sm" data-act="msall" style="margin-top:10px">${S.msAll?"Ver menos":"Ver las "+M.length}</button>`:""}<p class="note">Si borras una de tu profesional, él conserva la suya.</p></section>`}
+let LMDEL=null;
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-msdel],[data-lmdel],[data-act='msall']");if(!t)return;
+  if(t.dataset.act==="msall"){S.msAll=!S.msAll;render();return}
+  if(t.dataset.msdel){const id=t.dataset.msdel,prev=(S.measures||[]).slice();S.measures=prev.filter(m=>(m.mid||m.d)!==id);if(typeof prSaveMeasures==="function")prSaveMeasures();render();
+    undoToast("Medida borrada",()=>{S.measures=prev;if(typeof prSaveMeasures==="function")prSaveMeasures();render()});return}
+  if(t.dataset.lmdel){const[lid,mid]=t.dataset.lmdel.split("|"),B=(S.lkm[lid]||{}).m||{},x=B[mid];if(!x)return;delete B[mid];LS("sustrato-lkmsg",S.lkm);if(typeof lkRender==="function")lkRender();
+    clearTimeout(LMDEL);LMDEL=setTimeout(()=>{lkCall("/link/unsend",{id:lid,mid}).catch(()=>{})},5200);
+    undoToast("Nota borrada",()=>{clearTimeout(LMDEL);B[mid]=x;LS("sustrato-lkmsg",S.lkm);if(typeof lkRender==="function")lkRender()})}});
 
 })();
 </script>
