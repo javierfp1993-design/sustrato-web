@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T09:11:19.195Z">
+<meta name="sustrato-version" content="2026-10-20T09:32:57.426Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3481,7 +3481,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="346";
+const APP_VER="347";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -9948,7 +9948,7 @@ function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.
 function lmHtml(l){const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
   const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,6);
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
-    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort();return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${Object.keys(o.dishes||{}).length} platos</small></span>${a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
+    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort(),ok=prMenuDays(o).length;return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${ok?Object.keys(o.dishes||{}).length+" platos":"llegó sin platos"}</small></span>${!ok?"":a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}
@@ -10021,6 +10021,8 @@ function prMeasSync(){let n=0;prLinks().forEach(l=>prMsgs(l,"meas").filter(x=>x.
 /* menú de la semana: sustituye tus días por los de tu profesional (las comidas que no trae se rellenan solas). Sus platos van a tus platos;
    los que ha ajustado a tus objetivos de ese día (fx, menús tipo) van dentro del menú, con su cantidad exacta. Los que no puedes tomar se quedan fuera.
    v345: «Deshacer» durante 5 s; la respuesta a tu profesional sale al acabar ese plazo. Cada comida lleva pro (su nombre) para el aviso de Plan › Menú. */
+/* v347 · días de hoy en adelante que traen algún plato (antes de la v347 del panel podía llegar un menú con días vacíos) */
+const prMenuDays=o=>Object.keys((o&&o.days)||{}).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=today()&&Object.keys(o.days[k]||{}).length).sort();
 function prMenuApply(l,x){const o=x.o,D=o.dishes||{},pro=String(l.pro.name||"Tu profesional").slice(0,60),ids={},emb={};let n=0,skip=0;
   const prev={menu:JSON.parse(JSON.stringify(S.menu)),dishes:(S.dishes||[]).slice()};
   Object.keys(D).forEach(id=>{const d=D[id],ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([i,g])=>[i,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length)return;
@@ -10062,7 +10064,7 @@ setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links){prMeasSync();prBadge()}},5000);
    Lo pendiente sale de los mensajes del vínculo (110) y sus respuestas (ack). Ocultar la tarjeta de Hoy dura hasta mañana (LS sustrato-prhide). Clases prc- */
 function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
   prLinks().forEach(l=>{const{M,ack}=lmList(l),pro=M.filter(x=>x.by==="pro"),first=t=>pro.find(x=>x.o.t===t);
-    const mn=first("menu");if(mn&&ack[mn.mid]!==true&&S.prMnPend!==mn.mid&&Object.keys(mn.o.days||{}).some(k=>k>=today())){const ks=Object.keys(mn.o.days).sort();
+    const mn=first("menu");if(mn&&ack[mn.mid]!==true&&S.prMnPend!==mn.mid&&prMenuDays(mn.o).length){const ks=prMenuDays(mn.o);
       out.push({l,x:mn,w:100,t:"Te ha preparado el menú de la semana",s:"Del "+dateLabel(ks[0])+" al "+dateLabel(ks[ks.length-1]),a:[["Ver el menú",`data-prmv="${l.id}|${mn.mid}"`],["Aplicar",`data-lmmenu="${l.id}|${mn.mid}"`,1]]})}
     const pa=first("pauta");if(pa&&ack[pa.mid]===undefined&&((S.profile||{}).pro||{}).mid!==pa.mid)out.push({l,x:pa,w:90,t:"Te ha enviado una pauta nueva",s:"Mira lo que cambia antes de aceptarla",a:[["Ver la pauta",`data-lmpp="${l.id}|${pa.mid}"`,1]]});
     const ex=first("excl");if(ex&&ack[ex.mid]!==true)out.push({l,x:ex,w:70,t:"Ha anotado lo que no tomas",s:lmExclTxt(ex.o.v),a:[["Aplicar",`data-lmexcl="${l.id}|${ex.mid}"`,1]]});
@@ -10088,7 +10090,7 @@ function proCard(){const L=prLinks(),q=(S.profile||{}).pro;
 function prMenuHtml(){const v=S.prmv||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}).m||{})[v.mid];if(!x)return"";const o=x.o,D=o.dishes||{};
   const nm=id=>{const s=String(id);if(s.startsWith("b:")){const d=dishById(s.slice(2));return d?d.n:"Plato de la app"}const d=D[id];return d?d.n:"Plato"};
   const kc=id=>{const d=D[id];if(!d||!Array.isArray(d.ing))return"";const n=ingNut(d.ing.filter(r=>INGR_BY[r[0]]),d.serv||1);return fmtInt(4*n.P+4*n.C+9*n.F)+" kcal"};
-  const days=Object.keys(o.days||{}).filter(k=>k>=today()).sort();
+  const days=prMenuDays(o);
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.prmvSh?"":" fade"} pa-sheet prc-sheet" role="dialog" aria-modal="true" aria-label="Menú de la semana">
     <div class="row"><h3 style="margin:0">Menú de ${esc(l.pro.name||"tu profesional")}</h3><button class="hbtn xclose" data-act="prmvclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="pa-note">Ajustado a tus objetivos de cada día. Al aplicarlo sustituye esos días de tu menú; lo puedes deshacer.</p>
