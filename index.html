@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T12:52:54.351Z">
+<meta name="sustrato-version" content="2026-10-20T13:21:16.825Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3411,6 +3411,9 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hs-tri{display:flex;align-items:center;gap:12px;margin:0 0 12px}.hs-tri>span{font-size:calc(15px*var(--tz,1));color:var(--muted)}.hs-tri .seg{flex:1}.hs-tri .seg button{flex:1}
 .hs-sh{margin-top:14px;background:var(--card2);border-radius:14px;padding:10px 14px}
 .hs-priv{margin-top:10px}
+.hs-otro{background:var(--card2);min-height:88px;border:1px solid var(--sep);font-size:calc(17px*var(--tz,1))}
+.hs-otro::placeholder{color:var(--muted)}
+.hs-otro:focus{border-color:var(--ac)}
 
 /* v350 · Hoy en dos niveles (114): «Tu día» arriba, bloques plegados en una fila y modo sencillo */
 .td{display:grid;gap:14px}
@@ -3528,7 +3531,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="350";
+const APP_VER="351";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7554,7 +7557,7 @@ function vPerfil(){
 }
 /* v278b: mientras el dedo está en el calendario del Resumen (S._hold), los repintados esperan: si la página se rehiciera
    bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
-function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv();document.body.classList.toggle("simple",typeof simpleOn==="function"&&simpleOn())}}
+function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{if(typeof ingxSync==="function")ingxSync();render0()}finally{unitize();hdrAv();document.body.classList.toggle("simple",typeof simpleOn==="function"&&simpleOn())}}
 function holdEnd(){S._hold=false;if(S._holdPend)render()}
 function render0(){
   hidePop();
@@ -9990,6 +9993,14 @@ async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=t
   else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
 async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=await lkCall("/link/send",Object.assign({id:l.id},x));
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
+/* v351 · ingredientes que crea tu profesional: llegan dentro del plato (ix: {id: {n, P, C, F, fib}} por 100 g) y se quedan en tu
+   perfil (S.profile.ingx, sincronizado), así que los tienes en todos tus dispositivos aunque él los borre después */
+function ingxReg(id,x){const o={id,n:x.n,P:+x.P||0,C:+x.C||0,F:+x.F||0,fib:+x.fib||0,na:0,k:0,mg:0,fe:0,ca:0,vd:0,pro:1};if(INGR_BY[id])Object.assign(INGR_BY[id],o);else{INGR.push(o);INGR_BY[id]=o}}
+function ingxSync(){const X=(S.profile||{}).ingx||{};Object.keys(X).forEach(id=>{if(!INGR_BY[id]||INGR_BY[id].pro&&INGR_BY[id].n!==X[id].n)ingxReg(id,X[id])})}
+function lmIngx(ix){if(!ix||typeof ix!=="object")return;const X=Object.assign({},(S.profile||{}).ingx);let n=0;
+  Object.entries(ix).slice(0,40).forEach(([id,x])=>{if(!/^u[\w]{1,20}$/.test(id)||!x||typeof x.n!=="string")return;const v=k=>Math.max(0,Math.min(100,+x[k]||0));const o={n:x.n.slice(0,60),P:v("P"),C:v("C"),F:v("F"),fib:v("fib")};
+    if(JSON.stringify(X[id])!==JSON.stringify(o)){X[id]=o;n++}ingxReg(id,o)});
+  if(n){S.profile=Object.assign({},S.profile,{ingx:X});saveProfile(true)}}
 const lmLink=id=>(S.lk.links||[]).find(x=>x.id===id);
 function lmAck(lid,mid,ok){const l=lmLink(lid);if(l&&mid)lmSend(l,{t:"ack",ref:mid,ok:!!ok}).catch(()=>{})}
 /* lo de cada vínculo, de lo más nuevo a lo más viejo; lo respondido lleva su respuesta */
@@ -10020,6 +10031,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(t.dataset.lmpp){const[lid,mid]=t.dataset.lmpp.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],l=lmLink(lid),q=x&&ppNorm(x.o.p);if(!q||!l){toast("Esta pauta no se puede leer");return}
     S.ppIn=Object.assign(q,{lk:lid,mid,n:q.n||l.pro.name});S.ppErr=false;S.ppSh=true;renderModal();return}
   if(t.dataset.lmdish){const[lid,mid]=t.dataset.lmdish.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],l=lmLink(lid),d=x&&x.o.d;if(!d||!l)return;
+    lmIngx(d.ix); /* v351: sus ingredientes propios, antes de comprobar los del plato */
     const ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([id,g])=>[id,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length){toast("Este plato no trae ingredientes");return}
     const meals=(d.meals||[]).filter(m=>MEALS.some(([id])=>id===m)),nd={id:"p"+mid.replace(/[^\w]/g,""),n:String(d.n||"Plato").slice(0,60),meals:meals.length?meals:pbMeals(ing.map(([id])=>({id}))),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
     S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd]);saveDishes();lmAck(lid,mid,true);toast("Añadido a tus platos · "+nd.n);lkRender();return}
@@ -10074,6 +10086,7 @@ function prMeasSync(){let n=0;prLinks().forEach(l=>prMsgs(l,"meas").filter(x=>x.
 const prMenuDays=o=>Object.keys((o&&o.days)||{}).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=today()&&Object.keys(o.days[k]||{}).length).sort();
 function prMenuApply(l,x){const o=x.o,D=o.dishes||{},pro=String(l.pro.name||"Tu profesional").slice(0,60),ids={},emb={};let n=0,skip=0;
   const prev={menu:JSON.parse(JSON.stringify(S.menu)),dishes:(S.dishes||[]).slice()};
+  Object.values(D).forEach(d=>lmIngx(d&&d.ix)); /* v351: los ingredientes propios de su profesional, a los tuyos */
   Object.keys(D).forEach(id=>{const d=D[id],ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([i,g])=>[i,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length)return;
     const nd={id:"p"+String(id).replace(/[^\w]/g,"").slice(0,24),n:String(d.n||"Plato").slice(0,60),meals:(d.meals||[]).filter(m=>MEALS.some(([k])=>k===m)),serv:1,ing,ov:{},src:pro};
     if(!nd.meals.length)nd.meals=pbMeals(ing.map(([i])=>({id:i})));if(!dishAllowed(nd)){skip++;return}
@@ -10111,8 +10124,10 @@ setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links){prMeasSync();prBadge()}},5000);
    · Hoy: cuando te manda algo sin responder, una tarjeta arriba con la acción directa (menú, pauta, plato, notas, revisión).
    · Menú de la semana: «Ver el menú» abre una vista previa; «Aplicar» lo pone en tus días y te lleva a Plan › Menú.
    Lo pendiente sale de los mensajes del vínculo (110) y sus respuestas (ack). Ocultar la tarjeta de Hoy dura hasta mañana (LS sustrato-prhide). Clases prc- */
+/* v351 · lo que tu profesional te manda y no respondes caduca a los 14 días (deja de salir como pendiente); a los 3 te lo recuerda una vez */
+const PR_CAD=14*864e5;
 function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
-  prLinks().forEach(l=>{const{M,ack}=lmList(l),pro=M.filter(x=>x.by==="pro"),first=t=>pro.find(x=>x.o.t===t);
+  prLinks().forEach(l=>{const{M,ack}=lmList(l),pro=M.filter(x=>x.by==="pro"&&(x.o.t==="menu"||x.o.t==="note"||Date.now()-x.u<PR_CAD)),first=t=>pro.find(x=>x.o.t===t);
     const mn=first("menu");if(mn&&ack[mn.mid]!==true&&S.prMnPend!==mn.mid&&prMenuDays(mn.o).length){const ks=prMenuDays(mn.o);
       out.push({l,x:mn,w:100,t:"Te ha preparado el menú de la semana",s:"Del "+dateLabel(ks[0])+" al "+dateLabel(ks[ks.length-1]),a:[["Ver el menú",`data-prmv="${l.id}|${mn.mid}"`],["Aplicar",`data-lmmenu="${l.id}|${mn.mid}"`,1]]})}
     const pa=first("pauta");if(pa&&ack[pa.mid]===undefined&&((S.profile||{}).pro||{}).mid!==pa.mid)out.push({l,x:pa,w:90,t:"Te ha enviado una pauta nueva",s:"Mira lo que cambia antes de aceptarla",a:[["Ver la pauta",`data-lmpp="${l.id}|${pa.mid}"`,1]]});
@@ -10146,6 +10161,10 @@ function prMenuHtml(){const v=S.prmv||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}
     <p class="pa-note">Ajustado a tus objetivos de cada día. Al aplicarlo sustituye esos días de tu menú; lo puedes deshacer.</p>
     ${days.map(k=>`<span class="pa-l">${esc(dateLabel(k))}</span><div class="pp-rows">${MEALS.filter(([m])=>o.days[k][m]).map(([m,n])=>`<div class="pp-r"><span>${n}<small class="prc-dn">${esc(nm(o.days[k][m]))}</small></span><span class="pp-v">${kc(o.days[k][m])}</span></div>`).join("")}</div>`).join("")}
     <button type="button" class="btn primary pa-go" data-lmmenu="${l.id}|${x.mid}">Aplicar a mi semana</button></div></div>`}
+function prRemind(){const R=LS("sustrato-prrem")||{},P=prPend().filter(p=>p.x&&p.x.o.t!=="note"&&p.x.o.t!=="menu"&&!R[p.x.mid]&&Date.now()-p.x.u>=3*864e5);if(!P.length)return;
+  const p=P[0];R[p.x.mid]=Date.now();LS("sustrato-prrem",R);const h=LS("sustrato-prhide")||{};if(h[p.x.mid]){delete h[p.x.mid];LS("sustrato-prhide",h)}
+  toast((p.l.pro.name||"Tu profesional")+" sigue esperando tu respuesta: "+p.t.toLowerCase());if(S.tab==="hoy")render()}
+setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links&&document.visibilityState==="visible")prRemind()},15000);
 /* tras aplicar: a Plan › Menú, con los días nuevos entrando */
 function prMenuGo(first){S.sheet=null;S.prmv=null;renderModal();S.tab="plan";S.planView="week";S.planWeek=mondayOf(first||today());render();window.scrollTo(0,0);
   if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.querySelectorAll(".wk-card").forEach(c=>{c.classList.add("prc-in");setTimeout(()=>c.classList.remove("prc-in"),900)})}
@@ -10194,7 +10213,9 @@ const HS=[
   ["acog","med","Anticoagulantes",()=>"Verdura de hoja verde, sí, pero en cantidad parecida cada día"],
   ["gluc","med","Insulina o fármacos para la glucosa",()=>"Lleva hidratos rápidos al entrenar · la dosis, con tu médico"]];
 const HS_NODEF=["preg","lact","dm1","renal","reds"];
-const hsOf=()=>((S.profile||{}).hs)||{};
+/* lo de la etapa (embarazo, lactancia, ciclo) solo cuenta y solo se ve si no ha marcado sexo hombre en su perfil */
+const hsMale=()=>(S.profile||{}).sex==="m";
+const hsOf=()=>{const h=((S.profile||{}).hs)||{};if(!hsMale())return h;const o=Object.assign({},h);delete o.preg;delete o.lact;delete o.cyc;return o};
 const hsOn=()=>HS.filter(([k])=>hsOf()[k]);
 const hsUnder=()=>typeof ppActive==="function"&&ppActive(); /* con pauta de tu profesional, manda la pauta */
 /* enganches de dayTargets (003): sin déficit y calorías extra */
@@ -10211,8 +10232,8 @@ function hsHtml(){const o=hsOf(),lk=typeof prLinks==="function"&&prLinks().lengt
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.hsSh?"":" fade"} pa-sheet hs-sheet" role="dialog" aria-modal="true" aria-label="Tu salud">
     <div class="row"><h3 style="margin:0">Tu salud</h3><button class="hbtn xclose" data-act="hsclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <p class="pa-note">Marca lo que afecta a tu dieta. Debajo verás lo que cambia en tu plan.${hsUnder()?" Ahora manda la pauta de tu profesional: lo tiene en cuenta él.":""} No sustituye a tu médico.</p>
-    ${HS_G.map(([g,gn])=>`<span class="pa-l">${gn}</span><div class="hs-g">${HS.filter(x=>x[1]===g).map(([k,,n,fx])=>sw(k,n,fx)+(k==="preg"?tri:"")).join("")}</div>`).join("")}
-    <span class="pa-l">Otras cosas</span><textarea id="hsotro" class="pr-x" maxlength="300" rows="2" placeholder="Por ejemplo: hipotiroidismo, levotiroxina en ayunas">${esc(o.otro||"")}</textarea>
+    ${HS_G.filter(([g])=>g!=="etapa"||!hsMale()).map(([g,gn])=>`<span class="pa-l">${gn}</span><div class="hs-g">${HS.filter(x=>x[1]===g).map(([k,,n,fx])=>sw(k,n,fx)+(k==="preg"?tri:"")).join("")}</div>`).join("")}
+    <span class="pa-l">Otras cosas</span><textarea id="hsotro" class="pr-x hs-otro" maxlength="300" rows="3" aria-label="Otras cosas que afectan a tu dieta" placeholder="Por ejemplo: hipotiroidismo, levotiroxina en ayunas">${esc(o.otro||"")}</textarea>
     ${lk?`<div class="tg-r hs-r hs-sh"><span class="tg-t"><b>Compartir con tu profesional</b><small>Lo verá en tu ficha, con la fecha del último cambio</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${o.sh!==false}" aria-label="Compartir con tu profesional" data-hs="sh"></button></div>`:""}
     <p class="pa-note hs-priv">Solo lo ves tú${lk?" y, si lo compartes, tu profesional":""}. Nunca se usa para nada más.</p></div></div>`}
 function hsSave(o){o.u=Date.now();S.profile=Object.assign({},S.profile,{hs:o});saveProfile(true);if(typeof lkPush==="function")setTimeout(()=>lkPush(false),600)}
