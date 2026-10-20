@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-20T11:58:30.926Z">
+<meta name="sustrato-version" content="2026-10-20T12:52:54.351Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3412,6 +3412,36 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hs-sh{margin-top:14px;background:var(--card2);border-radius:14px;padding:10px 14px}
 .hs-priv{margin-top:10px}
 
+/* v350 · Hoy en dos niveles (114): «Tu día» arriba, bloques plegados en una fila y modo sencillo */
+.td{display:grid;gap:14px}
+.td-h{display:grid;gap:2px}
+.td-k{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}
+.glass .td-v{font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5)!important;font-weight:700!important;letter-spacing:-.02em!important;line-height:1.15;margin:0;text-wrap:balance}
+.td-s{margin:0;font-size:calc(15px*var(--tz,1));color:var(--muted)}
+.td-p{display:grid;gap:6px}
+.td-bar{display:block;height:8px;border-radius:999px;background:var(--fill2);overflow:hidden}
+.td-bar i{display:block;height:100%;border-radius:inherit;background:var(--ac);transition:width .5s cubic-bezier(.32,.72,0,1)}
+.td-pl{font-size:calc(13px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums}
+.td-n{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:14px;padding:12px 14px}
+.td-nt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.td-nt small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.td-nt b{font-size:calc(17px*var(--tz,1));font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-ok{margin:0;font-size:calc(15px*var(--tz,1));color:var(--muted)}
+.hz-g{border-radius:var(--r);overflow:hidden}
+.hz-g.open{background:var(--card)}
+.hz-g.open>.hz-row{border-bottom:.5px solid var(--sep)}
+.hz-g.open .hz-b section.glass{background:none!important;border-radius:0;margin-top:0;box-shadow:none}
+.hz-row{background:none;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.hz-t{font-size:calc(17px*var(--tz,1));font-weight:600;flex:none}
+.hz-v{margin-left:auto;min-width:0;font-size:calc(15px*var(--tz,1));color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hz-v b{color:var(--fg);font-weight:600}
+.hz-ch{flex:none;display:inline-flex;color:var(--ac);transition:transform .25s cubic-bezier(.32,.72,0,1)}
+.hz-row[aria-expanded="true"] .hz-ch{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){.hz-ch{transition:none}}
+.td-sw{padding:4px 2px}
+/* vista sencilla: platos y raciones, sin calorías ni gramos */
+body.simple .mb-k,body.simple .mbar,body.simple .mprot,body.simple .pmm,body.simple .wk-mac,body.simple .pm-o{display:none!important}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3498,7 +3528,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="349";
+const APP_VER="350";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6273,7 +6303,7 @@ function logSummary(t,k){
   if(pend.length){const nm=pend.map((m,i)=>i?m.n.toLowerCase():m.n),masc=pend.some(m=>m.id==="breakfast"),pl=pend.length>1;
     const q=pend.length>=3?`¿Apuntar las ${pend.length} como planeadas?`:`¿${nm.join(" y ")} como planead${masc?"o":"a"}${pl?"s":""}?`;
     const kc=pend.reduce((a,m)=>a+kcOf(logEntryFor(k,m,"done")),0),y=S.log[shiftKey(k,-1)]||{},hasY=!Object.keys(l).filter(x=>!x.startsWith("fuel_")).length&&Object.keys(y).some(x=>!x.startsWith("fuel_"));
-    cta=`<div class="ls-cta"><span class="ls-q"><b>${esc(q)}</b><small>Suma${pl?"n":""} ${fmtInt(kc)} kcal${hasY?' · <button class="ls-y" data-act="logyday">Lo mismo que ayer</button>':""}</small></span><button class="ls-go" data-act="logall">Apuntar</button></div>`}
+    cta=`<div class="ls-cta"><span class="ls-q"><b>${esc(q)}</b><small>${typeof simpleOn==="function"&&simpleOn()?"Con lo planeado":`Suma${pl?"n":""} ${fmtInt(kc)} kcal`}${hasY?' · <button class="ls-y" data-act="logyday">Lo mismo que ayer</button>':""}</small></span><button class="ls-go" data-act="logall">Apuntar</button></div>`}
   /* v307 (opción A): solo la línea de las cuatro comidas y «Apuntar»; las kcal que quedan y los macros ya están en Qué comer */
   return`<div class="ls2"><div class="ls-ms">${seg}</div>${cta}</div>`;
 }
@@ -7012,15 +7042,16 @@ function vHoy(){
   return `
   ${typeof prHoyCard==="function"?prHoyCard():""}
   ${raceCard(t)}
-  ${weightBar()}
-  ${glyCard()}
+  ${tuDia(t)}
+  ${hz("rd","Cómo llegas",hzRd(),weightBar())}
+  ${hz("gly","Glucógeno",hzGly(),glyCard(),1)}
   ${recovCard()}
   ${bkNudge()}
   ${flPrompt()}
   ${weekTeaser()}
   <section class="glass pad fade dsec">${strip}</section>
   ${typeof prHabCard==="function"?prHabCard():""}
-  <div class="hcar${S.day<=today()?" hcar-en":""}"><div class="hcar-track">
+  ${hz("qc","Qué comer",hzQc(t),`<div class="hcar${S.day<=today()?" hcar-en":""}"><div class="hcar-track">
   <section class="glass pad fade hero">
     <div class="hero-l">
       <div class="row"><h2>Qué comer · ${esc(dateLabel(S.day))}</h2></div>
@@ -7047,8 +7078,8 @@ function vHoy(){
     </div>
   </section>
   ${S.day<=today()?energyCard(S.day):""}
-  </div>${S.day<=today()?'<div class="hcar-dots" aria-hidden="true"><i class="on"></i><i></i></div>':""}</div>
-  ${trainCard(t)}
+  </div>${S.day<=today()?'<div class="hcar-dots" aria-hidden="true"><i class="on"></i><i></i></div>':""}</div>`,1)}
+  ${hz("tr","Entreno",hzTr(),trainCard(t))}
   ${panel}
   <p class="app-ver">Sustrato · versión ${APP_VER}</p>`;
 }
@@ -7477,7 +7508,7 @@ function vPerfil(){
     obj:(GOALS[p.goal||"recomp"]||{}).label||""};
   const psOpen=k=>(S.psOpen?S.psOpen[k]:(k==="per"&&!(p.age&&p.weight&&p.height)))?"open":"";
   const appear=`<section class="glass pad fade"><div class="row"><div><h2 style="margin:0">Apariencia</h2></div><div class="seg" role="group" aria-label="Apariencia">${[["auto","Auto"],["light","Claro"],["dark","Oscuro"]].map(([k,l])=>`<button data-theme-set="${k}" aria-pressed="${window.__theme&&window.__theme.get()===k}">${l}</button>`).join("")}</div></div></section>`;
-  return meCard()+(typeof proCard==="function"?proCard():"")+(typeof hsCard==="function"?hsCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
+  return meCard()+(typeof proCard==="function"?proCard():"")+(typeof hsCard==="function"?hsCard():"")+(typeof simpleCard==="function"?simpleCard():"")+connCard()+ntfCard()+knowCard()+fbCard()+`<div class="grid2">
   <section class="glass pad fade"><form id="pform" novalidate>
     <details class="psec" data-ps="per" ${psOpen("per")}><summary><span class="ps-t"><b>Datos personales</b><small>${psSum.per}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Datos personales</legend><div class="fields">
       <label class="f" for="p_name">Nombre<input id="p_name" value="${esc(p.name||"")}" placeholder="Opcional"></label>
@@ -7523,7 +7554,7 @@ function vPerfil(){
 }
 /* v278b: mientras el dedo está en el calendario del Resumen (S._hold), los repintados esperan: si la página se rehiciera
    bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
-function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv()}}
+function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{render0()}finally{unitize();hdrAv();document.body.classList.toggle("simple",typeof simpleOn==="function"&&simpleOn())}}
 function holdEnd(){S._hold=false;if(S._holdPend)render()}
 function render0(){
   hidePop();
@@ -8933,7 +8964,7 @@ function calMark(o,k,tag){const d=o.dot(k);if(o.dot===calDotTrain&&d){const ic=(
 const CB_L=["","bajo","medio","alto"];
 function carbLvl(k){const t=dayTargets(k),kg=num((S.profile||{}).weight)||70;if(!t)return 0;const g=t.C/kg;return g>=6?3:g>=4?2:1}
 function cbLabel(k){const n=carbLvl(k),t=dayTargets(k);if(!n||!t)return"";const d=new Date(k+"T12:00:00");
-  return`<p class="cb-lab"><i class="cb-r" style="--cbp:${(n/3).toFixed(4)}" aria-hidden="true"></i>${k===today()?"Hoy":DOW[d.getDay()]+" "+d.getDate()} · día ${CB_L[n]} en hidratos · ${fmtInt(t.C)} g</p>`}
+  return`<p class="cb-lab"><i class="cb-r" style="--cbp:${(n/3).toFixed(4)}" aria-hidden="true"></i>${k===today()?"Hoy":DOW[d.getDay()]+" "+d.getDate()} · día ${CB_L[n]} en hidratos${typeof simpleOn==="function"&&simpleOn()?"":" · "+fmtInt(t.C)+" g"}</p>`}
 function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
   const cells=o.days.map(k=>{const d=new Date(k+"T12:00:00");return`${(()=>{const cb=o.carb?carbLvl(k):0;return`<button class="day${k>tk?" fut":""}${k===tk?" tk":""}" ${o.attr}="${k}" aria-pressed="${k===o.sel}" aria-label="${esc(dateLabel(k))}${cb?", hidratos "+CB_L[cb]+"s":""}"><small>${k===tk?"hoy":DOW[d.getDay()]}</small><b${cb?` class="cb" style="--cbp:${(cb/3).toFixed(4)}"`:""}>${d.getDate()}</b>${calMark(o,k,"span")}</button>`})()}`}).join("");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
@@ -10192,6 +10223,54 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.hstri){o.preg=+t.dataset.hstri;hsSave(o);renderModal();return}
   if(t.dataset.hs){if(t.dataset.tgGo!=="1")return;const k=t.dataset.hs;if(k==="sh")o.sh=o.sh===false;else if(k==="preg")o.preg=o.preg?0:1;else o[k]=!o[k];if(!o[k]&&k!=="sh")delete o[k];hsSave(o);renderModal();render()}});
 document.addEventListener("change",e=>{if(e.target.id!=="hsotro")return;const o=Object.assign({},hsOf()),v=String(e.target.value||"").trim().slice(0,300);if(v)o.otro=v;else delete o.otro;hsSave(o)});
+
+/* ---------- Hoy en dos niveles y modo sencillo (v350) ----------
+   · Arriba, «Tu día»: cómo llegas en una frase, la energía del día, lo que llevas y la siguiente comida con su acción.
+   · Debajo, Cómo llegas, Glucógeno, Qué comer y Entreno se quedan en una fila con su cifra clave y se despliegan al tocarla
+     (como en Ajustes de iOS). La app recuerda cuáles dejas abiertos (LS sustrato-hz). Comidas va siempre abierta, y un bloque
+     con una pregunta pendiente (¿cómo amaneces?, ¿ayer comiste lo previsto?) no se pliega: es una acción, no un detalle.
+   · Modo sencillo: sin calorías ni gramos, solo platos y raciones. Lo activa el deportista en el Perfil o su profesional
+     ({t:"view",simple} por el vínculo; S.profile.simpleBy). Clase .simple en <body>. Clases hz-, td- */
+/* funciones declaradas (no const): Hoy se pinta al arrancar, antes de que este módulo termine de cargarse */
+function hzS(){if(!S._hz){try{S._hz=JSON.parse(localStorage.getItem("sustrato-hz")||"{}")}catch(e){S._hz={}}}return S._hz}
+function simpleOn(){const p=S.profile||{};return!!(p.simple||p.simpleBy)}
+var HZ_CH='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+/* grupo desplegable como los de Apple (DisclosureGroup): la cabecera se queda arriba del bloque abierto, la flecha (en el color
+   de acento) gira hacia abajo al abrir y se pliega tocando la misma cabecera. Dentro, sin el título repetido del bloque. */
+function hzTit(id){return{gly:/<span class="pkk">[^<]*<\/span>/,qc:/<h2>[^<]*<\/h2>/,tr:/<h2>Entreno[^<]*<\/h2>/}[id]}
+function hz(id,title,val,html,num){if(!html)return"";if(simpleOn()&&num)return"";const HZ=hzS();
+  if(/class="(wc-h|gly-q)[" ]/.test(html))return html; /* con una pregunta pendiente, el bloque va abierto y sin plegar */
+  const open=!!HZ[id],head=`<button type="button" class="hz-row" data-hzt="${id}" aria-expanded="${open}"><span class="hz-t">${title}</span><span class="hz-v">${open?"":val}</span><span class="hz-ch">${HZ_CH}</span></button>`;
+  return open?`<div class="hz-g open">${head}<div class="hz-b">${hzTit(id)?html.replace(hzTit(id),""):html}</div></div>`:`<div class="hz-g glass fade">${head}</div>`}
+/* «Tu día» */
+function tuDia(t){if(S.day!==today()||!t)return"";const sp=simpleOn(),rd=(()=>{try{return readiness(S.day)}catch(e){return null}})();
+  const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F+alKcal(alOf(S.day)),lf=Math.round(t.kcal-ek),pc=Math.max(0,Math.min(1,ek/t.kcal));
+  const mp=mealPlan(t,S.day).meals,lg=(S.log||{})[S.day]||{},done=mp.filter(m=>lg[m.id]).length,nx=mp.find(m=>!lg[m.id]),a=nx&&(S.menu[S.day]||{})[nx.id],ds=a&&dishById(a.d);
+  const lvl=CB_L[carbLvl(S.day)]||"",head=rd&&rd.n?rd.vd[0]:"Tu día";
+  return`<section class="glass pad fade td">
+    <div class="td-h"><span class="td-k">Tu día · ${esc(dateLabel(S.day))}</span><h2 class="td-v"${rd&&rd.n?` style="color:${rd.vd[2]}"`:""}>${esc(head)}</h2>
+      <p class="td-s">${sp?(lvl?"Día "+lvl+" en hidratos":"Come según tu plan"):`${fmtInt(t.kcal)} kcal${lvl?" · día "+lvl+" en hidratos":""}`}</p></div>
+    <div class="td-p" role="img" aria-label="${sp?done+" de "+mp.length+" comidas":fmtInt(ek)+" de "+fmtInt(t.kcal)+" kcal"}"><span class="td-bar"><i style="width:${((sp?done/Math.max(1,mp.length):pc)*100).toFixed(1)}%"></i></span>
+      <span class="td-pl">${sp?`${done} de ${mp.length} comidas`:ek>0?(lf>15?`Te quedan ${fmtInt(lf)} kcal`:lf<-15?`${fmtInt(-lf)} kcal de más`:"Objetivo cumplido"):"Aún sin comidas"}</span></div>
+    ${nx?`<div class="td-n"><span class="td-nt"><small>Siguiente · ${esc(nx.n)} ${fromMin(nx.min)}</small><b>${ds?esc(ds.n):"Sin plato asignado"}</b></span><button type="button" class="btn sm primary" data-mopen="${nx.id}">Apuntar</button></div>`:`<p class="td-ok">Todas las comidas de hoy apuntadas.</p>`}</section>`}
+/* cifras de cada fila */
+function hzRd(){try{const r=readiness(S.day);return r&&r.n?`<b>${r.sc}</b> · ${esc(r.vd[0].toLowerCase())}`:"Sin datos de hoy"}catch(e){return""}}
+function hzGly(){const g=glyState();return g?`<b>≈${g.pct}\u00a0%</b>${g.est?" · estimado":""}`:""}
+function hzQc(t){return`<b>${fmtInt(t.kcal)}</b> kcal · H ${fmtInt(t.C)} g`}
+function hzTr(){const pm=planMatch(S.day),A=S.acts.filter(a=>a.day===S.day);if(A.length)return esc(A.map(a=>SPORT_L[a.sport]||"Entreno").join(" + "))+` · ${fmtInt(A.reduce((s,a)=>s+(a.mov||0),0)/60)} min`;
+  const P=(pm.pl||[]).map(x=>x.s).filter(Boolean);return P.length?esc(P.map(s=>SPORT_L[s.sport]||"Entreno").join(" + "))+" · previsto":"Descanso"}
+/* el profesional decide la vista: {t:"view",simple} por el vínculo */
+function prViewSync(){if(typeof prLinks!=="function")return;let ch=false;prLinks().forEach(l=>{const x=prMsgs(l,"view").find(y=>y.by==="pro");if(!x||((S.profile||{}).viewMid===x.mid))return;
+  const p=Object.assign({},S.profile,{viewMid:x.mid});if(x.o.simple)p.simpleBy=String(l.pro.name||"Tu profesional").slice(0,60);else delete p.simpleBy;S.profile=p;saveProfile(true);lmAck(l.id,x.mid,true);ch=true;
+  toast(x.o.simple?(l.pro.name||"Tu profesional")+" ha activado la vista sencilla":(l.pro.name||"Tu profesional")+" ha quitado la vista sencilla")});if(ch)render()}
+setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links)prViewSync()},5000);
+/* Perfil: el interruptor */
+function simpleCard(){const p=S.profile||{};
+  return`<section class="glass pad fade hs-card"><div class="tg-r hs-r td-sw"><span class="tg-t"><b>Vista sencilla</b><small>${p.simpleBy?"La ha activado "+esc(p.simpleBy)+". Platos y raciones, sin calorías ni gramos":"Platos y raciones, sin calorías ni gramos"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${simpleOn()}" aria-label="Vista sencilla" data-simple="1"${p.simpleBy?" disabled":""}></button></div></section>`}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-hzt],[data-simple]");if(!t)return;
+  if(t.dataset.simple){if(t.dataset.tgGo!=="1")return;S.profile=Object.assign({},S.profile,{simple:!(S.profile||{}).simple});saveProfile(true);render();return}
+  const id=t.dataset.hzt,HZ=hzS();HZ[id]=!HZ[id];try{localStorage.setItem("sustrato-hz",JSON.stringify(HZ))}catch(x){}render();
+});
 
 })();
 </script>
