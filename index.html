@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-22T16:23:36.767Z">
+<meta name="sustrato-version" content="2026-10-22T17:18:12.764Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -464,7 +464,7 @@ header.top .hbtn svg{width:24px;height:24px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 header .fab{width:36px;height:36px;justify-self:end;background:#fff;color:#000}
 /* guía 4.0 (alineación): el círculo del avatar arranca en la misma línea que el contenido; el −11 de .hbtn es para iconos sin fondo */
-header.top .hbtn.avbtn{margin-left:-6px!important}
+header.top .hbtn.avbtn{width:36px;height:36px;padding:0;margin-left:0!important} /* el botón mide lo que el avatar: su círculo arranca en la línea del contenido */
 
 /* ===== Marca animada ===== */
 header.top .wordmark h1{color:#f4f5f7;background:linear-gradient(100deg,#f4f5f7 0%,#f4f5f7 32%,#a9c7ff 43%,#ffffff 50%,#ffe7a0 57%,#f4f5f7 68%,#f4f5f7 100%) 100% 0/320% 100% no-repeat;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -2775,7 +2775,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .str-bg{grid-template-columns:1fr;margin-bottom:8px}
 
 /* v267 · Avatar en el botón de Perfil (080). Como el de la tarjeta de Perfil, en pequeño. Clase .hav */
-.hav{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:var(--fill2);color:var(--fg);font:600 calc(13px*var(--tz,1)) var(--font)}
+.hav{flex:none;max-width:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:var(--fill2);color:var(--fg);font:600 calc(13px*var(--tz,1)) var(--font)}
 
 /* v269 · Fuerza que progresa (081): series propuestas con ✓, por qué, «¿Cómo fue?», la próxima vez, descanso, «···» de rutinas y Fuerza › Progreso */
 .fz-sug-r .fz-in input{color:var(--muted)}
@@ -3627,7 +3627,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="361";
+const APP_VER="362";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -6022,6 +6022,11 @@ const VZ={w:322,
       <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Puntos con su tendencia (relación o dispersión en el tiempo). o={id,label,pts:[{d,v,c,tip}],trend,inv,fmt,h}: puntos de 4 con anillo de 2 del color
      de la tarjeta (para que no se fundan al solaparse); tendencia discontinua en gris con su nombre al final */
+  /* línea pequeña (v362): sin ejes ni rejilla, para una tarjeta de resumen. Curva monótona de 2 px, último punto marcado; escala vertical de al menos
+     o.minSpan (lo estable se ve estable). Se dibuja a su ancho real (o.w, o.h): nunca se estira */
+  spark(o){const w=o.w||220,h=o.h||44,P=o.pts;if(!P||P.length<2)return"";const v=P.map(p=>p.v),mid=(d3.min(v)+d3.max(v))/2,sp=Math.max(o.minSpan||0,d3.max(v)-d3.min(v))||1;
+    const x=d3.scaleLinear().domain([0,P.length-1]).range([4,w-6]),y=d3.scaleLinear().domain([mid-sp/2,mid+sp/2]).range([h-6,6]),L=d3.line().x((p,i)=>x(i)).y(p=>y(p.v)).curve(d3.curveMonotoneX)(P);
+    return`<svg class="vz-sp" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(o.label||"")}"><path d="${L}" fill="none" stroke="${o.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${x(P.length-1).toFixed(1)}" cy="${y(v[v.length-1]).toFixed(1)}" r="3.5" fill="${o.color}" class="vz-last"/></svg>`},
   dots(o){const w=VZ.w,h=o.h||170,PL=0,PR=o.trend?62:44,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts;if(P.length<2)return"";
     const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));let[lo,hi]=d3.extent(P,p=>p.v);const pad=Math.max(o.minPad||1,(hi-lo)*.18);lo-=pad;hi+=pad;
     const x=d3.scaleLinear().domain([0,span]).range([PL+6,PL+iw-6]),y=d3.scaleLinear().domain([lo,hi]).range(o.inv?[PT,PT+ih]:[PT+ih,PT]),X=d=>x(daysBetween(d0,d)),Y=v=>y(v),fmt=o.fmt||(v=>fmtInt(v));
