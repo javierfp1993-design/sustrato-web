@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-22T17:18:12.764Z">
+<meta name="sustrato-version" content="2026-10-23T12:29:09.530Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -270,7 +270,7 @@ nav.tabs button{padding:10px 14px}
 form .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:520px){form .fields{grid-template-columns:minmax(0,1fr)}}
 label.f,.pfx-g{display:flex;flex-direction:column;gap:6px;font-size:calc(12px*var(--tz,1));color:var(--muted)}
-input,select{font:400 calc(17px*var(--tz,1)) var(--font);color:var(--fg);background:rgba(255,255,255,.06);border:1px solid var(--edge-soft);border-radius:14px;padding:10px 14px;min-height:44px;width:100%}
+input,select{font:400 calc(17px*var(--tz,1)) var(--font);color:var(--fg);background:var(--fill2);border:1px solid transparent;border-radius:14px;padding:10px 14px;min-height:44px;width:100%}
 input::placeholder{color:var(--faint)}
 fieldset{border:0;padding:0;margin:0 0 18px}
 legend.lg{font-size:calc(13px*var(--tz,1));color:var(--muted);margin-bottom:10px}
@@ -3410,7 +3410,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hs-otro::placeholder{color:var(--muted)}
 
 /* v350 · Hoy en dos niveles (114): «Tu día» arriba, bloques plegados en una fila y modo sencillo */
-.td{display:grid;gap:14px}
+.td{display:grid;grid-template-columns:minmax(0,1fr);gap:14px} /* 23-10: un nombre de plato largo no ensancha la tarjeta (se corta con «…» en su fila) */
 .glass.pad.td{padding:20px} /* guía 4.0: la tarjeta protagonista lleva 20 de relleno */
 .td-h{display:grid;gap:2px}
 .td-k{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}
@@ -3541,6 +3541,11 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .pfa-sheet details.psec>summary .xb-ch{transform:rotate(-90deg);transition:transform .35s cubic-bezier(.3,.7,.2,1)}
 .pfa-sheet details.psec[open]>summary .xb-ch{transform:rotate(0)}
 
+/* Anotar medidas: la hoja de siempre (Tu salud), campos sueltos de la guía; la tarjeta Medidas con su botón en la cabecera */
+.ms-sheet .fields{display:grid;gap:12px;margin:8px 0 12px}
+.ms-sheet .btn.primary.big{width:100%;margin-top:4px}
+.ms-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3627,7 +3632,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="362";
+const APP_VER="363";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -5993,15 +5998,21 @@ const VZ={w:322,
   /* entra animada solo si respondes tú (MU.byUser) y la gráfica no estaba ya en pantalla en el pintado anterior: al llegar a una sección,
      no al tocar un conmutador cerca (eso sería un parpadeo; parpadeo.py lo comprueba) */
   prev:new Set(),cur:new Set(),
+  /* v363 · cada gráfica, a su ancho real (guía, cap. 15): VZ recuerda con qué se dibujó cada una (keep) y refit() la vuelve a dibujar si su tarjeta
+     mide otra cosa que la que midió fit() (en Pro, las de media columna frente a las anchas). Sin esto se encogían y los ejes bajaban de 11 px */
+  reg:{},_k:"",
+  keep(fn,o){const k=fn+":"+String(o.id||o.label||"").replace(/[^\w-]/g,"_");VZ.reg[k]={fn,o};VZ._k=k},
+  refit(){if(typeof document==="undefined")return;const w0=VZ.w;document.querySelectorAll("svg.vz[data-vzk]").forEach(s=>{const r=VZ.reg[s.dataset.vzk],vb=s.viewBox&&s.viewBox.baseVal?s.viewBox.baseVal.width:0,cw=Math.round(s.getBoundingClientRect().width);
+      if(!r||cw<200||!vb||Math.abs(cw-vb)<=4)return;VZ.w=cw;const t=document.createElement("template");t.innerHTML=VZ[r.fn](r.o).trim();const n=t.content.firstElementChild;if(n)s.replaceWith(n)});VZ.w=w0},
   anim(label){const k=label||"";VZ.cur.add(k);return typeof MU!=="undefined"&&!MU.reduce()&&MU.byUser(1500)&&!VZ.prev.has(k)},
   sd:k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)},
   nice(lo,hi,n){return d3.ticks(lo,hi,n||3)},
   grid(ticks,Y,PL,R,fmt,refY){return ticks.map(v=>{const y=Y(v),hide=(refY||[]).some(q=>Math.abs(q-y)<16);return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-g"/>${hide?"":`<text class="ax" x="${R+8}" y="${(y+4).toFixed(1)}">${fmt(v)}</text>`}`}).join("")},
   ref(y,PL,R,label){return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-ref"/>${label?`<text class="ax vz-rl" x="${R+9}" y="${(y+4).toFixed(1)}">${label}</text>`:""}`},
   bar(x,y,w,h,r){if(h<=0)return"";r=Math.min(r,h,w/2);return`M${x.toFixed(1)} ${(y+h).toFixed(1)}V${(y+r).toFixed(1)}Q${x.toFixed(1)} ${y.toFixed(1)} ${(x+r).toFixed(1)} ${y.toFixed(1)}H${(x+w-r).toFixed(1)}Q${(x+w).toFixed(1)} ${y.toFixed(1)} ${(x+w).toFixed(1)} ${(y+r).toFixed(1)}V${(y+h).toFixed(1)}Z`},
-  svg(w,h,label,extra){return`<svg class="chart vz${VZ.anim(label)?" vz-in":""}${extra?" "+extra:""}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label||"")}">`},
+  svg(w,h,label,extra){const k=VZ._k;VZ._k="";return`<svg class="chart vz${VZ.anim(label)?" vz-in":""}${extra?" "+extra:""}"${k?` data-vzk="${k}"`:""} viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label||"")}">`},
   /* Línea de tendencia. o={id,color,label,pts:[{d,v}],line:[{d,v}],refs:[{v,label}],band:{lo,hi,label},fmt,tfmt,tip,read,h,inv,minPad} */
-  line(o){const w=VZ.w,h=o.h||170,PL=0,PR0=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?54:42,PB=20,PT=14,ih=h-PB-PT,P=o.pts,L=o.line||P;if(!P.length||(P.length<2&&!(o.proj&&o.proj.pts&&o.proj.pts.length)))return"";
+  line(o){VZ.keep("line",o);const w=VZ.w,h=o.h||170,PL=0,PR0=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?54:42,PB=20,PT=14,ih=h-PB-PT,P=o.pts,L=o.line||P;if(!P.length||(P.length<2&&!(o.proj&&o.proj.pts&&o.proj.pts.length)))return"";
     const J=o.proj&&o.proj.pts||[],d0=P[0].d,d1=J.length?J[J.length-1].d:P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));
     let[lo,hi]=d3.extent(P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v),o.band?[o.band.lo,o.band.hi]:[],J.flatMap(p=>[p.v,p.lo??p.v,p.hi??p.v])));const pad=Math.max(o.minPad||.5,(hi-lo)*.15);lo-=pad;hi+=pad;
     /* el hueco del eje derecho, a la medida de su etiqueta más larga (11 px ≈ 6,2 por carácter, 10 de aire): «19,0 %» ya no se sale */
@@ -6027,7 +6038,7 @@ const VZ={w:322,
   spark(o){const w=o.w||220,h=o.h||44,P=o.pts;if(!P||P.length<2)return"";const v=P.map(p=>p.v),mid=(d3.min(v)+d3.max(v))/2,sp=Math.max(o.minSpan||0,d3.max(v)-d3.min(v))||1;
     const x=d3.scaleLinear().domain([0,P.length-1]).range([4,w-6]),y=d3.scaleLinear().domain([mid-sp/2,mid+sp/2]).range([h-6,6]),L=d3.line().x((p,i)=>x(i)).y(p=>y(p.v)).curve(d3.curveMonotoneX)(P);
     return`<svg class="vz-sp" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(o.label||"")}"><path d="${L}" fill="none" stroke="${o.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${x(P.length-1).toFixed(1)}" cy="${y(v[v.length-1]).toFixed(1)}" r="3.5" fill="${o.color}" class="vz-last"/></svg>`},
-  dots(o){const w=VZ.w,h=o.h||170,PL=0,PR=o.trend?62:44,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts;if(P.length<2)return"";
+  dots(o){VZ.keep("dots",o);const w=VZ.w,h=o.h||170,PL=0,PR=o.trend?62:44,PB=20,PT=14,iw=w-PL-PR,ih=h-PB-PT,P=o.pts;if(P.length<2)return"";
     const d0=P[0].d,d1=P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));let[lo,hi]=d3.extent(P,p=>p.v);const pad=Math.max(o.minPad||1,(hi-lo)*.18);lo-=pad;hi+=pad;
     const x=d3.scaleLinear().domain([0,span]).range([PL+6,PL+iw-6]),y=d3.scaleLinear().domain([lo,hi]).range(o.inv?[PT,PT+ih]:[PT+ih,PT]),X=d=>x(daysBetween(d0,d)),Y=v=>y(v),fmt=o.fmt||(v=>fmtInt(v));
     const r=o.trend&&typeof linreg==="function"?linreg(P.map(p=>[daysBetween(d0,p.d),p.v])):null,ticks=y.ticks(3).filter(v=>Y(v)>PT&&Y(v)<PT+ih).slice(0,3);
@@ -6039,7 +6050,7 @@ const VZ={w:322,
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
       <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Varias líneas de la misma escala (composición: grasa y magra). o={id,label,series:[{color,w,pts:[{d,v,est}]}],fmt,read,h}; lo estimado, punteado */
-  multi(o){const w=VZ.w,h=o.h||170,PL=0,PR=42,PB=20,PT=12,iw=w-PL-PR,ih=h-PB-PT,A=o.series.flatMap(s=>s.pts);if(A.length<2)return"";
+  multi(o){VZ.keep("multi",o);const w=VZ.w,h=o.h||170,PL=0,PR=42,PB=20,PT=12,iw=w-PL-PR,ih=h-PB-PT,A=o.series.flatMap(s=>s.pts);if(A.length<2)return"";
     const ds=A.map(p=>p.d).sort(),d0=ds[0],d1=ds[ds.length-1],span=Math.max(1,daysBetween(d0,d1));let[lo,hi]=d3.extent(A.map(p=>p.v).concat(0));const pad=Math.max(.4,(hi-lo)*.15);lo-=pad;hi+=pad;
     const x=d3.scaleLinear().domain([0,span]).range([PL,PL+iw]),y=d3.scaleLinear().domain([lo,hi]).range([PT+ih,PT]),X=d=>x(daysBetween(d0,d)),Y=v=>y(v),fmt=o.fmt;
     const ln=P=>d3.line().x(p=>X(p.d)).y(p=>Y(p.v)).curve(d3.curveMonotoneX)(P);
@@ -6052,7 +6063,7 @@ const VZ={w:322,
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
       <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax${d1===today()?" vz-cur":""}" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Barras (apiladas o no). o={id,label,cols:[{x,segs:[{v,c}],ghost,tip,cur,read,go}],refs:[{v,label}],fmt,grid,xAll,h} */
-  bars(o){const w=VZ.w,h=o.h||170,PL=0,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.2)+12):m,o.grid?42:2),PB=20,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length;
+  bars(o){VZ.keep("bars",o);const w=VZ.w,h=o.h||170,PL=0,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.2)+12):m,o.grid?42:2),PB=20,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length;
     const xb=d3.scaleBand().domain(d3.range(n)).range([PL,PL+iw]).paddingInner(n>14?.28:.38).paddingOuter(.1),bw=Math.min(28,xb.bandwidth());
     const tot=c=>d3.sum(c.segs,s=>s.v),mx=d3.max([...C.map(c=>Math.max(tot(c),c.ghost||0)),...(o.refs||[]).map(r=>r.v),1e-9]);
     const y=d3.scaleLinear().domain([0,mx*1.1]).range([PT+ih,PT]),Y=v=>y(v),fmt=o.fmt||(v=>fmtInt(v));
@@ -7712,7 +7723,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet&&String(S.sheet).startsWith("pfa:")){m.innerHTML=pgSheet();m.hidden=false;return} /* Perfil agrupado: sus hojas */if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="msnew"){m.innerHTML=msHtml();m.hidden=false;return} /* v363: anotar medidas */if(S.sheet&&String(S.sheet).startsWith("pfa:")){m.innerHTML=pgSheet();m.hidden=false;return} /* Perfil agrupado: sus hojas */if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -8698,7 +8709,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
    Clases: .ms-ai .ph-txt */
 const IC_PEN='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
 const IC_SPARK='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
-function msAiBtn(q){return S.sample&&q.trim().length>=3?`<button type="button" class="ms-ai" data-mstxt="1"><span class="ia-ic">${IC_SPARK}</span><span><b>Apuntar «${esc(q.trim().slice(0,60))}»</b><small>Calculo cantidades y macros con IA</small></span></button>`:""}
+function msAiBtn(q){return S.sample&&q.trim().length>=3?`<button type="button" class="ms-ai" data-mstxt="1"><span class="ia-ic">${IC_SPARK}</span><span><b>Apuntar «${esc(q.trim().slice(0,60))}»</b><small>Calculo cantidades y macros</small></span></button>`:""}
 async function textEstimate(mid,text,k){if(!S.sample||!text)return;text=String(text).trim().slice(0,300);k=k||(S.msh&&S.msh.k)||S.day;
   if(S.sheet==="meal"){S.sheet=null;S.msh=null;renderModal()}
   S.phFile=null;S.mealMenu=null;S.ph={mid,k,img:null,txt:text,busy:true,err:null,res:null,r:1,ask:false,hint:""};render();
@@ -8742,7 +8753,7 @@ function wrBlock(wk){if(!S.sample)return"";const v=wrGet(wk);
   const box=body=>`<details class="wr"${wrOpen()?" open":""}><summary class="wr-h"><span class="ia-ic">${IC_SPARK}</span><b>Revisión de la semana</b><i class="xb-ch" aria-hidden="true"></i></summary>${body}</details>`;
   if(S._wrBusy===wk)return box(`<p class="wr-t wr-busy">Leyendo tu semana…</p>`);
   if(v)return box(`<p class="wr-t">${esc(v.resumen)}</p>${v.ajuste?`<p class="wr-a"><span>Para esta semana</span>${esc(v.ajuste)}</p>`:""}<button type="button" class="cl-l" data-wr="${wk}">Volver a escribirla</button>`);
-  return box(`<p class="wr-t">Tres frases sobre tu semana y un ajuste para la siguiente, con tus comidas, sueño, pulso y plan. Sin datos de Strava.</p>${S._wrErr?`<p class="wr-e">${esc(S._wrErr)}</p>`:""}<button type="button" class="btn primary big" data-wr="${wk}">Escribir mi revisión</button>`)}
+  return box(`<p class="wr-t">Tres frases sobre tu semana y un ajuste para la siguiente, con tus comidas, sueño, pulso y plan.</p>${S._wrErr?`<p class="wr-e">${esc(S._wrErr)}</p>`:""}<button type="button" class="btn primary big" data-wr="${wk}">Escribir mi revisión</button>`)}
 document.addEventListener("toggle",e=>{const d=e.target;if(d.classList&&d.classList.contains("wr"))try{localStorage.setItem(WR_OPEN,d.open?"1":"0")}catch(x){}},true);
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wr]");if(!b)return;e.stopPropagation();wrRun(b.dataset.wr)},true);
 
@@ -10063,7 +10074,8 @@ function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
     const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)}}}
   if(P.meals&&k<=today()){const ml=lkMeals(k);if(ml)o.ml=ml}
   if(typeof prHabDay==="function"){const hb=prHabDay(k);if(hb)o.hb=hb} /* v342: los hábitos que te propuso, marcados ese día */
-  if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct}
+  if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct;
+    /* v363: las medidas que anotas tú (las de tu profesional ya las tiene) */const ms=(S.measures||[]).find(x=>x.d===k&&x.src!=="pro");if(ms){const z={};["kg","waist","hip","neck","bf"].forEach(q=>{if(ms[q]!=null)z[q]=ms[q]});if(Object.keys(z).length)o.ms=z}}
   if(P.ready){const rh=(S.rhr||{})[k],hv=(S.hrv||{})[k],sl=(S.sleep||{})[k];if(rh)o.rhr=rh;if(hv)o.hrv=hv;if(sl)o.sl=sl;if(rh||hv||sl){try{o.rd=readiness(k).sc}catch(e){}}}
   return Object.keys(o).length?o:null}
 /* v341 · detalle de las comidas: cada una con lo que se apuntó (plato, gramos de cada ingrediente, hora) y su objetivo de ese día */
@@ -10141,7 +10153,7 @@ function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.
 function lmHtml(l,o){ /* v359: o = "props" (lo que te manda) o "notes" (la conversación) para la página de Tu profesional */const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
   const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,20).reverse() /* v358: primero, como una conversación (lo más nuevo abajo, junto al campo) */;
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
-    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort(),ok=prMenuDays(o).length;return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${ok?Object.keys(o.dishes||{}).length+" platos":"llegó sin platos"}</small></span>${!ok?"":a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
+    if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort(),ok=prMenuDays(o).length;return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${ok?(n=>n+(n===1?" comida":" comidas"))(Object.values(o.days||{}).reduce((t,d)=>t+Object.values(d||{}).filter(Boolean).length,0)):"llegó sin platos"}</small></span>${!ok?"":a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return o==="notes"?`<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
@@ -10209,7 +10221,7 @@ function prChkHtml(){const c=S.prc||{v:{}},l=prChkDue();if(!l)return"";
 /* medidas de la consulta: entran solas en tus medidas (una por día; la de tu profesional manda ese día) */
 async function prSaveMeasures(){const c=userCol();if(c)try{await c.doc("measures").set({kind:"measures",list:S.measures})}catch(e){}}
 function prMeasIn(l,x){const m=x.o.m||{},d=/^\d{4}-\d{2}-\d{2}$/.test(m.d||"")?m.d:keyOf(new Date(x.u)),n=v=>v==null||v===""||isNaN(+v)?null:+v;
-  const e={d,src:"pro",by:String(l.pro.name||"").slice(0,60),mid:x.mid,kg:n(m.kg),bf:n(m.bf),lean:n(m.lean),waist:n(m.waist),hip:n(m.hip),arm:n(m.arm),thigh:n(m.thigh),sk:n(m.sk),mt:String(m.mt||"").slice(0,20)};
+  const e={d,src:"pro",by:String(l.pro.name||"").slice(0,60),mid:x.mid,kg:n(m.kg),bf:n(m.bf),lean:n(m.lean),waist:n(m.waist),hip:n(m.hip),neck:n(m.neck),arm:n(m.arm),thigh:n(m.thigh),sk:n(m.sk),mt:String(m.mt||"").slice(0,20)};
   if((S.measures||[]).some(y=>y.mid===x.mid))return false;S.measures=(S.measures||[]).filter(y=>!(y.d===d&&y.src==="pro")).concat([e]).sort((a,b)=>a.d<b.d?-1:1);return true}
 function prMeasSync(){let n=0;prLinks().forEach(l=>prMsgs(l,"meas").filter(x=>x.by==="pro").forEach(x=>{if(prMeasIn(l,x)){n++;lmAck(l.id,x.mid,true)}}));if(n){prSaveMeasures();toast(n===1?"Tu profesional ha añadido tus medidas de la consulta":"Tu profesional ha añadido "+n+" medidas de la consulta");render()}}
 /* menú de la semana: sustituye tus días por los de tu profesional (las comidas que no trae se rellenan solas). Sus platos van a tus platos;
@@ -10459,10 +10471,12 @@ function mdCopy(k,mid){const D=[];for(let i=0;i<14;i++){const d=shiftKey(today()
       else{S.menu[d]={};Object.entries(src).forEach(([m,a])=>{S.menu[d][m]=Object.assign({},a,{lock:true})});autoAssignDay(d)}});
     saveMenu();render();undoToast(sel.length===1?"Copiado al "+dateLabel(sel[0]):"Copiado a "+sel.length+" días",()=>{S.menu=prev;saveMenu();render()})},null,true)}
 /* medidas de la consulta: las que te anota tu profesional (src:"pro") y las tuyas */
-function measHistory(){const M=(S.measures||[]).slice().sort((a,b)=>a.d<b.d?1:-1);if(!M.length)return"";
-  const f=(v,u)=>String(Math.round(v*10)/10).replace(".",",")+"\u00a0"+u,txt=m=>[m.kg&&"Peso\u00a0"+f(m.kg,"kg"),m.bf&&"grasa\u00a0"+f(m.bf,"%"),m.lean&&"magra\u00a0"+f(m.lean,"kg"),m.waist&&"cintura\u00a0"+f(m.waist,"cm")].filter(Boolean).join(" · ")||"Medidas";
-  return`<section class="glass pad fade"><div class="row"><h2>Medidas de la consulta</h2></div><div class="whl">${M.slice(0,S.msAll?M.length:5).map(m=>`<div class="wh td2-m"><span>${esc(dateLabel(m.d))}<small>${m.src==="pro"?esc(m.by||"Tu profesional"):"Tuya"}</small></span><b class="td2-v">${esc(txt(m))}</b><button class="tskip" data-msdel="${esc(m.mid||m.d)}" aria-label="Borrar la medida del ${esc(dateLabel(m.d))}">✕</button></div>`).join("")}</div>
-    ${M.length>5?`<button class="chip sm" data-act="msall" style="margin-top:10px">${S.msAll?"Ver menos":"Ver las "+M.length}</button>`:""}<p class="note">Si borras una de tu profesional, él conserva la suya.</p></section>`}
+function measHistory(){const M=(S.measures||[]).slice().sort((a,b)=>a.d<b.d?1:-1);
+  const head=`<div class="ms-h"><h2>Medidas</h2><button class="chip" data-act="msnew">Anotar</button></div>`;
+  if(!M.length)return`<section class="glass pad fade">${head}<p class="note" style="margin:6px 0 0">Anota tu peso y tus perímetros cuando te midas: verás cómo cambian y, si compartes tu cuerpo, también tu profesional.</p></section>`;
+  const f=(v,u)=>String(Math.round(v*10)/10).replace(".",",")+"\u00a0"+u,txt=m=>[m.kg&&"Peso\u00a0"+f(m.kg,"kg"),m.bf&&"grasa\u00a0"+f(m.bf,"%"),m.lean&&"magra\u00a0"+f(m.lean,"kg"),m.waist&&"cintura\u00a0"+f(m.waist,"cm"),m.hip&&"cadera\u00a0"+f(m.hip,"cm"),m.neck&&"cuello\u00a0"+f(m.neck,"cm")].filter(Boolean).join(" · ")||"Medidas";
+  return`<section class="glass pad fade">${head}<div class="whl">${M.slice(0,S.msAll?M.length:5).map(m=>`<div class="wh td2-m"><span>${esc(dateLabel(m.d))}<small>${m.src==="pro"?esc(m.by||"Tu profesional"):"Tuya"}</small></span><b class="td2-v">${esc(txt(m))}</b><button class="tskip" data-msdel="${esc(m.mid||m.d)}" aria-label="Borrar la medida del ${esc(dateLabel(m.d))}">✕</button></div>`).join("")}</div>
+    ${M.length>5?`<button class="chip sm" data-act="msall" style="margin-top:10px">${S.msAll?"Ver menos":"Ver las "+M.length}</button>`:""}${M.some(m=>m.src==="pro")?`<p class="note">Si borras una de tu profesional, él conserva la suya.</p>`:""}</section>`}
 let LMDEL=null;
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-msdel],[data-lmdel],[data-act='msall']");if(!t)return;
   if(t.dataset.act==="msall"){S.msAll=!S.msAll;render();return}
@@ -10668,6 +10682,30 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   MU.spring(p,open?0:full,open?full:0,0,set,{resp:.35,done})});
 /* al guardar los datos personales desde su hoja, la hoja se repinta con lo guardado (y «Guardado» en el botón) */
 document.addEventListener("submit",e=>{if(e.target.id==="pform"&&S.sheet==="pfa:datos")setTimeout(renderModal,0)});
+
+/* ---------- Anotar medidas (v363, pedido de Javier: medidas en las dos direcciones) ----------
+   Una hoja corta para anotar peso y perímetros sin pasar por el perfil. Se guarda en tus medidas (src:"me"); el peso entra además en tu
+   peso diario y, si es la medida más reciente, los perímetros pasan al perfil (con ellos se estima tu composición). Si compartes tu cuerpo
+   con tu profesional, le llegan con el resto de tus datos (profesional/compartir.js, campo ms); las suyas te llegan a ti (seguimiento.js). */
+const MS_F=[["kg","Peso","kg","75,0"],["waist","Cintura a la altura del ombligo","cm","88"],["hip","Cadera","cm","98"],["neck","Cuello","cm","38"],["bf","Grasa corporal (si la conoces)","%","18"]];
+function msHtml(){const d=S.msD||today();
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.msSh?"":" fade"} pa-sheet ms-sheet" role="dialog" aria-modal="true" aria-label="Anotar medidas">
+    <div class="row"><h3 style="margin:0">Anotar medidas</h3><button class="hbtn xclose" data-act="msclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="fields"><div class="f">Fecha${fdField("ms_d","date",d,"Fecha",`max="${today()}"`)}</div>${MS_F.map(([k,n,u,ej])=>`<label class="f" for="ms_${k}">${n} (${u})<input id="ms_${k}" inputmode="decimal" placeholder="Por ejemplo, ${ej}"></label>`).join("")}</div>
+    <p class="pa-note">Anota solo lo que hayas medido.${typeof prLinks==="function"&&prLinks().some(l=>l.perms&&l.perms.body)?" Tu profesional las verá junto a las de la consulta.":""}</p>
+    <button class="btn primary big" data-act="mssave">Guardar</button></div></div>`}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act='msnew'],[data-act='msclose'],[data-act='mssave']");if(!t)return;const a=t.dataset.act;
+  if(a==="msnew"){S.msD=today();S.msSh=false;S.sheet="msnew";renderModal();S.msSh=true;return}
+  if(a==="msclose"){S.sheet=null;renderModal();return}
+  const v=k=>{const x=$("#ms_"+k);return x?num(String(x.value).replace(",",".")):null},d=($("#ms_d")||{}).value||today(),e2={d,src:"me"};MS_F.forEach(([k])=>{const x=v(k);if(x)e2[k]=x});
+  if(Object.keys(e2).length<3){toast("Anota al menos una medida");return}
+  const prev=(S.measures||[]).slice(),prevW=(S.weights||[]).slice(),prevP=Object.assign({},S.profile);
+  S.measures=prev.filter(m=>!(m.d===d&&m.src!=="pro")).concat([e2]).sort((a,b)=>a.d<b.d?-1:1);
+  const latest=!prev.some(m=>m.src!=="pro"&&m.d>d);
+  if(e2.kg){S.weights=prevW.filter(x=>x.d!==d).concat([{d,kg:e2.kg}]);if(!prevW.some(x=>x.d>d))S.profile=Object.assign({},S.profile,{weight:e2.kg});saveWeights()}
+  if(latest)["waist","hip","neck"].forEach(k=>{if(e2[k])S.profile=Object.assign({},S.profile,{[k]:e2[k]})});
+  prSaveMeasures();saveProfile(true);S.sheet=null;renderModal();render();if(typeof lkPush==="function")setTimeout(()=>lkPush(true),600);
+  undoToast("Medidas guardadas",()=>{S.measures=prev;S.weights=prevW;S.profile=prevP;prSaveMeasures();saveWeights();saveProfile(true);render()})});
 
 })();
 </script>
