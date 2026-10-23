@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-23T12:29:09.530Z">
+<meta name="sustrato-version" content="2026-10-23T13:10:16.582Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -319,7 +319,7 @@ table.bands td.num{font-variant-numeric:tabular-nums;font-family:var(--font);fon
 .rp-tl::before{content:"";position:absolute;left:71px;top:12px;bottom:12px;width:2px;background:var(--fill)}
 .rp-st{display:grid;grid-template-columns:48px 34px minmax(0,1fr);gap:10px;align-items:start}
 .rp-t{font-size:calc(13px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums;padding-top:8px;text-align:right}
-.rp-ic{position:relative;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--card2);color:var(--muted)}
+.rp-ic{position:relative;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--card2);color:var(--icon)}
 .rp-st>div{display:flex;flex-direction:column;gap:2px;padding-top:6px}.rp-st b{font-size:calc(15px*var(--tz,1));font-weight:600}.rp-st>div span{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .rp-st.past{opacity:.45}
 .rp-st.now .rp-ic{background:var(--ac);color:var(--ac-on)}
@@ -554,7 +554,7 @@ body.noscroll{overflow:hidden}
 @keyframes fuIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
 .sheet{position:relative}
 .sheet>.row:first-child{padding-right:44px}
-.xclose{position:absolute!important;top:14px;right:14px;margin:0!important;z-index:2;flex:0 0 auto;background:var(--fill2)!important;width:36px!important;height:36px!important;border-radius:50%!important;color:var(--muted)!important}
+.xclose{position:absolute!important;top:14px;right:14px;margin:0!important;z-index:2;flex:0 0 auto;background:var(--fill2)!important;width:36px!important;height:36px!important;border-radius:50%!important;color:var(--icon)!important}
 .xclose:hover{color:var(--fg)!important}
 html,body{overflow-x:hidden;overflow-x:clip;max-width:100%}
 html{overscroll-behavior-x:none}
@@ -718,6 +718,7 @@ rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 body{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;justify-content:space-around;align-items:stretch;padding:6px max(6px,calc((100% - 600px)/2)) calc(6px + env(safe-area-inset-bottom,0px)); /* los botones, en la columna de 600 */background:rgba(18,18,20,.82);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-top:.5px solid rgba(255,255,255,.1)}
 .tabbar button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;flex:1 1 0;min-width:0;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px 4px;cursor:pointer;border-radius:14px;transition:color .2s}
+.tabbar button:not([aria-current="page"]) .tb-ic{color:var(--icon)}
 .tb-ic{display:grid;place-items:center;width:44px;height:28px;border-radius:14px;transition:background .2s,color .2s}
 .tb-ic svg{width:22px;height:22px}
 .tb-l{font-size:calc(11px*var(--tz,1));font-weight:500;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -778,13 +779,13 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .qa-grab{width:36px;height:5px;border-radius:3px;background:var(--fill);margin:2px auto 10px}
 .qa-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .qa-h b{font-size:calc(17px*var(--tz,1));font-weight:600}
-.qa-x{width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--muted)}
+.qa-x{width:30px;height:30px;border-radius:50%;background:var(--card2);color:var(--icon)}
 .qa-top{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .qa-big{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);background:var(--card2);border-radius:14px;min-height:88px;padding:14px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:10px;text-align:left;transition:transform .12s}
-.qa-big svg{color:var(--muted)}.qa-big b{font-size:calc(15px*var(--tz,1));font-weight:600}
+.qa-big svg{color:var(--icon)}.qa-big b{font-size:calc(15px*var(--tz,1));font-weight:600}
 .qa-big:active,.qa-row:active{transform:scale(.98)}
 .qa-row{appearance:none;border:0;cursor:pointer;font:inherit;color:var(--fg);background:none;width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;gap:12px;text-align:left;transition:transform .12s}
-.qa-row svg{flex:none;color:var(--muted)}
+.qa-row svg{flex:none;color:var(--icon)}
 .qa-t{flex:1;min-width:0;font-size:calc(15px*var(--tz,1));display:flex;flex-direction:column}.qa-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .qa-go{color:var(--faint);font-size:calc(20px*var(--tz,1))}
 .qa-ask{margin-top:10px;background:var(--card2);border-radius:14px;min-height:56px}
@@ -1174,9 +1175,10 @@ html[data-theme="light"] .ob-goal{box-shadow:0 1px 2px rgba(0,0,0,.04)}
 @media (prefers-color-scheme:light){html:not([data-theme="dark"]) #onb input,html:not([data-theme="dark"]) .ob-goal{background:#fff!important}}
 
 /* accesibilidad: contraste y foco */
-:root,html[data-theme="dark"]{--muted:#aeaeb2!important;--faint:#8e8e93!important}
-html[data-theme="light"]{--muted:#5f5f64!important;--faint:#8e8e93!important}
-@media (prefers-color-scheme:light){html:not([data-theme="dark"]){--muted:#5f5f64!important;--faint:#8e8e93!important}}
+:root,html[data-theme="dark"]{--muted:#aeaeb2!important;--faint:#8e8e93!important;--icon:#d1d1d6}
+html[data-theme="light"]{--muted:#5f5f64!important;--faint:#8e8e93!important;--icon:var(--muted)}
+@media (prefers-color-scheme:light){html:not([data-theme="dark"]){--muted:#5f5f64!important;--faint:#8e8e93!important;--icon:var(--muted)}}
+/* guía 4.0 (cap. 9): --icon, el gris de los iconos; igual que --muted en claro y más claro en oscuro, donde una línea fina se ve más tenue que un texto del mismo color */
 :focus-visible:not(.ms-q input){outline:2px solid var(--ac)!important;outline-offset:2px;border-radius:10px} /* el buscador marca el foco en su caja (.ms-q:focus-within) */
 input:focus-visible,select:focus-visible{outline-offset:0}
 .mp.on{color:#1c1c1e!important}
@@ -1257,7 +1259,7 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-cd{appearance:none;border:0;padding:2px 0 4px;background:none;color:var(--fg);font:500 calc(15px*var(--tz,1)) var(--font);width:100%;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-variant-numeric:tabular-nums}
 .pa-cd b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;font-weight:inherit}
 .pa-cd.tk b{font-weight:700}
-.pa-cd .cal-ic{display:block;width:13px;height:13px;color:var(--muted);opacity:.7}.pa-cd .cal-ic svg{display:block;width:13px;height:13px;stroke-width:2.2}
+.pa-cd .cal-ic{display:block;width:13px;height:13px;color:var(--icon);opacity:.7}.pa-cd .cal-ic svg{display:block;width:13px;height:13px;stroke-width:2.2}
 .pa-cd[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
 .pa-cd:disabled{color:var(--faint);cursor:default}
 .pa-cd:active:not(:disabled) b{transform:scale(.92)}
@@ -1266,7 +1268,7 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-wh{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 -16px}
 .pa-wheel{display:flex;gap:24px /* reserva: deja sitio a lo de dentro, no es espacio entre piezas */;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:14px calc(50% - 28px) /* reserva: deja sitio a lo de dentro, no es espacio entre piezas */;width:100%;box-sizing:border-box}
 .pa-wheel::-webkit-scrollbar{display:none}
-.pa-wi{appearance:none;flex:0 0 56px;height:56px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--card2);color:var(--muted);scroll-snap-align:center;cursor:pointer;transform-origin:center;will-change:transform}
+.pa-wi{appearance:none;flex:0 0 56px;height:56px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--card2);color:var(--icon);scroll-snap-align:center;cursor:pointer;transform-origin:center;will-change:transform}
 .pa-wi svg{width:24px;height:24px}
 .pa-wi[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .pa-wn{font-size:calc(17px*var(--tz,1));font-weight:600}
@@ -1420,7 +1422,7 @@ html[data-theme="light"] .rd-card{--rd-bg:#fff}
 .rd-sl span{font-weight:600}
 
 /* tasa de sudor */
-.sw-ic{width:24px;height:24px;display:grid;place-items:center;color:var(--muted);background:none;flex:0 0 auto} /* guía 4.0 (cap. 9): sin tesela */
+.sw-ic{width:24px;height:24px;display:grid;place-items:center;color:var(--icon);background:none;flex:0 0 auto} /* guía 4.0 (cap. 9): sin tesela */
 .sw-ic svg{width:20px;height:20px}
 .sw-box{margin-top:20px;padding:14px;border-radius:14px;background:var(--card2,rgba(127,127,127,.12));display:flex;flex-direction:column;gap:12px}
 .sw-h{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start}
@@ -1511,7 +1513,7 @@ html[data-theme] .ppill{background:none!important;padding:0!important;font-weigh
 div:has(> .pkk + h2) > .pkk{font-size:calc(13px*var(--tz,1))!important;font-weight:500!important;color:var(--muted)!important}
 
 .dl-act{display:flex;gap:4px;flex:0 0 auto}
-.dl-ib{appearance:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--card2,rgba(127,127,127,.12));color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
+.dl-ib{appearance:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--card2,rgba(127,127,127,.12));color:var(--icon);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
 .dl-ib:hover{color:var(--fg)}
 .dl-m{display:block;color:var(--muted);font-size:calc(13px*var(--tz,1));margin-top:2px}
 .dl-bar{display:flex;gap:2px;height:4px;margin-top:6px;max-width:160px;border-radius:2px;overflow:hidden}
@@ -1762,9 +1764,9 @@ html[data-theme="dark"] .rmap img{filter:grayscale(1) invert(1) contrast(.85) br
 .re-area{fill:var(--fill)}.re-line{fill:none;stroke:var(--fg);stroke-width:1.8;vector-effect:non-scaling-stroke;stroke-linejoin:round}
 .rm-strava{display:inline-block;margin-top:8px;font-size:calc(13px*var(--tz,1));font-weight:600;color:#fc5200;text-decoration:none}
 /* v127 armonía: color solo con significado, en la línea o en un punto */
-.fl-ask .fl-ic{background:none!important;color:var(--muted)!important}
+.fl-ask .fl-ic{background:none!important;color:var(--icon)!important}
 .fl-ask-a{align-items:stretch!important}.fl-ask-a>*{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
-.wc-ic,.wc-w .wc-ic,.wc-p .wc-ic,.wc-ics,html[data-theme] .wc-w .wc-ic,html[data-theme] .wc-p .wc-ic,html[data-theme] .wc-ics{background:none!important;color:var(--muted)!important;width:16px!important}
+.wc-ic,.wc-w .wc-ic,.wc-p .wc-ic,.wc-ics,html[data-theme] .wc-w .wc-ic,html[data-theme] .wc-p .wc-ic,html[data-theme] .wc-ics{background:none!important;color:var(--icon)!important;width:16px!important}
 .rh-heart.big{background:var(--card2,rgba(127,127,127,.12))!important}
 .rh-bl,html[data-theme="light"] .rh-bl{color:var(--muted)!important;font-weight:500!important}
 .rh-best{stroke:var(--faint)!important;stroke-opacity:1!important}
@@ -1828,7 +1830,7 @@ html[data-theme="dark"] .rmap img{filter:grayscale(1) invert(1) contrast(.85) br
 .wf-list{display:flex;flex-direction:column;margin-top:2px}
 .wf-row{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;align-items:center;gap:10px;padding:12px 0;border-top:.5px solid var(--sep,rgba(127,127,127,.22));min-height:52px}
 .wf-row:first-child{border-top:0}button.wf-row{cursor:pointer}
-.wf-ic{width:20px;height:20px;flex:none;color:var(--muted)}
+.wf-ic{width:20px;height:20px;flex:none;color:var(--icon)}
 .wf-n{flex:1;min-width:0;font-size:calc(15px*var(--tz,1))}.wf-n small{display:block;font-size:calc(12px*var(--tz,1));color:var(--muted);margin-top:1px}
 .wf-v{font:600 calc(17px*var(--tz,1)) var(--round,var(--font));font-variant-numeric:tabular-nums;white-space:nowrap}.wf-v small{font-size:calc(12px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:3px}
 .wf-bar{position:relative;flex:none;width:64px;height:6px;border-radius:3px;background:var(--fill,rgba(127,127,127,.16))}
@@ -1966,7 +1968,7 @@ div.mbody{cursor:default}
 .ms-seg button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .ms-lbl{font-size:calc(12px*var(--tz,1));font-weight:600;color:var(--muted);margin-top:8px}
 .ms-lbl2{font-size:calc(13px*var(--tz,1));color:var(--muted);margin:4px 0 2px}
-.ms-q{display:flex;align-items:center;gap:10px;border-radius:14px;background:var(--card2);padding:0 14px;color:var(--muted)}
+.ms-q{display:flex;align-items:center;gap:10px;border-radius:14px;background:var(--card2);padding:0 14px;color:var(--muted)}.ms-q svg{color:var(--icon)}
 .ms-q input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;outline:0;font:calc(17px*var(--tz,1)) var(--font);color:var(--fg);min-height:44px;padding:0!important;border-radius:0!important}
 .ms-q:focus-within{box-shadow:inset 0 0 0 1.5px var(--ac)}.ms-q input:focus-visible{outline:0}
 .ms-list{display:flex;flex-direction:column}
@@ -2140,7 +2142,7 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .dd.dd-in .dv{font-size:calc(15px*var(--tz,1))}
 .opt-l{display:flex;flex-direction:column;gap:8px;margin-top:14px} /* v310: como la hoja de opciones (acento, sin ✓) */
 .opt-i{appearance:none;border:0;background:var(--fill2);font:inherit;color:var(--fg);text-align:left;display:flex;align-items:center;gap:12px;min-height:52px;padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:500;font-size:calc(17px*var(--tz,1))}
-.opt-i svg{flex:none;width:20px;height:20px;color:var(--muted)}
+.opt-i svg{flex:none;width:20px;height:20px;color:var(--icon)}
 .opt-t{flex:1;min-width:0;font-size:calc(17px*var(--tz,1));font-weight:500}
 .opt-i.on,.opt-i.on svg{background:var(--ac);color:var(--ac-on)}
 .opt-i:active{opacity:.6}
@@ -2160,6 +2162,7 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 .inote summary{list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);cursor:pointer;padding:4px 0}
 .inote summary::-webkit-details-marker{display:none}
 .inote[open] summary{color:var(--fg)}
+.inote:not([open]) summary svg{color:var(--icon)}
 .inote>p{margin:6px 0 0!important}
 .pa-ex{display:flex;justify-content:space-between;margin-top:2px}
 /* cifras de resumen: siempre en recuadros (como Resumen semanal, Rendimiento o Avituallamiento) */
@@ -2198,7 +2201,7 @@ button.dd{appearance:none;border:0;font:inherit;color:inherit;text-align:left;wi
 div.pg-p{cursor:default}
 .pg-p>summary::-webkit-details-marker{display:none}
 .pg-p span{display:flex;flex-direction:column;gap:2px;min-width:0}.pg-p b{font-weight:600;font-size:calc(15px*var(--tz,1))}.pg-p small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.pg-ch{color:var(--muted);flex:none;transition:transform .2s}.pg-p[open] .pg-ch{transform:rotate(180deg)}
+.pg-ch{color:var(--icon);flex:none;transition:transform .2s}.pg-p[open] .pg-ch{transform:rotate(180deg)}
 .pg-pb{padding:0 0 12px}.pg-pb>.row:first-child h2,.pg-pb>h2:first-child,.pg-pb>.pkk:first-child{display:none}
 
 .tt{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px;scroll-behavior:smooth}.tt::-webkit-scrollbar{display:none}
@@ -2350,7 +2353,7 @@ html[data-theme="light"] body .sheet{background:var(--card)!important}
 html body .empty{font-size:calc(15px*var(--tz,1));font-weight:400;line-height:1.4;color:var(--muted);padding:4px 0}
 .empty+.chip,.empty+.btn{margin-top:10px}
 html body .legend{row-gap:6px}
-.spark:has(.dl-bar)>span:first-child{flex:1}
+.spark:has(.dl-bar)>span:not(.ta-ico,.dl-act){flex:1}
 .dl-bar{width:100%}
 .pfit .vplan-t .fdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 .pfit .vplan-t b{color:var(--fg);font-weight:600}
@@ -2373,7 +2376,7 @@ header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolati
 .me-cam{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:var(--card);color:var(--fg);display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
 .me-t{min-width:0}.me-t b{display:block;font-size:calc(20px*var(--tz,1));font-weight:700;letter-spacing:-.01em}
 .me-t span{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.me-t .me-priv{display:flex;align-items:center;gap:6px;font-size:calc(12px*var(--tz,1));margin-top:4px}
+.me-t .me-priv{display:flex;align-items:center;gap:6px;font-size:calc(12px*var(--tz,1));margin-top:4px}.me-t .me-priv svg{color:var(--icon)}
 .me-t .cl-l{margin-top:4px}
 .cx-ok{color:var(--fg)!important;--pc:var(--verde)}
 .cx-pw{display:block;width:100px;margin-top:6px}.cx-pw img{display:block;width:100px;height:auto}
@@ -2386,7 +2389,7 @@ header.top .logo{overflow:hidden!important;clip-path:inset(0 round 10px);isolati
 .kn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .kn-t{appearance:none;border:0;text-align:left;border-radius:14px;padding:14px;background:var(--fill2);color:var(--fg);font:inherit;display:flex;flex-direction:column;gap:6px;min-height:124px;cursor:pointer;transition:transform .12s}
 .kn-t:active{transform:scale(.97)}
-.kn-t i{width:24px;height:24px;display:grid;place-items:center;background:none;color:var(--muted);margin-bottom:4px} /* guía 4.0 (cap. 9): sin recuadro */
+.kn-t i{width:24px;height:24px;display:grid;place-items:center;background:none;color:var(--icon);margin-bottom:4px} /* guía 4.0 (cap. 9): sin recuadro */
 .kn-t b{font-size:calc(17px*var(--tz,1));line-height:1.2}.kn-t span{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 /* Botón oficial de Google (sus colores y su letra, por sus normas de marca) */
 .gsi-material-button{-webkit-user-select:none;user-select:none;-webkit-appearance:none;background-color:#fff;background-image:none;border:1px solid #747775;border-radius:10px;box-sizing:border-box;color:#1f1f1f;cursor:pointer;font-family:Roboto,arial,sans-serif;font-size:calc(14px*var(--tz,1));height:44px;letter-spacing:.25px;outline:none;overflow:hidden;padding:0 12px;position:relative;text-align:center;transition:background-color .2s,border-color .2s,box-shadow .2s;vertical-align:middle;white-space:nowrap;width:100%;min-width:min-content;margin:0} /* v294: a lo ancho de la tarjeta, como el de Apple */
@@ -2666,7 +2669,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 /* v260 · Deporte (guía: «Deporte»): una sola pieza. v277 tomaba el color de la familia; v295: neutra para todos los deportes (el color de familia queda para las gráficas).
    spIcon(deporte, "sm"|"xs"|"plan") en 013. Clases sp- */
 /* guía 4.0 (cap. 9): el deporte es un icono de línea sin tesela, en su columna de 24 */
-.tc-ic{flex:0 0 auto;width:24px;height:24px;display:grid;place-items:center;color:var(--muted);background:none}.tc-ic svg{width:20px;height:20px}
+.tc-ic{flex:0 0 auto;width:24px;height:24px;display:grid;place-items:center;color:var(--icon);background:none}.tc-ic svg{width:20px;height:20px}
 .tc-ic.sp-sm svg{width:17px;height:17px}
 .tc-ic.sp-xs{width:17px;height:17px}.tc-ic.sp-xs svg{width:15px;height:15px}
 .tc-ic.sp-plan{opacity:.45}
@@ -2779,7 +2782,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 
 /* v269 · Fuerza que progresa (081): series propuestas con ✓, por qué, «¿Cómo fue?», la próxima vez, descanso, «···» de rutinas y Fuerza › Progreso */
 .fz-sug-r .fz-in input{color:var(--muted)}
-.fz-ok{appearance:none;border:0;width:36px;height:36px;border-radius:50%;background:var(--fill2);color:var(--muted);display:grid;place-items:center;cursor:pointer;flex:none}
+.fz-ok{appearance:none;border:0;width:36px;height:36px;border-radius:50%;background:var(--fill2);color:var(--icon);display:grid;place-items:center;cursor:pointer;flex:none}
 .fz-ok[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .fz-ok:active{transform:scale(.92)}
 .fz-why{display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:var(--card2);border-radius:14px;padding:10px 12px;margin:0 0 10px}
@@ -2797,7 +2800,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .fzp-n{min-width:0}.fzp-n b{display:block;font-weight:500;font-size:calc(15px*var(--tz,1))}.fzp-n small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .rtm-l{display:flex;flex-direction:column;margin-top:8px}
 .rtm-r{appearance:none;border:0;background:none;color:var(--fg);font:400 calc(17px*var(--tz,1)) var(--font);display:flex;align-items:center;gap:12px;min-height:50px;border-top:.5px solid var(--sep);text-align:left;cursor:pointer;padding:0}
-.rtm-r:first-child{border-top:0}.rtm-r svg{color:var(--muted);flex:none}
+.rtm-r:first-child{border-top:0}.rtm-r svg{color:var(--icon);flex:none}
 .rtm-r.del,.rtm-r.del svg{color:var(--rojo)}
 /* descanso: barra flotante sobre la barra de pestañas */
 .rest-b{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:47;max-width:420px;margin:0 auto;display:flex;align-items:center;gap:12px;background:var(--card);border-radius:999px;padding:8px 8px 8px 10px;box-shadow:0 6px 24px rgba(0,0,0,.18),0 0 0 .5px var(--sep)}
@@ -2832,7 +2835,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .fb-sub{margin:4px 0 6px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .fb-row{appearance:none;border:0;background:none;color:var(--fg);font:inherit;width:100%;display:grid;grid-template-columns:24px 1fr 16px;gap:12px;align-items:center;text-align:left;padding:12px 0;min-height:64px;border-top:.5px solid var(--sep);cursor:pointer}
 .fb-sub+.fb-row{border-top:0}
-.fb-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--muted)}.fb-ic svg{width:20px;height:20px} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
+.fb-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--icon)}.fb-ic svg{width:20px;height:20px} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
 .fb-row b{display:block;font-size:calc(17px*var(--tz,1));font-weight:600}.fb-row small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .fb-ch{color:var(--faint)}
 .fb-q{margin:8px 0 0;font-size:calc(13px*var(--tz,1));color:var(--muted)}
@@ -2879,7 +2882,7 @@ a.fb-row{text-decoration:none}
 .rf[aria-expanded="true"] .rf-n{color:var(--fg)}
 /* las filas que no son factor (VFC por añadir, sueño, ciclo) llevan la misma baldosa, en gris */
 .wf-list>.wf-row{gap:12px;padding:12px 0}
-.wf-list>.wf-row>.wf-ic{width:24px;height:24px;padding:2px;background:none;color:var(--muted)} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
+.wf-list>.wf-row>.wf-ic{width:24px;height:24px;padding:2px;background:none;color:var(--icon)} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
 
 /* v274 · Calendario semanal de Plan (084). Clases wk- */
 .wk{touch-action:pan-y;overflow:hidden}
@@ -2937,7 +2940,7 @@ a.fb-row{text-decoration:none}
 .cb-lab{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .cb-r{flex:none;width:14px;height:14px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 12%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 4px,#000 4.5px);mask:radial-gradient(circle,transparent 4px,#000 4.5px)}
 /* v314 · Entreno previsto o saltado: el icono del deporte en gris translúcido (saltado, tachado) */
-.day .cal-ic.pl,.day .cal-ic.miss{color:var(--muted);opacity:.55}
+.day .cal-ic.pl,.day .cal-ic.miss{color:var(--icon);opacity:.55}
 .day .cal-ic.miss{position:relative}.day .cal-ic.miss::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:1.5px;background:currentColor;transform:rotate(-35deg)}
 /* v318 · Flechas de semana en Plan; la tira deja el gesto horizontal a nuestro deslizamiento */
 .wk .daystrip{touch-action:pan-y;overflow-x:hidden}
@@ -3079,7 +3082,7 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .ic-l{max-height:46vh;overflow:auto;margin:0 -4px 12px}
 .ic-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 4px;border-top:.5px solid var(--sep);cursor:pointer}.ic-r:first-child{border-top:0}
 .ic-r input{width:22px;height:22px;accent-color:var(--ac);flex:0 0 auto}
-.ic-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--muted)} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
+.ic-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--icon)} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
 .ic-t{min-width:0}.ic-t b{display:block;font-size:calc(15px*var(--tz,1));font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ic-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .ic-a{display:grid;gap:8px;justify-items:center}.ic-a .btn{width:100%}
 
@@ -3250,7 +3253,7 @@ table.bands{--tz:1}
 .tc-mw .af.pf.mw-fg{background:var(--card2);box-shadow:none;border-radius:14px;padding:14px 14px 12px}
 /* v329 · Rendimiento: icono del deporte sin tesela, centrado con la cifra; debajo, el nivel (igual en los dos botones) */
 .pf-pick button{display:flex;align-items:center;gap:12px;padding:12px 14px}
-.pf-pick button .tc-ic{width:24px;height:24px;background:none;border-radius:0;color:var(--muted)}
+.pf-pick button .tc-ic{width:24px;height:24px;background:none;border-radius:0;color:var(--icon)}
 .pf-pick button .tc-ic svg{width:24px;height:24px}
 .pf-pick .pf-pt{display:flex;flex-direction:column;gap:2px;min-width:0}
 .pf-pick .pf-pt b{font-size:calc(20px*var(--tz,1));line-height:1.1;color:var(--fg)}
@@ -3279,7 +3282,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .rw-inv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .rw-it{appearance:none;border:0;font:inherit;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:84px;padding:12px 6px 10px;border-radius:14px;background:var(--card2);color:var(--muted);cursor:pointer;text-align:center}
 .rw-it span{font-size:calc(12px*var(--tz,1));line-height:1.2;color:var(--muted)}
-.rw-it[aria-pressed="true"]{color:var(--fg)}.rw-it[aria-pressed="true"] span{color:var(--fg);font-weight:500}
+.rw-it:not([aria-pressed="true"]) svg{color:var(--icon)}.rw-it[aria-pressed="true"]{color:var(--fg)}.rw-it[aria-pressed="true"] span{color:var(--fg);font-weight:500}
 .rw-ck{position:absolute;top:7px;right:7px;width:18px;height:18px;border-radius:50%;display:none;place-items:center;background:var(--verde);color:#fff}
 .rw-it[aria-pressed="true"] .rw-ck{display:grid}
 .rw-it:active{transform:scale(.97)}
@@ -3368,7 +3371,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .prc-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .prc-t b{font-size:calc(17px*var(--tz,1));font-weight:600;line-height:1.25}
 .prc-t span{font-size:calc(15px*var(--tz,1));color:var(--muted);line-height:1.35}
-.prc-x{flex:none;align-self:flex-start;margin:-6px -8px 0 0;color:var(--muted)}
+.prc-x{flex:none;align-self:flex-start;margin:-6px -8px 0 0;color:var(--icon)}
 .prc-a{margin-top:14px;align-items:center}
 .prc-who{margin:10px 0 4px}
 .prc-l{margin-top:10px}
@@ -3388,12 +3391,14 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 @keyframes prcIn{from{opacity:.4;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
 .wk-card.prc-in{animation:prcIn .55s cubic-bezier(.32,.72,0,1) both}
 @media (prefers-reduced-motion:reduce){.wk-card.prc-in{animation:none}}
-.hs-ic.prc-ic{color:var(--muted)}
+.hs-ic.prc-ic{color:var(--icon)}
+/* aviso de clave cambiada (vinculo.js · lkKeyWarn): la pieza Aviso con su icono de alerta en su columna de 24, en el color del aviso */
+.lk-key-h{display:flex;gap:8px;align-items:flex-start}.lk-key-h svg{flex:0 0 24px;margin-top:1px;color:var(--naranja-v,var(--naranja))}
 
 /* v348 · Tu salud (113): fila en el Perfil, hoja con cuatro grupos y lo que cambia en azul */
 .hs-card{padding:6px 8px}
 .hs-row{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:6px 10px;border:0;background:none;color:var(--fg);font:inherit;text-align:left;cursor:pointer;border-radius:14px} /* 8 de la tarjeta + 10 = 18, la línea del resto */
-.hs-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--muted)}.hs-ic svg{width:20px;height:20px} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
+.hs-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--icon)}.hs-ic svg{width:20px;height:20px} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
 .hs-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .hs-t b{font-size:calc(17px*var(--tz,1));font-weight:600}
 .hs-t small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
@@ -3433,7 +3438,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hz-t{font-size:calc(17px*var(--tz,1));font-weight:600;flex:none}
 .hz-v{margin-left:auto;min-width:0;font-size:calc(15px*var(--tz,1));color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hz-v b{color:var(--fg);font-weight:600}
-.hz-ch{flex:none;display:inline-flex;color:var(--muted)} /* v356: gris, como cualquier fila con flecha; el azul es solo para lo seleccionado (guía 2.5) */
+.hz-ch{flex:none;display:inline-flex;color:var(--icon)} /* v356: gris, como cualquier fila con flecha; el azul es solo para lo seleccionado (guía 2.5) */
 .hz-row[aria-expanded="true"] .hz-ch{transform:rotate(90deg)}
 .td-sw{padding:4px 2px}
 /* vista sencilla: platos y raciones, sin calorías, gramos ni peso */
@@ -3488,7 +3493,7 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .dg{margin-top:16px;border-radius:14px;background:var(--fill2)}
 .dg-h{appearance:none;border:0;background:none;width:100%;min-height:56px;display:flex;align-items:center;gap:12px;padding:10px 14px;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
 .dg-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.dg-t b{font-size:calc(17px*var(--tz,1));font-weight:600}.dg-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.dg-ch{flex:none;display:inline-flex;color:var(--muted)}
+.dg-ch{flex:none;display:inline-flex;color:var(--icon)}
 .dg.open .dg-ch{transform:rotate(90deg)}
 .dg-b{padding:0 14px 8px}
 .lk-pend{margin-top:0}.lk-pend .prc-r:first-child{border-top:0} /* v359 */
@@ -3545,6 +3550,16 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .ms-sheet .fields{display:grid;gap:12px;margin:8px 0 12px}
 .ms-sheet .btn.primary.big{width:100%;margin-top:4px}
 .ms-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+/* ---------- Icono del tipo de alimento (23-10, aprobado por Javier) ----------
+   20, gris, sin recuadro, centrado en su columna de 24 (guía 4.0, cap. 9 y cap. 10, Fila, «Icono»). Gris de icono: --icon si el tema
+   lo tiene (decisión de Javier, 23-10: más claro en oscuro) y, si no, --muted */
+.ta-ico{flex:none;width:24px;height:24px;display:inline-grid;place-items:center;color:var(--icon,var(--muted))}
+/* Plan › Platos: el icono a la altura de la primera línea del nombre (hay nombres de dos líneas), 12 hasta el texto; el separador,
+   de 0,5 y desde el texto, no desde el borde (cap. 10, Fila, «Separador») */
+.spark.dl-r{gap:12px;position:relative;border-bottom-color:transparent}
+.spark.dl-r::after{content:"";position:absolute;left:36px;right:0;bottom:-1px;height:1px;transform:scaleY(.5);transform-origin:bottom;background:var(--sep)}
+.spark.dl-r>.ta-ico{align-self:flex-start}
 
 </style>
 
@@ -3632,7 +3647,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="363";
+const APP_VER="364";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4173,6 +4188,54 @@ function planAction(act,idx,k){
 }
 
 
+
+/* ---------- Tipo de cada alimento y su icono (23-10, aprobado por Javier) ----------
+   Un icono de línea por tipo: rejilla de 24, trazo 1,8 (2,2 junto a texto de 600), gris, sin recuadro (guía 4.0, cap. 9). Un tipo de
+   alimento no tiene color propio, así que no se tiñe. Los 60 ingredientes de la app tienen su tipo fijo; uno propio lo saca de lo que
+   «Contiene» y, si no, de su nombre; un plato toma el del ingrediente que más energía aporta, sin contar aceite ni salsas. El tipo
+   elegido a mano (x.ico, d.ico) manda siempre. Pro lo lee de aquí (taller/vz_sitio.py lo copia a sitio/comun.js): Pro depende de la app. */
+const TA_T=[
+ ["carne","Carne",'<path d="M10.8 13.2C8.6 10.9 9.3 5.4 13.6 3.9c3.7-1.3 7.5 1.8 6.4 5.7-1 3.8-5.6 5.6-9.2 3.6z"/><path d="M10.8 13.2 7.4 16.6"/><circle cx="5.6" cy="16.4" r="1.7"/><circle cx="7.6" cy="18.4" r="1.7"/>'],
+ ["pescado","Pescado",'<path d="M3 12c3-4.5 9-6 13.5-2L21 7v10l-4.5-3C12 18 6 16.5 3 12z"/><circle cx="8" cy="11" r=".9" fill="currentColor"/>'],
+ ["marisco","Marisco",'<path d="M12 20 4.2 11.2a7.8 7.8 0 0 1 15.6 0z"/><path d="M12 20V6.5M12 20 7.6 8.4M12 20l4.4-11.6"/>'],
+ ["huevo","Huevo",'<path d="M12 3.5c3.5 0 6.2 5 6.2 9.6a6.2 6.2 0 0 1-12.4 0c0-4.6 2.7-9.6 6.2-9.6z"/>'],
+ ["lacteo","Lácteos",'<path d="M7.5 10v10.5h9V10l-2-4.5h-5z"/><path d="M7.5 10h9"/><path d="M9.5 5.5v-2h5v2"/>'],
+ ["queso","Queso",'<path d="M3.5 19.5v-5L14 5l6.5 3v11.5z"/><path d="M3.5 14.5l17-6.5"/><circle cx="8.5" cy="16.8" r="1.2"/><circle cx="15.5" cy="14.3" r="1.5"/>'],
+ ["batido","Batidos y proteína",'<path d="M7.5 7h9l-1.2 13a1.5 1.5 0 0 1-1.5 1.3h-3.6a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M8 4h8v3H8z"/><path d="M8.3 12h7.4"/>'],
+ ["pan","Pan",'<path d="M4 11.5C4 7.6 7.6 5 12 5s8 2.6 8 6.5c0 1.2-.8 2-2 2.2V19H6v-5.3c-1.2-.2-2-1-2-2.2z"/>'],
+ ["cereal","Arroz, pasta y cereales",'<path d="M12 21V8.5"/><path d="M12 8.5c-1.4-1.2-1.4-3.6 0-5 1.4 1.4 1.4 3.8 0 5z"/><path d="M12 13c-2.7 0-4.2-1.6-4.2-3.6 2.5 0 4.2 1.4 4.2 3.6zM12 13c2.7 0 4.2-1.6 4.2-3.6-2.5 0-4.2 1.4-4.2 3.6zM12 18c-2.7 0-4.2-1.6-4.2-3.6 2.5 0 4.2 1.4 4.2 3.6zM12 18c2.7 0 4.2-1.6 4.2-3.6-2.5 0-4.2 1.4-4.2 3.6z"/>'],
+ ["tuberculo","Patata y boniato",'<path d="M4.5 13.5c-1-4 2.5-8 7.5-8.5s8.5 2 8 5.5-3.5 7.5-8.5 8.5-6-1.5-7-5.5z"/><path d="M9 10.5h.01M15.5 10h.01M12.5 14.5h.01"/>'],
+ ["legumbre","Legumbres",'<path d="M4 19c1-8.5 8.5-14 16-14.5C19.5 12.5 13 18.5 4 19z"/><circle cx="9.2" cy="14.3" r="1.1"/><circle cx="12.5" cy="11.5" r="1.1"/><circle cx="15.8" cy="8.7" r="1.1"/>'],
+ ["fruta","Fruta",'<path d="M12 7.8c-1.6-1-5.6-1.4-7 2.1S5.5 20.5 9 20.5c1.3 0 1.8-.6 3-.6s1.7.6 3 .6c3.5 0 5.5-7 4-10.6s-5.4-3.1-7-2.1z"/><path d="M12 7.8c0-2 .8-3.6 2.6-4.3"/>'],
+ ["verdura","Verdura",'<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/>'],
+ ["grasa","Aceite y aguacate",'<path d="M12 3.5c-2.6 0-4 3.2-4.9 6.6C5.9 14 5.5 15 5.5 16.5a6.5 6.5 0 0 0 13 0c0-1.5-.4-2.5-1.6-6.4C16 6.7 14.6 3.5 12 3.5z"/><circle cx="12" cy="15.8" r="2.6"/>'],
+ ["fseco","Frutos secos",'<path d="M5 10.5h14"/><path d="M5.5 10.5a6.5 4.5 0 0 1 13 0"/><path d="M6.5 10.5c0 5 2.5 8.6 5.5 9.8 3-1.2 5.5-4.8 5.5-9.8"/><path d="M12 6V3.5"/>'],
+ ["dulce","Dulces",'<rect x="6.5" y="3.5" width="11" height="17" rx="2"/><path d="M6.5 9.2h11M6.5 14.8h11M12 3.5v17"/>'],
+ ["deporte","Geles y barritas",'<path d="M8 4h8l-1 3v11a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V7z"/><path d="M12.8 10l-2.3 3.2h2.6L11 16.5"/>'],
+ ["bebida","Bebidas",'<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8.5 3.5c-.6.9.6 1.6 0 2.5M12 3.5c-.6.9.6 1.6 0 2.5"/>'],
+ ["condimento","Salsas y condimentos",'<path d="M15.5 8.5c-3 .5-4.5 3-6 6S6 19.5 3.5 20c4 1 9.5-.5 12-4s2.5-6.5 0-7.5z"/><path d="M15.5 8.5c.3-1.8 1.5-3.2 3.5-3.7"/>'],
+ ["otro","Otros",'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/>']];
+const TA_BY={};TA_T.forEach(t=>TA_BY[t[0]]=t);
+/* los ingredientes de la app (datos/platos-y-menus.js), cada uno en su tipo */
+const TA_ING={};Object.entries({carne:"pollo pavo ternera cerdo jamon",pescado:"atun merluza salmon sardinas",marisco:"gambas mejillones",huevo:"huevo claras",
+  lacteo:"leche yogur skyr batido0 kefir yprot qbprot",queso:"burgos curado",batido:"whey bprot",pan:"pan panint wrap tortitas",
+  cereal:"arroz pasta pastaint avena quinoa granola",tuberculo:"patata boniato",legumbre:"lentejas garbanzos tofu hummus",
+  fruta:"platano manzana rojos naranja datiles",verdura:"tomate verduras espinacas lechuga setas cebolla",grasa:"aceite aguacate",
+  fseco:"nueces almendras cacahuete",dulce:"choco miel",condimento:"stomate sal"}).forEach(([t,s])=>s.split(" ").forEach(id=>TA_ING[id]=t));
+/* uno propio: lo que marcó en «Contiene» (carne, pescado…) y, si no, su nombre */
+const TA_TAG={meat:"carne",fish:"pescado",shell:"marisco",egg:"huevo",dairy:"lacteo",nuts:"fseco"};
+const TA_NOM=[[/gel|barrit|isot[oó]nic/i,"deporte"],[/caf[eé]|\bt[eé]\b|infusi|zumo|bebida|refresco|cerveza|vino/i,"bebida"],[/salsa|especia|\bsal\b|vinagre|mostaza|ketchup/i,"condimento"],
+  [/\bpan\b|tostad|biscote|tortilla de trigo/i,"pan"],[/arroz|pasta|avena|cereal|copos|harina|cusc|quinoa/i,"cereal"],[/patata|boniato|yuca/i,"tuberculo"],
+  [/fruta|pl[aá]tano|manzana|pera\b|uva|mango|naranja|fresa/i,"fruta"],[/verdura|ensalada|tomate|zanahoria|br[oó]coli|calabac|pimiento|cebolla/i,"verdura"],
+  [/aceite|aguacate|mantequilla/i,"grasa"],[/chocolate|miel|az[uú]car|galleta|bizcocho|mermelada/i,"dulce"],[/queso/i,"queso"],[/prote[ií]na|whey|batido/i,"batido"],[/soja|tofu|legumbre|lenteja|garbanzo|alubia/i,"legumbre"]];
+function taTipo(x){if(!x)return"otro";if(TA_BY[x.ico])return x.ico;if(TA_ING[x.id])return TA_ING[x.id];
+  for(const k of x.tags||[])if(TA_TAG[k])return TA_TAG[k];for(const[r,t]of TA_NOM)if(r.test(x.n||""))return t;return"otro"}
+/* plato: el tipo de su ingrediente con más energía (en las cantidades del plato), sin contar aceite ni salsas */
+function taTipoPlato(d){if(!d)return"otro";if(TA_BY[d.ico])return d.ico;let best=null,mx=-1;
+  (d.ing||[]).forEach(r=>{const f=INGR_BY[r[0]];if(!f)return;const t=taTipo(f);if(t==="grasa"||t==="condimento")return;const k=(4*f.P+4*f.C+9*f.F)*(+r[1]||0);if(k>mx){mx=k;best=t}});return best||"otro"}
+/* el icono, en su columna de 24, con su nombre para el lector de pantalla */
+const taSvg=(t,w)=>`<svg viewBox="0 0 24 24" width="${w||20}" height="${w||20}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(TA_BY[t]||TA_BY.otro)[2]}</svg>`;
+const taIco=t=>`<span class="ta-ico" role="img" aria-label="${(TA_BY[t]||TA_BY.otro)[1]}">${taSvg(t)}</span>`;
 
 /* ---------- Sustrato a pantalla completa ---------- */
 const FULL={};
@@ -4728,15 +4791,29 @@ async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol()
 async function syncFirst(){const c=rawCol();if(!c)return;await syncPull(true);
   const snap=await c.get(),now=Date.now();snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id)&&!SYNC.u[d.id]){SYNC.u[d.id]=now;SYNC.q[d.id]={u:now}}});
   LS("sustrato-syncu",SYNC.u);LS("sustrato-syncq",SYNC.q);await syncFlush()}
-window.__authDone=async t=>{if(!t){toast("No se ha podido iniciar sesión");return}if(S.acct&&S.acct.t===t)return;S.acct={t};
+/* v30 · inicio de sesión atado a este dispositivo: acctLogin guarda un secreto (sustrato-authv) y manda solo su huella (c); la vuelta
+   (sustrato://auth?t=… o #t=…) trae un vale de 10 minutos que solo se canjea con ese secreto. Un enlace ajeno con la sesión de otra
+   cuenta se descarta: antes metía a la persona en esa cuenta y subía allí sus datos. */
+const tokOf=t=>{try{return JSON.parse(atob(String(t).split(".")[0].replace(/-/g,"+").replace(/_/g,"/")))}catch(e){return{}}};
+const b64u_=u=>btoa(String.fromCharCode(...new Uint8Array(u))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+window.__authDone=async t=>{const pv=LS("sustrato-authv");LS("sustrato-authv",null);
+  if(!t||!pv||Date.now()-pv.at>15*60e3){if(t&&pv)toast("No se ha podido iniciar sesión");return}
+  if(tokOf(t).typ==="tk"){try{const c=await cloudCfg(),r=await fetch(c.api.replace(/\/$/,"")+"/auth/exchange",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({k:t,v:pv.v})}),j=await r.json().catch(()=>null);t=j&&j.t}catch(e){t=null}}
+  return acctSet(t)};
+/* la sesión de la cuenta dura 30 días desde su último uso: se renueva al abrir si le quedan menos de 23 */
+async function acctRefresh(){if(!S.acct||!S.acct.t||tokOf(S.acct.t).exp-Date.now()>23*864e5)return;try{const j=await syncApi("/auth/refresh",{method:"POST"});if(j&&j.t){S.acct=Object.assign({},S.acct,{t:j.t});LS("sustrato-acct",S.acct)}}catch(e){}}
+setTimeout(acctRefresh,4000);
+async function acctSet(t){if(!t){toast("No se ha podido iniciar sesión");return}if(S.acct&&S.acct.t===t)return;S.acct={t};
   try{const me=await syncApi("/me");S.acct={t,email:me.email,name:me.name};LS("sustrato-acct",S.acct);toast("Sesión iniciada. Sincronizando tus datos…");
     if(!(S.profile||{}).name&&me.name){S.profile=Object.assign({},S.profile,{name:me.name})}await syncFirst();render();toast("Tus datos ya están en tu cuenta")}
   catch(e){S.acct=null;LS("sustrato-acct",null);toast("No se ha podido iniciar sesión");render()}};
-async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;const api=c.api.replace(/\/$/,"");location.href=api+"/auth/google/start?ret="+encodeURIComponent(ret)+"&via="+encodeURIComponent(api)} /* v326: «via» para que Google vuelva por la misma dirección (la reserva de Netlify si Cloudflare está bloqueado) */catch(e){toast("No hay conexión con el servidor")}}
+async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;const api=c.api.replace(/\/$/,"");
+  const v=b64u_(crypto.getRandomValues(new Uint8Array(32))),h=b64u_(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v)));LS("sustrato-authv",{v,at:Date.now()});
+  location.href=api+"/auth/google/start?ret="+encodeURIComponent(ret)+"&via="+encodeURIComponent(api)+"&c="+h} /* v326: «via» para que Google vuelva por la misma dirección (la reserva de Netlify si Cloudflare está bloqueado) */catch(e){toast("No hay conexión con el servidor")}}
 /* Con Apple (iPhone, v290): nonce firmado del servidor → ventana de Apple (nativa) → el servidor comprueba el token y da la sesión */
 async function acctApple(){try{const c=await cloudCfg(),api=c.api.replace(/\/$/,""),n=await(await fetch(api+"/auth/apple/nonce")).json(),r=await window.__native.appleSignIn(n.nonce);
     const res=await fetch(api+"/auth/apple",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:r.token,state:n.state,name:r.name||""})}),j=await res.json().catch(()=>null);
-    window.__authDone(j&&j.t||"")}
+    acctSet(j&&j.t||"")}
   catch(e){if(e&&e.code==="canceled")return;toast("No se ha podido iniciar sesión con Apple")}}
 /* De qué cuenta es la sesión: el token lleva «a:» (Apple) o «g:» (Google) delante del identificador */
 const acctKind=a=>{try{return JSON.parse(atob(String(a&&a.t||"").split(".")[0].replace(/-/g,"+").replace(/_/g,"/"))).sub.startsWith("a:")?"apple":"google"}catch(e){return"google"}};
@@ -7431,7 +7508,7 @@ function vPlan(){
       ${t?microRow(k,t):""}
       ${k>=tk?`<div class="mw-sec"><button class="chip" data-gotoplan="${k}">Editar entrenos</button></div>`:""}</div></section>`;
   }).join("");
-  const dlRow=x=>`<div class="spark"><span style="min-width:0">${esc(x.n)}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
+  const dlRow=x=>`<div class="spark dl-r">${taIco(taTipoPlato(x))}<span style="min-width:0">${esc(x.n)}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
   const ds=allDishes(),custom=ds.filter(x=>x.custom).map(dlRow).join(""),baseL=ds.filter(x=>!x.custom).map(dlRow).join("");
   if(!S.planView)S.planView="train";
   const pv=S.planView;
@@ -10006,13 +10083,38 @@ async function lkKey(){let k=LS("sustrato-ecdh");if(k&&k.pub)return k;
   const raw=new Uint8Array(await crypto.subtle.exportKey("raw",kp.publicKey)),jwk=await crypto.subtle.exportKey("jwk",kp.privateKey);
   let s="";raw.forEach(c=>s+=String.fromCharCode(c));k={pub:btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""),priv:jwk,at:Date.now()};LS("sustrato-ecdh",k);return k}
 async function lkCall(path,body){return syncApi(path,{method:"POST",body:JSON.stringify(body||{})})}
-async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[]}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
+/* La clave de tu profesional se fija la primera vez que la ves. Si el servidor trae otra, no se le manda nada con la nueva hasta que lo
+   confirmas (proPub queda vacía y keyNew guarda la nueva). v31 · En una clínica, la clave nueva viene firmada por la llave de identidad
+   de la clínica: si la firma es buena (con la identidad que fijaste, o con una que esa firmó después), se acepta sola. La identidad se fija
+   al vincularte con la clínica o llega por el canal cifrado de siempre (mensaje «clinic») cuando tu profesional crea su clínica. */
+const lkVerify=async(spki,sig,...a)=>{try{const k=await crypto.subtle.importKey("spki",lkun64(spki),{name:"ECDSA",namedCurve:"P-256"},false,["verify"]);return await crypto.subtle.verify({name:"ECDSA",hash:"SHA-256"},k,lkun64(sig),new TextEncoder().encode("sustrato/clinica/v1|"+a.join("|")))}catch(e){return false}};
+async function lkChain(l,p){const lic=(l.cl&&l.cl.lic)||[],i=lic.findIndex(x=>x.pub===p.pub);if(i<0)return[];const ok=[lic[i]]; /* identidades válidas desde la que fijaste */
+  for(let j=i+1;j<lic.length;j++){if(!await lkVerify(ok[ok.length-1].pub,lic[j].sig,"li",l.clinic,lic[j].pub,lic[j].n))break;ok.push(lic[j])}return ok}
+async function lkSigned(l,p){const ok=await lkChain(l,p);for(const k of ok)if(l.lks&&await lkVerify(k.pub,l.lks,"lk",l.id,l.proPub,l.lkv))return ok[ok.length-1];return null}
+function lkLiIntro(l,o){const li=LS("sustrato-lkli")||{};if(li[l.id]||!o.li)return;li[l.id]={pub:o.li,n:1};LS("sustrato-lkli",li)} /* llegó cifrada con la clave que ya tenías: es de tu profesional */
+async function lkIntroOld(l,oldPub){try{const j=await lkCall("/link/msgs",{id:l.id,since:0}),aes=await lkAes(Object.assign({},l,{proPub:oldPub}));
+  for(const x of j.items||[]){if(x.by!=="pro"||x.del||(x.pk&&x.pk!==oldPub))continue;try{const o=await lmOpen(aes,l,x);if(o.t==="clinic"){lkLiIntro(l,o);return}}catch(e){}}}catch(e){}}
+async function lkPin(L){const pin=LS("sustrato-lkpin")||{},old=LS("sustrato-lkold")||{};let ch=false;
+  for(const l of L||[]){if(l.state!=="active"||!l.proPub)continue;let li=LS("sustrato-lkli")||{};
+    if(!pin[l.id]){pin[l.id]=l.proPub;ch=true;if(l.cl&&(l.cl.lic||[]).length&&!li[l.id]){const z=l.cl.lic[l.cl.lic.length-1];li[l.id]={pub:z.pub,n:z.n};LS("sustrato-lkli",li)}continue}
+    if(pin[l.id]===l.proPub)continue;
+    if(l.clinic&&!li[l.id]){await lkIntroOld(l,pin[l.id]);li=LS("sustrato-lkli")||{}}
+    const top=l.clinic&&li[l.id]?await lkSigned(l,li[l.id]):null;
+    if(top){old[l.id]=[pin[l.id],...(old[l.id]||[])].filter((x,i,a)=>a.indexOf(x)===i).slice(0,20);pin[l.id]=l.proPub;li[l.id]={pub:top.pub,n:top.n};LS("sustrato-lkli",li);ch=true;continue}
+    l.keyNew=l.proPub;l.proPub=null}
+  if(ch){LS("sustrato-lkpin",pin);LS("sustrato-lkold",old)}}
+/* quién de la clínica puede ver tus datos y cuándo los miró por última vez (lo cuenta el servidor de la clínica) */
+const LK_CROLE={owner:"Responsable",admin:"Administración",member:"Profesional"}; /* los mismos nombres que en Sustrato Pro */
+function lkClinic(l){const c=l.cl;if(!c)return"";const A=c.access||[];
+  return`<span class="pa-l">${esc(c.name)}</span><div class="pa-f"><p class="pa-note">Tu profesional trabaja en esta clínica. Pueden ver lo que compartes:</p>${A.map(a=>`<div class="tg-r"><span class="tg-t"><b>${esc(a.name)}</b><small>${esc(LK_CROLE[a.role]||"")}${a.seen?" · lo miró por última vez el "+esc(dateLabel(new Date(a.seen).toISOString().slice(0,10))):" · aún no lo ha mirado"}</small></span></div>`).join("")}</div>`}
+function lkKeyWarn(l){return`<div class="bk-conf lk-key" role="status"><p class="lk-key-h"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><span><b>Tu profesional ha entrado desde otro dispositivo.</b> Si te lo esperabas, sigue compartiendo; si no, pregúntale antes.</span></p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkkeyok" data-id="${esc(l.id)}">Seguir compartiendo</button></div></div>`} /* pieza Aviso (guía 4.0, cap. 10): icono de alerta y una frase con qué hacer; hasta confirmarlo no se comparte nada nuevo */
+async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[];await lkPin(S.lk.links)}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
 function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
 function lkToggles(id,perms){return`<div class="lk-perms">${LK_PERM.map(([k,l,d])=>`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${d}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!(perms&&perms[k])}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`).join("")}</div>`}
 function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en vigor, para ponerlo arriba */
   if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
-  if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
+  if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<p class="pa-note" id="lknone" role="status"${LK_PERM.some(([k])=>L.perms&&L.perms[k])?" hidden":""}>Con todo apagado, tu profesional no verá ningún dato tuyo hasta que enciendas algo.</p><button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
   return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<div aria-busy="true" aria-label="Cargando tu profesional">${skRows(2)}</div>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.state==="active"?lkPage(l,pauta):""}<div class="pa-ex">${L.endAsk===l.id?`<div class="bk-conf"><p><b>${l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+esc(l.pro.name)+"?"}</b> ${l.state==="pending"?"Tendrás que pedir otra llave para volver a intentarlo.":"Dejará de ver lo que compartes. Para volver, necesitarás otra llave."}</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">${l.state==="pending"?"Cancelar la solicitud":"Terminar"}</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`:`<button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button>`}</div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
     ${live.some(l=>l.state==="active")?`<div class="pa-ex"><button type="button" class="ms-link" data-act="lkstart">Vincular con otro profesional</button></div>`:`<button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>`}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
@@ -10021,7 +10123,7 @@ function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en v
 function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
   return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
 function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=LK_PERM.filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
-  return(typeof apptHtml==="function"?apptHtml(l):"")+(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
+  return(l.keyNew?lkKeyWarn(l):"")+lkClinic(l)+(typeof apptHtml==="function"?apptHtml(l):"")+(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
     +(pauta||"")+(typeof lmHtml==="function"?lmHtml(l,"props")+lmHtml(l,"notes"):"")+(typeof prPushRow==="function"?prPushRow():"")
     +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${LK_PERM.length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
 /* desplegable con muelle (como los de Hoy): altura y giro de la flecha del mismo valor */
@@ -10035,9 +10137,11 @@ function lkRender(){S.ppSh=true;renderModal()}
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp],[data-lklive]");if(!t)return;const L=S.lk;
   if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});if(v&&LK_PERM.some(([k])=>!(l.perms||{})[k])){const pm={};LK_PERM.forEach(([k])=>pm[k]=true);l.perms=pm;await lkCall("/link/perms",{id:l.id,perms:pm})} /* v359: en directo marca todo; luego se puede quitar cada cosa */toast(v?"Compartes en directo, todo; quita lo que no quieras":"Le llega cada vez que abres la app");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
   if(t.dataset.lkp!=null){if(t.dataset.tgGo!=="1")return;const [id,k]=t.dataset.lkp.split("|");
-    if(id==="new"){L.perms[k]=!L.perms[k];return}
+    if(id==="new"){L.perms[k]=!L.perms[k];const nn=document.getElementById("lknone");if(nn)nn.hidden=LK_PERM.some(([q])=>L.perms[q]);return}
     const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!l.perms[k]});l.perms=perms;
     try{await lkCall("/link/perms",{id,perms});if(typeof lkPush==="function")lkPush(true);toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}return}
+  if(t.dataset.act==="lkkeyok"){const l=(L.links||[]).find(x=>x.id===t.dataset.id);if(!l||!l.keyNew)return;const pin=LS("sustrato-lkpin")||{},old=LS("sustrato-lkold")||{};old[l.id]=[pin[l.id],...(old[l.id]||[])].filter(Boolean).slice(0,20);pin[l.id]=l.keyNew;LS("sustrato-lkpin",pin);LS("sustrato-lkold",old);
+    await lkLoad();if(typeof lkPush==="function")lkPush(true);lkRender();toast("Vuelves a compartir con "+((l.pro||{}).name||"tu profesional"));return}
   if(t.dataset.lkend){const l=(L.links||[]).find(x=>x.id===t.dataset.lkend);if(!l)return;
     /* guía 4.0 (cap. 14): lo irreversible se confirma en la propia pantalla, como «Empezar de cero»; nunca con el diálogo del navegador */
     if(t.dataset.no){L.endAsk=null;lkRender();return}
@@ -10092,8 +10196,12 @@ function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){
   if(P.food){const p=S.profile||{};if(p.sex==="f"||p.sex==="m")o.sex=p.sex} /* v356: para las referencias de micronutrientes en su panel */ /* v342: sus exclusiones, para la ficha del profesional */
   if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}
   if(typeof hsShared==="function"){const h=hsShared();if(h)o.hs=h} /* v348: Tu salud, si lo compartes */return o}
-async function lkAes(l){const k=await lkKey(),priv=await crypto.subtle.importKey("jwk",k.priv,{name:"ECDH",namedCurve:"P-256"},false,["deriveKey"]);
-  const pub=await crypto.subtle.importKey("raw",lkun64(l.proPub),{name:"ECDH",namedCurve:"P-256"},false,[]);
+/* v31 · claves de tu profesional que has aceptado para este vínculo (la vigente y las anteriores): lo antiguo sigue cifrado con la suya */
+const lkKnown=id=>[(LS("sustrato-lkpin")||{})[id],...((LS("sustrato-lkold")||{})[id]||[])].filter(Boolean);
+const lkPks=l=>{const k=lkKnown(l.id);return k.length?k:[l.proPub]}; /* para abrir: las aceptadas, o la vigente si aún no hay ninguna */
+async function lkOpenAny(l,iv,ct,ad){for(const pk of lkPks(l)){try{return await crypto.subtle.decrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode(ad)},await lkAes(l,pk===l.proPub?null:pk),ct)}catch(e){}}throw{code:"no_key"}}
+async function lkAes(l,pk){const pub_=pk||l.proPub;if(!pub_)throw{code:"key_changed"};if(pk&&pk!==l.proPub&&!lkKnown(l.id).includes(pk))throw{code:"unknown_key"};const k=await lkKey(),priv=await crypto.subtle.importKey("jwk",k.priv,{name:"ECDH",namedCurve:"P-256"},false,["deriveKey"]);
+  const pub=await crypto.subtle.importKey("raw",lkun64(pub_),{name:"ECDH",namedCurve:"P-256"},false,[]);
   return crypto.subtle.deriveKey({name:"ECDH",public:pub},priv,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
 async function lkSeal(aes,id,obj){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode(id)},aes,new TextEncoder().encode(JSON.stringify(obj)));return{iv:lkb64(iv),ct:lkb64(ct)}}
 const lkHash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36)};
@@ -10125,13 +10233,16 @@ setInterval(()=>{if(document.visibilityState==="visible"&&S.lk&&(S.lk.links||[])
 const lmb64=lkb64,lmun64=lkun64;
 S.lkm=LS("sustrato-lkmsg")||{};
 const lmSize=n=>n>=1048576?(n/1048576).toFixed(1).replace(".",",")+" MB":Math.max(1,Math.round(n/1024))+" KB";
+/* v31 · cada mensaje dice con qué clave de tu profesional va cifrado (pk); los de antes no lo dicen y se prueban las que has aceptado */
+async function lmOpenAny(aes,l,x){if(!x.pk||x.pk===l.proPub){try{return await lmOpen(aes,l,x)}catch(e){if(x.pk)throw e}}
+  for(const pk of x.pk?[x.pk]:lkPks(l).filter(p=>p!==l.proPub)){try{return await lmOpen(await lkAes(l,pk),l,x)}catch(e){}}throw{code:"no_key"}}
 async function lmOpen(aes,l,x){const b=await crypto.subtle.decrypt({name:"AES-GCM",iv:lmun64(x.iv),additionalData:new TextEncoder().encode(l.id+"|m")},aes,lmun64(x.ct));return JSON.parse(new TextDecoder().decode(b))}
 async function lmSeal(aes,l,o){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode(l.id+"|m")},aes,new TextEncoder().encode(JSON.stringify(o)));return{iv:lmb64(iv),ct:lmb64(ct)}}
 let LM_BUSY=false;
 async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=true;let fresh=[];
   try{for(const l of S.lk.links.filter(x=>x.state==="active"&&x.proPub)){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}},aes=await lkAes(l),j=await lkCall("/link/msgs",{id:l.id,since:B.since});
       for(const x of j.items||[]){B.since=Math.max(B.since,x.u);if(x.del){delete B.m[x.mid];continue}if(B.m[x.mid])continue;
-        try{const o=await lmOpen(aes,l,x);B.m[x.mid]={mid:x.mid,by:x.by,u:x.u,o};if(x.by==="pro")fresh.push([l,o])}catch(e){}}}
+        try{const o=await lmOpenAny(aes,l,x);B.m[x.mid]={mid:x.mid,by:x.by,u:x.u,o};if(x.by==="pro"){if(o.t==="clinic")lkLiIntro(l,o);else fresh.push([l,o])}}catch(e){}}}
     LS("sustrato-lkmsg",S.lkm)}catch(e){}finally{LM_BUSY=false}
   fresh=fresh.filter(([,o])=>o.t!=="ack"&&o.t!=="meas"); /* v345: las medidas avisan solas (111) y las respuestas no avisan; varias cosas a la vez, un solo aviso */
   if(fresh.length>1){const l=fresh[0][0],n=fresh.length;toast((l.pro.name||"Tu profesional")+" te ha enviado "+n+" cosas · míralas en tu perfil");if(S.sheet==="pauta")lkRender()}
@@ -10140,10 +10251,10 @@ async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=aw
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
 /* v351 · ingredientes que crea tu profesional: llegan dentro del plato (ix: {id: {n, P, C, F, fib}} por 100 g) y se quedan en tu
    perfil (S.profile.ingx, sincronizado), así que los tienes en todos tus dispositivos aunque él los borre después */
-function ingxReg(id,x){const o={id,n:x.n,P:+x.P||0,C:+x.C||0,F:+x.F||0,fib:+x.fib||0,na:0,k:0,mg:0,fe:0,ca:0,vd:0,pro:1};if(INGR_BY[id])Object.assign(INGR_BY[id],o);else{INGR.push(o);INGR_BY[id]=o}}
+function ingxReg(id,x){const o={id,n:x.n,P:+x.P||0,C:+x.C||0,F:+x.F||0,fib:+x.fib||0,na:0,k:0,mg:0,fe:0,ca:0,vd:0,pro:1};if(TA_BY[x.ico])o.ico=x.ico; /* 23-10: el tipo que eligió (su icono) */if(INGR_BY[id])Object.assign(INGR_BY[id],o);else{INGR.push(o);INGR_BY[id]=o}}
 function ingxSync(){const X=(S.profile||{}).ingx||{};Object.keys(X).forEach(id=>{if(!INGR_BY[id]||INGR_BY[id].pro&&INGR_BY[id].n!==X[id].n)ingxReg(id,X[id])})}
 function lmIngx(ix){if(!ix||typeof ix!=="object")return;const X=Object.assign({},(S.profile||{}).ingx);let n=0;
-  Object.entries(ix).slice(0,40).forEach(([id,x])=>{if(!/^u[\w]{1,20}$/.test(id)||!x||typeof x.n!=="string")return;const v=k=>Math.max(0,Math.min(100,+x[k]||0));const o={n:x.n.slice(0,60),P:v("P"),C:v("C"),F:v("F"),fib:v("fib")};
+  Object.entries(ix).slice(0,40).forEach(([id,x])=>{if(!/^u[\w]{1,20}$/.test(id)||!x||typeof x.n!=="string")return;const v=k=>Math.max(0,Math.min(100,+x[k]||0));const o={n:x.n.slice(0,60),P:v("P"),C:v("C"),F:v("F"),fib:v("fib")};if(TA_BY[x.ico])o.ico=x.ico;
     if(JSON.stringify(X[id])!==JSON.stringify(o)){X[id]=o;n++}ingxReg(id,o)});
   if(n){S.profile=Object.assign({},S.profile,{ingx:X});saveProfile(true)}}
 const lmLink=id=>(S.lk.links||[]).find(x=>x.id===id);
@@ -10166,7 +10277,7 @@ const lmKcal=d=>{const n=ingNut(d.ing||[],d.serv||1);return fmtInt(4*n.P+4*n.C+9
 /* adjunto: trozos de texto cifrado que se unen y se abren aquí; en la app se guarda y se comparte, en el navegador se descarga */
 async function lmFile(lid,fid){const l=lmLink(lid);if(!l)return;const q=S.ppIn||(S.profile||{}).pro||{},a=(q.att||[]).find(x=>x.fid===fid);if(!a)return;toast("Abriendo "+a.name+"…");
   try{const parts=[];let n=0,tot=1;while(n<tot){const j=await lkCall("/link/file",{id:l.id,fid,n});if(!j.data)throw 0;parts.push(j.data);tot=j.tot;n++}
-    const aes=await lkAes(l),buf=await crypto.subtle.decrypt({name:"AES-GCM",iv:lmun64(a.iv),additionalData:new TextEncoder().encode(l.id+"|f")},aes,lmun64(parts.join("")));
+    const buf=await lkOpenAny(l,lmun64(a.iv),lmun64(parts.join("")),l.id+"|f");
     const name=a.name.replace(/[^\w.\- ]/g,"_");
     if(window.__native&&S.dl){await S.dl.save({filename:name,data:lmb64(buf).replace(/-/g,"+").replace(/_/g,"/"),b64:true,mime:a.type});return}
     const u=URL.createObjectURL(new Blob([buf],{type:a.type||"application/octet-stream"})),x=document.createElement("a");x.href=u;x.download=name;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),6e4)}
@@ -10178,7 +10289,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(t.dataset.lmdish){const[lid,mid]=t.dataset.lmdish.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],l=lmLink(lid),d=x&&x.o.d;if(!d||!l)return;
     lmIngx(d.ix); /* v351: sus ingredientes propios, antes de comprobar los del plato */
     const ing=(Array.isArray(d.ing)?d.ing:[]).filter(r=>INGR_BY[r[0]]).slice(0,30).map(([id,g])=>[id,Math.max(0,Math.min(2000,Math.round(+g||0)))]);if(!ing.length){toast("Este plato no trae ingredientes");return}
-    const meals=(d.meals||[]).filter(m=>MEALS.some(([id])=>id===m)),nd={id:"p"+mid.replace(/[^\w]/g,""),n:String(d.n||"Plato").slice(0,60),meals:meals.length?meals:pbMeals(ing.map(([id])=>({id}))),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};
+    const meals=(d.meals||[]).filter(m=>MEALS.some(([id])=>id===m)),nd={id:"p"+mid.replace(/[^\w]/g,""),n:String(d.n||"Plato").slice(0,60),meals:meals.length?meals:pbMeals(ing.map(([id])=>({id}))),serv:1,ing,ov:{},src:String(l.pro.name||"").slice(0,60)};if(TA_BY[d.ico])nd.ico=d.ico; /* 23-10: el tipo que eligió para el plato */
     S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd]);saveDishes();lmAck(lid,mid,true);toast("Añadido a tus platos · "+nd.n);lkRender();return}
   if(t.dataset.lmexcl){const[lid,mid]=t.dataset.lmexcl.split("|"),x=((S.lkm[lid]||{}).m||{})[mid],v=x&&x.o.v;if(!v)return;
     const p=Object.assign({},S.profile);EXCL.forEach(([k])=>{p[k]=!!v[k]});if(LM_DIET[v.diet])p.diet=v.diet;S.profile=p;saveProfile(true);lmAck(lid,mid,true);toast("Aplicado: "+lmExclTxt(v));lkRender();render();return}
@@ -10487,7 +10598,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     undoToast("Nota borrada",()=>{clearTimeout(LMDEL);B[mid]=x;LS("sustrato-lkmsg",S.lkm);if(typeof lkRender==="function")lkRender()})}});
 
 /* ---------- Formulario de admisión (v354) ----------
-   Tu profesional te lo pide por el vínculo ({t:"ask",k:"intake",q:[sus preguntas]}) y lo rellenas aquí antes de la primera consulta:
+   Tu profesional te lo pide por el vínculo ({t:"ask",k:"intake",q:[hasta 10 preguntas suyas]}) y lo rellenas aquí antes de la primera consulta:
    unos 3 minutos, casi todo de tocar, con lo que la app ya sabe (edad, altura, peso, Tu salud, lo que no tomas) puesto de antemano.
    Sin tu consentimiento explícito no se envía (datos de salud: RGPD, art. 9.2.a). Lo que le llega: {t:"intake",ref,v:{respuestas},c:{ok,at,txt}}.
    El borrador se guarda en este móvil (LS sustrato-intk) por si lo dejas a medias. Funciones declaradas (no const). Clases ik- */
@@ -10514,7 +10625,7 @@ function ikOpen(lid,mid){let D={};try{D=(JSON.parse(localStorage.getItem("sustra
 /* repinta la hoja sin perder por dónde ibas */
 function ikRe(){const q=()=>document.querySelector(".ik-sheet"),y=q()?q().scrollTop:0;renderModal();if(q())q().scrollTop=y}
 function ikDraft(){const k=S.intk;if(!k)return;try{const A=JSON.parse(localStorage.getItem("sustrato-intk")||"{}");A[k.mid]={v:k.v,u:Date.now()};localStorage.setItem("sustrato-intk",JSON.stringify(A))}catch(e){}}
-function ikHtml(){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x)return"";const p=S.profile||{},pro=l.pro||{},V=k.v,Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,5).map(String);
+function ikHtml(){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x)return"";const p=S.profile||{},pro=l.pro||{},V=k.v,Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,10).map(String);
   const fld=([g,id,lab,ty,o,req])=>{const v=V[id];
     if(ty==="ch")return`<div class="ik-f"><span class="ik-l">${esc(lab)}</span><div class="ik-ch" role="radiogroup" aria-label="${esc(lab)}">${o.map(c=>`<button type="button" role="radio" aria-checked="${v===c}" data-ikc="${id}|${esc(c)}">${esc(c)}</button>`).join("")}</div></div>`;
     if(ty==="area")return`<label class="ik-f"><span class="ik-l">${esc(lab)}${req?"":` <small>opcional</small>`}</span><textarea class="pr-x ik-x" rows="2" maxlength="400" data-ik="${id}" placeholder="${esc(o)}">${esc(v||"")}</textarea></label>`;
@@ -10534,7 +10645,7 @@ function ikHtml(){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||
     <button type="button" class="btn primary pa-go" data-act="iksend"${can?"":" disabled"}>Enviar a ${esc(pro.name||"tu profesional")}</button>
     ${can?"":`<p class="pa-note ik-falta">${!String(V.obj||"").trim()?"Falta qué quieres conseguir con la consulta.":"Falta tu consentimiento."}</p>`}</div></div>`}
 function ikConsent(pro){return`Para que ${pro.name||"tu profesional"}${pro.role&&typeof PP_ROLE!=="undefined"?", "+(PP_ROLE[pro.role]||"").toLowerCase():""}${pro.col?" (n.º "+pro.col+")":""}, trate estos datos, también los de salud, solo para tu seguimiento nutricional. Lo retiras cuando quieras terminando el vínculo.`}
-async function ikSend(btn){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x||!k.ok)return;const p=S.profile||{},Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,5).map(String);
+async function ikSend(btn){const k=S.intk,l=k&&lmLink(k.lid),x=l&&((S.lkm[k.lid]||{}).m||{})[k.mid];if(!x||!k.ok)return;const p=S.profile||{},Q=(Array.isArray(x.o.q)?x.o.q:[]).slice(0,10).map(String);
   const v={tu:{age:p.age||null,sex:p.sex||null,height:p.height||null,weight:p.weight||null}};ikQs().forEach(([,id])=>{if(k.v[id]!=null&&String(k.v[id]).trim())v[id]=String(k.v[id]).slice(0,400)});
   if(typeof hsOf==="function"){const h=hsOf();if(Object.keys(h).length)v.hs=h}const ex={diet:p.diet||"omni"};EXCL.forEach(([e])=>{if(p[e])ex[e]=true});v.excl=ex;
   if(Q.length)v.pq=Q.map((q,i)=>[q,String(k.v["q"+i]||"").slice(0,400)]);
@@ -10566,7 +10677,7 @@ async function lphUp(l,file){const s=await lphShrink(file),buf=await s.b.arrayBu
   for(let i=0;i<ct.length;i+=CH)P.push(ct.slice(i,i+CH));for(let n=0;n<P.length;n++){const j=await lkCall("/link/file/put",{id:l.id,fid,n,tot:P.length,data:P[n]});if(!j||!j.ok)throw j||{}}
   return{fid,iv:lkb64(iv),w:s.w,h:s.h}}
 function lphUrl(l,ph){if(LPH[ph.fid])return LPH[ph.fid];const p=LPH[ph.fid]=(async()=>{const parts=[];let n=0,tot=1;while(n<tot){const j=await lkCall("/link/file",{id:l.id,fid:ph.fid,n});if(!j.data)throw 0;parts.push(j.data);tot=j.tot;n++}
-  const b=await crypto.subtle.decrypt({name:"AES-GCM",iv:lkun64(ph.iv),additionalData:new TextEncoder().encode(l.id+"|f")},await lkAes(l),lkun64(parts.join("")));return URL.createObjectURL(new Blob([b],{type:"image/jpeg"}))})();p.catch(()=>{delete LPH[ph.fid]});return p}
+  const b=await lkOpenAny(l,lkun64(ph.iv),lkun64(parts.join("")),l.id+"|f"); /* v31: con la clave que la cifró */return URL.createObjectURL(new Blob([b],{type:"image/jpeg"}))})();p.catch(()=>{delete LPH[ph.fid]});return p}
 function lphImg(l,ph,cls){return ph&&ph.fid?`<img class="${cls||"lph-i"}" alt="Foto" data-lmph="${l.id}|${esc(ph.fid)}|${esc(ph.iv)}" width="${+ph.w||4}" height="${+ph.h||3}">`:""}
 function lphScan(){document.querySelectorAll("img[data-lmph]:not([data-lphs])").forEach(im=>{im.dataset.lphs="1";const[lid,fid,iv]=im.dataset.lmph.split("|"),l=typeof lmLink==="function"&&lmLink(lid);if(!l)return;
   lphUrl(l,{fid,iv}).then(u=>{im.src=u;im.classList.add("on")}).catch(()=>{im.classList.add("bad")})})}
