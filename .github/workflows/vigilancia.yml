@@ -1,0 +1,26 @@
+# Vigilancia de Sustrato: comprueba que todo responde. Si falla, GitHub manda su correo de fallo (en Gmail, etiqueta «Urgente»).
+# Este repositorio es público: los minutos de Actions son gratis. Solo lee páginas públicas; no usa claves ni datos de nadie.
+# Cada 10 minutos: el servidor y la app que cargan los móviles. Cada hora: lo que sirve Netlify (web, panel y la reserva del servidor),
+# por no gastar de más en Netlify.
+name: Vigilancia
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    - cron: "7 * * * *"
+  workflow_dispatch:
+permissions: {}
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Servidor
+        run: curl -fsS -m 20 --retry 2 https://sustrato-api.javierfp1993.workers.dev/health | grep '"ok":true' >/dev/null
+      - name: App de los móviles
+        run: curl -fsS -m 20 --retry 2 https://javierfp1993-design.github.io/sustrato-web/index.html | grep 'name="sustrato-version"' >/dev/null
+      - name: Web, panel y reserva del servidor (cada hora)
+        if: github.event.schedule != '*/10 * * * *'
+        run: |
+          curl -fsS -m 20 --retry 2 -o /dev/null https://sustrato.app/
+          curl -fsS -m 20 --retry 2 https://sustrato.app/panel.html | grep 'panel.js' >/dev/null
+          curl -fsS -m 20 --retry 2 https://sustrato-api.netlify.app/health | grep '"ok":true' >/dev/null
