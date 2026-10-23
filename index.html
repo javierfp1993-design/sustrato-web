@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-23T13:10:16.582Z">
+<meta name="sustrato-version" content="2026-10-23T17:40:20.695Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -421,7 +421,7 @@ legend.lg,.month,.trainbar .tl{text-transform:none;letter-spacing:0;font-size:ca
 .acts{gap:0}
 .mi,.spark,.pm,.rstep,.shop,table.bands td,.strtab td{border-color:var(--sep)}
 /* controles tipo iOS */
-input,select{background:var(--card2);border:0;border-radius:14px} /* guía 4.0: campo suelto radio 14 */
+input,select{background:var(--fill2);border:0;border-radius:14px} /* guía 4.0: campo suelto, radio 14 y --fill2 (con --card2 no se veía sobre una hoja en oscuro: G01) */
 input.bad{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo) 70%,transparent)}
 .pill{background:var(--fill);border:0;border-radius:8px;font-weight:500}
 .tag-pre{background:color-mix(in srgb,var(--naranja-v,var(--naranja)) 18%,transparent)}
@@ -899,6 +899,8 @@ html[data-theme="light"] .stp .stp-ring{filter:drop-shadow(0 8px 20px rgba(0,0,0
 .wxd{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border-radius:14px;background:var(--card2);font-variant-numeric:tabular-nums}
 .wxd small{font-size:calc(11px*var(--tz,1));color:var(--muted)}.wxd b{font-size:calc(15px*var(--tz,1))}.wxd span{font-size:calc(12px*var(--tz,1));color:var(--muted)}.wxd i{font-style:normal;font-size:calc(11px*var(--tz,1));font-weight:600;color:var(--t-5ac8fa,var(--cian));min-height:13px}
 .wxsrc{margin:8px 0 0;font-size:calc(12px*var(--tz,1));color:var(--muted)}
+/* v365 · atribución que pide la licencia de Open-Meteo (CC BY 4.0), discreta al pie de la previsión */
+.wx-src{margin:8px 0 0;font-size:calc(11px*var(--tz,1));color:var(--muted)}
 
 /* ===== Tarjeta de entreno ===== */
 .tc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
@@ -2646,6 +2648,8 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .cn-a:active{background:var(--fill2)}
 .cn-b{padding:0 18px 10px 70px}
 .cn-conf{padding:10px 18px}
+/* v32 · el código de la cuenta en Conexiones: sin raya propia (la hoja ya separa) y el campo suelto de la guía (44, radio 14, relleno 14), con --fill para que se vea sobre la hoja también en oscuro */
+.cn-conf .ac-box{border-bottom:0;padding-bottom:0;margin-bottom:0}.cn-conf .cl-in{box-sizing:border-box;min-height:44px;border:0;border-radius:14px;padding:0 14px;background:var(--fill);color:var(--fg)}
 .cn-del{margin:-4px 0 16px;text-align:center}
 .cn-del button{appearance:none;border:0;background:none;color:var(--rojo);font:500 calc(15px*var(--tz,1)) var(--font);padding:12px;min-height:44px;cursor:pointer}
 .cn-del p{margin:0;font-size:calc(12px*var(--tz,1));color:var(--muted)}
@@ -3550,6 +3554,7 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .ms-sheet .fields{display:grid;gap:12px;margin:8px 0 12px}
 .ms-sheet .btn.primary.big{width:100%;margin-top:4px}
 .ms-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ms-sheet .f{display:flex;flex-direction:column;gap:6px;font-size:calc(12px*var(--tz,1));color:var(--muted)} /* G02: «Fecha» con el mismo rótulo que los demás campos */
 
 /* ---------- Icono del tipo de alimento (23-10, aprobado por Javier) ----------
    20, gris, sin recuadro, centrado en su columna de 24 (guía 4.0, cap. 9 y cap. 10, Fila, «Icono»). Gris de icono: --icon si el tema
@@ -3647,7 +3652,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="364";
+const APP_VER="365";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4761,7 +4766,11 @@ async function cloudAction(a){
     catch(e){S.cloudBusy=false;toast(e&&e.name==="OperationError"?"El código no es correcto":"No se ha podido recuperar. Revisa la conexión.");render()}}}
 /* ---------- Cuenta con Google y sincronización entre dispositivos ----------
    Cada documento guardado lleva la hora de su último cambio; al sincronizar gana el más reciente.
-   Lo que es caché del dispositivo (sub_, eff, weather, cloud) no viaja. */
+   Lo que es caché del dispositivo (sub_, eff, weather, cloud) no viaja.
+   v32 · M6: todo lo que se sincroniza va cifrado en el móvil con la clave de tu cuenta (AES-GCM, el id del documento como dato adicional).
+   La clave se crea en el primer dispositivo y se guarda en el servidor envuelta con un código que solo tienes tú (PBKDF2): en otro
+   dispositivo, se escribe el código una vez. Sin el código, el servidor (y nosotros) no puede leer nada. Lo que quedaba en claro se cifra
+   al estrenar la clave. */
 const LS=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
 const SYNC={u:LS("sustrato-syncu")||{},q:LS("sustrato-syncq")||{},busy:false,t:null};
 S.acct=LS("sustrato-acct");
@@ -4769,8 +4778,8 @@ function syncMark(id,del){if(!S.acct||CLOUD_SKIP(id))return;const u=Date.now();S
 async function syncApi(path,opt){const c=await cloudCfg(),o=Object.assign({},opt||{});o.headers=Object.assign({"Content-Type":"application/json",Authorization:"Bearer "+S.acct.t},o.headers||{});
   const r=await fetch(c.api.replace(/\/$/,"")+path,o),j=await r.json().catch(()=>null);if(r.status===401){S.acct=null;LS("sustrato-acct",null);toast("Tu sesión ha caducado. Vuelve a entrar.");render();throw{code:"unauthorized"}}if(!r.ok)throw{code:(j&&j.code)||"server"};return j}
 function rawCol(){return S.db&&S.uid?S.db.collection("data/users/"+S.uid):null}
-async function syncFlush(){if(!S.acct||SYNC.busy)return;const ids=Object.keys(SYNC.q);if(!ids.length)return;const c=rawCol();if(!c)return;SYNC.busy=true;
-  try{const docs=[];for(const id of ids){const q=SYNC.q[id];if(q.del)docs.push({id,u:q.u,del:true});else{const d=await c.doc(id).get();if(d.exists)docs.push({id,u:q.u,data:d.data()});else docs.push({id,u:q.u,del:true})}}
+async function syncFlush(){if(!S.acct||SYNC.busy||!(await skReady()))return;const ids=Object.keys(SYNC.q);if(!ids.length)return;const c=rawCol();if(!c)return;SYNC.busy=true;
+  try{const docs=[];for(const id of ids){const q=SYNC.q[id];if(q.del)docs.push({id,u:q.u,del:true});else{const d=await c.doc(id).get();if(d.exists)docs.push({id,u:q.u,e:await skSeal(id,d.data())});else docs.push({id,u:q.u,del:true})}}
     await syncApi("/sync",{method:"POST",body:JSON.stringify({docs})});ids.forEach(id=>{if(SYNC.q[id]&&SYNC.q[id].u<=(docs.find(x=>x.id===id)||{}).u)delete SYNC.q[id]});LS("sustrato-syncq",SYNC.q);
     S.acct=Object.assign({},S.acct,{last:new Date().toISOString(),err:null});LS("sustrato-acct",S.acct)}
   catch(e){if(S.acct){S.acct=Object.assign({},S.acct,{err:e&&e.code||"net"});LS("sustrato-acct",S.acct)}}
@@ -4780,10 +4789,10 @@ function stateSig(){try{return JSON.stringify([S.log,S.weights,S.plan,S.menu,S.p
 async function reloadFromStore(){const sig0=stateSig();["rhr","hrv","hrvMan","sleep","fuel","sweat","measures","rpe","pantry","routines","_cy"].forEach(k=>{delete S[k]});
   Object.assign(S,{log:{},weights:[],plan:{},menu:{},str:[],fasted:{},dishes:[]});await loadStore();await hcMerge();if(stateSig()!==sig0)quietRender()}
 function quietRender(){const h=document.documentElement;h.classList.add("quiet");render();clearTimeout(quietRender.t);quietRender.t=setTimeout(()=>h.classList.remove("quiet"),500)}
-async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol();if(!c)return 0;SYNC.pulling=true;let n=0;
+async function syncPull(full){if(!S.acct||SYNC.pulling||!(await skReady()))return 0;const c=rawCol();if(!c)return 0;SYNC.pulling=true;let n=0;
   try{const since=full?0:(LS("sustrato-syncp")||0),r=await syncApi("/sync?since="+since);
     for(const d of r.docs||[]){if(CLOUD_SKIP(d.id)||!/^[\w.|-]{1,200}$/.test(d.id))continue;if((SYNC.u[d.id]||0)>=d.u||SYNC.q[d.id])continue;
-      try{if(d.del)await c.doc(d.id).delete();else await c.doc(d.id).set(d.data);SYNC.u[d.id]=d.u;n++}catch(e){}}
+      try{if(d.del)await c.doc(d.id).delete();else await c.doc(d.id).set(d.e?await skOpen(d.id,d.e):d.data);SYNC.u[d.id]=d.u;n++}catch(e){}} /* d.data: lo que aún estaba en claro (antes de la v32) */
     LS("sustrato-syncu",SYNC.u);LS("sustrato-syncp",r.now||Date.now());S.acct=Object.assign({},S.acct,{last:new Date().toISOString(),err:null});LS("sustrato-acct",S.acct);
     if(n)await reloadFromStore()}
   catch(e){}SYNC.pulling=false;return n}
@@ -4791,6 +4800,36 @@ async function syncPull(full){if(!S.acct||SYNC.pulling)return 0;const c=rawCol()
 async function syncFirst(){const c=rawCol();if(!c)return;await syncPull(true);
   const snap=await c.get(),now=Date.now();snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id)&&!SYNC.u[d.id]){SYNC.u[d.id]=now;SYNC.q[d.id]={u:now}}});
   LS("sustrato-syncu",SYNC.u);LS("sustrato-syncq",SYNC.q);await syncFlush()}
+/* ---------- v32 · M6: la clave de la cuenta ----------
+   sustrato-sk: la clave (y su huella kid) en este dispositivo; sustrato-skc: su código, para poder enseñarlo en Perfil. Se borran al cerrar
+   sesión. S.acct.needKey: la cuenta ya tiene clave y este dispositivo no; hasta escribir el código, no se sincroniza nada. */
+const SKS={k:null,kid:null},ub64u=s=>Uint8Array.from(atob(String(s).replace(/-/g,"+").replace(/_/g,"/")+"===".slice((String(s).length+3)%4)),c=>c.charCodeAt(0));
+async function skLoad(){if(SKS.k)return SKS.k;const v=LS("sustrato-sk");if(!v||!v.k)return null;SKS.k=await crypto.subtle.importKey("raw",ub64u(v.k),"AES-GCM",false,["encrypt","decrypt"]);SKS.kid=v.kid;return SKS.k}
+const skReady=async()=>!!(S.acct&&!S.acct.needKey&&await skLoad());
+async function skSeal(id,data){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode("sustrato/sync|"+id)},await skLoad(),new TextEncoder().encode(JSON.stringify(data)));return{iv:b64u_(iv),ct:b64u_(ct)}}
+async function skOpen(id,e){const b=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub64u(e.iv),additionalData:new TextEncoder().encode("sustrato/sync|"+id)},await skLoad(),ub64u(e.ct));return JSON.parse(new TextDecoder().decode(b))}
+async function skWrapKey(code,salt){const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(String(code).toUpperCase().replace(/[^0-9A-Z]/g,"")),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",hash:"SHA-256",salt,iterations:310000},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function skKeep(raw,code){const kid=b64u_(await crypto.subtle.digest("SHA-256",raw)).slice(0,22);LS("sustrato-sk",{k:b64u_(raw),kid});LS("sustrato-skc",code);SKS.k=null;await skLoad();return kid}
+const skForget=()=>{LS("sustrato-sk",null);LS("sustrato-skc",null);SKS.k=null;SKS.kid=null};
+/* la primera vez en la cuenta: clave nueva y su código; si la cuenta ya tiene una, este dispositivo necesita el código */
+async function skEnsure(){if(!S.acct)return false;let r;try{r=await syncApi("/sync/key")}catch(e){return false}
+  const local=await skLoad();
+  if(r.sk){if(local&&SKS.kid===r.sk.kid){S.acct.needKey=false;return true}if(local)skForget();S.acct=Object.assign({},S.acct,{needKey:true});LS("sustrato-acct",S.acct);return false}
+  const raw=local?ub64u(LS("sustrato-sk").k):crypto.getRandomValues(new Uint8Array(32)),code=(local&&LS("sustrato-skc"))||cloudNewCode(),salt=crypto.getRandomValues(new Uint8Array(16));
+  const w=await skWrapKey(code,salt),iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},w,raw),kid=await skKeep(raw,code);
+  try{await syncApi("/sync/key",{method:"PUT",body:JSON.stringify({sk:{salt:b64u_(salt),iv:b64u_(iv),ct:b64u_(ct),kid}})})}catch(e){if(e&&e.code==="exists"){skForget();S.acct=Object.assign({},S.acct,{needKey:true});LS("sustrato-acct",S.acct)}return false}
+  S.acct=Object.assign({},S.acct,{needKey:false});LS("sustrato-acct",S.acct);S.skShow=code;
+  if(r.plain){await syncPull(true);const c=rawCol(),now=Date.now();if(c){const snap=await c.get();snap.docs.forEach(d=>{if(!CLOUD_SKIP(d.id)){SYNC.u[d.id]=now;SYNC.q[d.id]={u:now}}});LS("sustrato-syncu",SYNC.u);LS("sustrato-syncq",SYNC.q);await syncFlush()}} /* lo que estaba en claro, cifrado */
+  return true}
+/* el formato del código se comprueba al salir del campo (guía 4.0 · Campo · Error); al enviar, solo lo que diga el servidor */
+document.addEventListener("focusout",e=>{if(!e.target||e.target.id!=="skin")return;const v=(e.target.value||"").trim(),err=v&&!cloudNorm(v)?"Son 24 letras y números: revísalo.":"";
+  if(err!==(S.skErr||"")){S.skErr=err;const box=e.target.closest(".ac-box"),old=box&&box.querySelector(".pp-err");if(old)old.remove();if(box&&err)e.target.closest("label").insertAdjacentHTML("afterend",`<p class="pp-err" role="alert" style="margin-top:6px">${esc(err)}</p>`)}});
+/* en otro dispositivo: el código abre la clave */
+async function skUnlock(code){const r=await syncApi("/sync/key");if(!r.sk)return skEnsure();
+  const w=await skWrapKey(code,ub64u(r.sk.salt)),raw=new Uint8Array(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub64u(r.sk.iv)},w,ub64u(r.sk.ct)));
+  await skKeep(raw,cloudNorm(code)||code);S.acct=Object.assign({},S.acct,{needKey:false});LS("sustrato-acct",S.acct);await syncFirst();return true}
+setTimeout(()=>{if(S.acct)skEnsure().then(ok=>{if(!ok&&S.acct&&S.acct.needKey&&S.sheet!=="pfa:conex")toast("Escribe el código de tu cuenta en Perfil › Conexiones para seguir sincronizando");else syncPull(false)}).catch(()=>{})},5000);
 /* v30 · inicio de sesión atado a este dispositivo: acctLogin guarda un secreto (sustrato-authv) y manda solo su huella (c); la vuelta
    (sustrato://auth?t=… o #t=…) trae un vale de 10 minutos que solo se canjea con ese secreto. Un enlace ajeno con la sesión de otra
    cuenta se descarta: antes metía a la persona en esa cuenta y subía allí sus datos. */
@@ -4805,7 +4844,9 @@ async function acctRefresh(){if(!S.acct||!S.acct.t||tokOf(S.acct.t).exp-Date.now
 setTimeout(acctRefresh,4000);
 async function acctSet(t){if(!t){toast("No se ha podido iniciar sesión");return}if(S.acct&&S.acct.t===t)return;S.acct={t};
   try{const me=await syncApi("/me");S.acct={t,email:me.email,name:me.name};LS("sustrato-acct",S.acct);toast("Sesión iniciada. Sincronizando tus datos…");
-    if(!(S.profile||{}).name&&me.name){S.profile=Object.assign({},S.profile,{name:me.name})}await syncFirst();render();toast("Tus datos ya están en tu cuenta")}
+    if(!(S.profile||{}).name&&me.name){S.profile=Object.assign({},S.profile,{name:me.name})}
+    if(!(await skEnsure())){render();if(S.sheet!=="pfa:conex")toast(S.acct&&S.acct.needKey?"Escribe el código de tu cuenta en Perfil › Conexiones para traer tus datos":"No se ha podido preparar el cifrado de tu cuenta");return}
+    await syncFirst();render();toast("Tus datos ya están en tu cuenta")}
   catch(e){S.acct=null;LS("sustrato-acct",null);toast("No se ha podido iniciar sesión");render()}};
 async function acctLogin(){try{const c=await cloudCfg();const ret=window.__native?"sustrato://auth":location.origin+location.pathname;const api=c.api.replace(/\/$/,"");
   const v=b64u_(crypto.getRandomValues(new Uint8Array(32))),h=b64u_(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v)));LS("sustrato-authv",{v,at:Date.now()});
@@ -4827,16 +4868,34 @@ function acctBlock(){const a=S.acct;if(!a&&!S.authOn)return"";
     <button class="btn ac-g" data-act="aclogin">${G}<span>Continuar con Google</span></button><p class="ac-legal">Al continuar aceptas que guardemos tus datos, incluidos los de salud, para sincronizarlos entre tus dispositivos. No los compartimos con nadie y puedes borrarlos cuando quieras. <a href="${PRIV_URL}" target="_blank" rel="noopener">Política de privacidad</a>.</p></div>`;
   const when=a.last?(()=>{const d=new Date(a.last),k=a.last.slice(0,10);return(k===today()?"hoy":dateLabel(k))+" a las "+pad(d.getHours())+":"+pad(d.getMinutes())})():"pendiente";
   if(S.acDel)return`<div class="bk-conf rs-conf"><p><b>¿Borrar tu cuenta?</b> Se borran de nuestro servidor todos los datos de ${esc(a.email||"tu cuenta")}. En este móvil se quedan los tuyos, sin sincronizar. No se puede deshacer.</p><div class="bk-a"><button class="btn sm rs-do" data-act="acdeldo">Borrar mi cuenta</button><button class="chip sm" data-act="acdelno">Cancelar</button></div></div>`;
-  return`<div class="ac-box"><p class="cl-t"><b>Tu cuenta</b><span class="cl-ok${a.err?" err":""}">${a.err?"Sin conexión":"Sincronizado"}</span></p><p class="note" style="margin:2px 0 10px">${esc(a.email||"")} · última sincronización ${when}.</p>
-    <div class="bk-a"><button class="btn sm" data-act="acsync">Sincronizar ahora</button><button class="btn sm" data-act="aclogout">Cerrar sesión</button></div><button class="cl-l" data-act="acdel">Borrar mi cuenta y mis datos</button></div>`}
+  /* v32 · M6: el código de la cuenta. Sin él en este dispositivo, no se sincroniza; recién creado, se enseña para guardarlo */
+  if(a.needKey){if(S.skLost)return`<div class="bk-conf rs-conf"><p><b>¿Empezar de cero?</b> Sin el código no se pueden abrir los datos cifrados de tu cuenta. Se borran del servidor y tu cuenta empieza con lo que hay en este móvil.</p><div class="bk-a"><button class="btn sm rs-do" data-act="acskreset">Empezar de cero</button><button class="chip sm" data-act="acsknot">Cancelar</button></div></div>`;
+    return`<div class="ac-box"><p class="cl-t"><b>Tu cuenta</b><span class="cl-ok err">Falta el código</span></p><p class="note" style="margin:2px 0 10px">Tus datos de la cuenta van cifrados. Escribe su código para sincronizar este dispositivo: lo ves en Perfil › Conexiones, en el que ya usas.</p>
+      <label class="f" for="skin"><span class="vh">Código de tu cuenta</span><input id="skin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="24 letras y números" class="cl-in"></label>${S.skErr?`<p class="pp-err" role="alert" style="margin-top:6px">${esc(S.skErr)}</p>`:""}
+      <div class="bk-a" style="margin-top:10px"><button class="btn sm primary" data-act="acskgo" ${S.skBusy?"disabled":""}>${S.skBusy?"Abriendo…":"Continuar"}</button></div><button class="cl-l" data-act="acsklost">No tengo el código</button></div>`} /* «Cerrar sesión», en su fila roja de Conexiones (perfil.js) */
+  if(S.skShow)return`<div class="ac-box"><p class="cl-t"><b>El código de tu cuenta</b></p><div class="cl-code" aria-label="Código ${esc(S.skShow)}">${codeHtml(S.skShow)}</div>
+    <p class="note" style="margin:8px 0 12px">Tus datos de la cuenta van cifrados con él. Guárdalo en tu gestor de contraseñas o en una foto: te lo pedirá cada dispositivo nuevo. Sin él no se pueden abrir, tampoco desde Sustrato.</p>
+    <div class="bk-a"><button class="btn sm" data-act="acskcopy">Copiar código</button><button class="btn sm primary" data-act="acskok">Ya lo he guardado</button></div></div>`;
+  const kc=LS("sustrato-skc");
+  return`<div class="ac-box"><p class="cl-t"><b>Tu cuenta</b><span class="cl-ok${a.err?" err":""}">${a.err?"Sin conexión":"Sincronizado"}</span></p><p class="note" style="margin:2px 0 10px">${esc(a.email||"")} · última sincronización ${when}. Va cifrado: solo se abre con el código de tu cuenta.</p>
+    <div class="bk-a"><button class="btn sm" data-act="acsync">Sincronizar ahora</button><button class="btn sm" data-act="aclogout">Cerrar sesión</button></div>${kc?`<button class="cl-l" data-act="acskview">${S.skView?"Ocultar el código de tu cuenta":"Ver el código de tu cuenta"}</button>${S.skView?`<div class="cl-code" aria-label="Código ${esc(kc)}">${codeHtml(kc)}</div>`:""}`:""}<button class="cl-l" data-act="acdel">Borrar mi cuenta y mis datos</button></div>`}
 async function acctAction(a){
   if(a==="aclogin")return acctLogin();
   if(a==="acapple")return acctApple();
   if(a==="acsync"){await syncFlush();const n=await syncPull(false);toast(n?"Sincronizado · "+n+" cambios":"Todo al día");render();return}
-  if(a==="aclogout"){await syncFlush();S.acct=null;["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Sesión cerrada. Tus datos siguen en este móvil.");render();return}
+  if(a==="aclogout"){await syncFlush();S.acct=null;skForget();["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Sesión cerrada. Tus datos siguen en este móvil.");render();return}
+  if(a==="acskgo"){const v=(($("#skin")||{}).value||"").trim();if(!cloudNorm(v)){S.skErr="Son 24 letras y números: revísalo.";renderModal();return}S.skErr="";S.skBusy=true;renderModal();
+    try{await skUnlock(v);S.skBusy=false;toast("Tus datos ya están en este dispositivo");render();renderModal()}catch(e){S.skBusy=false;S.skErr="Ese código no abre tu cuenta. Compruébalo en tu otro dispositivo.";renderModal()}return}
+  if(a==="acsklost"){S.skLost=true;render();return}
+  if(a==="acsknot"){S.skLost=false;render();return}
+  if(a==="acskreset"){try{await syncApi("/sync/reset",{method:"POST"});S.skLost=false;skForget();S.acct=Object.assign({},S.acct,{needKey:false});LS("sustrato-acct",S.acct);
+      ["sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};if(await skEnsure())await syncFirst();render()}catch(e){toast("No se ha podido. Revisa la conexión.")}return}
+  if(a==="acskcopy"){try{await navigator.clipboard.writeText(S.skShow||LS("sustrato-skc")||"");toast("Código copiado")}catch(e){toast("No se ha podido copiar")}return}
+  if(a==="acskok"){S.skShow=null;render();return}
+  if(a==="acskview"){S.skView=!S.skView;render();return}
   if(a==="acdel"){S.acDel=true;render();return}
   if(a==="acdelno"){S.acDel=false;render();return}
-  if(a==="acdeldo"){try{await syncApi("/account",{method:"DELETE"});S.acDel=false;S.acct=null;["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Cuenta borrada");render()}catch(e){toast("No se ha podido borrar. Revisa la conexión.")}}}
+  if(a==="acdeldo"){try{await syncApi("/account",{method:"DELETE"});S.acDel=false;S.acct=null;skForget();["sustrato-acct","sustrato-syncq","sustrato-syncp","sustrato-syncu"].forEach(k=>LS(k,null));SYNC.q={};SYNC.u={};toast("Cuenta borrada");render()}catch(e){toast("No se ha podido borrar. Revisa la conexión.")}}}
 async function backupSave(){const c=userCol();if(!c||!S.dl)return;
   try{const snap=await c.get(),docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});const at=new Date().toISOString();
     await saveFile("sustrato-copia-"+at.slice(0,10)+".json",JSON.stringify({app:"sustrato",v:1,at,docs},null,1));
@@ -7248,7 +7307,7 @@ function vPlanTrain(wk){
   return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
     <div class="kv kv4 pl-kv"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div>
     <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}</section>
-  ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}</section>`:""})()}
+  ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}<p class="wx-src">Datos de Open-Meteo.com</p></section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
 }
@@ -8186,10 +8245,10 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
   if(nat){G.push(st.connected?hd(svIc,"Strava",(st.name?`<span>${esc(st.name)}</span>`:"")+pw,`<span class="cn-st cx-ok">Conectado</span>`)+`<button type="button" class="cn-a red" data-act="svoff">Desconectar Strava</button>`
     :hd(svIc,"Strava",`<span>Para tener el desnivel y la distancia de tus salidas aunque tu reloj no los mande a ${HCN}.</span>`)+`<div class="cn-b"><button class="sv-btn" data-act="svon"${S.svBusy?" disabled":""} aria-label="Connect with Strava"><img src="${BR_SV_CONNECT}" alt="Connect with Strava"></button></div>`)}
   else G.push(hd(svIc,"Strava",pw,`<span class="cn-st${S.actsState==="ok"?" cx-ok":""}">${S.actsState==="ok"?"Conectado":S.actsState==="err"?"Sin conexión":"Conectando…"}</span>`));
-  if(a&&S.acDel)G.push(`<div class="cn-b cn-conf">${acctBlock()}</div>`);
+  if(a&&(S.acDel||a.needKey||S.skShow))G.push(`<div class="cn-b cn-conf">${acctBlock()}</div>`+(a.needKey&&!S.skLost?`<button type="button" class="cn-a red" data-act="aclogout">Cerrar sesión</button>`:"")); /* v32: también falta el código de la cuenta o se acaba de crear; «Cerrar sesión», la misma fila roja de siempre */
   else if(a){const when=a.last?(()=>{const d=new Date(a.last),k=a.last.slice(0,10);return(k===today()?"hoy":dateLabel(k))+" a las "+pad(d.getHours())+":"+pad(d.getMinutes())})():"";
     G.push(hd(acctKind(a)==="apple"?`<span class="cx-ic cx-ap" aria-hidden="true">${AP_LOGO}</span>`:`<span class="cx-ic cx-g">${G_ICON}</span>`,acctKind(a)==="apple"?"Cuenta de Apple":"Cuenta de Google",`<span>${esc(a.email||"")}</span>`,`<span class="cn-st${a.err?"":" cx-ok"}">${a.err?"Sin conexión":"Sincronizado"}</span>`)
-      +`<button type="button" class="cn-a" data-act="acsync">Sincronizar ahora${when?`<small>${when}</small>`:""}</button><button type="button" class="cn-a red" data-act="aclogout">Cerrar sesión</button>`)}
+      +`<button type="button" class="cn-a" data-act="acsync">Sincronizar ahora${when?`<small>${when}</small>`:""}</button>${LS("sustrato-skc")?`<button type="button" class="cn-a" data-act="acskview">${S.skView?"Ocultar el código de tu cuenta":"Ver el código de tu cuenta"}<small>Va cifrado: lo pide cada dispositivo nuevo</small></button>${S.skView?`<div class="cn-b"><div class="cl-code" aria-label="Código de tu cuenta">${codeHtml(LS("sustrato-skc"))}</div></div>`:""}`:""}<button type="button" class="cn-a red" data-act="aclogout">Cerrar sesión</button>`)}
   else if(S.authOn)G.push(hd("","Tu cuenta",`<span>Entra con ${S.appleOn?"Apple o Google":"Google"} para tener los mismos datos en el móvil y en el ordenador.</span>`)+`<div class="cn-b ac-b">${S.appleOn?AP_BTN:""}${G_BTN}<p class="ac-legal">Al continuar aceptas que guardemos tus datos, incluidos los de salud, para sincronizarlos entre tus dispositivos. No los compartimos con nadie y puedes borrarlos cuando quieras. <a href="${PRIV_URL}" target="_blank" rel="noopener">Política de privacidad</a>.</p></div>`);
   if(window.__native)G.push(IOS?hd(`<span class="cx-ic cx-ah" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span>`,"Apple Salud",`<span>Pulso, VFC, sueño, pasos y peso de tu reloj. Los permisos se cambian en Salud › tu perfil › Apps.</span>`)+`<button type="button" class="cn-a" data-act="hcperm">Abrir Salud</button>`
     :hd(`<span class="cx-ic cx-hc"><img src="data:image/png;base64,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" alt="Health Connect" width="28" height="28"></span>`,"Health Connect",`<span>Pulso, VFC, sueño, pasos y peso de tu reloj</span>`)+`<button type="button" class="cn-a" data-act="hcperm">Revisar permisos</button>`); /* v280: volver a la ventana de permisos (p. ej. lectura con la app cerrada) */
