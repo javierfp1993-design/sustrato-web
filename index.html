@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-26T07:51:08.693Z">
+<meta name="sustrato-version" content="2026-10-26T10:06:32.152Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3407,6 +3407,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hs-ic.prc-ic{color:var(--icon)}
 /* aviso de clave cambiada (vinculo.js · lkKeyWarn): la pieza Aviso con su icono de alerta en su columna de 24, en el color del aviso */
 .lk-key-h{display:flex;gap:8px;align-items:flex-start}.lk-key-h svg{flex:0 0 24px;margin-top:1px;color:var(--naranja-v,var(--naranja))}
+.lk-perms .lk-cy{margin:4px 0 12px} /* v369: consentimiento del ciclo bajo su fila; 4 y 12, de la escala de espacio (guía 4.0, «Espacio») */
 
 /* v348 · Tu salud (113): fila en el Perfil, hoja con cuatro grupos y lo que cambia en azul */
 .hs-card{padding:6px 8px}
@@ -3662,7 +3663,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="368";
+const APP_VER="369";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -8803,6 +8804,10 @@ function cyScale(metric){const s=cyStarts(),src=S[metric]||{},rs=[];
 function cyMap(metric){const src=S[metric]||{};if(!cyActive())return src;const sc=cyScale(metric).k,out={};
   for(const k in src){const v=src[k],a=v>0?cyAt(k):null;if(!a){out[k]=v;continue}const off=cyModel(a)*sc;out[k]=metric==="rhr"?v-off:v/(1+cyHrvF(off))}return out}
 function cyAdj(k){return cyActive()&&!!cyAt(k)}
+/* v369 · lo único que ve tu profesional si enciendes «Ciclo» en el vínculo (meta.cy, formato acordado con Pro): último inicio, duración
+   media, días de retraso sobre esa media y días desde la última regla. Ni historial ni nada más. Sin ciclo registrado, nada. */
+function cyPro(){if(!cyOn())return null;const t=today(),s=cyStarts().filter(x=>x<=t),u=s[s.length-1];if(!u)return null;
+  const d=Math.round(cyLen().L),n=daysBetween(u,t);return{u,d,r:Math.max(0,n-d),s:n}}
 /* Hoy · Así amaneces: fila de contexto (no puntúa) y botón de la regla cerca de la fecha prevista */
 function cyRow(k){if(!cyOn())return"";const c=cyGet(),a=cyAt(k);
   if(!a)return c.starts.length?`<div class="wf-row cy-row"><svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16"/></svg><span class="wf-n">Ciclo<small>Sin regla apuntada desde hace tiempo · apúntala para seguir la fase</small></span></div>`:"";
@@ -10149,7 +10154,14 @@ setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(nu
    nutricionista, ves quién es y eliges qué compartir (al empezar, nada). Él acepta en su panel. Puedes cambiar lo que compartes o
    terminar cuando quieras. Hace falta tu cuenta de Sustrato. La app guarda su clave privada (ECDH P-256) solo en este móvil;
    la pública va con la solicitud para cifrar de extremo a extremo lo que compartas (fase C). */
-const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
+const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["cycle","Ciclo","Cuándo empezó tu última regla y si se retrasa"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
+/* v369 · «Ciclo»: dato de salud especialmente sensible. Apagado por defecto, se enciende solo tras su consentimiento propio (guía 4.0,
+   cap. 14: confirmación en la propia pantalla, nunca el diálogo del navegador), en la solicitud y en un vínculo ya hecho; «En directo» no lo enciende.
+   No se ofrece con sexo «Hombre» (como la etapa en Tu salud). Viaja como perms.cycle; lo que se manda, en lkMeta (meta.cy). */
+const LK_SENS=["cycle"];
+const lkVis=()=>LK_PERM.filter(([k])=>k!=="cycle"||(S.profile||{}).sex!=="m");
+const LK_CY_OK="Tu profesional verá cuándo empezó tu última regla, cuánto suele durar tu ciclo y si se retrasa, para avisarte si algo cambia. Nada más. Puedes dejar de compartirlo cuando quieras.";
+function lkCyAsk(id){return`<div class="bk-conf lk-cy" role="group" aria-label="Compartir tu ciclo"><p><b>¿Compartir tu ciclo?</b> ${LK_CY_OK}</p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkcyok" data-id="${esc(id)}">Compartir el ciclo</button><button type="button" class="chip sm" data-act="lkcyno" data-id="${esc(id)}">No</button></div></div>`}
 const LK_ST={pending:"Esperando su respuesta",active:"Vinculado",ended:"Terminado",rejected:"Rechazado"};
 S.lk=S.lk||{links:null,step:null,code:"",pro:null,perms:{},err:""};
 async function lkKey(){let k=LS("sustrato-ecdh");if(k&&k.pub)return k;
@@ -10184,7 +10196,9 @@ function lkClinic(l){const c=l.cl;if(!c)return"";const A=c.access||[];
 function lkKeyWarn(l){return`<div class="bk-conf lk-key" role="status"><p class="lk-key-h"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><span><b>Tu profesional ha entrado desde otro dispositivo.</b> Si te lo esperabas, sigue compartiendo; si no, pregúntale antes.</span></p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkkeyok" data-id="${esc(l.id)}">Seguir compartiendo</button></div></div>`} /* pieza Aviso (guía 4.0, cap. 10): icono de alerta y una frase con qué hacer; hasta confirmarlo no se comparte nada nuevo */
 async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[];await lkPin(S.lk.links)}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
 function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
-function lkToggles(id,perms){return`<div class="lk-perms">${LK_PERM.map(([k,l,d])=>`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${d}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!(perms&&perms[k])}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`).join("")}</div>`}
+function lkToggles(id,perms){const ask=S.lk.cyAsk===id; /* v369 (guía 4.0, «Conmutador y su fila»): mientras pide el consentimiento, el interruptor del ciclo se queda encendido y debajo va la confirmación */
+  return`<div class="lk-perms">${lkVis().map(([k,l,d])=>{const on=!!(perms&&perms[k])||(k==="cycle"&&ask),dd=k==="cycle"&&!(typeof cyOn==="function"&&cyOn())?"Cuando registres tu ciclo en Perfil":d;
+    return`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${dd}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${on}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`+(k==="cycle"&&ask?lkCyAsk(id):"")}).join("")}</div>`}
 function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en vigor, para ponerlo arriba */
   if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
@@ -10196,10 +10210,10 @@ function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en v
    notas; avisos; lo que compartes, plegado (se configura una vez) y en directo dentro */
 function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
   return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
-function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=LK_PERM.filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
+function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=lkVis().filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
   return(l.keyNew?lkKeyWarn(l):"")+lkClinic(l)+(typeof apptHtml==="function"?apptHtml(l):"")+(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
     +(pauta||"")+(typeof lmHtml==="function"?lmHtml(l,"props")+lmHtml(l,"notes"):"")+(typeof prPushRow==="function"?prPushRow():"")
-    +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${LK_PERM.length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
+    +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${lkVis().length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
 /* desplegable con muelle (como los de Hoy): altura y giro de la flecha del mismo valor */
 function dgToggle(b){const g=b.closest(".dg"),open=!S.lkPermOpen,h0=g.getBoundingClientRect().height,row=b.getBoundingClientRect().height;
   if(!open){if(MU.reduce()){S.lkPermOpen=false;lkRender();return}const ch=b.querySelector(".dg-ch");g.style.height=h0+"px";g.style.overflow="hidden";b.setAttribute("aria-expanded","false");
@@ -10208,12 +10222,21 @@ function dgToggle(b){const g=b.closest(".dg"),open=!S.lkPermOpen,h0=g.getBoundin
   MU.spring(n,h0,h1,0,x=>{n.style.height=x+"px";if(c2)c2.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-h0)/Math.max(1,h1-h0)))).toFixed(1)}deg)`},{resp:.35,done:()=>{n.style.height="";n.style.overflow="";if(c2)c2.style.transform=""}})}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dg]");if(b)dgToggle(b)});
 function lkRender(){S.ppSh=true;renderModal()}
+async function lkSetPerm(id,k){const L=S.lk;
+  if(id==="new"){L.perms[k]=!L.perms[k];if(LK_SENS.includes(k)){lkRender();return}const nn=document.getElementById("lknone");if(nn)nn.hidden=LK_PERM.some(([q])=>L.perms[q]);return}
+  const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!(l.perms||{})[k]});l.perms=perms;if(LK_SENS.includes(k))lkRender();
+  try{const j=await lkCall("/link/perms",{id,perms});
+    /* v369: un servidor que aún no conoce el permiso lo descarta; entonces no se da por encendido */
+    if(perms[k]&&j&&j.link&&j.link.perms&&j.link.perms[k]!==true){l.perms=Object.assign({},perms,{[k]:false});L.err="Todavía no se puede compartir esto. Prueba más adelante.";lkRender();return}
+    if(typeof lkPush==="function")lkPush(true);toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}}
 document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.closest("[data-act^='lk'],[data-lkend],[data-lkp],[data-lklive]");if(!t)return;const L=S.lk;
-  if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});if(v&&LK_PERM.some(([k])=>!(l.perms||{})[k])){const pm={};LK_PERM.forEach(([k])=>pm[k]=true);l.perms=pm;await lkCall("/link/perms",{id:l.id,perms:pm})} /* v359: en directo marca todo; luego se puede quitar cada cosa */toast(v?"Compartes en directo, todo; quita lo que no quieras":"Le llega cada vez que abres la app");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
+  if(t.dataset.lklive){if(t.dataset.tgGo!=="1")return;const l=(L.links||[]).find(x=>x.id===t.dataset.lklive);if(!l)return;const v=!l.live;l.live=v;try{await lkCall("/link/live",{id:l.id,live:v});if(v&&LK_PERM.some(([k])=>!LK_SENS.includes(k)&&!(l.perms||{})[k])){const pm={};LK_PERM.forEach(([k])=>pm[k]=LK_SENS.includes(k)?!!(l.perms||{})[k]:true);l.perms=pm;await lkCall("/link/perms",{id:l.id,perms:pm})} /* v359: en directo marca todo; luego se puede quitar cada cosa */toast(v?"Compartes en directo, todo; quita lo que no quieras":"Le llega cada vez que abres la app");lkRender();if(v&&typeof lkPush==="function")lkPush(true)}catch(x){l.live=!v;L.err="No se ha podido cambiar.";lkRender()}return}
   if(t.dataset.lkp!=null){if(t.dataset.tgGo!=="1")return;const [id,k]=t.dataset.lkp.split("|");
-    if(id==="new"){L.perms[k]=!L.perms[k];const nn=document.getElementById("lknone");if(nn)nn.hidden=LK_PERM.some(([q])=>L.perms[q]);return}
-    const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!l.perms[k]});l.perms=perms;
-    try{await lkCall("/link/perms",{id,perms});if(typeof lkPush==="function")lkPush(true);toast(perms[k]?"Ahora compartes "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase():"Dejas de compartir "+LK_PERM.find(x=>x[0]===k)[1].toLowerCase())}catch(x){l.perms[k]=!perms[k];L.err="No se ha podido cambiar. Prueba en un momento.";lkRender()}return}
+    if(LK_SENS.includes(k)){const cur=id==="new"?L.perms:((L.links||[]).find(x=>x.id===id)||{}).perms||{};
+      if(L.cyAsk===id){L.cyAsk=null;lkRender();return} /* volver a tocarlo mientras pregunta: no se comparte */
+      if(!cur[k]){L.cyAsk=id;lkRender();return}} /* encender pide antes el consentimiento; apagar es inmediato */
+    lkSetPerm(id,k);return}
+  if(t.dataset.act==="lkcyok"||t.dataset.act==="lkcyno"){const id=t.dataset.id,ok=t.dataset.act==="lkcyok";L.cyAsk=null;if(ok)lkSetPerm(id,"cycle");else lkRender();return}
   if(t.dataset.act==="lkkeyok"){const l=(L.links||[]).find(x=>x.id===t.dataset.id);if(!l||!l.keyNew)return;const pin=LS("sustrato-lkpin")||{},old=LS("sustrato-lkold")||{};old[l.id]=[pin[l.id],...(old[l.id]||[])].filter(Boolean).slice(0,20);pin[l.id]=l.keyNew;LS("sustrato-lkpin",pin);LS("sustrato-lkold",old);
     await lkLoad();if(typeof lkPush==="function")lkPush(true);lkRender();toast("Vuelves a compartir con "+((l.pro||{}).name||"tu profesional"));return}
   if(t.dataset.lkend){const l=(L.links||[]).find(x=>x.id===t.dataset.lkend);if(!l)return;
@@ -10223,8 +10246,8 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
     L.endAsk=null;
     try{await lkCall("/link/end",{id:l.id});await lkLoad();toast(l.state==="pending"?"Solicitud cancelada":"Vínculo terminado")}catch(x){L.err="No se ha podido. Prueba en un momento.";lkRender()}return}
   const a=t.dataset.act;L.err="";
-  if(a==="lkstart"){L.step="code";L.code="";L.pro=null;L.perms={};lkRender();setTimeout(()=>{const i=$("#lkcode");if(i)i.focus()},50);return}
-  if(a==="lkcancel"){L.step=null;lkRender();return}
+  if(a==="lkstart"){L.step="code";L.code="";L.pro=null;L.perms={};L.cyAsk=null;lkRender();setTimeout(()=>{const i=$("#lkcode");if(i)i.focus()},50);return}
+  if(a==="lkcancel"){L.step=null;L.cyAsk=null;lkRender();return}
   if(a==="lknext"){const code=String(($("#lkcode")||{}).value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");L.code=code;
     if(code.length!==6){L.err="La llave tiene 6 caracteres.";lkRender();return}
     t.disabled=true;try{const j=await lkCall("/link/lookup",{code});if(!j.pro){L.err="Esa llave no vale: puede haber caducado o ya se usó. Pide otra a tu profesional.";lkRender();return}L.pro=j.pro;L.step="perms";lkRender()}catch(x){L.err="No se ha podido comprobar. Prueba en un momento.";lkRender()}return}
@@ -10269,7 +10292,8 @@ function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){
   if(P.food){const p=S.profile||{};o.excl={diet:p.diet||"omni"};EXCL.forEach(([k])=>{if(p[k])o.excl[k]=true})}
   if(P.food){const p=S.profile||{};if(p.sex==="f"||p.sex==="m")o.sex=p.sex} /* v356: para las referencias de micronutrientes en su panel */ /* v342: sus exclusiones, para la ficha del profesional */
   if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}
-  if(typeof hsShared==="function"){const h=hsShared();if(h)o.hs=h} /* v348: Tu salud, si lo compartes */return o}
+  if(typeof hsShared==="function"){const h=hsShared();if(h)o.hs=h} /* v348: Tu salud, si lo compartes */
+  if(P.cycle===true&&typeof cyPro==="function"){const c=cyPro();if(c)o.cy=c} /* v369: solo con el permiso «Ciclo» y su consentimiento; sin ciclo, no va */return o}
 /* v31 · claves de tu profesional que has aceptado para este vínculo (la vigente y las anteriores): lo antiguo sigue cifrado con la suya */
 const lkKnown=id=>[(LS("sustrato-lkpin")||{})[id],...((LS("sustrato-lkold")||{})[id]||[])].filter(Boolean);
 const lkPks=l=>{const k=lkKnown(l.id);return k.length?k:[l.proPub]}; /* para abrir: las aceptadas, o la vigente si aún no hay ninguna */
