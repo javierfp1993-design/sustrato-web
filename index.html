@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-26T17:54:36.789Z">
+<meta name="sustrato-version" content="2026-10-26T21:09:22.929Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3404,7 +3404,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .prc-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .prc-t b{font-size:calc(17px*var(--tz,1));font-weight:600;line-height:1.25}
 .prc-t span{font-size:calc(15px*var(--tz,1));color:var(--muted);line-height:1.35}
-.prc-x{flex:none;align-self:flex-start;margin:-6px -8px 0 0;color:var(--icon)}
+.hbtn.prc-x{flex:none;align-self:flex-start;color:var(--icon);width:30px!important;height:30px!important;border-radius:50%!important;background:var(--fill2)!important;margin:0!important} /* v371 · cap. 10, «Botón de icono»: 30, redondo y gris (antes 40 con radio 10, de .hbtn) */
 .prc-a{margin-top:14px;align-items:center}
 .prc-who{margin:10px 0 4px}
 .prc-l{margin-top:10px}
@@ -3599,6 +3599,15 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .spark.dl-r::after{content:"";position:absolute;left:36px;right:0;bottom:-1px;height:1px;transform:scaleY(.5);transform-origin:bottom;background:var(--sep)}
 .spark.dl-r>.ta-ico{align-self:flex-start}
 
+/* v371 · Dossier de competición de tu profesional (hoja de solo lectura): las piezas del plan de carrera (rp-k, rp-tl, rp-big) y las filas
+   de la vista previa del menú (pp-rows). 18 entre grupos y 8 del rótulo a su contenido (escala de espacio; cap. 7, «Hoja») */
+.ds-sheet.pa-sheet{gap:8px}.ds-sheet>.pa-l{margin-top:10px} /* 8 de hueco + 10 = 18 antes de cada rótulo */
+.ds-sheet .rp-k>div,.ds-sheet .pp-rows{background:var(--fill2)} /* cap. 4, «Jerarquía»: dentro de la hoja (--card2 en oscuro), el relleno suave; con --card2 desaparecían en oscuro */
+.ds-sheet .pp-r{align-items:flex-start;padding:10px 0}.ds-sheet .pp-r>span:first-child{min-width:0}
+/* v371 · tarjeta de la carrera en Hoy: con el dossier, «Ver el plan» y «Ver el dossier» a partes iguales (cap. 10, Botón principal,
+   «Secundario grande»: dos acciones del mismo peso; 10 entre ellos, escala de espacio) */
+.cr-a{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.cr-a .cr-go{margin-top:0;min-width:0}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3685,7 +3694,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="370";
+const APP_VER="371";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4644,6 +4653,7 @@ function paHtml(){const p=S.pa,tk=today();
     ${intSlider(p.int||"s")}`}
     <div class="pa-f pa-time"><span class="pa-l">Hora</span>${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div>
     <div class="pa-race${p.race?" on":""}"><span class="pa-rc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4h11l-2 4 2 4H6"/></svg></span><div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>${p.race?"Tendrás un plan de carrera en Hoy: la carga de hidratos, el día y la recuperación":"Activa un plan de carrera con la comida de los días previos, el día y después"}</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div></div>
+    ${p.race?`<div class="pa-f pa-nm"><label class="pa-l" for="pa_nm">Nombre de la carrera</label><input id="pa_nm" maxlength="60" autocomplete="off" placeholder="Por ejemplo, Trail de la Sierra" value="${esc(p.nm||"")}"></div>`:""}
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":(D.length>1?"Añadir en "+D.length+" días":"Añadir el "+esc(dateLabel(D[0])))}</button>
     ${p.editIdx!=null?`<div class="pa-ex"><button type="button" class="ms-link" data-plskip="${p.editIdx}" data-k="${p.origDate}">No lo voy a hacer</button><button type="button" class="ms-link red" data-pldel="${p.editIdx}" data-k="${p.origDate}">Quitar entreno</button></div>`:""}
   </div></div>`}
@@ -4673,7 +4683,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     if(k==="day"){const p=S.pa;let D=paDates(p).slice();if(p.editIdx!=null)D=[v];else if(D.includes(v)){if(D.length>1)D=D.filter(x=>x!==v)}else D.push(v);D.sort();p.dates=D;p.date=D[0];buzz(6);renderModal();return}
     if(k==="vm"){S.pa.vm=v;renderModal();return}
     S.pa[k]=k==="dur"?+v:v;if(k==="sport"&&v==="str"&&!S.pa.routine)S.pa.routine=(allRoutines()[0]||{}).id||"";renderModal();return}
-  if(t.dataset.paok){const p=S.pa,s0={sport:p.sport,dur:+p.dur||45,int:p.int||"s",time:p.time||"18:00"};if(p.sport==="str"&&p.routine)s0.routine=p.routine;if(p.race)s0.race=true;
+  if(t.dataset.paok){const p=S.pa,s0={sport:p.sport,dur:+p.dur||45,int:p.int||"s",time:p.time||"18:00"};if(p.sport==="str"&&p.routine)s0.routine=p.routine;if(p.race){s0.race=true;const nm=String(p.nm||"").trim().slice(0,60);if(nm)s0.nm=nm} /* v371: su nombre, si se lo pones (lo ve tu profesional en el dossier) */
     if(p.by==="d"&&p.mode!=="struct"&&p.sport!=="str"&&p.km>0){s0.km=p.km;s0.by="d";if(p.spd)s0.spd=p.spd}
     if(p.mode==="struct"&&p.sport!=="str"&&p.steps&&p.steps.length){s0.steps=p.steps;s0.dur=stTotal(p.steps);s0.int=stInt(p.steps);if(p.pw&&isBike(p.sport))s0.pw=true}
     S.plan=S.plan||{};if(p.editIdx!=null&&S.plan[p.origDate]){S.plan[p.origDate].splice(p.editIdx,1);if(!S.plan[p.origDate].length)delete S.plan[p.origDate]}
@@ -4683,6 +4693,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
     if(s0.race){const ri=plannedFor(k).indexOf(plannedFor(k).filter(x=>x.race).pop());undoToast("Carrera guardada · tienes su plan en Hoy",()=>{S.rplan={k,i:ri};S.sheet="rplan";renderModal()},"Ver el plan")}else toast(msg); /* v315: al guardar una carrera, acceso directo a su plan */setTimeout(()=>{const el=document.querySelector('.trow[data-trow="'+k+'"]');if(el){el.scrollIntoView({block:"center",behavior:"smooth"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400)}},80)}
 });
 document.addEventListener("change",e=>{if(!S.pa)return;if(e.target.id==="pa_time")S.pa.time=e.target.value});
+document.addEventListener("input",e=>{if(S.pa&&e.target.id==="pa_nm")S.pa.nm=e.target.value});
 
 const XBR={what:["Para qué sirve",'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>'],sport:["Si haces deporte",'<circle cx="14.5" cy="4.6" r="1.9"/><path d="M8.5 20.5l2.8-5.6 3 2.4.9 3.7M11.3 14.9l1.3-5.3 3.4 2 3-.9M12.6 9.6l-3.8.9-2 3"/>'],src:["Dónde lo encuentras",'<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 3c-1.7 1.2-2.5 3.5-2.5 6.5 0 1.4.8 2.5 2.5 2.5v9"/>'],
   dose:["Cuánto y cuándo",'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'],
@@ -6798,10 +6809,10 @@ function raceCard(t){if(S.day!==today())return"";const r=raceAhead(S.day);if(!r)
     :cur==="c2"?`Empieza la carga: ${fmtInt(((dayTargets(S.day)||{}).C)||8*kg)} g de hidratos hoy y mañana.`
     :load?`La carga de hidratos empieza el ${dateLabel(shiftKey(r.d,-2))}.`:`La víspera, el ${dateLabel(shiftKey(r.d,-1))}, toca un día alto en hidratos.`;
   return`<section class="glass pad fade cr"><div class="cr-h"><span class="cr-k"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4h11l-2 4 2 4H6"/></svg>Carrera</span><span class="cr-d">${esc(dateLabel(r.d))}${s.time?" · "+esc(s.time):""}</span></div>
-    <b class="cr-cd">${cd}</b><span class="cr-n">${esc(sessName(s))} · ${fmtDur(dur*60)}</span>
+    <b class="cr-cd">${cd}</b><span class="cr-n">${esc(s.nm||sessName(s))} · ${fmtDur(dur*60)}</span>
     <div class="cr-ph" role="list" aria-label="Fases">${ph.map((x,j)=>`<span role="listitem" class="${j===ci?"on":ci>=0&&j<ci?"past":""}"><i></i>${x[1]}</span>`).join("")}</div>
     <p class="cr-w">${esc(what)}</p>${r.inD>=0&&raceHeat(r)?`<p class="cr-w">${esc(raceHeat(r))}</p>`:""}
-    <button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">${r.inD<0?"Ver el balance":"Ver el plan"}</button></section>`}
+    ${(z=>z?`<div class="cr-a"><button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">${r.inD<0?"Ver el balance":"Ver el plan"}</button><button type="button" class="btn cr-go" data-prds="${z.l.id}|${z.x.mid}">Ver el dossier</button></div>`:`<button type="button" class="btn cr-go" data-rplan="${r.d}|${i}">${r.inD<0?"Ver el balance":"Ver el plan"}</button>`)(typeof prDosFor==="function"&&prDosFor(r.d))}</section>`} /* v371: con dossier de tu profesional, los dos a partes iguales */
 /* Fases de la carrera (v313: compartidas por la tarjeta de Hoy y el plan completo). inD: días que faltan (0, 1 o 2) */
 function racePhase(s,inD){const kg=num((S.profile||{}).weight)||70,dur=s.dur||30,st=toMin(s.time)||600;let title,items;
   if(inD===0){
@@ -6835,7 +6846,7 @@ function rplanHtml(){const x=rpGet();if(!x)return"";const{k,s}=x,tk=today(),dur=
   const T=[[ "c2","Carga",dur>=90&&left>0],["c1","Víspera",left>0], /* v319: desde el día de la carrera, sin las fases que ya pasaron (caben las pestañas) */["day","El día",true],["route","En ruta",true],["bal","Balance",left<=0]].filter(t=>t[2]);
   /* v318: la pestaña por defecto tiene que existir (sin «Carga» en carreras de menos de 90 min, empieza en «Víspera») */
   const def=left>=2&&dur>=90?"c2":left>=1?"c1":left<0?"bal":"day",tab=T.some(t=>t[0]===S.rplan.tab)?S.rplan.tab:def;
-  const head=`<div class="rp-h"><div><span class="rp-cd">${left>1?"Faltan "+left+" días":left===1?"Es mañana":left===0?"Es hoy":"Ya pasó"}</span><b>${esc(sessName(s))}</b><small>${esc(dateLabel(k))}${s.time?" · "+esc(s.time):""} · ${fmtDur(dur*60)}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  const head=`<div class="rp-h"><div><span class="rp-cd">${left>1?"Faltan "+left+" días":left===1?"Es mañana":left===0?"Es hoy":"Ya pasó"}</span><b>${esc(s.nm||sessName(s))}</b><small>${esc(dateLabel(k))}${s.time?" · "+esc(s.time):""} · ${fmtDur(dur*60)}</small></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="seg rp-tabs" role="tablist" aria-label="Fases">${T.map(([id,l])=>`<button type="button" role="tab" data-rptab="${id}" aria-selected="${tab===id}" aria-pressed="${tab===id}">${l}</button>`).join("")}</div>`;
   let body="";
   /* v317: la cifra grande es el objetivo de hidratos de ese día en la app (la carga ya está dentro de Qué comer) */
@@ -7980,7 +7991,7 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="msnew"){m.innerHTML=msHtml();m.hidden=false;return} /* v363: anotar medidas */if(S.sheet&&String(S.sheet).startsWith("pfa:")){m.innerHTML=pgSheet();m.hidden=false;return} /* Perfil agrupado: sus hojas */if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+function renderModal(){const m=$("#modal");if(S.sheet==="msnew"){m.innerHTML=msHtml();m.hidden=false;return} /* v363: anotar medidas */if(S.sheet&&String(S.sheet).startsWith("pfa:")){m.innerHTML=pgSheet();m.hidden=false;return} /* Perfil agrupado: sus hojas */if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prdos"){m.innerHTML=prDosHtml();m.hidden=false;return} /* v371: dossier de competición */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
@@ -10264,7 +10275,7 @@ setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(nu
    nutricionista, ves quién es y eliges qué compartir (al empezar, nada). Él acepta en su panel. Puedes cambiar lo que compartes o
    terminar cuando quieras. Hace falta tu cuenta de Sustrato. La app guarda su clave privada (ECDH P-256) solo en este móvil;
    la pública va con la solicitud para cifrar de extremo a extremo lo que compartas (fase C). */
-const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["cycle","Ciclo menstrual","Cuándo empezó tu última regla y si se retrasa"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
+const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["cycle","Ciclo menstrual","Cuándo empezó tu última regla y si se retrasa"],["races","Carreras","Tus próximas carreras (fecha, hora, nombre y duración) y tu tasa de sudor"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
 /* v369 · «Ciclo»: dato de salud especialmente sensible. Apagado por defecto, se enciende solo tras su consentimiento propio (guía 4.0,
    cap. 14: confirmación en la propia pantalla, nunca el diálogo del navegador), en la solicitud y en un vínculo ya hecho; «En directo» no lo enciende.
    No se ofrece con sexo «Hombre» (como la etapa en Tu salud). Viaja como perms.cycle; lo que se manda, en lkMeta (meta.cy). */
@@ -10370,7 +10381,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
 
 /* ---------- Compartir con tu profesional (fase C de Sustrato Pro, v340) ----------
    Por cada vínculo activo, un paquete por día con lo que el deportista comparte (entrenos, comida frente al objetivo, peso,
-   cómo llega) y uno de «meta» (próximas carreras). Se cifra aquí con AES-GCM y la clave común del vínculo (ECDH P-256 entre la
+   cómo llega) y uno de «meta» (próximas carreras, con su hora de salida, su nombre y tu tasa de sudor). Se cifra aquí con AES-GCM y la clave común del vínculo (ECDH P-256 entre la
    clave de este móvil y la pública del profesional); el servidor solo guarda paquetes ilegibles. De Strava solo va lo calculado
    por Sustrato (duración, energía, hidratos, intensidad), sin distancia, desnivel, ruta ni nombre.
    Cuándo: cada vez que abres la app (v359; antes, un resumen al día); «En directo», con cada cambio mientras usas la app. Si cambian los permisos o la clave del
@@ -10401,7 +10412,12 @@ function lkMeals(k){const L=(S.log||{})[k]||{},t=dayTargets(k),mp=t?mealPlan(t,k
     return x});
   const al=L.alc;if(al&&al.alc)ml.push({m:"alc",st:"done",n:"Alcohol",kcal:r(alKcal(al)),g:r(al.alc)});
   return ml.some(x=>x.st)?ml:null}
-function lkMeta(P,l){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
+/* v371 · tu tasa de sudor en ese deporte (L/h), solo si te has hecho la prueba (sin pruebas, nada: la media de serie no es tuya). Para el
+   dossier de competición de tu profesional: el líquido a tu medida */
+function lkSweat(sp){const L=(S.sweat||[]).filter(x=>x.sport===sp||(x.sport==="trail"&&sp==="run")||(x.sport==="run"&&sp==="trail"));return L.length?Math.round(sweatRate(sp)*100)/100:null}
+function lkMeta(P,l){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>{const r={d:k,s:x.sport,m:x.dur||0};
+      if(x.time)r.st=x.time;if(x.nm)r.nm=String(x.nm).slice(0,80);const sw=lkSweat(x.sport);if(sw)r.sw=sw;R.push(r)})} /* v371: la hora de salida y el nombre que le pusiste (nada de Strava: es tu plan) */
+    o.races=R}
   if(P.food){const p=S.profile||{};o.excl={diet:p.diet||"omni"};EXCL.forEach(([k])=>{if(p[k])o.excl[k]=true})}
   if(P.food||P.body){const p=S.profile||{};if(p.sex==="f"||p.sex==="m")o.sex=p.sex} /* v356: para las referencias de micronutrientes en su panel; v370: también con «Peso», para la grasa por pliegues (Yuhasz y Faulkner dependen del sexo) */ /* v342: sus exclusiones, para la ficha del profesional */
   if(P.food&&l&&typeof lmList==="function"){const{M,ack}=lmList(l),x=M.find(y=>y.by==="pro"&&y.o&&y.o.t==="menu"&&ack[y.mid]===true),mn={},k0=shiftKey(today(),-7);
@@ -10461,7 +10477,8 @@ async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=t
     LS("sustrato-lkmsg",S.lkm)}catch(e){}finally{LM_BUSY=false}
   fresh=fresh.filter(([,o])=>o.t!=="ack"&&o.t!=="meas"); /* v345: las medidas avisan solas (111) y las respuestas no avisan; varias cosas a la vez, un solo aviso */
   if(fresh.length>1){const l=fresh[0][0],n=fresh.length;toast((l.pro.name||"Tu profesional")+" te ha enviado "+n+" cosas · míralas en tu perfil");if(S.sheet==="pauta")lkRender()}
-  else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}}
+  else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="dossier"?" te ha preparado el dossier de tu carrera":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}
+  if(fresh.length&&S.tab==="hoy"&&!S.sheet)render()} /* v371: lo nuevo (un dossier, un menú) sale en Hoy sin esperar a otro repintado */
 async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=await lkCall("/link/send",Object.assign({id:l.id},x));
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
 /* v351 · ingredientes que crea tu profesional: llegan dentro del plato (ix: {id: {n, P, C, F, fib}} por 100 g) y se quedan en tu
@@ -10477,13 +10494,14 @@ function lmAck(lid,mid,ok){const l=lmLink(lid);if(l&&mid)lmSend(l,{t:"ack",ref:m
 /* lo de cada vínculo, de lo más nuevo a lo más viejo; lo respondido lleva su respuesta */
 function lmList(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).sort((a,b)=>b.u-a.u),ack={};M.forEach(x=>{if(x.o.t==="ack")ack[x.o.ref]=x.o.ok});return{M,ack}}
 function lmHtml(l,o){ /* v359: o = "props" (lo que te manda) o "notes" (la conversación) para la página de Tu profesional */const{M,ack}=lmList(l),pro=esc(l.pro.name||"Tu profesional"),dl=u=>esc(dateLabel(keyOf(new Date(u))));
-  const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,20).reverse() /* v358: primero, como una conversación (lo más nuevo abajo, junto al campo) */;
+  const props=M.filter(x=>x.by==="pro"&&(x.o.t==="pauta"||x.o.t==="dish"||x.o.t==="excl"||x.o.t==="menu"||x.o.t==="dossier")).slice(0,6),notes=M.filter(x=>x.o.t==="note").slice(0,20).reverse() /* v358: primero, como una conversación (lo más nuevo abajo, junto al campo) */;
   const prop=x=>{const o=x.o,a=ack[x.mid];if(o.t==="pauta"){const cur=((S.profile||{}).pro||{}).mid===x.mid;return`<button type="button" class="lm-r" data-lmpp="${l.id}|${x.mid}"><span>Pauta<small>${dl(x.u)} · ${cur?"la que sigues":a===true?"aceptada":a===false?"no aceptada":"sin responder"}</small></span><b>Ver ›</b></button>`}
     if(o.t==="menu"){const ks=Object.keys(o.days||{}).sort(),ok=prMenuDays(o).length;return`<div class="lm-r"><span>Menú de la semana<small>${ks.length?"Del "+esc(dateLabel(ks[0]))+" al "+esc(dateLabel(ks[ks.length-1])):""} · ${ok?(n=>n+(n===1?" comida":" comidas"))(Object.values(o.days||{}).reduce((t,d)=>t+Object.values(d||{}).filter(Boolean).length,0)):"llegó sin platos"}</small></span>${!ok?"":a===true||S.prMnPend===x.mid?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmmenu="${l.id}|${x.mid}">Aplicar</button>`}</div>`}
+    if(o.t==="dossier")return`<button type="button" class="lm-r" data-prds="${l.id}|${x.mid}"><span>Dossier de competición<small>${esc(prDosName(o))} · ${/^\d{4}-\d{2}-\d{2}$/.test(String(o.d))?esc(dateLabel(o.d)):""}${a===true?"":" · sin abrir"}</small></span><b>Ver ›</b></button>`; /* v371 */
     if(o.t==="excl")return`<div class="lm-r"><span>Lo que no tomas<small>${esc(lmExclTxt(o.v))}</small></span>${a===true?`<span class="lm-done">Aplicado</span>`:`<button type="button" class="chip" data-lmexcl="${l.id}|${x.mid}">Aplicar</button>`}</div>`;
     return`<div class="lm-r"><span>${esc(o.d&&o.d.n||"Plato")}<small>${dl(x.u)}${o.d?" · "+lmKcal(o.d)+" kcal":""}</small></span>${a===true?`<span class="lm-done">Añadido</span>`:`<button type="button" class="chip" data-lmdish="${l.id}|${x.mid}">Añadir</button>`}</div>`};
   return o==="notes"?`<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
-    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`:o==="props"?`<span class="pa-l">Pautas, menús y platos</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}`:`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
+    <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`:o==="props"?`<span class="pa-l">Pautas, menús, platos y dossieres</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}`:`<span class="pa-l">De ${pro}</span>${props.length?`<div class="lm-l">${props.map(prop).join("")}</div>`:`<p class="pa-note">Aquí te llegarán sus pautas y platos.</p>`}<span class="pa-l">Notas con ${pro}</span>${notes.length?`<div class="lm-n">${notes.map(x=>`<div class="lm-m${x.by==="ath"?" me":""}"><small>${x.by==="ath"?"Tú":pro} · ${x.o.d?esc(dateLabel(x.o.d)):dl(x.u)}${x.by==="ath"?` · <button type="button" class="lm-del" data-lmdel="${l.id}|${x.mid}" aria-label="Borrar tu nota">Borrar</button>`:""}</small>${typeof lphImg==="function"?lphImg(l,x.o.ph):""}${x.o.x?`<p>${esc(x.o.x)}</p>`:""}</div>`).join("")}</div>`:""}
     <div class="pp-in"><label class="lph-cam" aria-label="Enviar una foto" title="Enviar una foto"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><input type="file" accept="image/*" hidden data-lphn="${l.id}"></label><input id="lmx-${l.id}" maxlength="400" autocomplete="off" placeholder="Escribe a ${pro}" aria-label="Nota para ${pro}"><button type="button" class="chip" data-lmnote="${l.id}">Enviar</button></div>`}
 /* v342 · exclusiones que anota tu profesional (alergias, intolerancias y tipo de dieta): al aplicarlas, tu menú automático las respeta */
 const LM_DIET={omni:"omnívora",pesce:"pescetariana",veggie:"vegetariana",vegan:"vegana"};
@@ -10602,6 +10620,7 @@ function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
     const mn=first("menu");if(mn&&ack[mn.mid]!==true&&S.prMnPend!==mn.mid&&prMenuDays(mn.o).length){const ks=prMenuDays(mn.o);
       out.push({l,x:mn,w:100,t:"Te ha preparado el menú de la semana",s:"Del "+dateLabel(ks[0])+" al "+dateLabel(ks[ks.length-1]),a:[["Ver el menú",`data-prmv="${l.id}|${mn.mid}"`],["Aplicar",`data-lmmenu="${l.id}|${mn.mid}"`,1]]})}
     const pa=first("pauta");if(pa&&ack[pa.mid]===undefined&&((S.profile||{}).pro||{}).mid!==pa.mid)out.push({l,x:pa,w:90,t:"Te ha enviado una pauta nueva",s:"Mira lo que cambia antes de aceptarla",a:[["Ver la pauta",`data-lmpp="${l.id}|${pa.mid}"`,1]]});
+    const dz=M.find(x=>x.by==="pro"&&x.o.t==="dossier"&&String(x.o.d)>=today());if(dz&&ack[dz.mid]!==true)out.push({l,x:dz,w:85,t:"Te ha preparado el dossier de tu carrera",s:prDosName(dz.o)+" · "+dateLabel(dz.o.d),a:[["Ver el dossier",`data-prds="${l.id}|${dz.mid}"`,1]]}); /* v371: hasta que lo abres */
     const ex=first("excl");if(ex&&ack[ex.mid]!==true)out.push({l,x:ex,w:70,t:"Ha anotado lo que no tomas",s:lmExclTxt(ex.o.v),a:[["Aplicar",`data-lmexcl="${l.id}|${ex.mid}"`,1]]});
     const ds=pro.filter(x=>x.o.t==="dish"&&ack[x.mid]!==true);if(ds.length)out.push({l,x:ds[0],w:60,t:ds.length===1?"Te ha enviado un plato":"Te ha enviado "+ds.length+" platos",s:ds.map(x=>(x.o.d&&x.o.d.n)||"Plato").slice(0,2).join(" · "),a:[["Añadir",`data-lmdish="${l.id}|${ds[0].mid}"`,1]]});
     const nt=pro.filter(x=>x.o.t==="note"&&x.u>seen);if(nt.length)out.push({l,x:nt[0],w:80,t:nt.length===1?"Te ha escrito":"Te ha escrito "+nt.length+" notas",s:"«"+String(nt[0].o.x||"").slice(0,90)+(String(nt[0].o.x||"").length>90?"…":"")+"»",a:[["Responder",`data-act="ppopen"`,1]]})});
@@ -10612,7 +10631,7 @@ function prPend(){const out=[];const seen=LS("sustrato-lkseen")||0;
 const prAv=n=>`<span class="pp-av prc-av" aria-hidden="true">${esc(String(n||"?").trim().charAt(0).toUpperCase())}</span>`;
 const prBtns=a=>a.map(([t,at,pri])=>`<button type="button" class="btn sm${pri?" primary":""}" ${at}>${t}</button>`).join("");
 /* Hoy: lo más importante que te ha mandado, arriba */
-function prHoyCard(){const P=prPend(),hid=LS("sustrato-prhide")||{};if(!P.length)return"";const p=P[0];if(p.x&&hid[p.x.mid]===today())return"";
+function prHoyCard(){const rc=typeof raceAhead==="function"&&raceAhead(today()),P=prPend().filter(p=>!(rc&&p.x&&p.x.o.t==="dossier"&&p.x.o.d===rc.d)) /* v371: si la tarjeta de la carrera ya lo ofrece, no otra vez (cap. 1, nada repetido) */,hid=LS("sustrato-prhide")||{};if(!P.length)return"";const p=P[0];if(p.x&&hid[p.x.mid]===today())return"";
   return`<section class="glass pad fade prc-hoy"><div class="prc-h">${typeof lphAv==="function"?lphAv(p.l,p.l.pro.name,"prc-av"):prAv(p.l.pro.name)}<div class="prc-t"><small>${esc(p.l.pro.name||"Tu profesional")}</small><b>${esc(p.t)}</b>${p.s?`<span>${esc(p.s)}</span>`:""}</div>${p.x?`<button type="button" class="hbtn prc-x" data-prhide="${esc(p.x.mid)}" aria-label="Ocultar hasta mañana"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`:""}</div>
     <div class="bk-a prc-a">${prBtns(p.a)}${P.length>1?`<button type="button" class="ms-link" data-act="ppopen">${P.length-1===1?"y 1 cosa más":"y "+(P.length-1)+" cosas más"}</button>`:""}</div></section>`}
 /* Perfil: su tarjeta, debajo de la tuya */
@@ -10632,7 +10651,7 @@ function prMenuHtml(){const v=S.prmv||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}
     <p class="pa-note">Ajustado a tus objetivos de cada día. Al aplicarlo sustituye esos días de tu menú; lo puedes deshacer.</p>
     ${days.map(k=>`<span class="pa-l">${esc(dateLabel(k))}</span><div class="pp-rows">${MEALS.filter(([m])=>o.days[k][m]).map(([m,n])=>`<div class="pp-r"><span>${n}<small class="prc-dn">${esc(nm(o.days[k][m]))}</small></span><span class="pp-v">${kc(o.days[k][m])}</span></div>`).join("")}</div>`).join("")}
     <button type="button" class="btn primary pa-go" data-lmmenu="${l.id}|${x.mid}">Aplicar a mi semana</button></div></div>`}
-function prRemind(){const R=LS("sustrato-prrem")||{},P=prPend().filter(p=>p.x&&p.x.o.t!=="note"&&p.x.o.t!=="menu"&&!R[p.x.mid]&&Date.now()-p.x.u>=3*864e5);if(!P.length)return;
+function prRemind(){const R=LS("sustrato-prrem")||{},P=prPend().filter(p=>p.x&&p.x.o.t!=="note"&&p.x.o.t!=="menu"&&p.x.o.t!=="dossier"&&!R[p.x.mid] /* v371: un dossier no se responde */&&Date.now()-p.x.u>=3*864e5);if(!P.length)return;
   const p=P[0];R[p.x.mid]=Date.now();LS("sustrato-prrem",R);const h=LS("sustrato-prhide")||{};if(h[p.x.mid]){delete h[p.x.mid];LS("sustrato-prhide",h)}
   toast((p.l.pro.name||"Tu profesional")+" sigue esperando tu respuesta: "+p.t.toLowerCase());if(S.tab==="hoy")render()}
 setInterval(()=>{if(S.lkm&&S.lk&&S.lk.links&&document.visibilityState==="visible")prRemind()},15000);
@@ -11032,6 +11051,42 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(latest)["waist","hip","neck"].forEach(k=>{if(e2[k])S.profile=Object.assign({},S.profile,{[k]:e2[k]})});
   prSaveMeasures();saveProfile(true);S.sheet=null;renderModal();render();if(typeof lkPush==="function")setTimeout(()=>lkPush(true),600);
   undoToast("Medidas guardadas",()=>{S.measures=prev;S.weights=prevW;S.profile=prevP;prSaveMeasures();saveWeights();saveProfile(true);render()})});
+
+/* ---------- Dossier de competición de tu profesional (v371) ----------
+   Tu profesional te lo prepara en Sustrato Pro para una carrera de tu plan y te llega cifrado por el vínculo ({t:"dossier",…}, como el menú):
+   carga de hidratos, el día de la carrera (desayuno, cafeína, calentamiento y salida), las cifras por hora, los tramos y después.
+   Dónde se ve: en Tu profesional (con lo que te manda), en Hoy mientras no lo hayas abierto (lo nuevo, prPend) y en la tarjeta de la carrera,
+   junto a «Ver el plan». Al abrirlo, tu profesional sabe que lo has visto (ack). Lo que llega de Pro se pinta siempre escapado y en números. */
+const dsN=v=>Math.max(0,Math.round(+v||0));
+const dsS=v=>esc(String(v==null?"":v).slice(0,200));
+/* todos los dossieres de tus profesionales, del más nuevo al más viejo; uno por carrera (el nuevo sustituye al anterior) */
+function prDosAll(){const out=[];if(typeof prLinks!=="function")return out;prLinks().forEach(l=>{const{M,ack}=lmList(l);M.filter(x=>x.by==="pro"&&x.o&&x.o.t==="dossier"&&/^\d{4}-\d{2}-\d{2}$/.test(String(x.o.d))).forEach(x=>out.push({l,x,seen:ack[x.mid]===true}))});return out}
+const prDosFor=d=>prDosAll().find(z=>z.x.o.d===d)||null;
+const prDosName=o=>String(o.nm||SPORT_L[o.s]||"tu carrera");
+function prDosHtml(){const v=S.prds||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{}).m||{})[v.mid];if(!x)return"";
+  const o=x.o,c=o.carga||{},hr=o.hr||{},des=o.des||{},T=Array.isArray(o.tr)?o.tr.slice(0,24):[],M=Array.isArray(c.M)?c.M.slice(0,4):[],caf=Array.isArray(o.caf)?o.caf.map(dsN):[],g=v=>fmtInt(dsN(v))+"&nbsp;g";
+  const ML={breakfast:"Desayuno",lunch:"Comida",snack:"Merienda",dinner:"Cena"},dl=k=>/^\d{4}-\d{2}-\d{2}$/.test(String(k))?esc(dateLabel(k)):"";
+  const desT=(des.n?dsS(des.n)+(Array.isArray(des.ing)&&des.ing.length?": "+des.ing.slice(0,12).map(([n,q])=>dsS(String(n).charAt(0).toLowerCase()+String(n).slice(1))+" "+dsN(q)+"&nbsp;g").join(", "):""):"Pan blanco con mermelada, un plátano y zumo")+". Lo mismo que en tus entrenos largos.";
+  const L=[[des.h,"meal","Desayuno · "+g(des.g)+" de hidratos",desT],[o.caft,"coffee","Cafeína, si la toleras",(caf.length>1?caf[0]+"–"+caf[1]:caf[0]||"")+"&nbsp;mg y 300–500&nbsp;ml de agua con sales"],[o.cal,"warm","Calentamiento","Si tienes hambre, medio plátano o un gel con agua"],[o.st,"start","Salida",dsN(hr.c)?dsN(hr.c)+"&nbsp;g/h desde el minuto 20":"Sin comer durante la carrera"]];
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad fade pa-sheet prc-sheet ds-sheet" role="dialog" aria-modal="true" aria-label="Dossier de competición">
+    <div class="row"><h3 style="margin:0">Dossier de competición</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="pa-note">${esc(prDosName(o))} · ${dl(o.d)} · salida a las ${dsS(o.st)}. Te lo ha preparado ${esc(l.pro.name||"tu profesional")}.</p>
+    <span class="pa-l">En carrera, cada hora</span>
+    <div class="rp-k"><div><span>Hidratos</span><b>${dsN(hr.c)}<small>&nbsp;g/h</small></b></div><div><span>Líquido</span><b>${dsN(hr.ml)}<small>&nbsp;ml/h</small></b></div><div><span>Sodio</span><b>${dsN(hr.na)}<small>&nbsp;mg/h</small></b></div></div>
+    <span class="pa-l">Carga de hidratos · ${dsN(c.h)===36?"desde la cena del "+dl(c.k2)+" y el "+dl(c.k1):dl(c.k2)+" y "+dl(c.k1)}</span>
+    <div class="pp-rows">${M.map(([m,q,t])=>`<div class="pp-r"><span>${ML[m]||""}<small class="prc-dn">${dsS(t)}</small></span><span class="pp-v">${g(q)}</span></div>`).join("")}</div>
+    <p class="pa-note">${g(c.g)} de hidratos cada día (${String(+c.gkg||0).replace(".",",")}&nbsp;g por kilo). Menos fibra y menos grasa para que quepan.</p>
+    <span class="pa-l">El día de la carrera · ${dl(o.d)}</span>
+    <div class="rp-tl">${L.map(([h,ic,a,b])=>`<div class="rp-st"><span class="rp-t">${dsS(h)}</span><span class="rp-ic">${rpIc(ic)}</span><div><b>${a}</b><span>${b}</span></div></div>`).join("")}</div>
+    <span class="pa-l">Por tramos</span>
+    <div class="pp-rows">${T.map(t=>`<div class="pp-r"><span>${dsS(t.a)} a ${dsS(t.b)}${t.to?" · "+dsS(t.to):""}<small class="prc-dn">${fmtInt(dsN(t.ml))}&nbsp;ml y ${fmtInt(dsN(t.na))}&nbsp;mg de sodio · ${dsS(t.x)}</small></span><span class="pp-v">${g(t.c)}</span></div>`).join("")}</div>
+    ${o.lleva?`<p class="pa-note">Lleva ${dsS(o.lleva)}. Si notas el estómago, baja a ${dsN(o.baja)}&nbsp;g/h y sigue bebiendo.</p>`:""}
+    <span class="pa-l">Después</span>
+    <div class="pp-rows"><div class="pp-r"><span>Al llegar<small class="prc-dn">25–30&nbsp;g de proteína y un 150&nbsp;% del líquido que hayas perdido</small></span><span class="pp-v">${g((o.post||{}).c)}</span></div></div>
+  </div></div>`}
+/* abrirlo: la hoja y, la primera vez, «visto» para tu profesional */
+function prDosOpen(lid,mid){const B=(S.lkm[lid]||{}).m||{};if(!B[mid])return;S.prds={lid,mid};S.sheet="prdos";renderModal();const{ack}=lmList(lmLink(lid)||{id:lid});if(ack[mid]!==true){lmAck(lid,mid,true);setTimeout(()=>{if(S.tab==="hoy")render()},300)}}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-prds]");if(!t)return;const[lid,mid]=t.dataset.prds.split("|");prDosOpen(lid,mid)});
 
 })();
 </script>
