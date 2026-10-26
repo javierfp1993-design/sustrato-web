@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-26T10:06:32.152Z">
+<meta name="sustrato-version" content="2026-10-26T17:54:36.789Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -902,6 +902,8 @@ html[data-theme="light"] .stp .stp-ring{filter:drop-shadow(0 8px 20px rgba(0,0,0
 .wxsrc{margin:8px 0 0;font-size:calc(12px*var(--tz,1));color:var(--muted)}
 /* v365 · atribución que pide la licencia de Open-Meteo (CC BY 4.0), discreta al pie de la previsión */
 .wx-src{margin:8px 0 0;font-size:calc(11px*var(--tz,1));color:var(--muted)}
+/* v370 · sin ciudad elegida, el tiempo la pide (R11): texto de nota y botón pequeño, alineados a la izquierda (espacio 10 y 12 de la escala) */
+.wx-ask .note{margin:10px 0 12px}
 
 /* ===== Tarjeta de entreno ===== */
 .tc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
@@ -2837,7 +2839,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .ss-k{position:absolute;top:10px;left:calc(12.5% + var(--p) * .75);width:24px;height:24px;margin-left:-12px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.08);opacity:0;transform:scale(.6);transition:left .2s cubic-bezier(.3,1.3,.5,1),box-shadow .2s,opacity .12s,transform .2s}
 .ss.on .ss-f,.ss.on .ss-k{opacity:1}.ss.on .ss-k{transform:none}
 .ss-t:focus-visible .ss-k{outline:2px solid var(--ac);outline-offset:2px}
-.ss-l{display:grid;grid-template-columns:repeat(4,1fr)}
+.ss-l{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))} /* v370 (D06): cuatro columnas iguales siempre, cada palabra bajo su punto (1fr solo no deja estrecharlas) */
 .ss-l button{appearance:none;border:0;background:none;padding:4px 0 6px;font:500 calc(15px*var(--tz,1)) var(--font);color:var(--muted);cursor:pointer;text-align:center;white-space:nowrap}
 .ss-l button[aria-pressed="true"]{color:var(--fg);font-weight:600}
 .ss-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);flex:none;margin-right:6px;vertical-align:1px}
@@ -2868,6 +2870,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .fb-more{appearance:none;border:0;background:none;color:var(--muted);font:500 calc(13px*var(--tz,1)) var(--font);padding:0 0 10px;cursor:pointer;text-decoration:underline;text-underline-offset:2px;align-self:flex-start}
 .fb-tech{margin:0 0 12px;padding:10px 12px;border-radius:10px;background:var(--fill2);color:var(--muted);font:calc(13px*var(--tz,1))/1.55 var(--font);font-variant-numeric:tabular-nums;white-space:pre-wrap;overflow-wrap:anywhere}
 .fb-note{display:flex;gap:8px;margin:0;font-size:calc(13px*var(--tz,1));color:var(--muted)}.fb-note svg{flex:none;margin-top:2px}
+.fb-hint{margin:0;font-size:calc(13px*var(--tz,1));color:var(--muted)}  /* ayuda de un campo: debajo, sin icono, a 8 (el hueco de .fb-f) */
 .fb-done{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 8px 8px}
 .fb-ok{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--verde)}
 .fb-done b{font-size:calc(20px*var(--tz,1))}.fb-done p{margin:0;max-width:30ch;color:var(--muted)}
@@ -3198,6 +3201,23 @@ table.bands{--tz:1}
 /* cabecera del calendario (mes, Día/Semana/Mes/Año y compartir): baja de línea si no cabe */
 .tzg .strip-h{flex-wrap:wrap!important;row-gap:8px}
 /* Material en Nueva rutina: el selector baja a su propia línea, a todo el ancho */
+/* v370 (D02): a 320 px con letra grande, Día·Semana·Mes·Año y compartir no caben ni en su propia línea: las opciones se
+   estrechan (relleno 4, de la escala) en vez de salirse de la tarjeta */
+@media (max-width:359px){.tzg .strip-r{min-width:0}.tzg .strip-r .seg{min-width:0}.tzg .strip-r .seg button{min-width:0;padding-left:4px;padding-right:4px}}
+/* v370 (D03): fila con control (Apariencia en Perfil): con letra grande el control baja bajo el título, a todo el ancho y con las
+   opciones repartidas por igual, como en iOS y como D07 en Pro */
+.tzg .pfa-ctl{flex-wrap:wrap;row-gap:8px;padding-top:10px;padding-bottom:10px}.tzg .pfa-ctl .seg{flex:1 1 100%}.tzg .pfa-ctl .seg button{flex:1}
+/* v370 (D04, D10): cifra con unidad en columnas (Actividad y su hoja). Primero la cifra crece poco (tope 1,12, como los demás números
+   en columnas) y en Actividad cada columna toma el ancho de su contenido, como la rejilla de 4 (v303); solo si aún no cabe, la unidad
+   baja bajo la cifra. A menos de 400 px, en la fila de 3 de Actividad y en la cabecera de la hoja,
+   bajan todas las unidades de la fila a la vez, para que las columnas se lean igual */
+.af-s b{--tz:min(var(--tzs,1),1.12)}.tzg .af-c3{grid-template-columns:repeat(3,auto);justify-content:space-between}
+@media (max-width:399px){.tzg .dt-hero b small,.tzg .af-c3 .af-s b i{flex-basis:100%;margin-left:0}}
+.tzg .af-s b,.tzg .dt-hero b,.tzg .dt-g b{display:flex;flex-wrap:wrap;align-items:baseline}.tzg .dt-hero b,.tzg .dt-g b{column-gap:4px} /* el espacio ante la unidad se pierde al ser pieza flexible */
+.dt-g b{--tz:min(var(--tzs,1),1.12)}
+/* v370 (D06): palabras bajo el deslizador de sensación: cada una bajo su punto, en cuatro columnas iguales; como la barra de pestañas,
+   no crecen (a 320 px con letra 1,35 «Normal» ya no cabe en su cuarto en Fuerza) y, si una no cabe, pasa a dos líneas */
+.ss-l{--tz:1}.tzg .ss-l button{white-space:normal;line-height:1.2}
 
 /* v323 · Aviso de copia en Hoy (bkNudge, 101) */
 .bkn h2{margin:0 0 6px}
@@ -3408,6 +3428,8 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 /* aviso de clave cambiada (vinculo.js · lkKeyWarn): la pieza Aviso con su icono de alerta en su columna de 24, en el color del aviso */
 .lk-key-h{display:flex;gap:8px;align-items:flex-start}.lk-key-h svg{flex:0 0 24px;margin-top:1px;color:var(--naranja-v,var(--naranja))}
 .lk-perms .lk-cy{margin:4px 0 12px} /* v369: consentimiento del ciclo bajo su fila; 4 y 12, de la escala de espacio (guía 4.0, «Espacio») */
+/* M2: código para que el profesional acepte la solicitud (13 gris y la cifra a 24, como los códigos de la app) */
+.lk-cf{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:calc(13px*var(--tz,1));color:var(--muted)}.lk-cf b{flex:none;font-size:calc(24px + 24px*(var(--tz,1) - 1)*.75);font-weight:600;color:var(--fg);letter-spacing:.12em;font-variant-numeric:tabular-nums}
 
 /* v348 · Tu salud (113): fila en el Perfil, hoja con cuatro grupos y lo que cambia en azul */
 .hs-card{padding:6px 8px}
@@ -3663,7 +3685,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="369";
+const APP_VER="370";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4333,10 +4355,11 @@ function setFull(p){
 
 
 /* ---------- Previsión del tiempo ---------- */
-const WLOC_DEF={name:"Consuegra",lat:39.462,lon:-3.607};
-function wloc(){const w=(S.profile||{}).wloc;return w&&w.lat!=null?w:WLOC_DEF}
+/* v370: sin ciudad por defecto (antes, Consuegra sin haberla elegido, R11): hasta que la elige, no hay previsión y se le pide al ver el tiempo */
+const wlocOk=()=>{const w=(S.profile||{}).wloc;return!!(w&&w.lat!=null)};
+function wloc(){return wlocOk()?S.profile.wloc:{name:"Sin elegir"}}
 async function loadWeather(){
-  const L=wloc();
+  if(!wlocOk())return;const L=wloc();
   try{const u=`https://api.open-meteo.com/v1/forecast?latitude=${L.lat}&longitude=${L.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m&past_days=92&timezone=Europe%2FMadrid&forecast_days=10`;
     const ctl=new AbortController();setTimeout(()=>ctl.abort(),6000);
     const r=await fetch(u,{signal:ctl.signal});if(!r.ok)throw 0;const j=await r.json(),d=j.daily;
@@ -4350,7 +4373,7 @@ function tempAt(k,hhmm,min){const H=S.wxH||(S.wxH=LS("sustrato-wxh")||{}),d=H[k]
   for(let i=0;i<n;i++){const v=d[Math.min(23,h0+i)];if(v!=null){t+=v;c++}}return c?t/c:null}
 /* Calor: el sudor (y las sales que se van con él) sube ~3 % por grado por encima de 20 °C */
 function heatF(T){return T==null?1:Math.max(.75,Math.min(1.6,1+.03*(T-20)))}
-function wxDay(k){return S.wx&&(S.wx.days||[]).find(d=>d.date===k)||null}
+function wxDay(k){return wlocOk()&&S.wx&&(S.wx.days||[]).find(d=>d.date===k)||null}
 function wxKind(d){const c=d.code;if(c>=95)return"storm";if(c>=71&&c<=77||c===85||c===86)return"snow";if(c>=51&&c<=67||c>=80&&c<=82)return"rain";if(c===45||c===48)return"fog";if(d.pop>=50)return"rain";if(c===3)return"cloud";if(c===1||c===2)return"partly";return"sun"}
 const WX_IC={sun:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/>',
   partly:'<path d="M9 4.5v1.4M4.2 9.3h1.4M5.6 5.9l1 1M12.4 5.9l-1 1"/><path d="M6.4 11.2a3.2 3.2 0 0 1 5.6-2.4"/><path d="M8 19.5h9a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.6 1A3 3 0 0 0 8 19.5z"/>',
@@ -4367,7 +4390,7 @@ function wxAdvice(k){const d=wxDay(k);if(!d)return"";const out=pendingPlanned(k)
   if(d.pop>=50)return`<p class="wxa rain">${wxIcon("rain",15)} Probable lluvia (${r0(d.pop)} %). Si se confirma, cambia la salida por fuerza o márcala como saltada.</p>`;
   if(d.hi>=30)return`<p class="wxa hot">${wxIcon("sun",15)} Hasta ${r0(d.hi)} °C: entrena temprano y añade sodio a la bebida.</p>`;
   if(d.lo<=5&&out.some(s=>toMin(s.time)!=null&&toMin(s.time)<11*60))return`<p class="wxa">${wxIcon("cloud",15)} Mínima de ${r0(d.lo)} °C a primera hora: abrígate al salir.</p>`;return""}
-function wxStrip(wk){if(!S.wx||!(S.wx.days||[]).length)return"";const tk=today();let days=S.wx.days.filter(d=>d.date>=tk&&(!wk||(d.date>=wk&&d.date<=shiftKey(wk,6)))).slice(0,7);if(!days.length)return"";
+function wxStrip(wk){if(!wlocOk()||!S.wx||!(S.wx.days||[]).length)return"";const tk=today();let days=S.wx.days.filter(d=>d.date>=tk&&(!wk||(d.date>=wk&&d.date<=shiftKey(wk,6)))).slice(0,7);if(!days.length)return"";
   if(wk){const by={};days.forEach(d=>by[d.date]=d);days=[0,1,2,3,4,5,6].map(i=>{const k=shiftKey(wk,i);return by[k]||{date:k,na:1}})}
   return`<div class="wxs${days.length<4?" few":""}" style="grid-template-columns:repeat(${days.length},minmax(0,1fr))" role="list" aria-label="Previsión en ${esc(wloc().name)}">${days.map(d=>{const dt=new Date(d.date+"T12:00:00");if(d.na)return`<div class="wxd na" role="listitem" aria-label="${DOW[dt.getDay()]}: ${d.date<tk?"pasado":"sin previsión"}"><small>${DOW[dt.getDay()]}</small><em>${dt.getDate()}</em><b>–</b><span>&nbsp;</span><i></i></div>`;const kd=wxKind(d);return`<div class="wxd" role="listitem" data-tip="${WX_N[kd]}|Máx. ${r0(d.hi)} °C · mín. ${r0(d.lo)} °C · lluvia ${r0(d.pop||0)} %"><small>${d.date===tk?"hoy":DOW[dt.getDay()]}</small>${wxIcon(kd,22)}<b>${r0(d.hi)}°</b><span>${r0(d.lo)}°</span>${d.pop>=20?`<i>${r0(d.pop)}%</i>`:"<i></i>"}</div>`}).join("")}</div>
   <p class="wxsrc">${esc(wloc().name)} · ${S.wx.src==="live"?"previsión en directo":"actualizada "+esc(dateLabel((S.wx.updatedAt||"").slice(0,10)))}</p>`}
@@ -4377,7 +4400,7 @@ function wxStrip(wk){if(!S.wx||!(S.wx.days||[]).length)return"";const tk=today()
 function wlocSet(L){S.profile=Object.assign({},S.profile||{},{wloc:L});saveProfile(true);S.wx=null;loadWeather();render()}
 function wlocSheet(from){const ov=document.createElement("div");ov.className="overlay pk-ov";
   ov.innerHTML=`<div class="sheet glass pad fade sh-st" role="dialog" aria-modal="true" aria-labelledby="wl_t"><div class="row"><h3 id="wl_t">Ciudad para el tiempo</h3><button type="button" class="hbtn xclose" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
-    <p class="ms-sub">La previsión del calendario y el sudor de cada salida salen de aquí. Ahora: ${esc(wloc().name)}.</p>
+    <p class="ms-sub">La previsión del calendario y el sudor de cada salida salen de aquí. ${wlocOk()?"Ahora: "+esc(wloc().name)+".":"Todavía no has elegido ninguna."}</p>
     <button type="button" class="btn wl-me">Usar mi ubicación</button>
     <label class="ms-q wl-q">${IC_SRCH}<input id="wl_in" type="search" placeholder="Buscar ciudad" autocomplete="off" aria-label="Buscar ciudad"></label>
     <div class="pk-os wl-r" role="listbox" aria-label="Resultados"></div></div>`;
@@ -6148,12 +6171,22 @@ const VZ={w:322,
   /* v363 · cada gráfica, a su ancho real (guía, cap. 15): VZ recuerda con qué se dibujó cada una (keep) y refit() la vuelve a dibujar si su tarjeta
      mide otra cosa que la que midió fit() (en Pro, las de media columna frente a las anchas). Sin esto se encogían y los ejes bajaban de 11 px */
   reg:{},_k:"",
-  keep(fn,o){const k=fn+":"+String(o.id||o.label||"").replace(/[^\w-]/g,"_");VZ.reg[k]={fn,o};VZ._k=k},
+  /* v370 · en papel (VZ.paper, lo pone el informe en PDF mientras se monta) ninguna gráfica dice «hoy», que caduca: pone la fecha. Cada gráfica
+     de papel se recuerda aparte (su clave lleva «:p») para que refit la vuelva a dibujar también en papel */
+  paper:false,hoy:d=>d===today()&&!VZ.paper,
+  keep(fn,o){const k=fn+":"+String(o.id||o.label||"").replace(/[^\w-]/g,"_")+(VZ.paper?":p":"");VZ.reg[k]={fn,o,p:VZ.paper};VZ._k=k},
   refit(){if(typeof document==="undefined")return;const w0=VZ.w;document.querySelectorAll("svg.vz[data-vzk]").forEach(s=>{const r=VZ.reg[s.dataset.vzk],vb=s.viewBox&&s.viewBox.baseVal?s.viewBox.baseVal.width:0,cw=Math.round(s.getBoundingClientRect().width);
-      if(!r||cw<200||!vb||Math.abs(cw-vb)<=4)return;VZ.w=cw;const t=document.createElement("template");t.innerHTML=VZ[r.fn](r.o).trim();const n=t.content.firstElementChild;if(n)s.replaceWith(n)});VZ.w=w0},
+      if(!r||cw<200||!vb||Math.abs(cw-vb)<=4)return;VZ.w=cw;const t=document.createElement("template");const p0=VZ.paper;VZ.paper=!!r.p;t.innerHTML=VZ[r.fn](r.o).trim();VZ.paper=p0;const n=t.content.firstElementChild;if(n)s.replaceWith(n)});VZ.w=w0},
   anim(label){const k=label||"";VZ.cur.add(k);return typeof MU!=="undefined"&&!MU.reduce()&&MU.byUser(1500)&&!VZ.prev.has(k)},
   sd:k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)},
   nice(lo,hi,n){return d3.ticks(lo,hi,n||3)},
+  /* v370 · las marcas cubren el dato entero (Javier, 26-10: la curva de pliegues empezaba por encima de su última marca y parecía salirse; el
+     revisor: y al subir, se salía por abajo). Se busca el paso «redondo» (1, 2, 2,5 o 5 por potencias de 10) con el que n marcas como mucho
+     abarcan del mínimo al máximo del dato, y el eje se abre hasta ellas. n=3 (cap. 15, «Ejes y rejilla»); con el cero aparte, 4 */
+  span(a,b,lo,hi,n){n=n||3;const r=(hi-lo)/3||1,e0=Math.pow(10,Math.floor(Math.log10(r))),m0=r/e0;let st=(m0>=7.07?10:m0>=3.16?5:m0>=1.41?2:1)*e0;  /* el paso de d3.ticks (la copia de D3 no trae tickStep) */const nx=v=>{const e=Math.pow(10,Math.floor(Math.log10(v)+1e-9)),m=v/e;return(m<1.5?2:m<2.25?2.5:m<3.5?5:10)*e};
+    for(let i=0;i<12;i++){let t0=Math.floor(a/st+1e-9)*st,t1=Math.ceil(b/st-1e-9)*st;if(t1-t0<st/2){t0-=st;t1+=st}
+      if(Math.round((t1-t0)/st)+1<=n)return{lo:Math.min(lo,t0),hi:Math.max(hi,t1),ticks:d3.range(0,Math.round((t1-t0)/st)+1).map(k=>+(t0+k*st).toFixed(10))};st=nx(st)}
+    return{lo,hi,ticks:d3.ticks(lo,hi,3)}},
   grid(ticks,Y,PL,R,fmt,refY){return ticks.map(v=>{const y=Y(v),hide=(refY||[]).some(q=>Math.abs(q-y)<16);return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-g"/>${hide?"":`<text class="ax" x="${R+8}" y="${(y+4).toFixed(1)}">${fmt(v)}</text>`}`}).join("")},
   ref(y,PL,R,label){return`<line x1="${PL}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" class="vz-ref"/>${label?`<text class="ax vz-rl" x="${R+9}" y="${(y+4).toFixed(1)}">${label}</text>`:""}`},
   bar(x,y,w,h,r){if(h<=0)return"";r=Math.min(r,h,w/2);return`M${x.toFixed(1)} ${(y+h).toFixed(1)}V${(y+r).toFixed(1)}Q${x.toFixed(1)} ${y.toFixed(1)} ${(x+r).toFixed(1)} ${y.toFixed(1)}H${(x+w-r).toFixed(1)}Q${(x+w).toFixed(1)} ${y.toFixed(1)} ${(x+w).toFixed(1)} ${(y+r).toFixed(1)}V${(y+h).toFixed(1)}Z`},
@@ -6161,14 +6194,14 @@ const VZ={w:322,
   /* Línea de tendencia. o={id,color,label,pts:[{d,v}],line:[{d,v}],refs:[{v,label}],band:{lo,hi,label},fmt,tfmt,tip,read,h,inv,minPad} */
   line(o){VZ.keep("line",o);const w=VZ.w,h=o.h||170,PL=0,PR0=(o.refs||[]).some(r=>r.label)||(o.band&&o.band.label)?54:42,PB=20,PT=14,ih=h-PB-PT,P=o.pts,L=o.line||P;if(!P.length||(P.length<2&&!(o.proj&&o.proj.pts&&o.proj.pts.length)))return"";
     const J=o.proj&&o.proj.pts||[],d0=P[0].d,d1=J.length?J[J.length-1].d:P[P.length-1].d,span=Math.max(1,daysBetween(d0,d1));
-    let[lo,hi]=d3.extent(P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v),o.band?[o.band.lo,o.band.hi]:[],J.flatMap(p=>[p.v,p.lo??p.v,p.hi??p.v])));const pad=Math.max(o.minPad||.5,(hi-lo)*.15);lo-=pad;hi+=pad;
+    let[lo,hi]=d3.extent(P.map(p=>p.v).concat(L.map(p=>p.v),(o.refs||[]).map(r=>r.v),o.band?[o.band.lo,o.band.hi]:[],J.flatMap(p=>[p.v,p.lo??p.v,p.hi??p.v])));const pad=Math.max(o.minPad||.5,(hi-lo)*.15);lo-=pad;hi+=pad;const DV=P.map(p=>p.v).concat(L.map(p=>p.v),J.map(p=>p.v)),SP=VZ.span(d3.min(DV),d3.max(DV),lo,hi);lo=SP.lo;hi=SP.hi;
     /* el hueco del eje derecho, a la medida de su etiqueta más larga (11 px ≈ 6,2 por carácter, 10 de aire): «19,0 %» ya no se sale */
-    const tl=Math.max(0,...d3.scaleLinear().domain([lo,hi]).ticks(3).map(v=>String((o.tfmt||o.fmt||fmtInt)(v)).length)),PR=Math.max(PR0,Math.ceil(tl*6.2)+10),iw=w-PL-PR;
+    const tl=Math.max(0,...SP.ticks.map(v=>String((o.tfmt||o.fmt||fmtInt)(v)).length)),PR=Math.max(PR0,Math.ceil(tl*6.2)+10),iw=w-PL-PR;
     const x=d3.scaleLinear().domain([0,span]).range([PL,PL+iw]),y=d3.scaleLinear().domain([lo,hi]).range(o.inv?[PT,PT+ih]:[PT+ih,PT]);
     const X=d=>x(daysBetween(d0,d)),Y=v=>y(v),fmt=o.fmt||(v=>fmtInt(v)),tf=o.tfmt||fmt;
     const path=d3.line().x(p=>X(p.d)).y(p=>Y(p.v)).curve(d3.curveMonotoneX)(L),last=L[L.length-1],lx=X(last.d),ly=Y(last.v);
     SCRUB[o.id]={w,PT,pts:P.map(p=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:o.tip?o.tip(p):fmt(p.v),read:o.read?o.read(p):null}))};
-    const refY=(o.refs||[]).filter(r=>r.label).map(r=>Y(r.v)),ticks=y.ticks(3).filter(v=>Y(v)>PT-1&&Y(v)<PT+ih+1).slice(0,3);
+    const refY=(o.refs||[]).filter(r=>r.label).map(r=>Y(r.v)),ticks=SP.ticks.filter(v=>Y(v)>PT-1&&Y(v)<PT+ih+1);  /* las de VZ.span: cubren del mínimo al máximo */
     const band=o.band?`<rect x="${PL}" y="${Math.min(Y(o.band.lo),Y(o.band.hi)).toFixed(1)}" width="${iw}" height="${Math.abs(Y(o.band.lo)-Y(o.band.hi)).toFixed(1)}" rx="4" fill="${o.color}" fill-opacity=".12"/>${o.band.label?`<text class="ax vz-rl" x="${w-PR+9}" y="${((Y(o.band.lo)+Y(o.band.hi))/2+4).toFixed(1)}">${o.band.label}</text>`:""}`:"";
     return VZ.svg(w,h,o.label)+`${band}${VZ.grid(ticks,Y,PL,w-PR,tf,refY)}${(o.refs||[]).map(r=>VZ.ref(Y(r.v),PL,w-PR,r.label)).join("")}
       ${o.line?`<g class="vz-fade">${P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="2" fill="${o.color}" opacity=".3"/>`).join("")}</g>`:""}
@@ -6177,7 +6210,7 @@ const VZ={w:322,
       <circle class="vz-pop vz-last scr-hide" cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4.5" fill="${o.color}"/>
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="5" fill="${o.color}"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
-      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
+      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax${VZ.hoy(d1)?" vz-cur":""}" x="${w-PR}" y="${h-5}" text-anchor="end">${VZ.hoy(d1)?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Puntos con su tendencia (relación o dispersión en el tiempo). o={id,label,pts:[{d,v,c,tip}],trend,inv,fmt,h}: puntos de 4 con anillo de 2 del color
      de la tarjeta (para que no se fundan al solaparse); tendencia discontinua en gris con su nombre al final */
   /* línea pequeña (v362): sin ejes ni rejilla, para una tarjeta de resumen. Curva monótona de 2 px, último punto marcado; escala vertical de al menos
@@ -6195,20 +6228,97 @@ const VZ={w:322,
       <g class="vz-grow">${P.map(p=>`<circle cx="${X(p.d).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="4" fill="${p.c||"var(--azul)"}" stroke="var(--card)" stroke-width="2"/>`).join("")}</g>
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="5" fill="var(--fg)"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
-      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
+      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax" x="${w-PR}" y="${h-5}" text-anchor="end">${VZ.hoy(d1)?"hoy":VZ.sd(d1)}</text></svg>`},
   /* Varias líneas de la misma escala (composición: grasa y magra). o={id,label,series:[{color,w,pts:[{d,v,est}]}],fmt,read,h}; lo estimado, punteado */
   multi(o){VZ.keep("multi",o);const w=VZ.w,h=o.h||170,PL=0,PR=42,PB=20,PT=12,iw=w-PL-PR,ih=h-PB-PT,A=o.series.flatMap(s=>s.pts);if(A.length<2)return"";
-    const ds=A.map(p=>p.d).sort(),d0=ds[0],d1=ds[ds.length-1],span=Math.max(1,daysBetween(d0,d1));let[lo,hi]=d3.extent(A.map(p=>p.v).concat(0));const pad=Math.max(.4,(hi-lo)*.15);lo-=pad;hi+=pad;
+    const ds=A.map(p=>p.d).sort(),d0=ds[0],d1=ds[ds.length-1],span=Math.max(1,daysBetween(d0,d1));let[lo,hi]=d3.extent(A.map(p=>p.v).concat(0));const pad=Math.max(.4,(hi-lo)*.15);lo-=pad;hi+=pad;const SP=VZ.span(Math.min(0,d3.min(A,p=>p.v)),d3.max(A,p=>p.v),lo,hi,4);lo=SP.lo;hi=SP.hi;
     const x=d3.scaleLinear().domain([0,span]).range([PL,PL+iw]),y=d3.scaleLinear().domain([lo,hi]).range([PT+ih,PT]),X=d=>x(daysBetween(d0,d)),Y=v=>y(v),fmt=o.fmt;
     const ln=P=>d3.line().x(p=>X(p.d)).y(p=>Y(p.v)).curve(d3.curveMonotoneX)(P);
     const lines=o.series.map(s=>{const P=s.pts,k=P.findIndex(p=>!p.est),E=k<0?P:P.slice(0,k+1),R=k<0?[]:P.slice(k),last=P.filter(p=>!p.est).pop();
       return`${E.length>1?`<path class="vz-fade" d="${ln(E)}" fill="none" stroke="${s.color}" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>`:""}${R.length>1?`<path class="vz-draw" pathLength="1" d="${ln(R)}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`:""}${last?`<circle class="vz-pop vz-last" cx="${X(last.d).toFixed(1)}" cy="${Y(last.v).toFixed(1)}" r="4.5" fill="${s.color}"/>`:""}`}).join("");
     const M=o.series[0].pts;SCRUB[o.id]={w,PT,pts:M.map((p,i)=>({x:X(p.d),y:Y(p.v),a:esc(dateLabel(p.d)),b:"",read:o.read?o.read(i):null}))};
-    return VZ.svg(w,h,o.label)+`${VZ.grid(y.ticks(3).filter(v=>Math.abs(v)>1e-9&&Y(v)>PT&&Y(v)<PT+ih),Y,PL,w-PR,fmt)}
+    return VZ.svg(w,h,o.label)+`${VZ.grid(SP.ticks.filter(v=>Math.abs(v)>1e-9&&Y(v)>PT-1&&Y(v)<PT+ih),Y,PL,w-PR,fmt)}
       <line x1="${PL}" x2="${w-PR}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" class="vz-z"/><text class="ax" x="${w-PR+8}" y="${(Y(0)+4).toFixed(1)}">0</text>${lines}
       <g class="scr" style="display:none"><line class="scr-l" y1="${PT-4}" y2="${PT+ih}"/><circle class="scr-d" r="0"/><g class="scr-b"><rect class="scr-r" rx="8" height="40" y="0"/><text class="scr-t1" y="17"></text><text class="scr-t2" y="32"></text></g></g>
       <rect x="${PL}" y="0" width="${iw}" height="${h}" fill="transparent" class="scr-hit" data-scrub="${o.id}"/>
-      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax${d1===today()?" vz-cur":""}" x="${w-PR}" y="${h-5}" text-anchor="end">${d1===today()?"hoy":VZ.sd(d1)}</text></svg>`},
+      <text class="ax" x="${PL}" y="${h-5}">${VZ.sd(d0)}</text><text class="ax${VZ.hoy(d1)?" vz-cur":""}" x="${w-PR}" y="${h-5}" text-anchor="end">${VZ.hoy(d1)?"hoy":VZ.sd(d1)}</text></svg>`},
+  /* Somatocarta de Heath-Carter (v370 · Pro › Progreso › Antropometría; guía 4.0, cap. 15, «Somatocarta»). o={id,label,pts:[{d,x,y,tip}],col:{en,me,ec},color},
+     x = ecto − endo, y = 2·meso − (endo + ecto), en orden de fecha. Escala del método, sin deformar: una unidad de y mide 1/√3 de una de x (los
+     extremos 7‑1‑1, 1‑7‑1 y 1‑1‑7 forman un triángulo equilátero). Las tomas suelen caer juntas cerca del centro, así que la carta se acerca a
+     ellas con escala uniforme, como una lupa (Javier, 26-10: «más empaque»): la zona ampliada sobre un fondo plano suave (--fill2, radio 14)
+     con el contorno de Carter (tres arcos) y los ejes recortados a ella (.vz-z), y en la esquina más libre la carta entera en pequeño (12
+     unidades de 3,5 px) con la zona en un recuadro relleno del color del recorrido al 35 %. Si de cerca no se gana, se ve entera, sin lupa.
+     Cada eje, con su nombre de 11 gris y un punto de 8 de su color (el texto nunca en color), junto al eje sin pisarlo. El recorrido, en el
+     color del dato (o.color, --peso por defecto): tramos de 2 px y tomas de más claro a pleno (35 % la primera, 100 % la última), un chevrón
+     fino de 1,5 por tramo y la última toma de 5,5 (con anillo del color de la tarjeta en la carta entera; en la lupa, sin él: su fondo es
+     translúcido); fechas solo de la primera y la última («hoy» en negrita, nunca en papel). A su ancho real (VZ.w, con refit) */
+  soma(o){VZ.keep("soma",o);const w=VZ.w,P=o.pts||[];if(!P.length)return"";const C=o.col||{},col=k=>C[k]||"var(--muted)",f=v=>(+v).toFixed(1),s3=Math.sqrt(3);
+    const xs=P.map(p=>p.x),ys=P.map(p=>p.y),mx=(d3.min(xs)+d3.max(xs))/2,my=(d3.min(ys)+d3.max(ys))/2;
+    const LW=66,side=w>=12*12+2*(LW+8),uF=Math.max(8,Math.min(18,side?(w-2*(LW+8))/12:(w-16)/12));
+    const h0=Math.round(Math.min(260,Math.max(200,w*.6))),sx=Math.max(d3.max(xs)-d3.min(xs),2.4)+2,sy=Math.max(d3.max(ys)-d3.min(ys),2.4)+2,uZ=Math.min(64,(w-24)/sx,(h0-24)/(sy/s3));
+    const zoom=uZ>=uF*1.6;
+    let u,cx,cy,h;
+    if(zoom){u=uZ;h=h0;cx=w/2-mx*u;cy=h/2+my*u/s3}else{u=uF;cx=w/2;cy=20+12*u/s3;h=Math.round(20+12*u+(side?8:24))}
+    const uy=u/s3,X=x=>cx+x*u,Y=y=>cy-y*uy,V={en:[X(-6),Y(-6)],me:[X(0),Y(12)],ec:[X(6),Y(-6)]},R=12*u,O=[X(0),Y(0)];
+    const arc=(a,b)=>`M${f(a[0])} ${f(a[1])}A${f(R)} ${f(R)} 0 0 1 ${f(b[0])} ${f(b[1])}`,Q=P.map(p=>[X(p.x),Y(p.y)]),n=Q.length,L=Q[n-1];
+    const NM={en:"Endomorfia",me:"Mesomorfia",ec:"Ectomorfia"},tw=t=>t.length*6.2,lbl=(x,y,k,anc)=>{const W=tw(NM[k])+14,x0=anc==="end"?x-W:anc==="middle"?x-W/2:x;
+      return`<circle cx="${f(x0+4)}" cy="${f(y-4)}" r="4" fill="${col(k)}"/><text class="ax" x="${f(x0+12)}" y="${f(y)}">${NM[k]}</text>`};
+    const boxes=[],seg=(B,a,b)=>{let t0=0,t1=1;const dx=b[0]-a[0],dy=b[1]-a[1];for(const[p,q]of[[-dx,a[0]-B[0]],[dx,B[2]-a[0]],[-dy,a[1]-B[1]],[dy,B[3]-a[1]]]){if(p===0){if(q<0)return false;continue}const r=q/p;if(p<0){if(r>t1)return false;if(r>t0)t0=r}else{if(r<t0)return false;if(r<t1)t1=r}}return true},
+      hits=B=>boxes.some(c=>B[0]<c[2]&&B[2]>c[0]&&B[1]<c[3]&&B[3]>c[1])||["en","me","ec"].some(k=>seg(B,O,V[k]))||Q.some((q,j)=>j&&seg(B,Q[j-1],q))||Q.some(q=>q[0]>B[0]-5&&q[0]<B[2]+5&&q[1]>B[1]-5&&q[1]<B[3]+5);
+    /* los ejes: en la carta entera, rótulo en su vértice; ampliada, donde el eje sale del recuadro (o en el vértice, si se ve) */
+    let axl="";
+    if(!zoom)axl=side?lbl(V.en[0]-8,V.en[1]+4,"en","end")+lbl(V.ec[0]+8,V.ec[1]+4,"ec","start")+lbl(V.me[0],20-8,"me","middle")
+      :lbl(V.en[0],h-5,"en","start")+lbl(V.ec[0],h-5,"ec","end")+lbl(V.me[0],20-8,"me","middle");
+    else{const M=12,clip=(a,b)=>{let t0=0,t1=1;const dx=b[0]-a[0],dy=b[1]-a[1];for(const[p,q]of[[-dx,a[0]-M],[dx,w-M-a[0]],[-dy,a[1]-M],[dy,h-M-a[1]]]){if(p===0){if(q<0)return null;continue}const r=q/p;if(p<0){if(r>t1)return null;if(r>t0)t0=r}else{if(r<t0)return null;if(r<t1)t1=r}}return[a[0]+t1*dx,a[1]+t1*dy]};
+      /* el rótulo, junto al eje y sin pisarlo: se busca, desde donde el eje sale del recuadro hacia el centro y a uno y otro lado, el primer
+         sitio en que su caja no toca ningún eje, ni el recorrido, ni otro rótulo */
+      ["en","me","ec"].forEach(k=>{const e=clip(O,V[k]);if(!e)return;const W=tw(NM[k])+14,dx=V[k][0]-O[0],dy=V[k][1]-O[1],l=Math.hypot(dx,dy),ux=dx/l,uy2=dy/l;
+        /* en una tarjeta estrecha puede no haber sitio libre: entonces basta con no pisar los ejes ni otro rótulo */
+        for(const strict of[true,false])for(const back of[W/2+8,W/2+24,W/2+44,W/2+70,W/2+100])for(const off of[14,-14,22,-22,32,-32,44,-44,W/2+8,-W/2-8]){const cxl=e[0]-ux*back-uy2*off,cyl=e[1]-uy2*back+ux*off,B=[cxl-W/2,cyl-8,cxl+W/2,cyl+6];
+          if(B[0]<6||B[2]>w-6||B[1]<M-4||B[3]>h-M+4||(strict?hits(B):boxes.some(c=>B[0]<c[2]&&B[2]>c[0]&&B[1]<c[3]&&B[3]>c[1])||["en","me","ec"].some(q=>seg(B,O,V[q]))))continue;boxes.push(B);axl+=lbl(B[0],cyl+4,k,"start");return}})}
+    /* el recorrido en el color del dato (o.color, --peso: el del cuerpo, como la suma de pliegues), de más claro a pleno: cada tramo y cada toma
+       con la opacidad de su orden (35 % la primera, 100 % la última; color plano por tramo, sin degradados) */
+    const RC=o.color||"var(--peso)",op=i=>n<2?1:+(.35+.65*i/(n-1)).toFixed(2);
+    /* flecha a media de cada tramo: un chevrón fino (1,5) del color de su tramo */
+    const ar=Q.slice(1).map((q,i)=>{const p=Q[i],dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy);if(l<18)return"";const ux=dx/l,uy2=dy/l,m=[p[0]+dx*.55,p[1]+dy*.55],a=5,b=3.5;
+      return`<path d="M${f(m[0]-ux*a-uy2*b)} ${f(m[1]-uy2*a+ux*b)}L${f(m[0])} ${f(m[1])}L${f(m[0]-ux*a+uy2*b)} ${f(m[1]-uy2*a-ux*b)}" fill="none" stroke="${RC}" stroke-opacity="${op(i+1)}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`}).join("");
+    /* fechas: al lado del punto que deja libre el recorrido; sin pisarse */
+    const dl=Q.map((q,i)=>{if(i&&i<n-1)return"";  /* solo la primera y la última; las de en medio, al pasar por su punto */
+      const t=VZ.hoy(P[i].d)&&i===n-1?"hoy":VZ.sd(P[i].d),W=tw(t),nb=[Q[i-1],Q[i+1]].filter(Boolean),vx=nb.length?nb.reduce((s,b)=>s+b[0]-q[0],0):1;
+      /* a los lados si el recorrido lo deja; si no, apartada en perpendicular al recorrido en ese punto */
+      const A=Q[Math.max(0,i-1)],Z=Q[Math.min(n-1,i+1)],dx=Z[0]-A[0],dy=Z[1]-A[1],dl0=Math.hypot(dx,dy)||1,nx=-dy/dl0,ny=dx/dl0,C=[];
+      (vx<=0?[[9,4],[-9-W,4]]:[[-9-W,4],[9,4]]).forEach(c=>C.push(c));[16,22,30,40].forEach(d=>[1,-1].forEach(sg=>C.push([sg*nx*d-W/2,sg*ny*d+4])));
+      for(const[ox,oy]of C){const x=q[0]+ox,y=q[1]+oy;if(x<2||x+W>w-2||y<11||y>h-3)continue;const B=[x,y-9,x+W,y+2],G=[B[0]-3,B[1]-3,B[2]+3,B[3]+3];
+        if(boxes.some(c=>B[0]<c[2]&&B[2]>c[0]&&B[1]<c[3]&&B[3]>c[1])||["en","me","ec"].some(k=>seg(B,O,V[k]))||Q.some((p,j)=>j&&seg(G,Q[j-1],p))||Q.some((p,j)=>j!==i&&p[0]>B[0]-3&&p[0]<B[2]+3&&p[1]>B[1]-3&&p[1]<B[3]+3))continue;
+        boxes.push(B);return`<text class="ax${i===n-1?" vz-cur":""}" x="${f(x)}" y="${f(y)}">${t}</text>`}
+      return""}).join("");
+    /* el triángulo de referencia: la carta entera en pequeño (12 unidades de 5 px) en la esquina más lejos de las tomas, con la zona ampliada */
+    let ins="";if(zoom){const ui=3.5,W=12*ui,Hh=12*ui+2,sd=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy||1)));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)},
+        /* la esquina más libre: la más lejos de las tomas y de los ejes */
+        K=[[12,12],[w-W-12,12],[12,h-Hh-12],[w-W-12,h-Hh-12]].map(([x,y])=>{const c=[x+W/2,y+Hh/2];return[x,y,Math.min(...Q.map(q=>Math.hypot(q[0]-c[0],q[1]-c[1])),...["en","me","ec"].map(k=>sd(c,O,V[k])+20))]}).sort((a,b)=>b[2]-a[2])[0],x0=K[0],y0=K[1];
+      const ix=x=>x0+W/2+x*ui,iy=y=>y0+12*ui/s3+2-y*ui/s3,iv={en:[ix(-6),iy(-6)],me:[ix(0),iy(12)],ec:[ix(6),iy(-6)]},ir=12*ui;
+      const ia=(a,b)=>`M${f(a[0])} ${f(a[1])}A${ir} ${ir} 0 0 1 ${f(b[0])} ${f(b[1])}`,z=[(0-cx)/u,(w-cx)/u,(cy-0)/uy,(cy-h)/uy];
+      ins=`<g aria-hidden="true" data-vzins><path d="${ia(iv.en,iv.me)}${ia(iv.me,iv.ec)}${ia(iv.ec,iv.en)}" class="vz-z" fill="none"/>
+        ${["en","me","ec"].map(k=>`<line x1="${f(ix(0))}" y1="${f(iy(0))}" x2="${f(iv[k][0])}" y2="${f(iv[k][1])}" class="vz-g"/>`).join("")}
+        <rect x="${f(ix(z[0]))}" y="${f(iy(z[2]))}" width="${f(Math.max(3,(z[1]-z[0])*ui))}" height="${f(Math.max(3,(z[2]-z[3])*ui/s3))}" rx="2" fill="${RC}" fill-opacity=".35"/></g>`}
+    return VZ.svg(w,h,o.label)+`<defs><clipPath id="vzsc-${o.id}-${w}"><rect x="0" y="0" width="${w}" height="${h}" rx="${zoom?14:0}"/></clipPath></defs>${zoom?`<rect x="0" y="0" width="${w}" height="${h}" rx="14" fill="var(--fill2)"/>`:""}<g clip-path="url(#vzsc-${o.id}-${w})">
+      <path d="${arc(V.en,V.me)}${arc(V.me,V.ec)}${arc(V.ec,V.en)}" class="vz-z" fill="none"/>${["en","me","ec"].map(k=>`<line x1="${f(O[0])}" y1="${f(O[1])}" x2="${f(V[k][0])}" y2="${f(V[k][1])}" class="vz-z"/>`).join("")}</g>${axl}${ins}
+      ${n>1?`<g class="vz-fade">${Q.slice(1).map((q,i)=>`<path d="M${f(Q[i][0])} ${f(Q[i][1])}L${f(q[0])} ${f(q[1])}" fill="none" stroke="${RC}" stroke-opacity="${op(i+1)}" stroke-width="2" stroke-linecap="round"/>`).join("")}${ar}</g>`:""}
+      <g class="vz-fade">${Q.slice(0,-1).map((q,i)=>`<circle cx="${f(q[0])}" cy="${f(q[1])}" r="3.5" fill="${RC}" fill-opacity="${op(i)}">${P[i].tip?`<title>${esc(P[i].tip)}</title>`:""}</circle>`).join("")}</g>
+      <circle class="vz-pop" cx="${f(L[0])}" cy="${f(L[1])}" r="5.5" fill="${RC}"${zoom?"":' stroke="var(--card)" stroke-width="2"'}>${P[n-1].tip?`<title>${esc(P[n-1].tip)}</title>`:""}</circle>${dl}</svg>`},
+  /* Componentes del somatotipo (v370; guía 4.0, cap. 15, «Componentes»). o={id,label,rows:[{n,a,b,c,ta,tb}],max:7,fmt}: una fila por componente,
+     la pista de 0 a 7 (o al máximo, si alguno pasa) en barra fina en cápsula de 6 (--fill2); de la primera toma (a, aro de 5 con trazo de 2 en su
+     color y el fondo de la tarjeta dentro) a la última (b, punto lleno de 4, encima: si coinciden, se ve el punto dentro de su aro), el tramo en su color. Rótulo de 13 en --fg a la izquierda
+     y «4,2 → 2,9» de 13 a la derecha (cifras tabulares); escala de 11 abajo con su rejilla tenue. Por debajo de 300 px, rótulo y cifras encima
+     de la pista. Al ancho real */
+  comp(o){VZ.keep("comp",o);const w=VZ.w,R=o.rows||[];if(!R.length)return"";const f=v=>(+v).toFixed(1),fm=o.fmt||(v=>f(v).replace(".",",")),nar=w<300,mx=Math.max(o.max||7,Math.ceil(d3.max(R.flatMap(r=>[r.a??r.b,r.b]))));
+    const LW=nar?0:92,VW=nar?0:76,x0=LW+6,x1=w-VW-6,rh=nar?44:36,top=nar?4:0,ty=i=>top+i*rh+(nar?30:rh/2),hh=top+R.length*rh+20,X=v=>x0+(x1-x0)*Math.max(0,v)/mx;
+    const ln=d3.range(0,mx+1).map(v=>`<line x1="${f(X(v))}" x2="${f(X(v))}" y1="${top+2}" y2="${hh-18}" class="vz-g"/><text class="ax" x="${f(X(v))}" y="${hh-5}" text-anchor="middle">${v}</text>`).join("");
+    const rows=R.map((r,i)=>{const y=ty(i),two=r.a!=null,a=X(two?r.a:r.b),b=X(r.b),lo=Math.min(a,b),hi=Math.max(a,b),val=`${two?fm(r.a)+" → ":""}${fm(r.b)}`;
+      return`<g><rect x="${f(x0)}" y="${f(y-3)}" width="${f(x1-x0)}" height="6" rx="3" fill="var(--fill2)"/>${two?`<rect x="${f(lo)}" y="${f(y-3)}" width="${f(Math.max(0,hi-lo))}" height="6" rx="3" fill="${r.c}"/>`:""}
+        ${two?`<circle cx="${f(a)}" cy="${f(y)}" r="5" fill="var(--card)" stroke="${r.c}" stroke-width="2"><title>${esc(r.ta||"")}</title></circle>`:""}<circle cx="${f(b)}" cy="${f(y)}" r="4" fill="${r.c}"><title>${esc(r.tb||"")}</title></circle>
+        <text x="${nar?x0:0}" y="${f(nar?y-14:y+4.5)}" font-size="13" fill="var(--fg)">${esc(r.n)}</text><text x="${nar?x1:w}" y="${f(nar?y-14:y+4.5)}" font-size="13" fill="var(--fg)" text-anchor="end" style="font-variant-numeric:tabular-nums">${val}</text></g>`}).join("");
+    return VZ.svg(w,hh,o.label)+ln+rows+`</svg>`},
   /* Barras (apiladas o no). o={id,label,cols:[{x,segs:[{v,c}],ghost,tip,cur,read,go}],refs:[{v,label}],fmt,grid,xAll,h} */
   bars(o){VZ.keep("bars",o);const w=VZ.w,h=o.h||170,PL=0,PR=(o.refs||[]).reduce((m,r)=>r.label?Math.max(m,Math.ceil(r.label.length*6.2)+12):m,o.grid?42:2),PB=20,PT=16,iw=w-PL-PR,ih=h-PB-PT,C=o.cols,n=C.length;
     const xb=d3.scaleBand().domain(d3.range(n)).range([PL,PL+iw]).paddingInner(n>14?.28:.38).paddingOuter(.1),bw=Math.min(28,xb.bandwidth());
@@ -7318,7 +7428,7 @@ function vPlanTrain(wk){
   return`<section class="glass pad fade wk-card">${wkStrip(wk,"train")}
     <div class="kv kv4 pl-kv"><div><span>Sesiones</span><b>${tot.n}</b></div><div><span>Tiempo</span><b>${fmtH(tot.min/60)}</b></div><div><span>Gasto</span><b>${fmtInt(tot.kcal)}<small class="u"> kcal</small></b></div>${comp.n?`<div><span>Cumplido</span><b>${comp.ok}/${comp.n} <small class="cmp ${comp.ok/comp.n>=.8?"hi":comp.ok/comp.n>=.5?"mid":"lo"}">${r0(comp.ok/comp.n*100)} %</small></b></div>`:""}</div>
     <button class="btn primary big mw-main pa-open pl-go" data-paopen="">＋ Planificar entreno</button>${(()=>{const c=weekCopyBtn("train",wk).replace('class="btn"','class="chip"');return c?`<div class="mw-sec odd">${c}</div>`:""})()}</section>
-  ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}<p class="wx-src">Datos de Open-Meteo.com</p></section>`:""})()}
+  ${(()=>{const cur=wk===mondayOf(tk),x=wxStrip(cur?null:wk);if(cur&&!wlocOk())return`<section class="glass pad fade wx-ask"><span class="pkk">El tiempo · próximos días</span><p class="note">Elige tu ciudad para ver la previsión y ajustar el sudor de cada salida al calor.</p><button type="button" class="btn sm" data-wlocpick="1" aria-haspopup="dialog">Elegir ciudad</button></section>`; /* v370: se pide la primera vez que se ve el tiempo (R11) */return x?`<section class="glass pad fade"><span class="pkk">El tiempo · ${cur?"próximos días":esc(periodLabel("week",wk))}</span>${x}<p class="wx-src">Datos de Open-Meteo.com</p></section>`:""})()}
   <section class="glass fade tweek">${rows}</section>
   <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Los cambios se guardan solos y se trasladan al menú: calorías, macros y comidas antes y después de cada entreno. Lo previsto se sustituye por lo real cuando llega de Strava; si no entrenas, márcalo como saltado y las calorías del día se ajustan. Para mover un entreno a otro día, mantenlo pulsado y suéltalo en ese día.</p></details>`;
 }
@@ -9196,8 +9306,8 @@ function fbHtml(){const f=S.fb,bug=f.k==="bug",acc=!!(S.acct&&S.acct.t);
   <label class="fb-f" for="fbt"><span>${bug?"¿Qué ha pasado?":"¿Qué te gustaría?"}</span><textarea id="fbt" maxlength="${FB_MAX}" rows="5" placeholder="${bug?"Ej.: al guardar una rutina de fuerza, se cierra la hoja y no aparece en la lista.":"Ej.: poder duplicar una semana de menú entera."}">${esc(f.text||"")}</textarea></label>
   <span class="fb-n" id="fbn">${(f.text||"").length} / ${FB_MAX}</span>
   <div class="fb-f"><span id="fbwl">${bug?"¿Dónde?":"¿Sobre qué?"}</span><div class="chips" role="group" aria-labelledby="fbwl">${FB_W.map(w=>`<button type="button" class="chip" data-fbx="w:${w}" aria-pressed="${f.where===w}">${w}</button>`).join("")}</div></div>
-  <div class="fb-f"><span>Captura <small>opcional</small></span>${f.img?`<div class="fb-img"><img src="${f.img}" alt="Captura adjunta"><button type="button" class="chip danger" data-fbx="noimg">Quitar</button></div>`
-    :`<label class="fb-add"><input type="file" accept="image/*" id="fbimg" class="vh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m20.5 16-5-5-8 8"/></svg>Adjuntar captura</label>`}</div>
+  <div class="fb-f"><span>Captura <small>opcional</small></span>${f.img?`<div class="fb-img"><img src="${f.img}" alt="Captura adjunta"><button type="button" class="chip danger" data-fbx="noimg">Quitar</button></div><p class="fb-hint" id="fbimgh">Si sale algo de tu salud que no quieras enviar, quítala y adjunta una recortada.</p>`
+    :`<label class="fb-add"><input type="file" accept="image/*" id="fbimg" class="vh" aria-describedby="fbimgh"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m20.5 16-5-5-8 8"/></svg>Adjuntar captura</label><p class="fb-hint" id="fbimgh">Mira que no salga nada de tu salud que no quieras enviar, como tu peso, tu ciclo o una analítica.</p>`}</div>
   <div class="fb-tgs">${bug?`<div class="tg-r"><span class="tg-t"><b>Incluir datos técnicos</b><small>Versión, móvil y pantalla</small></span><button type="button" class="tg-sw" role="switch" data-fbx="tech" aria-checked="${!!f.tech}" aria-label="Incluir datos técnicos"></button></div>
     ${f.tech?`<button type="button" class="fb-more" data-fbx="see" aria-expanded="${!!f.see}">${f.see?"Ocultar lo que se envía":"Ver lo que se envía"}</button>${f.see?`<pre class="fb-tech">${esc(fbTech())}</pre>`:""}`:""}`:""}
     <div class="tg-r"><span class="tg-t"><b>Quiero respuesta</b><small>${f.reply?(acc?"Te contestaré al correo de tu cuenta":"Escribe a qué correo te contesto"):"Se envía sin tu correo"}</small></span><button type="button" class="tg-sw" role="switch" data-fbx="reply" aria-checked="${!!f.reply}" aria-label="Quiero respuesta"></button></div>
@@ -10154,14 +10264,14 @@ setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(nu
    nutricionista, ves quién es y eliges qué compartir (al empezar, nada). Él acepta en su panel. Puedes cambiar lo que compartes o
    terminar cuando quieras. Hace falta tu cuenta de Sustrato. La app guarda su clave privada (ECDH P-256) solo en este móvil;
    la pública va con la solicitud para cifrar de extremo a extremo lo que compartas (fase C). */
-const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["cycle","Ciclo","Cuándo empezó tu última regla y si se retrasa"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
+const LK_PERM=[["train","Entrenos","Sesiones, duración, carga y energía"],["food","Comida","Lo que apuntas y tus objetivos"],["meals","Detalle de las comidas","Qué comes en cada comida, frente a lo pautado"],["body","Peso","Pesajes y composición"],["ready","Cómo llegas","Puntuación, pulso en reposo y sueño"],["cycle","Ciclo menstrual","Cuándo empezó tu última regla y si se retrasa"],["races","Carreras","Tus próximas carreras y su plan"],["hist","Historial","Las 8 semanas anteriores al vínculo"]];
 /* v369 · «Ciclo»: dato de salud especialmente sensible. Apagado por defecto, se enciende solo tras su consentimiento propio (guía 4.0,
    cap. 14: confirmación en la propia pantalla, nunca el diálogo del navegador), en la solicitud y en un vínculo ya hecho; «En directo» no lo enciende.
    No se ofrece con sexo «Hombre» (como la etapa en Tu salud). Viaja como perms.cycle; lo que se manda, en lkMeta (meta.cy). */
 const LK_SENS=["cycle"];
 const lkVis=()=>LK_PERM.filter(([k])=>k!=="cycle"||(S.profile||{}).sex!=="m");
 const LK_CY_OK="Tu profesional verá cuándo empezó tu última regla, cuánto suele durar tu ciclo y si se retrasa, para avisarte si algo cambia. Nada más. Puedes dejar de compartirlo cuando quieras.";
-function lkCyAsk(id){return`<div class="bk-conf lk-cy" role="group" aria-label="Compartir tu ciclo"><p><b>¿Compartir tu ciclo?</b> ${LK_CY_OK}</p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkcyok" data-id="${esc(id)}">Compartir el ciclo</button><button type="button" class="chip sm" data-act="lkcyno" data-id="${esc(id)}">No</button></div></div>`}
+function lkCyAsk(id){return`<div class="bk-conf lk-cy" role="group" aria-label="Compartir tu ciclo"><p><b>¿Compartir tu ciclo?</b> ${LK_CY_OK}</p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkcyok" data-id="${esc(id)}">Compartir el ciclo</button><button type="button" class="btn sm" data-act="lkcyno" data-id="${esc(id)}">Ahora no</button></div></div>`}
 const LK_ST={pending:"Esperando su respuesta",active:"Vinculado",ended:"Terminado",rejected:"Rechazado"};
 S.lk=S.lk||{links:null,step:null,code:"",pro:null,perms:{},err:""};
 async function lkKey(){let k=LS("sustrato-ecdh");if(k&&k.pub)return k;
@@ -10196,18 +10306,21 @@ function lkClinic(l){const c=l.cl;if(!c)return"";const A=c.access||[];
 function lkKeyWarn(l){return`<div class="bk-conf lk-key" role="status"><p class="lk-key-h"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><span><b>Tu profesional ha entrado desde otro dispositivo.</b> Si te lo esperabas, sigue compartiendo; si no, pregúntale antes.</span></p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkkeyok" data-id="${esc(l.id)}">Seguir compartiendo</button></div></div>`} /* pieza Aviso (guía 4.0, cap. 10): icono de alerta y una frase con qué hacer; hasta confirmarlo no se comparte nada nuevo */
 async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[];await lkPin(S.lk.links)}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
 function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
-function lkToggles(id,perms){const ask=S.lk.cyAsk===id; /* v369 (guía 4.0, «Conmutador y su fila»): mientras pide el consentimiento, el interruptor del ciclo se queda encendido y debajo va la confirmación */
-  return`<div class="lk-perms">${lkVis().map(([k,l,d])=>{const on=!!(perms&&perms[k])||(k==="cycle"&&ask),dd=k==="cycle"&&!(typeof cyOn==="function"&&cyOn())?"Cuando registres tu ciclo en Perfil":d;
+function lkToggles(id,perms){const ask=S.lk.cyAsk===id; /* v369 (guía 4.0, «Conmutador y su fila»): al tocar el ciclo, debajo va la confirmación; v370 (V01 de la revisión): el interruptor sigue apagado hasta «Compartir el ciclo», para que lo que se ve sea lo que se comparte */
+  return`<div class="lk-perms">${lkVis().map(([k,l,d])=>{const on=!!(perms&&perms[k]),dd=k==="cycle"&&!(typeof cyOn==="function"&&cyOn())?"Cuando registres tu ciclo en Perfil":d;
     return`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${dd}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${on}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`+(k==="cycle"&&ask?lkCyAsk(id):"")}).join("")}</div>`}
 function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en vigor, para ponerlo arriba */
   if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<p class="pa-note" id="lknone" role="status"${LK_PERM.some(([k])=>L.perms&&L.perms[k])?" hidden":""}>Con todo apagado, tu profesional no verá ningún dato tuyo hasta que enciendas algo.</p><button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
-  return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<div aria-busy="true" aria-label="Cargando tu profesional">${skRows(2)}</div>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.state==="active"?lkPage(l,pauta):""}<div class="pa-ex">${L.endAsk===l.id?`<div class="bk-conf"><p><b>${l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+esc(l.pro.name)+"?"}</b> ${l.state==="pending"?"Tendrás que pedir otra llave para volver a intentarlo.":"Dejará de ver lo que compartes. Para volver, necesitarás otra llave."}</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">${l.state==="pending"?"Cancelar la solicitud":"Terminar"}</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`:`<button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button>`}</div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
+  return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<div aria-busy="true" aria-label="Cargando tu profesional">${skRows(2)}</div>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.state==="pending"&&l.cf?lkCf(l):""}${l.state==="active"?lkPage(l,pauta):""}<div class="pa-ex">${L.endAsk===l.id?`<div class="bk-conf"><p><b>${l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+esc(l.pro.name)+"?"}</b> ${l.state==="pending"?"Tendrás que pedir otra llave para volver a intentarlo.":"Dejará de ver lo que compartes. Para volver, necesitarás otra llave."}</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">${l.state==="pending"?"Cancelar la solicitud":"Terminar"}</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`:`<button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button>`}</div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
     ${live.some(l=>l.state==="active")?`<div class="pa-ex"><button type="button" class="ms-link" data-act="lkstart">Vincular con otro profesional</button></div>`:`<button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>`}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
 /* v359 · la página de Tu profesional: su cabecera con foto y presentación; lo pendiente; la pauta en vigor; lo que te manda; las
    notas; avisos; lo que compartes, plegado (se configura una vez) y en directo dentro */
+/* M2 (auditoría de seguridad): el código que el deportista dice a su profesional para que acepte la solicitud; así nadie que haya
+   adivinado o visto la llave puede hacerse pasar por él */
+function lkCf(l){return`<div class="lk-cf"><span>Dile este código a ${esc((l.pro&&l.pro.name)||"tu profesional")} para que acepte tu solicitud</span><b aria-label="Código ${esc(l.cf.split("").join(" "))}">${esc(l.cf)}</b></div>`}
 function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
   return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
 function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=lkVis().filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
@@ -10251,7 +10364,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
   if(a==="lknext"){const code=String(($("#lkcode")||{}).value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");L.code=code;
     if(code.length!==6){L.err="La llave tiene 6 caracteres.";lkRender();return}
     t.disabled=true;try{const j=await lkCall("/link/lookup",{code});if(!j.pro){L.err="Esa llave no vale: puede haber caducado o ya se usó. Pide otra a tu profesional.";lkRender();return}L.pro=j.pro;L.step="perms";lkRender()}catch(x){L.err="No se ha podido comprobar. Prueba en un momento.";lkRender()}return}
-  if(a==="lksend"){t.disabled=true;try{const k=await lkKey(),me=S.profile||{};const j=await lkCall("/link/request",{code:L.code,perms:L.perms,pub:k.pub,name:(me.name||"").trim()});
+  if(a==="lksend"){t.disabled=true;try{const k=await lkKey(),me=S.profile||{};const j=await lkCall("/link/request",{code:L.code,perms:L.perms,pub:k.pub,name:(me.name||"").trim(),cf:true});
       if(!j.ok){L.err=j.code==="already"?"Ya estás vinculado o tienes una solicitud con este profesional.":j.code==="self"?"Esa llave es tuya.":"Esa llave ya no vale. Pide otra a tu profesional.";lkRender();return}
       L.step=null;await lkLoad();toast("Solicitud enviada a "+L.pro.name)}catch(x){L.err="No se ha podido enviar. Prueba en un momento.";lkRender()}return}});
 
@@ -10288,9 +10401,13 @@ function lkMeals(k){const L=(S.log||{})[k]||{},t=dayTargets(k),mp=t?mealPlan(t,k
     return x});
   const al=L.alc;if(al&&al.alc)ml.push({m:"alc",st:"done",n:"Alcohol",kcal:r(alKcal(al)),g:r(al.alc)});
   return ml.some(x=>x.st)?ml:null}
-function lkMeta(P){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
+function lkMeta(P,l){const o={v:1};if(P.races){const R=[];for(let i=0;i<=180;i++){const k=shiftKey(today(),i);plannedFor(k).filter(x=>x.race&&!x.skip).forEach(x=>R.push({d:k,s:x.sport,m:x.dur||0}))}o.races=R}
   if(P.food){const p=S.profile||{};o.excl={diet:p.diet||"omni"};EXCL.forEach(([k])=>{if(p[k])o.excl[k]=true})}
-  if(P.food){const p=S.profile||{};if(p.sex==="f"||p.sex==="m")o.sex=p.sex} /* v356: para las referencias de micronutrientes en su panel */ /* v342: sus exclusiones, para la ficha del profesional */
+  if(P.food||P.body){const p=S.profile||{};if(p.sex==="f"||p.sex==="m")o.sex=p.sex} /* v356: para las referencias de micronutrientes en su panel; v370: también con «Peso», para la grasa por pliegues (Yuhasz y Faulkner dependen del sexo) */ /* v342: sus exclusiones, para la ficha del profesional */
+  if(P.food&&l&&typeof lmList==="function"){const{M,ack}=lmList(l),x=M.find(y=>y.by==="pro"&&y.o&&y.o.t==="menu"&&ack[y.mid]===true),mn={},k0=shiftKey(today(),-7);
+    if(x)Object.keys(x.o.days||{}).filter(k=>k>=k0).sort().slice(0,21).forEach(k=>{const D=S.menu[k]||{},P0=x.o.days[k]||{};if(!Object.values(D).some(a=>a&&a.lid===l.id))return; /* solo los días en que lo aplicó */
+      Object.keys(P0).forEach(m=>{const pk=String(P0[m]),a=D[m];(mn[k]=mn[k]||{})[m]=[pk,a&&a.lid===l.id&&a.pk===pk.slice(0,40)?a.s||1:0]})});
+    if(Object.keys(mn).length)o.mn=mn} /* v370 · R14: la ración con la que aplicó cada plato del último menú que aplicó de este profesional, solo a él; 0 si lo ha cambiado por otro o lo ha quitado (decisión de Javier: avisarle, sin decir cuál) */
   if(P.food){const q=(S.profile||{}).pro;if(q){const pq=Object.assign({},q);delete pq.att;o.pauta=pq}}
   if(typeof hsShared==="function"){const h=hsShared();if(h)o.hs=h} /* v348: Tu salud, si lo compartes */
   if(P.cycle===true&&typeof cyPro==="function"){const c=cyPro();if(c)o.cy=c} /* v369: solo con el permiso «Ciclo» y su consentimiento; sin ciclo, no va */return o}
@@ -10312,7 +10429,7 @@ async function lkPush(force){if(!S.acct||LKP_BUSY||!S.lk||!S.lk.links)return;LKP
       const from=P.hist?shiftKey(today(),-LKP_HIST):(l.acc?new Date(l.acc).toISOString().slice(0,10):today()),items=[],aes=await lkAes(l);
       for(let k=from;k<=shiftKey(today(),14);k=shiftKey(k,1)){ /* v360: 14 días por delante (antes 7), para periodizar con antelación */const d=lkDay(k,P),h=d?lkHash(JSON.stringify(d)):"";if(h===(days[k]||""))continue;if(!d&&!days[k])continue; /* v359: un día sin datos que nunca enviaste no se manda vacío (si no, otro aparato tuyo con menos datos borraba lo bueno) */
         items.push(Object.assign({k},await lkSeal(aes,l.id,d||{empty:true})));days[k]=h}
-      const meta=lkMeta(P),mh=lkHash(JSON.stringify(meta));if(mh!==days.meta){items.push(Object.assign({k:"meta"},await lkSeal(aes,l.id,meta)));days.meta=mh}
+      const meta=lkMeta(P,l),mh=lkHash(JSON.stringify(meta));if(mh!==days.meta){items.push(Object.assign({k:"meta"},await lkSeal(aes,l.id,meta)));days.meta=mh}
       if(!items.length&&!reset){st[l.id]=Object.assign({},s0,{at:Date.now()});continue}
       for(let i=0;i<items.length;i+=100)await lkCall("/link/push",{id:l.id,items:items.slice(i,i+100),reset:reset&&i===0});
       st[l.id]={pk:l.proPub,sig,days,at:Date.now()}}
@@ -10447,9 +10564,9 @@ function prMenuApply(l,x){const o=x.o,D=o.dishes||{},pro=String(l.pro.name||"Tu 
     if(d.fx){nd.id="xp"+String(x.mid).replace(/[^\w]/g,"").slice(0,10)+String(id).replace(/[^\w]/g,"").slice(0,24);emb[id]=nd;return}
     ids[id]=nd.id;S.dishes=(S.dishes||[]).filter(y=>y.id!==nd.id).concat([nd])});
   Object.keys(o.days||{}).forEach(k=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<today())return;const t=dayTargets(k),mp=t?mealPlan(t,k).meals:[],day={};
-    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{if(!MEALS.some(([q])=>q===mid))return;const e=emb[did];if(e){day[mid]={d:e.id,s:1,lock:true,pro,x:e};n++;return}
+    Object.entries(o.days[k]||{}).forEach(([mid,did])=>{if(!MEALS.some(([q])=>q===mid))return;const e=emb[did];if(e){day[mid]={d:e.id,s:1,lock:true,pro,x:e,pk:String(did).slice(0,40),lid:l.id};n++;return}
       const b=String(did).startsWith("b:")?String(did).slice(2):null,id=b||ids[did],dd=id&&dishById(id),m=mp.find(y=>y.id===mid);if(!dd)return;if(b&&!dishAllowed(dd)){skip++;return} /* «b:id»: plato del catálogo de la app */
-      day[mid]={d:id,s:m?bestScale(dd,m).s:1,lock:true,pro};n++});
+      day[mid]={d:id,s:m?bestScale(dd,m).s:1,lock:true,pro,pk:String(did).slice(0,40),lid:l.id};n++}); /* v370: pk, la clave del plato en su menú, y lid, de qué profesional es: la ración se le devuelve solo a él (R14) */
     if(Object.keys(day).length){S.menu[k]=day;autoAssignDay(k)}});
   saveDishes();saveMenu();
   if(n){clearTimeout(prMenuApply.t);S.prMnPend=x.mid;prMenuApply.t=setTimeout(()=>{S.prMnPend=null;lmAck(l.id,x.mid,true);lkRender()},5200);
@@ -10787,7 +10904,7 @@ function lphAv(l,name,cls){const p=lphProf(l);return p&&p.ph?`<span class="pp-av
 function lphMealRow(mid,k){const l=typeof prLinks==="function"&&prLinks()[0];if(!l)return"";
   return`<label class="ms-photo lph-ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5h3.2l1.8-2.5h6l1.8 2.5H20V19H4z"/><circle cx="12" cy="13" r="3.4"/></svg><span>Enviar una foto a ${esc(l.pro.name||"tu profesional")}</span><input type="file" accept="image/*" hidden data-lphm="${esc(mid)}|${esc(k)}"></label>`}
 async function lphSend(l,file,o,what){toast("Enviando la foto…");try{const ph=await lphUp(l,file);await lmSend(l,Object.assign({t:"note",x:""},o,{ph}));toast((what||"Foto")+" enviada a "+(l.pro.name||"tu profesional"));if(typeof lkRender==="function")lkRender()}
-  catch(e){toast(e&&e.code==="bad_image"?"No se ha podido abrir la foto":"No se ha podido enviar la foto")}}
+  catch(e){toast(e&&e.code==="bad_image"?"No se ha podido abrir la foto":e&&e.code==="box_full"?"No caben más fotos con tu profesional. Las más antiguas se borran solas con el tiempo":"No se ha podido enviar la foto")}}
 document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.files||!t.files[0])return;
   if(t.dataset.lphm){const l=prLinks()[0],[mid,k]=t.dataset.lphm.split("|");if(l)lphSend(l,t.files[0],{d:k,m:mid},"Foto de tu "+((MEALS.find(m=>m[0]===mid)||[])[1]||"comida").toLowerCase());t.value="";return}
   if(t.dataset.lphn){const l=lmLink(t.dataset.lphn),i=$("#lmx-"+t.dataset.lphn),x=String(i&&i.value||"").trim().slice(0,400);if(l){lphSend(l,t.files[0],{d:today(),x});if(i)i.value=""}t.value=""}});
