@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-27T19:55:05.344Z">
+<meta name="sustrato-version" content="2026-10-27T13:10:56.937Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -57,7 +57,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 nav.tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:20;display:flex;gap:4px;padding:6px;border-radius:999px}
 nav.tabs button{appearance:none;border:0;background:transparent;color:var(--muted);font:500 calc(13px*var(--tz,1)) var(--font);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:44px}
 nav.tabs button[aria-selected="true"]{background:rgba(255,255,255,.14);color:var(--fg);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
-nav.tabs button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--ac-l);outline-offset:2px}
+nav.tabs button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 h2{margin:0 0 4px;font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted)}
 h3{margin:0;font-size:calc(17px*var(--tz,1));font-weight:600;letter-spacing:-.01em}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
@@ -121,7 +121,7 @@ nav.tabs button[role=tab]{flex:1 1 auto;min-width:0;white-space:nowrap}
 @media (max-width:340px){nav.tabs button[role=tab]{padding:10px 6px;font-size:calc(11px*var(--tz,1))}}
 nav.tabs .fab{width:44px;height:44px;min-height:44px;border-radius:50%;border:0;background:#fff;color:#000;display:grid;place-items:center;cursor:pointer;margin-left:4px;padding:0;transition:transform .2s ease;flex:0 0 auto}
 nav.tabs .fab.open{transform:rotate(45deg)}
-nav.tabs .fab:focus-visible{outline:2px solid var(--ac-l);outline-offset:2px}
+nav.tabs .fab:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (max-width:440px){nav.tabs button[role=tab]{padding:10px 8px;font-size:calc(12px*var(--tz,1))}nav.tabs .fab{width:40px;height:40px;min-height:40px}}
 .rad-ov{position:fixed;inset:0;z-index:44;background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);display:grid;place-items:center}
 .rad{width:min(420px,92vw);display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -339,7 +339,7 @@ body{padding-block:16px 48px!important}
 .hright{display:flex;align-items:center;gap:12px}
 header .fab{width:36px;height:36px;border-radius:50%;border:0;background:#fff;color:#000;display:grid;place-items:center;cursor:pointer;transition:transform .2s ease;position:relative;z-index:46}
 header .fab.open{transform:rotate(45deg)}
-header .fab:focus-visible,.hbtn:focus-visible{outline:2px solid var(--ac-l);outline-offset:2px}
+header .fab:focus-visible,.hbtn:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .drawer-ov{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0);transition:background .2s ease}
 .drawer-ov.open{background:rgba(0,0,0,.55)}
 .drawer{position:fixed;top:0;bottom:0;left:0;z-index:61;width:min(300px,84vw);display:flex;flex-direction:column;padding:calc(14px + env(safe-area-inset-top,0px)) 12px calc(16px + env(safe-area-inset-bottom,0px));
@@ -548,7 +548,7 @@ body.noscroll{overflow:hidden}
 .fu-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:12px 0 4px;gap:2px}
 .fu-bar i{display:block;border-radius:3px}
 .fu-chart{flex:1 1 0;min-height:200px;margin-top:10px;touch-action:none;cursor:ew-resize;outline:none;border-radius:14px;user-select:none;-webkit-user-select:none}
-.fu-chart:focus-visible{outline:2px solid var(--ac-l);outline-offset:2px}
+.fu-chart:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .fu-chart{position:relative;overflow:hidden}
 .fu-chart svg{display:block;position:absolute;left:0;top:0}
 .fu-in{height:100%;min-height:0;overflow:hidden}
@@ -609,7 +609,7 @@ html[data-theme="light"] .ctip span{color:#636366}
 .heat{display:block;width:100%}
 .hm{fill:var(--card2);transition:transform .12s}
 .hm.l1{fill:color-mix(in srgb,var(--verde-v,var(--verde)) 30%,transparent)}.hm.l2{fill:color-mix(in srgb,var(--verde) 52%,transparent)}.hm.l3{fill:color-mix(in srgb,var(--verde) 76%,transparent)}.hm.l4{fill:var(--verde)}
-.hm.hm-t{stroke:var(--ac-l);stroke-width:2;paint-order:stroke}
+.hm.hm-t{stroke:var(--ac);stroke-width:2;paint-order:stroke}
 rect.hm[data-tip]{cursor:pointer}
 rect.hm.tip-on{stroke:var(--fg);stroke-width:1.5}
 .hml{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:8px;font-size:calc(11px*var(--tz,1));color:var(--muted)}
@@ -728,10 +728,10 @@ body{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important}
 .tb-ic{display:grid;place-items:center;width:44px;height:28px;border-radius:14px;transition:background .2s,color .2s}
 .tb-ic svg{width:22px;height:22px}
 .tb-l{font-size:calc(11px*var(--tz,1));font-weight:500;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.tabbar button[aria-current="page"]{color:var(--ac-l)}
-.tabbar button[aria-current="page"] .tb-ic{color:var(--ac-l);background:var(--fill2)} /* v327: igual en todas las pestañas, sin color por sección; identidad (27-10): en el acento de línea, amarillo en oscuro y tinta en claro */
+.tabbar button[aria-current="page"]{color:var(--fg)}
+.tabbar button[aria-current="page"] .tb-ic{color:var(--fg);background:var(--fill2)} /* v327: igual en todas las pestañas, sin color por sección (el ocre salía sucio en oscuro) */
 .tabbar button[aria-current="page"] .tb-l{font-weight:600}
-.tabbar button:focus-visible{outline:2px solid var(--ac-l);outline-offset:-2px}
+.tabbar button:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
 .toast{bottom:calc(90px + env(safe-area-inset-bottom,0px))!important}
 .avbtn[aria-current="page"]{color:#8e8e93;background:rgba(255,255,255,.08);border-radius:50%} /* la marca de «estás en Perfil», redonda como el avatar */
 html[data-theme="light"] .tabbar{background:rgba(249,249,251,.86);border-top-color:rgba(0,0,0,.1)}
@@ -797,7 +797,7 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .qa-ask{margin-top:10px;background:var(--card2);border-radius:14px;min-height:56px}
 .qa-list{margin-top:10px;background:var(--card2);border-radius:14px;overflow:hidden}
 .qa-list .qa-row+.qa-row{border-top:.5px solid var(--sep)}
-.qa-big:focus-visible,.qa-row:focus-visible{outline:2px solid var(--ac-l);outline-offset:-2px}
+.qa-big:focus-visible,.qa-row:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
 /* guía 4.0: sin variante de escritorio; la app es la columna del móvil */
 @media (prefers-reduced-motion:reduce){.qa,.qa-ov{animation:none}}
 
@@ -1139,11 +1139,6 @@ html.is-loading header.top .logo .dcover{animation:dloop 2s cubic-bezier(.5,0,.3
 #onb{position:fixed;inset:0;z-index:150;background:var(--bg);display:flex;justify-content:center}
 body.onb-on{overflow:hidden}
 #onb[hidden]{display:none!important}
-/* identidad (27-10) · el primer paso de la bienvenida es un momento de marca: negro en los dos temas, la palabra de marca y «Empezar» en el amarillo de la gota */
-#onb.ob-marca{--bg:#000;--fg:#fff;--muted:#98989f;--card2:#2c2c2e;--amarillo:var(--marca);--azul:#3b82f6;--verde:#30d158;--ac-l:var(--marca);background:#000;color:#fff;color-scheme:dark}
-#onb.ob-marca .ob-cta{background:var(--marca);color:var(--marca-on)}
-.ob-mw{color:var(--marca)}
-html[data-theme="light"] #onb.ob-marca .ob-ic{color:var(--c-v,var(--c))}
 .ob-wrap{width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;padding:max(12px,env(safe-area-inset-top)) 20px max(16px,env(safe-area-inset-bottom));box-sizing:border-box}
 .ob-top{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;min-height:48px}
 .ob-prog{display:flex;gap:6px}
@@ -1199,7 +1194,7 @@ html[data-theme="light"] .ob-goal{box-shadow:0 1px 2px rgba(0,0,0,.04)}
 html[data-theme="light"]{--muted:#5f5f64!important;--faint:#8e8e93!important;--icon:var(--muted)}
 @media (prefers-color-scheme:light){html:not([data-theme="dark"]){--muted:#5f5f64!important;--faint:#8e8e93!important;--icon:var(--muted)}}
 /* guía 4.0 (cap. 9): --icon, el gris de los iconos; igual que --muted en claro y más claro en oscuro, donde una línea fina se ve más tenue que un texto del mismo color */
-:focus-visible:not(.ms-q input){outline:2px solid var(--ac-l)!important;outline-offset:2px;border-radius:10px} /* el buscador marca el foco en su caja (.ms-q:focus-within) */
+:focus-visible:not(.ms-q input){outline:2px solid var(--ac)!important;outline-offset:2px;border-radius:10px} /* el buscador marca el foco en su caja (.ms-q:focus-within) */
 input:focus-visible,select:focus-visible{outline-offset:0}
 .mp.on{color:#1c1c1e!important}
 
@@ -2009,7 +2004,7 @@ div.mbody{cursor:default}
 .ms-lbl2{font-size:calc(13px*var(--tz,1));color:var(--muted);margin:4px 0 2px}
 .ms-q{display:flex;align-items:center;gap:10px;border-radius:14px;background:var(--card2);padding:0 14px;color:var(--muted)}.ms-q svg{color:var(--icon)}
 .ms-q input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;outline:0;font:calc(17px*var(--tz,1)) var(--font);color:var(--fg);min-height:44px;padding:0!important;border-radius:0!important}
-.ms-q:focus-within{box-shadow:inset 0 0 0 1.5px var(--ac-l)}.ms-q input:focus-visible{outline:0}
+.ms-q:focus-within{box-shadow:inset 0 0 0 1.5px var(--ac)}.ms-q input:focus-visible{outline:0}
 .ms-list{display:flex;flex-direction:column}
 .ms-it{appearance:none;border:0;background:none;font:inherit;color:var(--fg);text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--edge-soft,rgba(127,127,127,.15));cursor:pointer;font-size:calc(15px*var(--tz,1))}
 .ms-it span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -2153,7 +2148,7 @@ html[data-theme="light"] .pf-cti{color:color-mix(in srgb,var(--c) 70%,#000)}
 .isl-f2{position:absolute;left:calc(100% / 6 - 2px);top:20px;height:4px;width:calc(var(--p) * 2 / 3 + 4px);min-width:4px;border-radius:999px;background:var(--c);transition:width .2s cubic-bezier(.3,.7,.2,1),background .2s}
 .isl-st{display:none}
 .isl-th{position:absolute;top:10px;left:calc(100% / 6 + var(--p) * 2 / 3);width:24px;height:24px;margin-left:-12px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.08);transition:left .2s cubic-bezier(.3,.7,.2,1)}
-.isl:focus-visible .isl-th{outline:2px solid var(--ac-l);outline-offset:2px}
+.isl:focus-visible .isl-th{outline:2px solid var(--ac);outline-offset:2px}
 .isl-lb{display:grid;grid-template-columns:repeat(3,1fr);margin-top:2px} /* v271: cada palabra bajo su parada */
 .isl-lb button{appearance:none;border:0;background:none;padding:6px 0;font:500 calc(15px*var(--tz,1)) var(--font);color:var(--muted);cursor:pointer;text-align:center}
 .isl-lb button[aria-pressed="true"]{color:var(--fg);font-weight:600}
@@ -2570,8 +2565,9 @@ html[data-theme="light"] .ob2-sum{background:#fff}
 .vhead>span.pf-pm{font-size:calc(20px*var(--tz,1));font-weight:600;color:var(--muted);letter-spacing:-.01em;flex:none}
 .mg-ap{font-style:normal;color:var(--muted);font-weight:500;margin-right:1px}
 
-/* Curva de ritmo y de potencia (v240). Prefijo cv-. Color del deporte: Running en naranja (identidad, 27-10: el amarillo queda para hidratos y marca), MTB en bici. */
-.cv-card{--cv:var(--naranja);--cv-v:var(--naranja-v,var(--naranja))}
+/* Curva de ritmo y de potencia (v240). Prefijo cv-. Color del deporte: Running oscurecido en claro (3:1 sobre blanco), MTB en bici. */
+.cv-card{--cv:var(--amarillo);--cv-v:var(--amarillo-v,var(--amarillo))}
+html[data-theme="light"] .cv-card{--cv:var(--amarillo);--cv-v:var(--amarillo-v,var(--amarillo))}
 .cv-card[data-cvsp-cur="bike"]{--cv:var(--azul);--cv-v:var(--azul-v,var(--azul))}
 html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:var(--azul);--cv-v:var(--azul-v,var(--azul))}
 .cv-hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -2625,17 +2621,9 @@ html[data-theme="light"] .cv-card[data-cvsp-cur="bike"]{--cv:var(--azul);--cv-v:
 /* v277 · --ia: la marca de las funciones con IA (la chispa en su tesela) */
 :root{--ia:var(--morado)}
 html[data-theme="light"]{--amarillo:#f0a800;--naranja:#e86518;--rojo:#d70015;--verde:#11ab40;--cian:#3ba0c0;--azul:#3478fb}
-/* Identidad (Javier, 27-10): el amarillo de la gota como marca y como acento (como Notas de Apple); los botones de hacer, en tinta (--fg).
-   Un solo sitio para estos tokens; sitio/guia.css los copia. El azul se queda para grasas y bici.
-   --ac: el relleno de lo elegido (día, deporte, opción, segmentado, conmutador), igual en los dos temas, con texto negro encima (14,5:1).
-   --ac-l: el acento como letra, línea, borde o foco: amarillo en oscuro; en claro, tinta (amarillo fino sobre blanco da 1,5:1). */
-:root{--ac:#ffd21e;--ac-on:#000;--ac-l:#ffd21e;--ac-soft:color-mix(in srgb,#ffd21e 18%,transparent)}
-html[data-theme="light"]{--ac-l:#1c1c1e;--ac-soft:color-mix(in srgb,#ffd21e 26%,transparent)}
-/* --marca: el amarillo de la gota, igual en los dos temas; solo sobre negro o como relleno con texto negro (14,5:1), nunca letra sobre blanco.
-   Superficie de marca: texto secundario al 62 % (5,4:1), casilla al 8 % (con ese texto, 4,6:1) y pista al 12 %. */
-:root{--marca:#ffd21e;--marca-on:#000;--marca-2:rgba(0,0,0,.62);--marca-casilla:rgba(0,0,0,.08);--marca-pista:rgba(0,0,0,.12)}
-/* --hoy: el número de hoy en los calendarios; en oscuro, el amarillo de marca; en claro, tinta (amarillo sobre blanco da 1,5:1 y un disco se confundiría con el anillo de hidratos) */
-:root{--hoy:var(--marca)}html[data-theme="light"]{--hoy:var(--fg)}
+/* v266 · Acento: el azul de la gota, solo para lo seleccionado (día, deporte, opción, segmentado, conmutador). Texto encima: blanco */
+:root{--ac:#3d86ff;--ac-on:#fff;--ac-soft:color-mix(in srgb,#3d86ff 22%,transparent)}
+html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,transparent)}
 
 /* Texto sin color (guía 2.2): el estado lo marca un punto de 8 px delante, del color que pone --pc en cada pieza.
    Piezas: .mr-q (calidad del macro), .mprot (poca proteína), .en-q / .en-al (energía),
@@ -2682,7 +2670,7 @@ html[data-theme="light"]{--ac-l:#1c1c1e;--ac-soft:color-mix(in srgb,#ffd21e 26%,
 .tg-sw[aria-checked="true"]{background:var(--ac)}
 .tg-sw[aria-checked="true"]::after{transform:translateX(20px)}
 .tg-sw:disabled{opacity:.4;cursor:default}
-.tg-sw:focus-visible{outline:2px solid var(--ac-l);outline-offset:2px}
+.tg-sw:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.tg-sw,.tg-sw::after{transition:none}}
 
 /* v257 · Perfil › Conexiones: una retícula. Icono a 18 px del borde, texto a 70 px; separadores desde el texto. Clases cn- (058-perfil.js) */
@@ -2739,7 +2727,7 @@ html[data-theme="light"]{--ac-l:#1c1c1e;--ac-soft:color-mix(in srgb,#ffd21e 26%,
 .fd-f i{font-style:normal;font-size:calc(20px*var(--tz,1));line-height:1;color:var(--faint)}
 .fd-f input{position:absolute;inset:0;width:100%;height:100%;min-width:0;opacity:0;cursor:pointer;border:0;padding:0;margin:0}
 .fd-f:active{transform:scale(.97)}
-.fd-f:has(input:focus-visible){outline:2px solid var(--ac-l);outline-offset:2px}
+.fd-f:has(input:focus-visible){outline:2px solid var(--ac);outline-offset:2px}
 .fd-ch{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .fd-ch button{appearance:none;border:0;background:var(--fill2);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);border-radius:10px;padding:8px 12px;min-height:32px;cursor:pointer;font-variant-numeric:tabular-nums}
 .fd-ch button[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
@@ -2878,7 +2866,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .ss-s{display:none}
 .ss-k{position:absolute;top:10px;left:calc(12.5% + var(--p) * .75);width:24px;height:24px;margin-left:-12px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.08);opacity:0;transform:scale(.6);transition:left .2s cubic-bezier(.3,1.3,.5,1),box-shadow .2s,opacity .12s,transform .2s}
 .ss.on .ss-f,.ss.on .ss-k{opacity:1}.ss.on .ss-k{transform:none}
-.ss-t:focus-visible .ss-k{outline:2px solid var(--ac-l);outline-offset:2px}
+.ss-t:focus-visible .ss-k{outline:2px solid var(--ac);outline-offset:2px}
 .ss-l{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))} /* v370 (D06): cuatro columnas iguales siempre, cada palabra bajo su punto (1fr solo no deja estrecharlas) */
 .ss-l button{appearance:none;border:0;background:none;padding:4px 0 6px;font:500 calc(15px*var(--tz,1)) var(--font);color:var(--muted);cursor:pointer;text-align:center;white-space:nowrap}
 .ss-l button[aria-pressed="true"]{color:var(--fg);font-weight:600}
@@ -2902,7 +2890,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .fb-f input{width:100%;min-height:44px;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:calc(17px*var(--tz,1)) var(--font);padding:0 14px}
 .fb-n{align-self:flex-end;margin-top:-10px;font-size:calc(12px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums}
 .fb-add{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;border:1.5px dashed var(--sep);color:var(--fg);font:500 calc(15px*var(--tz,1)) var(--font);cursor:pointer}
-.fb-add:focus-within{outline:2px solid var(--ac-l);outline-offset:2px}
+.fb-add:focus-within{outline:2px solid var(--ac);outline-offset:2px}
 .fb-img{display:flex;align-items:center;gap:12px}
 .fb-img img{width:64px;height:96px;object-fit:cover;object-position:top;border-radius:10px;background:var(--fill2)}
 .fb-tgs{display:flex;flex-direction:column}
@@ -2959,11 +2947,11 @@ a.fb-row{text-decoration:none}
 .trow:first-child{border-top:0}
 .trow.past{opacity:.85}
 .trow.flash{animation:flash 1.4s ease}
-.trow.pm-over{background:var(--ac-soft);box-shadow:inset 3px 0 0 var(--ac-l)}
+.trow.pm-over{background:var(--ac-soft);box-shadow:inset 3px 0 0 var(--ac)}
 .tday{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
 .tday b{font-size:calc(13px*var(--tz,1));color:var(--muted);font-weight:500}
 .tday span{display:grid;place-items:center;width:36px;height:36px;margin:2px 0 0 -6px;border-radius:50%;font:600 calc(20px*var(--tz,1)) var(--round)} /* v326: el mismo círculo que la tira y el mes */
-.trow.today:not(.sel) .tday span{color:var(--hoy);font-weight:700} /* hoy, como en todos los calendarios (guía: «Hoy en calendarios») */
+.trow.today:not(.sel) .tday span{color:var(--ac)} /* hoy: la cifra en el acento, como el Calendario de Apple */
 .trow.sel .tday span{background:var(--ac);color:var(--ac-on)}
 .tday small{font-size:calc(11px*var(--tz,1));color:var(--fg);font-weight:600;margin-top:2px}
 .trest{font-size:calc(13px*var(--tz,1));color:var(--muted);padding:8px 0}
@@ -3169,7 +3157,7 @@ html[data-theme="light"] .dt-grp .kv>div{background:var(--card)}
 .ic-s{margin:12px 0 4px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .ic-l{max-height:46vh;overflow:auto;margin:0 -4px 12px}
 .ic-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:6px 4px;border-top:.5px solid var(--sep);cursor:pointer}.ic-r:first-child{border-top:0}
-.ic-r input{width:22px;height:22px;accent-color:var(--ac-l);flex:0 0 auto}
+.ic-r input{width:22px;height:22px;accent-color:var(--ac);flex:0 0 auto}
 .ic-ic{width:24px;height:24px;flex:none;display:grid;place-items:center;background:none;border-radius:0;padding:0;color:var(--icon)} /* guía 4.0 (cap. 9): icono de línea sin recuadro, en su columna de 24 */
 .ic-t{min-width:0}.ic-t b{display:block;font-size:calc(15px*var(--tz,1));font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ic-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .ic-a{display:grid;gap:8px;justify-items:center}.ic-a .btn{width:100%}
@@ -3315,7 +3303,7 @@ table.bands{--tz:1}
 .pa-cd b{width:34px;height:34px;font:600 calc(17px*var(--tz,1)) var(--round,var(--font))}
 .pa-cd.tk b{font-weight:600}
 /* Hoy, como el Calendario de Apple: la cifra en el acento si no es el día elegido; si lo es, el círculo y nada más */
-.pa-cd.tk:not([aria-pressed="true"]) b,.day.tk:not([aria-pressed="true"]) b{color:var(--hoy);font-weight:700}
+.pa-cd.tk:not([aria-pressed="true"]) b,.day.tk:not([aria-pressed="true"]) b{color:var(--ac)}
 /* Aire entre bloques: la hora, la carrera y el botón ya no van pegados */
 /* v372: el espacio entre secciones lo da la hoja (24) */
 .pa-race{display:flex;align-items:center;gap:12px;padding:6px 14px;border-radius:14px;background:var(--fill2)} /* v372: el gris de los grupos, que se ve en los dos modos (en oscuro la hoja ya es --card2) */
@@ -3439,7 +3427,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .wlg i.st{box-shadow:inset 0 0 0 2px var(--peso)}.wlg i.nw{background:var(--peso)}
 /* v338 · Documento que adjunta el profesional (enlace a su Drive, Dropbox o web) */
 .pp-doc{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;background:var(--fill2);color:var(--fg);text-decoration:none;font-size:calc(15px*var(--tz,1))}
-.pp-doc b{color:var(--ac-l);font-weight:600}
+.pp-doc b{color:var(--ac);font-weight:600}
 .pp-doc:hover{background:var(--fill)} /* cap. 4 · Pasar el puntero: un escalón de relleno, de --fill2 a --fill */
 /* v339 · Vínculo con tu profesional: tarjeta por vínculo con su estado y lo que compartes */
 .lk-card{background:var(--card2);border-radius:14px;padding:14px;display:grid;gap:10px}
@@ -3454,7 +3442,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .lm-l,.lm-n{display:grid;gap:8px}
 .lm-r{appearance:none;border:0;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:6px 14px;border-radius:14px;background:var(--fill2);color:var(--fg);font:calc(15px*var(--tz,1)) var(--font);text-align:left;cursor:pointer}
 .lm-r>span:first-child{min-width:0}.lm-r small,.lm-att small{display:block;font-size:calc(12px*var(--tz,1));color:var(--muted)}
-.lm-r b{color:var(--ac-l);font-weight:600;flex:none}.lm-r .chip{flex:none}
+.lm-r b{color:var(--ac);font-weight:600;flex:none}.lm-r .chip{flex:none}
 .lm-done{flex:none;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .lm-att{appearance:none;border:0;width:100%;font:calc(15px*var(--tz,1)) var(--font);text-align:left;cursor:pointer}
 .lm-m{background:var(--fill2);border-radius:14px;padding:10px 14px;max-width:88%}
@@ -3468,10 +3456,10 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pr-ends{display:flex;justify-content:space-between;font-size:calc(12px*var(--tz,1));color:var(--muted);margin-top:4px}
 .pr-x{width:100%;border:0;border-radius:14px;background:var(--fill2);color:var(--fg);font:calc(15px*var(--tz,1))/1.4 var(--font);padding:12px 14px;resize:none;outline:none}
 #menuBtn{position:relative}
-#menuBtn[data-prnew]::before{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--rojo);box-shadow:0 0 0 2px var(--bg);z-index:1}
+#menuBtn[data-prnew]::before{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 2px var(--bg);z-index:1}
 /* v345 · aviso discreto en Plan › Menú cuando el día es el de tu profesional */
 .pr-mn{display:flex;align-items:center;gap:6px;margin:6px 0 2px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.pr-mn::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--icon)} /* identidad (27-10): el acento no avisa */
+.pr-mn::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--ac)}
 
 /* v346 · Tu profesional (112): tarjeta en Hoy cuando te manda algo, tarjeta propia en el Perfil y vista previa del menú */
 .prc-h{display:flex;align-items:center;gap:12px}
@@ -3518,7 +3506,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hs-r{padding:10px 0}
 .hs-r+.hs-r,.hs-tri+.hs-r{border-top:.5px solid var(--sep)}
 .hs-r .tg-t{display:flex;flex-direction:column;gap:2px}
-.hs-fx{font-size:calc(13px*var(--tz,1));color:var(--ac-l);line-height:1.35}
+.hs-fx{font-size:calc(13px*var(--tz,1));color:var(--ac);line-height:1.35}
 .hs-tri{display:flex;align-items:center;gap:12px;margin:0 0 12px}.hs-tri>span{font-size:calc(15px*var(--tz,1));color:var(--muted)}.hs-tri .seg{flex:1}.hs-tri .seg button{flex:1}
 .hs-sh{margin-top:14px;background:var(--card2);border-radius:14px;padding:10px 14px}
 .hs-priv{margin-top:10px}
@@ -3529,22 +3517,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .td{display:grid;grid-template-columns:minmax(0,1fr);gap:14px} /* 23-10: un nombre de plato largo no ensancha la tarjeta (se corta con «…» en su fila) */
 .glass.pad.td{padding:20px} /* guía 4.0: la tarjeta protagonista lleva 20 de relleno */
 .td-h{display:grid;gap:2px}
-/* Identidad (27-10) · «Tu día» es la superficie de marca: el amarillo de la gota con texto negro, igual en los dos temas (una sola por pantalla) */
-.glass.pad.td{background:var(--marca)!important;color:var(--marca-on);--ac-l:var(--marca-on)} /* el foco, en negro: en amarillo no se vería */
-.glass.td .td-v{color:var(--marca-on)!important} /* gana a «.glass h2» (sistema-comun.css), que lo pone en --fg */
-.td .rot b{color:var(--marca-on)!important}
-.td .rot small,.td .td-s,.td .td-pl,.td .td-nt small,.td .td-ok{color:var(--marca-2)}
-.td .td-bar{background:var(--marca-pista)}.td .td-bar i{background:var(--marca-on)}
-.td .td-n{background:var(--marca-casilla)}
-.td .btn.primary{background:var(--marca-on);color:#fff}
-/* rótulo de categoría (Salud de Apple): icono de 17 en el color de su dato; el nombre en ese color sobre oscuro y en tinta en claro (4,5:1) */
-.rot{display:flex;align-items:center;gap:6px;min-width:0;color:var(--c,var(--icon))}
-.rot svg{width:17px;height:17px;flex:none}
-.rot b{font-size:calc(15px*var(--tz,1));font-weight:600;color:var(--c,var(--fg))}
-html[data-theme="light"] .rot b{color:var(--fg)}
-.rot small{margin-left:auto;font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.wc-hd .rot{flex:1}
-.hz-ic{flex:none;width:24px;display:flex;justify-content:center;color:var(--c)}.hz-ic svg{width:20px;height:20px}
+.td-k{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}
 .glass .td-v{font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5)!important;font-weight:700!important;letter-spacing:-.02em!important;line-height:1.15;margin:0;text-wrap:balance}
 .td-s{margin:0;font-size:calc(15px*var(--tz,1));color:var(--muted)}
 .td-p{display:grid;gap:6px}
@@ -3601,7 +3574,7 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .ik-ch button{appearance:none;border:0;min-height:36px;padding:8px 12px;border-radius:10px;background:var(--fill2);color:var(--fg);font:500 calc(15px*var(--tz,1)) var(--font);cursor:pointer} /* guía 4.0: opción (elige), no cápsula de acción */
 .ik-ch button[aria-checked="true"]{background:var(--ac);color:var(--ac-on,#fff);font-weight:600}
 .ik-i{width:100%;min-height:44px;border:1px solid var(--sep);border-radius:10px;background:var(--card);color:var(--fg);font:calc(17px*var(--tz,1)) var(--font);padding:10px 12px;outline:none}
-.ik-i:focus,.ik-x:focus{border-color:var(--ac-l)}
+.ik-i:focus,.ik-x:focus{border-color:var(--ac)}
 .ik-x{background:var(--card);border:1px solid var(--sep);min-height:64px}
 .ik-ok{background:var(--card2);border-radius:14px;padding:12px 14px}
 .ik-ok .tg-t{display:flex;flex-direction:column;gap:4px}.ik-ok small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.4}
@@ -3787,7 +3760,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="375";
+const APP_VER="374";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4738,7 +4711,7 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
   if(same)obRead(true);S.onb.shown=st;obSave();
   if(key==="hi"){cta="Empezar";
     body=`<div class="ob-hero"><svg class="dsvg ob-drop" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl3"><path d="DROP"/></clipPath></defs><g clip-path="url(#dcl3)"><rect width="64" height="64" fill="var(--amarillo)"/><path d="WAVE V64 H0Z" fill="var(--azul)"/><path class="dgap" d="WAVE" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg>
-      <h2 class="ob-h">Come según cómo <span class="ob-mw">entrenas</span></h2><p class="ob-p">Sustrato lee tus entrenos y los datos de tu reloj y calcula cada día cuánta energía necesitas y qué te conviene comer.</p></div>
+      <h2 class="ob-h">Come según cómo entrenas</h2><p class="ob-p">Sustrato lee tus entrenos y los datos de tu reloj y calcula cada día cuánta energía necesitas y qué te conviene comer.</p></div>
       <ul class="ob-feat">
         <li><span class="ob-ic" style="--c:var(--amarillo);--c-v:var(--amarillo-v,var(--amarillo))"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></svg></span><span><b>Energía del día</b><small>Calorías y macros que se ajustan a lo que entrenas.</small></span></li>
         <li><span class="ob-ic" style="--c:var(--azul);--c-v:var(--azul-v,var(--azul))"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg></span><span><b>Sustrato por pulso</b><small>Qué parte de cada sesión sale de hidratos y cuál de grasas.</small></span></li>
@@ -4765,7 +4738,6 @@ function renderOnb(){const el=$("#onb");if(!el)return;if(!S.onb){el.hidden=true;
       ${window.__native?`<div><span>Reloj</span><b>${hc.granted?"Conectado":"Sin conectar"}</b></div>`:""}${t&&t.kcal?`<div><span>Tu energía de hoy</span><b>${fmtInt(Math.round(t.kcal))}<small>kcal</small></b></div>`:""}</div>
       ${S.impBusy?`<p class="ob2-st" id="obimp">${obImpHtml()}</p>`:""}</div>`}
   const prog=`<div class="ob-prog" aria-label="Paso ${st+1} de ${N}">${Array.from({length:N},(_,i)=>`<i class="${i<=st?"on":""}"></i>`).join("")}</div>`;
-  el.classList.toggle("ob-marca",key==="hi"); /* identidad (27-10): el primer paso es un momento de marca, negro en los dos temas */
   el.innerHTML=`<div class="ob-wrap" role="dialog" aria-modal="true" aria-label="Bienvenida a Sustrato"><div class="ob-top">${st&&key!=="done"?`<button class="hbtn" data-ob="back" aria-label="Atrás"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>`:"<span></span>"}${prog}${key==="done"?"<span></span>":`<button class="ob-skip" data-ob="skip">Más tarde</button>`}</div>
     <div class="ob-body ob-s${st}${same?"":" ob-in"}">${body}</div>
     <div class="ob-foot">${imp?`<p class="ob2-st ob2-foot" id="obimp" aria-live="polite">${obImpHtml()}</p>`:""}<p class="ob-err" id="oberr" role="alert"></p><button class="btn primary ob-cta" data-ob="next">${cta}</button></div></div>`;
@@ -5616,7 +5588,7 @@ function yoyCard(){
 
 /* ---------- Gráficos de progreso ---------- */
 const SCRUB={};
-const FAMC={foot:"var(--verde)",run:"var(--naranja)",trail:"var(--naranja)",bike:"var(--azul)",swim:"var(--cian)",str:"var(--morado)"}; /* v266: color por familia; v372 (Javier, 27-10): la fuerza, en morado, para dejar el rojo a las alertas; Running comparte el naranja con Trail para dejar el amarillo a los hidratos y a la marca */
+const FAMC={foot:"var(--verde)",run:"var(--amarillo)",trail:"var(--naranja)",bike:"var(--azul)",swim:"var(--cian)",str:"var(--morado)"}; /* v266: color por familia; v372 (Javier, 27-10): la fuerza, en morado, para dejar el rojo a las alertas */
 const SPC={run:FAMC.run,trail:FAMC.trail,road:FAMC.bike,gravel:FAMC.bike,mtb:FAMC.bike,indoor:FAMC.bike,swim:FAMC.swim,str:FAMC.str,walk:FAMC.foot,hike:FAMC.foot};
 function heatCard(){
   const tk=today(),W=26,start=shiftKey(mondayOf(tk),-7*(W-1)),acts=S.acts.filter(a=>a.sport!=="oth"&&a.day>=start);
@@ -6358,11 +6330,11 @@ async function ensureEff(){
 }
 const fmtPaceS=s=>Math.floor(s/60)+":"+pad(Math.round(s%60));
 function effChart(pts){
-  /* guía 4.0 (VZ.dots): un punto por salida (Running y Trail comparten el naranja desde el 27-10: Trail en su tono claro, para distinguirlos), más rápido arriba, tendencia discontinua con su nombre */
+  /* guía 4.0 (VZ.dots): un punto por salida (Running amarillo, Trail naranja: su color de familia), más rápido arriba, tendencia discontinua con su nombre */
   if(pts.length<2)return"";const r=linreg(pts.map(p=>[daysBetween(pts[0].d,p.d),p.pace]));
   return VZ.dots({id:"eff",label:"Ritmo a pulso constante en cada salida",inv:true,trend:true,minPad:8,fmt:v=>fmtPaceS(v),
-      pts:pts.map(p=>({d:p.d,v:p.pace,c:p.trail?"color-mix(in srgb,var(--naranja) 45%,var(--card))":"var(--naranja)",tip:`${p.trail?"Trail":"Running"} · ${fmtPaceS(p.pace)} /km a ${effHr()} ppm`}))})+
-    `<div class="legend"><span><i style="background:var(--naranja)"></i>Running</span><span><i style="background:color-mix(in srgb,var(--naranja) 45%,var(--card))"></i>Trail</span></div>
+      pts:pts.map(p=>({d:p.d,v:p.pace,c:p.trail?"var(--naranja)":"var(--amarillo)",tip:`${p.trail?"Trail":"Running"} · ${fmtPaceS(p.pace)} /km a ${effHr()} ppm`}))})+
+    `<div class="legend"><span><i style="background:var(--amarillo)"></i>Running</span><span><i style="background:var(--naranja)"></i>Trail</span></div>
     ${r?`<p class="note">${r.m<0?"Mejoras":"Vas"} ${fmtInt(Math.abs(r.m*30))} s/km ${r.m<0?"cada mes":"más lento cada mes"} al mismo pulso.</p>`:""}`;
 }
 function todayWeight(){return(S.weights||[]).find(x=>x.d===today())}
@@ -6387,7 +6359,7 @@ function weightBar(){
       :(()=>{const ks=Object.keys(H).filter(k=>k<tk&&!(S.hrvMan||{})[k]).sort(),lk=ks[ks.length-1];return`<div class="wf-row">${icV}<span class="wf-n">VFC<small>${lk?`Sin dato de hoy · última ${Math.round(H[lk])} ms`:"Sin dato de hoy"}</small></span><button type="button" class="wf-add" data-act="hrvedit">Añadir</button></div>`})();
     const wv=weightVerdict(),wsub=wv?wv[1]:td&&W.length>1?(()=>{const pv=W.filter(x=>x.d<tk).pop();if(!pv)return"primer registro";const d=td.kg-pv.kg,ref=pv.d===shiftKey(tk,-1)?"ayer":dateLabel(pv.d);return Math.abs(d)<.05?"igual que "+ref:(d>0?"+":"−")+Math.abs(d).toFixed(1).replace(".",",")+" vs "+ref})():"";
     return`<section class="glass pad fade wcard wc-done wc-neo">
-      <div class="wc-hd">${rot("pulso","Cómo llegas",(()=>{try{const r=readiness(tk);return r&&r.n?r.vd[2]:"var(--icon)"}catch(e){return"var(--icon)"}})())}<button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
+      <div class="wc-hd"><div><span>${hi} · Cómo llegas hoy</span></div><button class="wc-skip wc-edit" data-act="wtedit">Editar</button></div>
       ${rgHero(tk)}
       ${clash&&!S.rgDay?`<div class="wc-clash"><span>Tienes previsto <b>${esc(sessName(pend[0]))}</b>. Con cómo llegas, quizá convenga suavizarlo.</span><button class="wc-btn" data-rdsoft="${pendingPlanned(tk).indexOf(pend[0])}">Pasarlo a suave</button></div>`:""}
       ${S.rgDay?"":glyAsk()}${rgRows(tk,(!S.rgDay&&(S.hrvEdit||!hv))?hrvR:null,sl||S.rgDay?"":`<div class="wf-row wf-sl"><svg class="wf-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/></svg><span class="wf-n">Sueño</span><div class="seg" role="group" aria-label="Sueño">${[["bad","Mal"],["ok","Regular"],["good","Bien"]].map(([k,l])=>`<button type="button" data-sleep="${k}" aria-pressed="false">${l}</button>`).join("")}</div></div>`)}
@@ -6680,7 +6652,7 @@ function adaptTile(){
 function effCard(){
   const hr=effHr(),pts=Object.values(S.eff).filter(e=>e.hr===hr&&e.pace).sort((a,b)=>a.d<b.d?-1:1);
   const pending=S.acts.filter(a=>(a.sport==="run"||a.sport==="trail")&&a.day>=shiftKey(today(),-180)).slice(0,30).filter(a=>!S.eff[a.id]||S.eff[a.id].hr!==hr).length;
-  return`<section class="glass pad fade acc" style="--c:var(--azul);--c-v:var(--azul-v,var(--azul))"><div class="row"><div><h2>Forma aeróbica</h2><p class="pg-sub">Tu ritmo a ${hr} ppm</p></div><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:72px"></label></div>
+  return`<section class="glass pad fade acc" style="--ac:var(--azul);--ac-v:var(--azul-v,var(--azul))"><div class="row"><div><h2>Forma aeróbica</h2><p class="pg-sub">Tu ritmo a ${hr} ppm</p></div><label class="f" style="flex-direction:row;align-items:center;gap:8px"><span>Pulso</span><input id="effhr" inputmode="numeric" value="${hr}" style="width:72px"></label></div>
     ${pts.length>=2?effChart(pts):`<p class="empty">${pending?"Analizando tus carreras…":"Hacen falta al menos dos carreras con 3 minutos o más en "+(hr-5)+"–"+(hr+5)+" ppm."}</p>`}
     ${pending&&pts.length>=2?`<p class="note">Analizando ${pending} carrera${pending>1?"s":""} más…</p>`:""}
     <p class="note">Ritmo medio de los tramos corridos a ${hr-5}–${hr+5} ppm en cada salida. Cuanto más arriba, más rápido vas al mismo pulso.</p></section>`;
@@ -7835,8 +7807,9 @@ function shData(p){const tk=today(),tol=shTol(),st=r=>r>1+tol?"over":r<1-tol?"un
    frente a tu objetivo). Día: anillos grandes; semana: siete juegos; mes: calendario con anillos; año: un anillo por mes (días en objetivo).
    Cifra protagonista arriba y tres casillas de logros abajo. Sin la gota de macros, que ahí no explicaba nada */
 async function shRender(p){const d=shData(p);if(!d)return null;
-  /* identidad (27-10): la imagen que sale fuera es un momento de marca, negra en los dos temas y con la cifra en el amarillo de la gota (m) */
-  const W=1080,H=1920,P=80,K={bg:"#000000",fg:"#f4f5f7",mu:"#8e8e93",card:"#1c1c1e",ok:"#30d158",c:"#ffd21e",p:"#ff375f",f:"#3b82f6",m:"#ffd21e"};
+  const dark=document.documentElement.getAttribute("data-theme")!=="light",W=1080,H=1920,P=80;
+  const K=dark?{bg:"#000000",fg:"#f4f5f7",mu:"#8e8e93",card:"#1c1c1e",ok:"#30d158",c:"#ffd21e",p:"#ff375f",f:"#3b82f6"}
+    :{bg:"#f2f2f7",fg:"#1c1c1e",mu:"#636366",card:"#ffffff",ok:"#11ab40",c:"#f0a800",p:"#e3143c",f:"#3478fb"};
   try{await document.fonts.ready}catch(e){}
   const ff=(getComputedStyle(document.body).fontFamily||"system-ui,sans-serif"),cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
   const F=(w,s)=>`${w} ${s}px ${ff}`,T=(s,X,Y,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||"left";x.fillText(s,X,Y)};
@@ -7855,7 +7828,7 @@ async function shRender(p){const d=shData(p);if(!d)return null;
   /* cifra protagonista */
   const big=d.p==="day"?[String(Math.round(d.r*100))," %"]:d.p==="year"?[String(d.pct)," %"]:[String(d.nOk)," de "+d.n];
   const sub=d.p==="day"?`de tu objetivo${d.final?"":" de hoy"} · ${fmtInt(d.e.kcal)} kcal`:d.p==="year"?`de tus días en objetivo desde ${d.since}`:"días en tu objetivo";
-  x.font=F(800,200);const bw=x.measureText(big[0]).width;T(big[0],P-6,420,F(800,200),K.m);T(big[1],P+bw+4,420,F(700,72),K.mu);T(sub,P,490,F(500,40),K.mu);
+  x.font=F(800,200);const bw=x.measureText(big[0]).width;T(big[0],P-6,420,F(800,200),K.fg);T(big[1],P+bw+4,420,F(700,72),K.mu);T(sub,P,490,F(500,40),K.mu);
   /* gráfico */
   const top=560,bot=1500;
   if(d.p==="day"){const cx=W/2,cy=top+290,R=280,w=60;rings(cx,cy,R,w,d.e,d.t,false);gota(cx,cy,170);
@@ -8622,7 +8595,7 @@ function rgHero(tk){const day=rgDayK(tk),{r,it}=rgItems(day),R=94,C=2*Math.PI*R,
   const dl=day===tk?"Hoy":"El "+DOW[new Date(day+"T12:00:00").getDay()]+" "+(+day.slice(8));
   const tr=readinessTrend(7),wk=tr.map(x=>`<button type="button" data-rgday="${x.k}" aria-pressed="${x.k===day}" ${x.sc==null?"disabled":""} aria-label="${esc(dateLabel(x.k))}${x.sc!=null?": "+x.sc:""}"><i style="background:${x.sc==null?"var(--fill2)":rgVd(x.sc)}"></i>${x.k===tk?"hoy":DOW[new Date(x.k+"T12:00:00").getDay()]}</button>`).join("");
   return`<div class="rg"><div class="rg-g"><svg viewBox="0 0 220 220" role="img" aria-label="Cómo llegas: ${r.sc} de 100"><circle class="rg-t" cx="110" cy="110" r="${R}" stroke-width="18"/><circle class="rg-a" data-k="sc" data-l="${L.toFixed(1)}" data-c="${C.toFixed(1)}" cx="110" cy="110" r="${R}" stroke-width="18" stroke="${rgScCol(r.sc)}" transform="rotate(-90 110 110)"/></svg><span class="rg-c"><b>${r.sc}</b></span></div>
-    <div class="rg-x">${day===tk&&S.day===today()?"":`<p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4>`}<p class="rg-w">${rgWhy(it,r.vd[1])}</p></div></div>
+    <div class="rg-x"><p class="rg-k">${dl}</p><h4>${esc(r.vd[0])}</h4><p class="rg-w">${rgWhy(it,r.vd[1])}</p></div></div>
     <div class="rg-wk" role="group" aria-label="Cómo llegaste cada día">${wk}</div>`}
 function rgRows(tk,hrvSpecial,tail){const day=rgDayK(tk),{it}=rgItems(day);
   const lo=t=>t.charAt(0).toLowerCase()+t.slice(1),ord=it.slice().sort((a,b)=>(b.c==null?-1:Math.abs(b.c))-(a.c==null?-1:Math.abs(a.c)));
@@ -11049,19 +11022,13 @@ document.addEventListener("change",e=>{if(e.target.id!=="hsotro")return;const o=
 /* funciones declaradas (no const): Hoy se pinta al arrancar, antes de que este módulo termine de cargarse */
 function hzS(){if(!S._hz){try{S._hz=JSON.parse(localStorage.getItem("sustrato-hz")||"{}")}catch(e){S._hz={}}}return S._hz}
 function simpleOn(){const p=S.profile||{};return!!(p.simple||p.simpleBy)}
-/* Identidad (27-10) · rótulo de categoría, como en Salud de Apple: icono de 17 en el color de su dato y el nombre a 15 · 600 */
-var ROT_IC={gota:'<path d="M12 3.5c2.6 3.3 6 7.7 6 11.1a6 6 0 0 1-12 0c0-3.4 3.4-7.8 6-11.1z"/>',pulso:'<path d="M3 12h4l2.5-6 5 12 2.5-6h4"/>',
-  bat:'<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M7 14h10"/>',reloj:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>'};
-function rotIc(k){return`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ROT_IC[k]}</svg>`}
-function rot(k,txt,col,dcha){return`<div class="rot" style="--c:${col}">${rotIc(k)}<b>${txt}</b>${dcha?`<small>${dcha}</small>`:""}</div>`}
-var HZ_IC={rd:["pulso","var(--icon)"],gly:["bat","var(--carb)"],qc:["gota","var(--carb)"],tr:["reloj","var(--icon)"]};
 var HZ_CH='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 /* grupo desplegable como los de Apple (DisclosureGroup): la cabecera se queda arriba del bloque abierto, la flecha (en el color
    de acento) gira hacia abajo al abrir y se pliega tocando la misma cabecera. Dentro, sin el título repetido del bloque. */
 function hzTit(id){return{gly:/<span class="pkk">[^<]*<\/span>/,qc:/<h2>[^<]*<\/h2>/,tr:/<h2>Entreno[^<]*<\/h2>/}[id]}
 function hz(id,title,val,html,num){if(!html)return"";if(simpleOn()&&num)return"";const HZ=hzS();
   if(/class="(wc-h|gly-q)[" ]/.test(html))return html; /* con una pregunta pendiente, el bloque va abierto y sin plegar */
-  const open=!!HZ[id],ic=HZ_IC[id],head=`<button type="button" class="hz-row" data-hzt="${id}" aria-expanded="${open}">${ic?`<span class="hz-ic" style="--c:${ic[1]}">${rotIc(ic[0])}</span>`:""}<span class="hz-t">${title}</span><span class="hz-v">${val}</span><span class="hz-ch">${HZ_CH}</span></button>`;
+  const open=!!HZ[id],head=`<button type="button" class="hz-row" data-hzt="${id}" aria-expanded="${open}"><span class="hz-t">${title}</span><span class="hz-v">${val}</span><span class="hz-ch">${HZ_CH}</span></button>`;
   /* v372: abierto y cerrado comparten clases (glass fade): al plegar ya no cambia de clase y no se repite la entrada (el «parpadeo»); el dato de la fila siempre está y se desvanece al abrir */
   return`<div class="hz-g glass fade${open?" open":""}">${head}${open?`<div class="hz-b">${hzTit(id)?html.replace(hzTit(id),""):html}</div>`:""}</div>`}
 /* «Tu día» */
@@ -11070,7 +11037,7 @@ function tuDia(t){if(S.day!==today()||!t)return"";const sp=simpleOn(),rd=(()=>{t
   const mp=mealPlan(t,S.day).meals,lg=(S.log||{})[S.day]||{},done=mp.filter(m=>lg[m.id]).length,nx=hzNext(mp,lg),a=nx&&(S.menu[S.day]||{})[nx.id],ds=a&&dishById(a.d);
   const lvl=CB_L[carbLvl(S.day)]||"",head=rd&&rd.n?rd.vd[0]:"Tu día";
   return`<section class="glass pad fade td">
-    <div class="td-h">${rot("gota","Energía","var(--marca-on)",esc(dateLabel(S.day)))}<h2 class="td-v">${esc(head)}</h2>
+    <div class="td-h"><span class="td-k">Tu día · ${esc(dateLabel(S.day))}</span><h2 class="td-v"${rd&&rd.n?` style="color:${rd.vd[2]}"`:""}>${esc(head)}</h2>
       <p class="td-s">${sp?(lvl?"Día "+lvl+" en hidratos":"Come según tu plan"):`${fmtInt(t.kcal)} kcal${lvl?" · día "+lvl+" en hidratos":""}`}</p></div>
     <div class="td-p" role="img" aria-label="${sp?done+" de "+mp.length+" comidas":fmtInt(ek)+" de "+fmtInt(t.kcal)+" kcal"}"><span class="td-bar"><i style="width:${((sp?done/Math.max(1,mp.length):pc)*100).toFixed(1)}%"></i></span>
       <span class="td-pl">${sp?`${done} de ${mp.length} comidas`:ek>0?(lf>15?`Te quedan ${fmtInt(lf)} kcal`:lf<-15?`${fmtInt(-lf)} kcal de más`:"Objetivo cumplido"):"Aún sin comidas"}</span></div>
