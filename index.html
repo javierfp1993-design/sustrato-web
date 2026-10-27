@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-27T12:39:52.451Z">
+<meta name="sustrato-version" content="2026-10-27T13:10:56.937Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3760,7 +3760,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="373";
+const APP_VER="374";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7336,6 +7336,10 @@ function renderWiz(){const el=$("#wiz");if(!S.wiz){el.hidden=true;el.innerHTML="
 function sampleMsg(e){switch(e&&e.code){
   case"not_granted":case"sampling_disabled":case"not_declared":case"capability_disabled":case"capability_removed":return"No se puede usar Claude desde esta página. Añade los ingredientes a mano.";
   case"rate_limited":return"Has hecho muchas peticiones seguidas. Prueba de nuevo en un rato.";
+  case"ai_budget":return"Has llegado al límite de hoy. Vuelve a probar mañana.";
+  case"ai_budget_m":return"Has llegado al límite de este mes. Vuelve a probar el mes que viene.";
+  case"ai_full":return"Ahora mismo no se puede. Prueba de nuevo mañana.";
+  case"ai_noacc":return"Para seguir hoy, entra con tu cuenta en Perfil.";
   case"session_expired":return"Tu sesión ha caducado. Vuelve a iniciar sesión en Claude.";
   case"refused":return"Claude no ha podido desglosar ese nombre. Prueba a describir el plato de otra forma.";
   case"invalid_json":case"empty_completion":return"No he podido interpretar la respuesta. Pulsa de nuevo para reintentar.";
