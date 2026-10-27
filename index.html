@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-27T11:41:53.330Z">
+<meta name="sustrato-version" content="2026-10-27T12:39:52.451Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3760,7 +3760,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="372";
+const APP_VER="373";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -7984,7 +7984,7 @@ function vActs(){
     const tw=mondayOf(tk),pw=shiftKey(tw,-7),sd=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)};
     body=G.map(g=>{const e=shiftKey(g.w,6),lab=g.w===tw?"Esta semana":g.w===pw?"Semana pasada":sd(g.w)+" – "+sd(e)+(g.w.slice(0,4)!==tk.slice(0,4)?" "+g.w.slice(0,4):"");
       const km=g.a.reduce((x,a)=>x+(a.sport==="str"?0:a.dist),0)/1000,tm=g.a.reduce((x,a)=>x+a.mov,0);
-      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts ar-list">${g.a.map(afRow).join("")}</div></div>`}).join("")}
+      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts ar-list">${g.a.map(a=>afRow(a)).join("")}</div></div>`}).join("")}
   const sum=list.reduce((s,a)=>({d:s.d+a.dist,t:s.t+a.mov,k:s.k+a.kcal}),{d:0,t:0,k:0});
   return `<section class="glass pad fade">
     <div class="row"><h2>Historial</h2></div>
