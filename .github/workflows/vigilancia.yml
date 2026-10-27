@@ -22,5 +22,7 @@ jobs:
         if: github.event.schedule != '*/10 * * * *'
         run: |
           curl -fsS -m 20 --retry 2 -o /dev/null https://sustrato.app/
-          curl -fsS -m 20 --retry 2 https://sustrato.app/panel.html | grep 'panel.js' >/dev/null
+          # el panel vive en pro.sustrato.app desde v371 (la dirección antigua redirige allí)
+          curl -fsS -m 20 --retry 2 https://pro.sustrato.app/panel | grep 'panel.js' >/dev/null
+          curl -sS -m 20 --retry 2 -o /dev/null -w '%{redirect_url}' https://sustrato.app/panel.html | grep -q '^https://pro.sustrato.app/panel'
           curl -fsS -m 20 --retry 2 https://sustrato-api.netlify.app/health | grep '"ok":true' >/dev/null
