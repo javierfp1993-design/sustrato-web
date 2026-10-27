@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-26T21:09:22.929Z">
+<meta name="sustrato-version" content="2026-10-27T11:41:53.330Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -85,11 +85,11 @@ h3{margin:0;font-size:calc(17px*var(--tz,1));font-weight:600;letter-spacing:-.01
 .hero-r{display:flex;flex-direction:column;gap:14px;justify-content:center;min-width:0}
 .hint{font-size:calc(12px*var(--tz,1));color:var(--muted);margin:0}
 .why{border:1px solid var(--edge-soft);border-radius:14px;background:rgba(255,255,255,.035);padding:0 14px}
-.why summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:46px;font-size:calc(15px*var(--tz,1));color:var(--muted)}
-.why summary b{color:var(--fg);font-variant-numeric:tabular-nums}
-.why summary::-webkit-details-marker{display:none}
-.why .chev{transition:transform .2s;font-size:calc(20px*var(--tz,1))}
-.why[open] .chev{transform:rotate(90deg)}
+.why>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:46px;font-size:calc(15px*var(--tz,1));color:var(--muted)}
+.why>summary b{color:var(--fg);font-variant-numeric:tabular-nums}
+.why>summary::-webkit-details-marker{display:none}
+.why>summary .chev{transition:transform .2s;font-size:calc(20px*var(--tz,1))}
+.why[open]>summary .chev{transform:rotate(90deg)}
 .why[open]{padding-bottom:12px}
 .tchip{appearance:none;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);color:var(--fg);font:500 calc(13px*var(--tz,1)) var(--font);border-radius:14px;padding:6px 10px 6px 6px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-variant-numeric:tabular-nums;min-height:38px}
 .tchip.plan{cursor:default;border-style:dashed;color:var(--muted)}
@@ -377,7 +377,7 @@ header .fab:focus-visible,.hbtn:focus-visible{outline:2px solid var(--ac);outlin
 .hatch-w{background:rgba(255,255,255,.45)!important}
 /* ===== Estilo Apple sobrio ===== */
 :root{
-  --card:#141414;--card2:#232325;--fill:rgba(118,118,128,.24);--fill2:rgba(118,118,128,.16);
+  --card:#141414;--card2:#232325;--card3:#2c2c2e;--fill:rgba(118,118,128,.24);--fill2:rgba(118,118,128,.16);
   --sep:rgba(84,84,88,.55);--muted:#8e8e93;--faint:#636366;
   --font:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --round:var(--font);--round-v:var(--font-v,var(--font));
@@ -417,6 +417,10 @@ legend.lg,.month,.trainbar .tl{text-transform:none;letter-spacing:0;font-size:ca
 .lsum,.fuel,.wkc{background:var(--card2);border:0;border-radius:14px}
 .sup{background:var(--card2);border:0;border-radius:14px}
 .sup.warn{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo-v,var(--rojo)) 35%,transparent)}
+/* v372 · dentro de una hoja o un menú flotante, el gris de cajas y campos (--card2) pasa a --card3: en oscuro la hoja ya es #232325 y
+   lo que iba en --card2 se fundía con ella (buscador de platos, calendario, campos). En claro, el mismo gris de siempre. Una regla para todas */
+.sheet>*,.pop>*{--card2:var(--card3)} /* a lo de dentro: la hoja en sí sigue en --card2 (piezas/hoja.css) */
+
 /* filas de lista */
 .acts{gap:0}
 .mi,.spark,.pm,.rstep,.shop,table.bands td,.strtab td{border-color:var(--sep)}
@@ -505,9 +509,10 @@ header.top .wordmark h1{color:#f4f5f7;background:linear-gradient(100deg,#f4f5f7 
 .toast button{appearance:none;border:0;background:rgba(255,255,255,.12);color:var(--fg);font:600 calc(15px*var(--tz,1)) var(--font);padding:8px 12px;border-radius:10px;cursor:pointer}
 .toast button:hover{background:rgba(255,255,255,.2)}
 #toast{pointer-events:auto}
-@media (prefers-reduced-motion:no-preference){#view.sw-l{animation:swL .28s ease both}#view.sw-r{animation:swR .28s ease both}}
+@media (prefers-reduced-motion:no-preference){#view.sw-l{animation:swL .28s ease backwards}#view.sw-r{animation:swR .28s ease backwards}}
 @keyframes swL{from{opacity:.3;transform:translateX(24px)}to{opacity:1;transform:none}}
 @keyframes swR{from{opacity:.3;transform:translateX(-24px)}to{opacity:1;transform:none}}
+/* v372: «backwards», no «both»: al terminar, la animación no se queda mandando sobre el transform de #view (lo usa el gesto de arrastrar para actualizar) */
 
 /* ===== Selector de apariencia ===== */
 .dr-theme{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 8px}
@@ -989,7 +994,7 @@ html[data-theme="light"]{--t-ffe270:var(--amarillo);--t-ffe270-v:var(--amarillo-
 
 html[data-theme="light"]{color-scheme:light;
   --bg:#f2f2f7;--fg:#1c1c1e;--muted:#636366;--faint:#aeaeb2;
-  --card:#ffffff;--card2:#f2f2f7;--fill:rgba(120,120,128,.16);--fill2:rgba(120,120,128,.10);
+  --card:#ffffff;--card2:#f2f2f7;--card3:#f2f2f7;--fill:rgba(120,120,128,.16);--fill2:rgba(120,120,128,.10);
   --sep:rgba(60,60,67,.16);--edge:rgba(0,0,0,.10);--edge-soft:rgba(0,0,0,.06);--glass:rgba(0,0,0,.03);--glass-hi:rgba(0,0,0,.06);
   --carb-t:var(--amarillo);--carb-t-v:var(--amarillo-v,var(--amarillo));--fat-t:var(--azul);--fat-t-v:var(--azul-v,var(--azul));--prot-t:var(--rojo);--prot-t-v:var(--rojo-v,var(--rojo));--ok-t:var(--verde);--ok-t-v:var(--verde-v,var(--verde))}
 html[data-theme="light"],html[data-theme="light"] body{background:#f2f2f7!important;color:var(--fg)}
@@ -1278,11 +1283,29 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 .pa-wh{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 -16px}
 .pa-wheel{display:flex;gap:24px /* reserva: deja sitio a lo de dentro, no es espacio entre piezas */;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:14px calc(50% - 28px) /* reserva: deja sitio a lo de dentro, no es espacio entre piezas */;width:100%;box-sizing:border-box}
 .pa-wheel::-webkit-scrollbar{display:none}
-.pa-wi{appearance:none;flex:0 0 56px;height:56px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--card2);color:var(--icon);scroll-snap-align:center;cursor:pointer;transform-origin:center;will-change:transform}
+.pa-wi{appearance:none;flex:0 0 56px;height:56px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--fill2);color:var(--icon);scroll-snap-align:center;cursor:pointer;transform-origin:center;will-change:transform}
 .pa-wi svg{width:24px;height:24px}
 .pa-wi[aria-pressed="true"]{background:var(--ac);color:var(--ac-on)}
 .pa-wn{font-size:calc(17px*var(--tz,1));font-weight:600}
 @media (prefers-reduced-motion:no-preference){.pa-wi{transition:background .2s,color .2s}}
+/* v372 · Planificar entreno agrupado (maqueta aprobada por Javier, 27-10): cada sección, su título (13 · 600 gris) a 8 de un grupo
+   gris de radio 14 con 14 de relleno y 12 entre lo de dentro; 24 entre secciones (cap. 6, tabla de espacios). Dentro del grupo, lo que
+   antes iba sobre gris pasa al fondo de tarjeta, para que se distinga del grupo (botones, opciones, campo de hora, deportes sin elegir) */
+.pa-sheet{gap:24px}
+.pa-f{gap:8px}
+.pa-g{background:var(--fill2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0;overflow:hidden}
+.pa-g .pa-f{gap:8px}
+.pa-g .dp-row{background:var(--fill)}
+.pa-g .dp-b{background:var(--fill)}
+.pa-g .dp-c:not([aria-pressed="true"]),.pa-g .fd-ch button:not([aria-pressed="true"]){background:var(--fill)}
+.pa-time .pa-g .fd-f{background:var(--fill);max-width:none}
+.pa-g .fd-ch{margin-top:0}
+/* v372: en oscuro la hoja ya es --card2, así que el grupo es el relleno gris (--fill2), que se ve sobre la hoja en los dos modos; lo de dentro, un relleno más (--fill) en oscuro y el fondo de tarjeta en claro, como las listas agrupadas de iOS. El calendario, igual que los grupos */
+.pa-cal{background:var(--fill2)} /* y los círculos de la rueda (.pa-wi), en --fill2: sobre la hoja se ven igual en claro y en oscuro */
+html[data-theme="light"] .pa-g .dp-row,html[data-theme="light"] .pa-g .dp-c:not([aria-pressed="true"]),html[data-theme="light"] .pa-g .fd-ch button:not([aria-pressed="true"]),html[data-theme="light"] .pa-time .pa-g .fd-f{background:var(--card)}
+html[data-theme="light"] .pa-g .dp-b{background:var(--fill2)}
+/* v372: Deporte, sin fondo (la excepción de la rueda, en los dos modos): el modo de la sesión, a 12 del nombre */
+.pa-dep .pa-mode{margin-top:4px}
 
 /* constructor de entrenos */
 .pa-mode{display:flex}.pa-mode button{flex:1;min-height:32px} /* 32 + 2 + 2 del segmentado = 36 */
@@ -2001,7 +2024,12 @@ div.mbody{cursor:default}
 .tc-sub summary small{color:var(--muted);font-size:calc(13px*var(--tz,1));font-variant-numeric:tabular-nums}
 .tc-sub .chev{color:var(--faint);font-size:calc(20px*var(--tz,1));transition:transform .2s}
 .tc-sub[open] .chev{transform:rotate(90deg)}
-.tc-sub[open]{padding-bottom:12px}
+.tc-sub[open]{padding-bottom:12px}/* v372 · nombres largos de plato (decisión de Javier, 27-10): en la lista de Platos, hasta dos líneas y «…», partiendo palabras sin espacios
+   (nunca bajo el «···»); al elegir plato, el nombre se corta y la ración (×1,25) y las kcal quedan siempre enteras */
+.dl-n{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.dpk-n{display:flex;align-items:baseline;gap:4px;min-width:0}.dpk-t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dpk-n small{flex:none}
+.nm-cnt{display:block;margin-top:4px;font-size:calc(12px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums}
+
 /* v174 · gráfico de gasto legible en modo claro */
 .sw-neat{background:rgba(255,255,255,.3)}
 html[data-theme="light"] .sw-neat{background:rgba(60,60,67,.22)}
@@ -3036,6 +3064,38 @@ html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .am-l b{font-size:calc(13px*var(--tz,1));font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}.am-l b i{font-style:normal;font-size:calc(12px*var(--tz,1));color:var(--muted);margin-left:2px}
 .am-sep{font-size:calc(12px*var(--tz,1));color:var(--faint)}
 .am .af-zbar{height:3px;margin-top:4px}
+/* v372 · historial de Actividad en filas (maqueta aprobada, 27-10): 56 de alto como mínimo, icono de 20 en su columna de 24 y en el color de su
+   familia; nombre 17 · 600 y día 13 gris; a la derecha la cifra 17 · 600 con su unidad y el tiempo 13 gris; flecha gris; raya fina entre filas (cap. 6 y 9) */
+.ar-list{display:flex;flex-direction:column}
+.ar{appearance:none;border:0;background:none;color:var(--fg);font:inherit;text-align:left;cursor:pointer;width:100%;display:grid;grid-template-columns:24px minmax(0,1fr) auto 16px;align-items:center;column-gap:12px;min-height:56px;padding:8px 0;border-top:.5px solid var(--sep)}
+.ar:first-child{border-top:0}.ar:active{opacity:.6}
+.ar-i{display:grid;place-items:center}.ar-i svg{width:20px;height:20px}
+.ar-t{min-width:0;display:flex;flex-direction:column;gap:2px}.ar-t b{font-size:calc(17px*var(--tz,1));font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-t small,.ar-v small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.ar-v{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-variant-numeric:tabular-nums;white-space:nowrap}.ar-v b{font-size:calc(17px*var(--tz,1));font-weight:600}.ar-v b i{font-style:normal;font-size:calc(13px*var(--tz,1));font-weight:500;color:var(--muted);margin-left:2px}
+.ar-ch{display:grid;color:var(--icon)}
+/* v372 · hoja de una actividad por secciones (maqueta aprobada, 27-10): 24 entre secciones, títulos de sección 13 · 600 gris a 8 de su
+   grupo, grupos en el gris de las hojas (--fill2, radio 14, relleno 14, 12 dentro); lo de dentro de un grupo, al fondo de tarjeta en claro y
+   un relleno más en oscuro (como el planificador); los iconos de las filas con interruptor, a la altura de su título (cap. 9) */
+.dt-sheet{display:flex;flex-direction:column;gap:24px}
+.dt-sheet>.row{margin:0}
+.dt-sum{display:flex;flex-direction:column;gap:12px}
+.dt-l{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted);margin-bottom:-16px}
+.dt-grp{background:var(--fill2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.dt-grp .kv{margin:0}.dt-grp .kv>div{background:var(--fill)}
+html[data-theme="light"] .dt-grp .kv>div{background:var(--card)}
+.dt-sheet .fl-box,.dt-sheet .sw-box{margin-top:0;background:var(--fill2)}
+.dt-sheet .fl-gel,.dt-sheet .sw-box .tg-r>:first-child{align-self:flex-start;margin-top:2px}
+.dt-sheet .fl-off .fl-gel{align-self:flex-start}
+.fl-chg{align-self:flex-start}
+.dt-sheet>*:not(.dt-l){margin-top:0;margin-bottom:0}.dt-sheet>.row h2,.dt-sheet>.row h3{margin:0}.dt-sheet .ss-dt{margin:0}
+.dt-sheet>.row:not(:first-child)+.dt-grp{margin-top:-12px} /* el título de sección (con sus botones) a 12 de su grupo */
+/* v372 · en Plan, hecho y previsto como filas: hecho con el gris de grupo, previsto con contorno de 1 (sin fondo); radio 14, 12 a los lados */
+.ar-plist{display:flex;flex-direction:column;gap:8px}
+.ar.ar-done,.ar.ar-prev{border-top:0;border-radius:14px;padding:8px 12px}
+.ar.ar-done{background:var(--fill2)}
+.ar.ar-prev{background:none;box-shadow:inset 0 0 0 1px var(--sep);cursor:pointer}
+.ar-done .ar-t small,.ar-prev .ar-t small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* v315 · Tarjeta de carrera en Hoy: destacada (negro sobre claro, blanco sobre oscuro) (elegida el 17-10).
    Va al final de la cascada para que su fondo mande sobre el de las tarjetas (.glass). Clases cr- */
@@ -3245,11 +3305,11 @@ table.bands{--tz:1}
 /* Hoy, como el Calendario de Apple: la cifra en el acento si no es el día elegido; si lo es, el círculo y nada más */
 .pa-cd.tk:not([aria-pressed="true"]) b,.day.tk:not([aria-pressed="true"]) b{color:var(--ac)}
 /* Aire entre bloques: la hora, la carrera y el botón ya no van pegados */
-.pa-sheet .pa-time{margin-top:6px}
-.pa-race{display:flex;align-items:center;gap:12px;margin-top:10px;padding:6px 14px 6px 12px;border-radius:16px;background:var(--card2)}
+/* v372: el espacio entre secciones lo da la hoja (24) */
+.pa-race{display:flex;align-items:center;gap:12px;padding:6px 14px;border-radius:14px;background:var(--fill2)} /* v372: el gris de los grupos, que se ve en los dos modos (en oscuro la hoja ya es --card2) */
 .pa-race .tg-r{flex:1;min-width:0}
-.pa-rc-i{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--fill2);color:var(--fg);transition:background .2s,color .2s}
-.pa-race.on .pa-rc-i{background:var(--ac);color:var(--ac-on)}
+.pa-rc-i{flex:none;width:24px;height:24px;display:grid;place-items:center;color:var(--icon);transition:color .2s} /* v372: icono de línea sin recuadro, en su columna de 24 (cap. 9) */
+.pa-race.on .pa-rc-i{color:var(--fg)}
 .pa-sheet .pa-go{margin-top:14px}
 .pd-g1{grid-template-columns:1fr}
 /* Menú: multiplicador del mismo alto que el plato (48 px, radio 14 del campo) y la fila de raciones debajo */
@@ -3332,10 +3392,10 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .pp-who{display:flex;align-items:center;gap:12px}
 .pp-av{flex:0 0 44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--fill2);color:var(--fg);font-size:calc(17px*var(--tz,1));font-weight:600}
 .pp-wt{display:flex;flex-direction:column;gap:2px;min-width:0}.pp-wt b{font-size:calc(17px*var(--tz,1));font-weight:600}.pp-wt small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.pp-rows{background:var(--card2);border-radius:14px;padding:0 14px}
+.pp-rows{background:var(--fill2);border-radius:14px;padding:0 14px} /* v373 · cap. 4, «Jerarquía»: filas de pauta, menú y dossier; van siempre en una hoja y a veces dentro de la tarjeta del vínculo (--card3), donde --card2 se fundía con ella. El relleno suave, como la casilla interior (también .pp-note y .pp-doc) */
 .pp-r{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;font-size:calc(15px*var(--tz,1))}.pp-r+.pp-r{border-top:1px solid var(--sep)}
 .pp-v{display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums}.pp-v s{color:var(--muted);font-size:calc(13px*var(--tz,1))}.pp-v b{font-weight:600}
-.pp-note{margin:0;padding:12px 14px;background:var(--card2);border-radius:14px;font-size:calc(15px*var(--tz,1));line-height:1.4}
+.pp-note{margin:0;padding:12px 14px;background:var(--fill2);border-radius:14px;font-size:calc(15px*var(--tz,1));line-height:1.4}
 .pp-in{display:flex;gap:8px;align-items:center}.pp-in input{flex:1;min-width:0}
 .pp-err{margin:0;font-size:calc(13px*var(--tz,1));color:var(--rojo)}
 /* v334 · Lo que tomaste: el gel en la fila del título (no centrado con todo el bloque); la línea de g/h debajo, a todo el ancho */
@@ -3366,14 +3426,17 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .wtrack .wm.nw em{color:var(--fg)}
 .wlg i.st{box-shadow:inset 0 0 0 2px var(--peso)}.wlg i.nw{background:var(--peso)}
 /* v338 · Documento que adjunta el profesional (enlace a su Drive, Dropbox o web) */
-.pp-doc{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;background:var(--card2);color:var(--fg);text-decoration:none;font-size:calc(15px*var(--tz,1))}
+.pp-doc{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;background:var(--fill2);color:var(--fg);text-decoration:none;font-size:calc(15px*var(--tz,1))}
 .pp-doc b{color:var(--ac);font-weight:600}
+.pp-doc:hover{background:var(--fill)} /* cap. 4 · Pasar el puntero: un escalón de relleno, de --fill2 a --fill */
 /* v339 · Vínculo con tu profesional: tarjeta por vínculo con su estado y lo que compartes */
 .lk-card{background:var(--card2);border-radius:14px;padding:14px;display:grid;gap:10px}
 .lk-st{font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted)}.lk-st.active{color:var(--verde)}
 .lk-ver{color:var(--verde)}
 .lk-perms{display:flex;flex-direction:column}.lk-perms .tg-r+.tg-r{border-top:1px solid var(--sep)}
 .lk-new{width:100%}
+/* v372 (Javier, 27-10): el icono, a la altura del título, no centrado en el bloque (cap. 9: alineado con su texto, la primera línea); el conmutador, centrado, porque es de toda la fila */
+.pa-rc-i{align-self:flex-start;margin-top:var(--rc-mt,10px)}
 
 /* v341 · Lo que te manda tu profesional (110): pautas y platos en filas, notas en globos neutros, adjuntos como filas de documento */
 .lm-l,.lm-n{display:grid;gap:8px}
@@ -3468,7 +3531,7 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .td-ok{margin:0;font-size:calc(15px*var(--tz,1));color:var(--muted)}
 .hz-g{border-radius:var(--r);overflow:hidden}
 .hz-g.open{background:var(--card)}
-.hz-g.open>.hz-row{border-bottom:.5px solid var(--sep)}
+/* v372 (decisión de Javier, 27-10): abierto, sin raya entre la cabecera y su contenido: son una sola pieza y el aire basta (DisclosureGroup de Apple); las rayas entre bloques plegados se quedan */
 .hz-g.open .hz-b section.glass{background:none!important;border-radius:0;margin-top:0;box-shadow:none}
 .hz-row{background:none;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
 .hz-t{font-size:calc(17px*var(--tz,1));font-weight:600;flex:none}
@@ -3488,6 +3551,9 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .hz-set>.hz-g{background:none!important;box-shadow:none!important;border-radius:0!important;margin:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .hz-set>.hz-g+.hz-g{border-top:.5px solid var(--sep)}
 .hz-set>.hz-g .hz-row{padding-left:18px;padding-right:18px}
+/* v372 · el acordeón sin saltos: el dato de la fila se desvanece al abrir y vuelve al plegar (0,2 s, la transición corta de la guía); lo de dentro no repite su animación de entrada, porque el movimiento es la altura del grupo */
+.hz-v{transition:opacity .2s ease}.hz-g.open .hz-v{opacity:0}
+.hz-g .hz-b .fade{animation:none}
 
 /* v353 · Tus datos (115): medidas de la consulta en Progreso › Cuerpo y borrar tus notas */
 .td2-m{align-items:center;gap:12px}
@@ -3602,7 +3668,7 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 /* v371 · Dossier de competición de tu profesional (hoja de solo lectura): las piezas del plan de carrera (rp-k, rp-tl, rp-big) y las filas
    de la vista previa del menú (pp-rows). 18 entre grupos y 8 del rótulo a su contenido (escala de espacio; cap. 7, «Hoja») */
 .ds-sheet.pa-sheet{gap:8px}.ds-sheet>.pa-l{margin-top:10px} /* 8 de hueco + 10 = 18 antes de cada rótulo */
-.ds-sheet .rp-k>div,.ds-sheet .pp-rows{background:var(--fill2)} /* cap. 4, «Jerarquía»: dentro de la hoja (--card2 en oscuro), el relleno suave; con --card2 desaparecían en oscuro */
+.ds-sheet .rp-k>div{background:var(--fill2)} /* cap. 4, «Jerarquía»: dentro de la hoja (--card2 en oscuro), el relleno suave; con --card2 desaparecían en oscuro (.pp-rows ya lo lleva de origen) */
 .ds-sheet .pp-r{align-items:flex-start;padding:10px 0}.ds-sheet .pp-r>span:first-child{min-width:0}
 /* v371 · tarjeta de la carrera en Hoy: con el dossier, «Ver el plan» y «Ver el dossier» a partes iguales (cap. 10, Botón principal,
    «Secundario grande»: dos acciones del mismo peso; 10 entre ellos, escala de espacio) */
@@ -3694,7 +3760,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="371";
+const APP_VER="372";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3881,9 +3947,12 @@ function dayTargets(k,raw){
   if(stp!=null){const extra=Math.max(0,stp-actSteps(k));neat=b.bmr*0.12+extra*0.0005*w;bySteps=true}
   if(!raw&&p.adaptOn&&S.adaptF&&S.adaptF!==1){adapt=(b.bmr+neat)*(S.adaptF-1);neat+=adapt}
   const tdee=b.bmr+neat+ex;
+  /* 27-10 · con pauta del profesional, la pauta manda (ppManda, en profesional/pauta.js): la energía sigue siendo la de la pauta sobre el
+     gasto real («Sobre su gasto», como la pauta la define), pero la app no añade sus propios ajustes por el entreno */
+  const pm=ppManda();
   const g=typeof hsGoal==="function"?hsGoal(ppGoal(p)):ppGoal(p); /* v333: con la pauta del profesional encima, si la hay; v348: «Tu salud» quita el déficit si hace falta (113) */
   /* v317 · Alrededor de una carrera no se recorta: el día de la carrera y el siguiente (recuperación) van sin déficit */
-  const rcOf=d=>plannedFor(d).find(x=>x.race&&!x.skip),raceDay=rcOf(k),recRace=rcOf(shiftKey(k,-1)),recDay=recRace&&(recRace.dur||0)>=60?recRace:null;
+  const rcOf=d=>plannedFor(d).find(x=>x.race&&!x.skip),raceDay=pm?null:rcOf(k),recRace=pm?null:rcOf(shiftKey(k,-1)),recDay=recRace&&(recRace.dur||0)>=60?recRace:null;
   let kcal=tdee*(1+(raceDay||recDay?Math.max(0,g.adj):g.adj));if(kcal<b.bmr)kcal=b.bmr;if(typeof hsKcal==="function")kcal+=hsKcal(); /* v348: embarazo y lactancia */
   let eaFloor=0;{const L=eaLean();if(L){const mk=ex+eaThr().lo*L;if(kcal<mk){eaFloor=mk-kcal;kcal=mk}}}
   let choBurn=0,fatBurn=0,pending=0;
@@ -3894,31 +3963,32 @@ function dayTargets(k,raw){
   const INTW={s:.7,m:1,i:1.3},noLoad=sp=>sp==="walk"||sp==="oth";
   const loadH=acts.reduce((h,a)=>h+(noLoad(a.sport)?0:(a.mov||0)/3600*(a.sport==="str"?1:INTW[actInt(a)]||1)),0)
     +plan.reduce((h,x)=>h+(noLoad(x.sport)?0:(x.dur||0)/60*(x.sport==="str"?1:INTW[x.int]||1)),0);
-  const pBonus=Math.max(0,Math.min(.4,.15*loadH,2.4-g.p));
+  const pBonus=pm?0:Math.max(0,Math.min(.4,.15*loadH,2.4-g.p));
   const P=(g.p+pBonus)*w;let F=g.f*w;
   let C=(kcal-4*P-9*F)/4;
-  const floor=g.cmin*w+0.8*choBurn;let adjusted=false;
+  const floor=g.cmin*w+(pm?0:0.8*choBurn);let adjusted=false;
   if(C<floor){C=floor;F=Math.max(0.6*w,(kcal-4*P-4*C)/9);kcal=4*P+4*C+9*F;adjusted=true}
   /* v317 · Carga de hidratos para una carrera (la misma regla que el protocolo de carrera): los dos días previos a una
      de 90 min o más, al menos 8 g/kg; la víspera de una de 60–89 min, 7 g/kg. Esos días no hay déficit, la grasa baja
      a 0,8 g/kg (como mucho) para dejar sitio y la cena no suma un extra aparte. ACSM/IOC 2016; Burke 2011 */
-  let load=null;if(k>=today()){for(const dd of [1,2]){const rk=shiftKey(k,dd),r=plannedFor(rk).find(x=>x.race&&!x.skip);if(!r)continue;const dur=r.dur||0;
+  /* v336: hidratos según el tipo de día de la pauta del profesional; con pauta que manda, sustituyen a la carga de carrera y a la de
+     mañana; si deja ajustar al entreno (ent), esas cargas van encima */
+  const ppc=ppCarb(k,w,acts,plan);if(ppc){C=ppc.g;kcal=4*P+4*C+9*F}
+  let load=null;if(!pm&&k>=today()){for(const dd of [1,2]){const rk=shiftKey(k,dd),r=plannedFor(rk).find(x=>x.race&&!x.skip);if(!r)continue;const dur=r.dur||0;
       const gk=dur>=90?8:dd===1&&dur>=60?7:0;if(gk){load={race:r,d:rk,gk,days:dd};break}}}
   if(load){const tgt=load.gk*w;if(C<tgt){C=tgt}F=Math.max(0.6*w,Math.min(F,0.8*w));kcal=4*P+4*C+9*F}
   /* el día después de una carrera de 60 min o más, al menos 5 g/kg para reponer (lo que dice la tarjeta de carrera) */
   if(recDay&&C<5*w){C=5*w;kcal=4*P+4*C+9*F}
-  /* v336: hidratos según el tipo de día de la pauta del profesional (sustituyen a la carga de carrera y a la de mañana) */
-  const ppc=ppCarb(k,w,acts,plan);if(ppc){C=ppc.g;kcal=4*P+4*C+9*F;load=null}
   /* Carga para mañana: si lo previsto mañana gasta mucho glucógeno, la cena de hoy sube hidratos */
   let bonus=0,tomorrow=null;const tk=nextKey(k);
-  if(!load&&!ppc&&tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
+  if(!load&&!pm&&tk>=today()){const tp=plannedFor(tk);const tc=tp.reduce((s,x)=>s+estSession(x,w).cho/4,0);
     if(tc>120){bonus=Math.min(1.5*w,0.3*tc);tomorrow={cho:tc,sessions:tp};C+=bonus;kcal+=4*bonus}}
   /* Reponer glucógeno (solo hoy): con datos se aplica; si ayer es estimado, se propone */
-  let glyAdd=0,glySug=0;if(!raw&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
+  let glyAdd=0,glySug=0;if(!raw&&!pm&&k===today()&&!S._glyBusy){S._glyBusy=true;try{const gs=glyState();if(gs&&gs.need>0){const add=Math.round(Math.min(gs.need,1.5*w));if(!gs.est||S.glyApply===k){glyAdd=add;C+=add;kcal+=4*add}else glySug=add}}finally{S._glyBusy=false}}
   /* v287: hidratos como mucho 12 g/kg (techo de la ACSM para los días más largos); la energía que sobre pasa a grasas,
      así las kcal del día no cambian. Antes, 3 h intensas pedían 938 g (12,5 g/kg). */
   let choCap=0;if(C>12*w){choCap=C-12*w;F+=choCap*4/9;C=12*w}
-  return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug,load,raceDay:!!raceDay,recDay:recDay?{d:shiftKey(k,-1)}:null};
+  return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug,load,pm,raceDay:!!raceDay,recDay:recDay?{d:shiftKey(k,-1)}:null};
 }
 
 /* ---------- Reparto por comidas ---------- */
@@ -3933,7 +4003,8 @@ function mealPlan(t,k){
   t.plan.forEach(s=>{const st=toMin(s.time);if(st!=null)sess.push({st,en:st+(s.dur||0),label:sessName(s)})});
   /* une sesiones seguidas (bici + fuerza) */
   sess.sort((a,b)=>a.st-b.st);const blocks=[];sess.forEach(s=>{const l=blocks[blocks.length-1];if(l&&s.st-l.en<=30){l.en=Math.max(l.en,s.en);l.label+=" + "+s.label}else blocks.push(Object.assign({},s))});
-  blocks.forEach(bk=>{
+  /* 27-10 · con pauta que manda (t.pm), el entreno no cambia el reparto: las comidas no se marcan como antes o después de entrenar */
+  if(!t.pm)blocks.forEach(bk=>{
     let pre=null,post=null;
     meals.forEach(m=>{if(m.min<=bk.st&&bk.st-m.min<=240)pre=m;if(post==null&&m.min>=bk.en&&m.min-bk.en<=240)post=m});
     if(pre)pre.pre=bk.label;if(post)post.post=bk.label;
@@ -4068,13 +4139,143 @@ const INGR=[
 ["lechuga","Lechuga / ensalada verde",1.3,2.5,.2,1.5,10,200,12,.8,35,0],["setas","Setas",3,3,.3,1.5,5,320,10,.5,3,.2],
 ["cebolla","Cebolla",1.1,8,.1,1.7,4,150,10,.2,23,0],["stomate","Salsa de tomate",1.5,7,1.5,1.5,400,300,15,.6,15,0],
 ["sal","Sal",0,0,0,0,39000,0,0,0,24,0],
-["kefir","Kéfir natural",3.4,4.5,3.3,0,40,160,12,.1,120,.05],["yprot","Yogur +Proteínas",10,4,.5,0,45,150,12,.1,120,0],
-["qbprot","Queso fresco batido +Proteínas",12,4,.2,0,45,150,11,.1,110,0],["bprot","Batido +Proteínas cacao",6,5,.6,.5,50,180,15,.3,120,0],
+["kefir","Kéfir natural",3.4,4.5,3.3,0,40,160,12,.1,120,.05],["yprot","Yogur +Proteínas",10,3.1,.2,0,40,150,12,.1,120,0],
+["qbprot","Queso fresco batido +Proteínas",10,3.5,.5,0,40,150,11,.1,110,0],["bprot","Batido +Proteínas cacao",9.1,2.2,.3,.5,80,180,15,.3,120,0],
 ["wrap","Tortillas de trigo",8,50,7,2.5,600,130,25,1.5,60,0],["hummus","Hummus",7,12,17,5,400,230,40,2,50,0],
-["datiles","Dátiles",2,66,.4,7,2,656,54,1,39,0]
+["datiles","Dátiles",2,66,.4,7,2,656,54,1,39,0],
+/* 27-10-2026 · de etiqueta (fuentes en datos/supermercados.js): el de bote y el de tarrina no son el cocido en casa ni el casero */
+["garbote","Garbanzos cocidos de bote",5.5,11,2.1,3.5,260,130,22,1.3,22,0],["hummusc","Hummus de tarrina",6,11,25.8,5.5,340,230,40,2,50,0],
+["kefir0","Kéfir 0 %",3.9,4.8,.5,0,40,160,12,.1,120,0],
+["lentbote","Lentejas cocidas de bote",7.4,11.8,.2,4,330,220,22,2,15,0]
 ].map(r=>({id:r[0],n:r[1],P:r[2],C:r[3],F:r[4],fib:r[5],na:r[6],k:r[7],mg:r[8],fe:r[9],ca:r[10],vd:r[11]}));
 const INGR_BY={};INGR.forEach(x=>INGR_BY[x.id]=x);
 const NUTK=["P","C","F","fib","na","k","mg","fe","ca","vd"];
+/* 27-10-2026 · platos listos para comer, por 100 g de su etiqueta (fuentes en datos/supermercados.js); minerales sin dato salvo el sodio.
+   Aparte de INGR para que no lleguen a Pro (sitio/comun.js) hasta que Pro decida cómo mostrarlos. */
+[["lcteri","Pollo teriyaki con arroz (bol)",9.7,21,4.8,0,560,0,0,0,0,0],["lcyaki","Noodles yakisoba con cerdo (bol)",5.7,26,7.2,0,880,0,0,0,0,0],["lcpoke","Poke de salmón (bol)",3.5,27,3.9,0,760,0,0,0,0,0],["lcsalm","Salmón con arroz y verduras (bol)",9.2,11.7,13.3,0,400,0,0,0,0,0],["lcenpo","Ensalada de pollo, queso y frutos secos (bol)",7.9,6.3,12,1.2,340,0,0,0,0,0],["lcenpa","Ensalada de pasta con atún (bol)",6.3,15.6,7.2,0,202,0,0,0,0,0],["lcenma","Ensalada de marisco con pasta (bol)",9.2,9.6,3.2,0,460,0,0,0,0,0],["lcensm","Ensaladilla de marisco",7.4,7.3,22,0,720,0,0,0,0,0],["lcbrio","Brioche de jamón cocido y huevo",10,20.9,8.55,0,427,0,0,0,0,0],["lcsug","Sushi variado (bandeja grande)",6.8,21,4.6,0,640,0,0,0,0,0],["lcsup","Sushi variado (bandeja pequeña)",7,23,4.1,0,720,0,0,0,0,0],["lcsum","Sushi con wakame (bandeja)",4.9,24,6.5,0,760,0,0,0,0,0]].forEach(r=>{const o={id:r[0],n:r[1],P:r[2],C:r[3],F:r[4],fib:r[5],na:r[6],k:r[7],mg:r[8],fe:r[9],ca:r[10],vd:r[11]};INGR.push(o);INGR_BY[o.id]=o});
+
+/* ---------- Supermercados: los productos de cada cadena (revisado el 26-10-2026) ----------
+   Las cadenas se nombran solo como texto: sin logotipos ni nada que dé a entender un acuerdo.
+   N: el nombre del producto en la cadena para cada ingrediente de INGR (es lo que sale en la lista de la compra).
+     Solo se pone si la etiqueta cuadra con INGR por 100 g (proteína ±1,5 g o 10 %, hidratos ±15 % o 5 g, grasa ±2 g o 15 %)
+     o si no hay etiqueta que leer (producto fresco, o ficha sin tabla: «s/e», se quedan los valores genéricos).
+     Si la etiqueta no cuadra, el ingrediente sale con su nombre genérico (anotado al final de cada cadena, para decidir si se corrige INGR).
+   T: productos de marca que la cadena vende con una etiqueta distinta de la de INGR (están, pero no se nombran).
+   Fuentes: el nombre, de la ficha de la tienda en línea de cada cadena (tienda.mercadona.es/product/ID y carrefour.es, leídas a mano el 26-10-2026);
+     la etiqueta, de la ficha de Carrefour (26-10-2026) o de Open Food Facts (OFF, API de producto por código de barras, con su fecha de revisión).
+     Solo se guarda nombre, código y nutrientes por 100 g.
+   Para otra cadena (Lidl…): una entrada más con n, N y T; sus platos, con sup:"<id>" en DISHES_BASE. Nada más cambia. */
+const SUPERS={
+  merc:{n:"Mercadona",N:{   // «foto» = tabla de la foto del envase en su tienda en línea (código postal genérico 28001), leída el 27-10-2026 y cuadrada con las kcal
+    pollo:"Filetes pechuga de pollo",                               // 2787 · fresco, s/e
+    pavo:"Pechuga de pavo Hacendado finas lonchas",                 // 17775 · OFF 8480000592477 (27-03-2026): 16,5 P · 1,3 H · 0,5 G
+    ternera:"Filetes de vacuno añojo para plancha",                 // 8936 · fresco, s/e
+    cerdo:"Filetes lomo de cerdo extra tiernos",                    // 2849 · fresco, s/e
+    huevo:"Huevos grandes L",                                       // 31504 · fresco, s/e
+    claras:"Claras de huevo líquidas pasteurizadas",                // 31309 · foto: 11 P · <0,5 H · <0,5 G (100 ml)
+    leche:"Leche semidesnatada Hacendado",                          // 10382 · foto: 3,1 P · 4,8 H · 1,6 G (100 ml)
+    yogur:"Yogur natural Hacendado",                                // 22313 · foto: 3,7 P · 4,1 H · 3,4 G
+    burgos:"Queso fresco Burgos natural Hacendado",                 // 52406 · OFF 8480000524089 (13-09-2026): 10,3 P · 3,7 H · 10,4 G
+    kefir0:"Bebida kéfir natural Hacendado 0 % MG",                 // 15662 · OFF 8480000156624 (29-09-2026): 3,9 P · 4,8 H · 0,5 G
+    yprot:"Postre lácteo natural +Proteínas 0 % MG",                // 20908 · foto (EAN 8480000209085): 10 P · 3,1 H · <0,5 G
+    batido0:"Queso fresco batido desnatado 0 % MG Hacendado",       // 51071 · OFF 8480000510716 (22-09-2026): 8 P · 3,5 H · 0,5 G
+    bprot:"Batido lácteo sabor chocolate +Proteínas",               // 86418 · foto, brik de 330 ml: 9,1 P · 2,2 H · 0,3 G (100 ml)
+    arroz:"Arroz largo Hacendado",                                  // 5063 · foto (EAN 8480000050632): 6,5 P · 78 H · 0,8 G
+    pasta:"Macarrón Hacendado",                                     // 6250 · foto (EAN 8480000062505): 13 P · 72 H · 1,5 G
+    pastaint:"Macarrón rayado integral Hacendado",                  // 35777 · OFF 8480000065940 (06-2024): 12 P · 67 H · 1,9 G
+    pan:"Barra de pan tradicional",                                 // 83560 · pan del día, s/e
+    panint:"Pan de molde 100 % integral Hacendado",                 // 82328 · OFF 8480000678065 (01-2024): 10,6 P · 45,9 H · 3,4 G
+    wrap:"Tortillas de trigo Hacendado",                            // 80859 · OFF 8480000809391, las mini de la misma línea (19-09-2026): 8,4 P · 50 H · 5,8 G
+    avena:"Copos de avena sin gluten Hacendado",                    // 86368 · foto: 14 P · 58 H · 6,5 G · 11 fibra
+    tortitas:"Tortitas de arroz Hacendado",                         // 14013 · foto (EAN 8480000140135): 8,5 P · 75 H · 2,8 G
+    lentbote:"Lenteja cocida Hacendado",                            // 26011 · foto (EAN 8480000053329): 8,2 P · 10,7 H · 0,4 G
+    garbote:"Garbanzo cocido Hacendado",                            // 26029 · OFF 8480000260208 (06-10-2026): 5,5 P · 9,5 H · 2,2 G
+    hummusc:"Hummus de garbanzos Hacendado receta clásica",         // 80858 · OFF 8480000808585 (13-09-2026): 6 P · 11,1 H · 25,8 G · 5,5 fibra
+    rojos:"Arándanos enteros Hacendado ultracongelados",            // 61093 · foto (EAN 8480000610935): 0,7 P · 11 H · 0 G
+    datiles:"Dátiles desecados sin hueso Hacendado",                // 15301 · foto: 2,2 P · 68 H · <0,5 G
+    espinacas:"Espinaca en porciones Hacendado ultracongelada",     // 61279 · foto: 2,9 P · 1,6 H · 0,4 G
+    lechuga:"Ensalada mezcla 4 estaciones lavada",                  // 69706 · fresco, s/e
+    setas:"Champiñones laminados limpios",                          // 69519 · fresco, s/e
+    aceite:"Aceite de oliva virgen extra Hacendado",                // 4740
+    /* Listo para comer: nombre de la tienda; etiqueta de la foto del envase (27-10-2026), por 100 g, cuadrada con sus kcal */
+    lcteri:"Pollo teriyaki",                                        // 13236 · bol 300 g: 9,7 P · 21 H · 4,8 G · 1,4 sal
+    lcyaki:"Noodles yakisoba con carne y verduras",                 // 13235 · bol 300 g: 5,7 P · 26 H · 7,2 G · 2,2 sal
+    lcpoke:"Poke salmón",                                           // 13237 · bol 400 g: 3,5 P · 27 H · 3,9 G · 1,9 sal
+    lcsalm:"Salmón con verduras",                                   // 13243 · bol 400 g: 9,2 P · 11,7 H · 13,3 G · 1 sal (sus kcal, 186, quedan un 9 % por debajo de la suma)
+    lcenpo:"Ensalada de pollo, queso y frutos secos",               // 13240 · bol 250 g (EAN 8480000126139): 7,9 P · 6,3 H · 12 G · 1,2 fibra
+    lcenpa:"Ensalada de pasta",                                     // 13241 · bol 366 g: 6,3 P · 15,6 H · 7,2 G
+    lcenma:"Ensalada de marisco",                                   // 13242 · bol 300 g: 9,2 P · 9,6 H · 3,2 G
+    lcensm:"Ensaladilla de marisco",                                // 13250 · bol 250 g (EAN 8480000132505): 7,4 P · 7,3 H · 22 G
+    lcbrio:"Brioche listo para comer",                              // 13251 · 160 g (EAN 8480000126153): 10 P · 20,9 H · 8,55 G
+    lcsug:"Surtido sushi bento grande",                             // 13232 · 310 g: 6,8 P · 21 H · 4,6 G · 1,6 sal
+    lcsup:"Surtido sushi bento pequeño",                            // 13233 · 160 g: 7 P · 23 H · 4,1 G · 1,8 sal
+    lcsum:"Surtido sushi bento mix"                                 // 13234 · 350 g: 4,9 P · 24 H · 6,5 G · 1,9 sal
+    /* Sin etiqueta en la foto (no se añaden): Lentejas Listo para Comer (88407), tortillas de patata y ensaladilla rusa (se hacen en la tienda) */
+  },T:{},
+  /* Sin nombre porque la etiqueta no cuadra con INGR (por 100 g; para decidir si se corrige INGR):
+     atun 18018 (OFF 8480000180186: 21 P frente a 25) · sardinas 18225 (foto, EAN 8480000182258: 20 P · 23 G frente a 25 · 11) ·
+     gambas 24181 (foto: con agua añadida, 14,7 P frente a 20) · verduras 11617 (foto, wok: 2,5 G frente a 0,3) ·
+     cacahuete 16883 (foto: 30 P frente a 25) · choco 60722 (foto: 12 P frente a 9) · almendras 34865 (foto: 25,2 P · 54,8 G frente a 21 · 50) ·
+     nueces 34606 (foto: 17 P frente a 15).
+     Sin nombre porque no está: qbprot (ya no la vende), skyr, kefir entero. lentejas y garbanzos (cocidos en casa): los de bote son lentbote y garbote. */
+  },
+  carr:{n:"Carrefour",N:{
+    pollo:"Filetes de pechuga de pollo Carrefour",       // R-VC4AECOMM-577205 · fresco, s/e
+    pavo:"Pechuga de pavo cocido extra en lonchas Carrefour", // R-VC4AECOMM-050752 · ficha: 17 P · 0,5 H · 0,5 G
+    ternera:"Filetes de añojo Círculo de Calidad",                  // R-prod1070083 · fresco, s/e
+    cerdo:"Filetes de cinta de lomo de cerdo Carrefour",            // R-521032487 · fresco, s/e
+    huevo:"Huevos frescos L Carrefour",                  // R-VC4AECOMM-307927 · fresco, s/e
+    claras:"Clara de huevo pasteurizada Carrefour",         // R-VC4AECOMM-497495 · ficha: 10,6 P · 1 H · 0,3 G
+    gambas:"Gamba pelada cruda mediana Carrefour",                  // R-VC4AECOMM-446929 · ficha sin tabla, s/e
+    leche:"Leche semidesnatada Carrefour",                          // R-521007071 · ficha (100 ml): 3,1 P · 4,7 H · 1,6 G
+    yogur:"Yogur natural Carrefour",                        // R-VC4AECOMM-737854 · ficha: 3,5 P · 4,9 H · 3 G
+    kefir:"Kéfir natural Carrefour",                      // R-VC4AECOMM-486724 · agotado, s/e
+    yprot:"Leche fermentada desnatada natural Proteína Plus Carrefour", // R-VC4AECOMM-630802 · agotado, s/e
+    qbprot:"Queso fresco batido desnatado Proteína Plus Carrefour",     // R-VC4AECOMM-422068 · ficha: 10 P · 4 H · 0,5 G
+    batido0:"Queso fresco batido desnatado Carrefour",      // R-526501224 · agotado, s/e
+    bprot:"Bebida láctea desnatada al cacao Proteína Plus Carrefour",  // R-VC4AECOMM-432196 · agotado, s/e
+    arroz:"Arroz largo Carrefour",                          // R-538408171 · ficha: 8 P · 76 H · 1,2 G
+    pasta:"Pasta macarrón Carrefour",                       // R-544101816 · ficha: 12 P · 68 H · 2 G
+    pastaint:"Pasta macarrón integral Carrefour",           // R-521008433 · ficha: 13 P · 60 H · 2,6 G
+    pan:"Barra de pan Carrefour",                                   // R-527063193 · ficha: 8,4 P · 56 H · 1,2 G
+    panint:"Pan de molde integral con corteza Carrefour",   // R-VC4AECOMM-435346 · ficha: 11 P · 37 H · 3,4 G
+    wrap:"Tortillas de trigo Carrefour",                  // R-VC4AECOMM-696577 · ficha: 8 P · 53 H · 7,4 G
+    avena:"Copos de avena integral Carrefour",             // R-641402048 · ficha: 14 P · 59 H · 7 G (los «sin gluten» Classic, 8,7 P, no cuadran)
+    tortitas:"Tortitas de arroz integrales Carrefour",    // R-521004537 · ficha: 8 P · 83 H · 2,1 G
+    lentbote:"Lentejas cocidas Carrefour",                         // R-521005501 · ficha: 6,6 P · 13 H · 0 G
+    garbote:"Garbanzos cocidos Carrefour",                  // R-521005495 · ficha: 5,4 P · 12 H · 2 G
+    hummusc:"Hummus de garbanzos clásico Carrefour",          // R-VC4AECOMM-683553 · agotado, s/e
+    rojos:"Mix frutos rojos Carrefour (congelado)",                 // R-VC4AECOMM-730917 · la ficha trae un error en grasas (7,9 g en fruta): s/e
+    datiles:"Dátiles sin hueso Carrefour",                          // R-fprod1470215 · agotado, s/e
+    verduras:"Mix de verduras para wok Carrefour",              // R-VC4AECOMM-602604 · ficha: 1,7 P · 4 H · 0,4 G
+    espinacas:"Espinacas en hojas Carrefour (congeladas)",          // R-521031553 · agotado, s/e
+    lechuga:"Corazones de lechuga romana Carrefour",     // R-VC4AECOMM-675430 · fresco, s/e
+    setas:"Champiñón laminado Carrefour",                           // R-fprod1220107 · fresco, s/e
+    aceite:"Aceite de oliva virgen extra Carrefour",          // R-520660335
+    cacahuete:"Crema de cacahuete 100 % Carrefour",        // R-VC4AECOMM-489756 · ficha: 26 P · 14 H · 49 G
+    choco:"Chocolate negro intenso 85 % cacao Carrefour",  // R-VC4AECOMM-095367 · ficha: 10 P · 24 H · 45 G
+    almendras:"Almendras crudas sin piel Carrefour",       // R-791843028 · agotado, s/e
+    nueces:"Nueces peladas Carrefour"                      // R-VC4AECOMM-539120 · agotado, s/e
+  },T:{skyr:1},  // Skyr natural Carrefour Sensation (R-VC4AECOMM-503694): 8 P frente a 11
+  /* Sin nombre: atun (agotado; la de Mercadona no cuadra), sardinas (ficha: 24 P · 15 G frente a 11 G),
+     garbanzos (los de bote son garbote), burgos (no hay de la marca). */
+  }
+};
+/* los listos para comer (la misma lista que LISTO en la compra) */
+const LISTO_ID=["lcteri","lcyaki","lcpoke","lcsalm","lcenpo","lcenpa","lcenma","lcensm","lcbrio","lcsug","lcsup","lcsum"];
+/* Productos de marca o específicos: solo están en las cadenas que los nombran (N o T). Lo demás (pollo, arroz, huevos, fruta…) está en cualquier súper.
+   Los ingredientes propios del profesional (LIB.ing) cuentan como genéricos salvo que lleven su lista sup:["merc",…]. */
+const SUP_MARCA=new Set(["yprot","qbprot","bprot","skyr","kefir0","wrap","hummusc"].concat(LISTO_ID));
+/* ¿Está este ingrediente en la cadena s? Sin cadena, siempre. */
+function supTiene(id,s){const C=SUPERS[s];if(!C)return true;const f=typeof INGR_BY!=="undefined"&&INGR_BY[id];if(f&&Array.isArray(f.sup))return f.sup.includes(s);return!SUP_MARCA.has(id)||!!(C.N[id]||C.T[id])}
+/* En qué cadenas tiene nombre propio: {merc:"…",carr:"…"} */
+function supDe(id){const o={};Object.keys(SUPERS).forEach(s=>{if(SUPERS[s].N[id])o[s]=SUPERS[s].N[id]});return o}
+/* La cadena de este perfil y el nombre con que se compra cada ingrediente */
+const supId=()=>{const s=(S.profile||{}).store;return SUPERS[s]?s:""};
+/* Los listos para comer solo se ven si compras en su cadena, y el menú automático no los propone (son para el día que no apetece cocinar) */
+const supVer=d=>!d.listo||d.sup===supId();
+const supName=id=>{const C=SUPERS[supId()];return C&&C.N[id]||INGR_BY[id].n};
+
 /* ---------- Calidad de los macros (añadido; no cambia ningún cálculo existente) ----------
    Por 100 g, aprox. BEDCA/USDA: azúcares, saturadas, mono, poli, omega-3 (g) y calidad proteica:
    c = completa · lys = le falta lisina (cereales) · met = le falta metionina (legumbres) · nut = frutos secos (incompleta) · "" = apenas proteína */
@@ -4087,8 +4288,10 @@ const QUAL={pollo:[0,.4,.5,.3,.03,"c"],pavo:[1.5,.6,.7,.4,.02,"c"],ternera:[0,2.
  lentejas:[1.8,.05,.07,.17,.04,"met"],garbanzos:[4.8,.3,.6,1.2,.04,"met"],platano:[12.2,.1,0,.1,.03,""],manzana:[10.4,0,0,0,0,""],rojos:[7,0,0,.1,.05,""],naranja:[9,0,0,0,0,""],
  aguacate:[.7,2.1,9.8,1.8,.1,""],aceite:[0,14,73,10.5,.8,""],nueces:[2.6,6.1,8.9,47,9,"nut"],almendras:[4.4,3.8,31,12.3,0,"nut"],cacahuete:[9,10,25,12,0,"nut"],
  choco:[14,28,14,1.4,0,""],miel:[82,0,0,0,0,""],tomate:[2.6,0,0,0,0,""],verduras:[3,0,0,.1,.05,""],espinacas:[.4,.06,.01,.17,.14,""],lechuga:[1.2,0,0,.1,.05,""],
- setas:[2,0,0,.1,0,""],cebolla:[4.2,0,0,0,0,""],stomate:[5,.2,1,.2,0,""],sal:[0,0,0,0,0,""],kefir:[4.5,2.1,.9,.1,.02,"c"],yprot:[4,.3,.1,0,0,"c"],
- qbprot:[4,.1,0,0,0,"c"],bprot:[5,.4,.1,0,0,"c"],wrap:[3,2.5,3,1,.05,"lys"],hummus:[.3,2.3,7,6.5,.1,"met"],datiles:[63,0,0,0,0,""]};
+ setas:[2,0,0,.1,0,""],cebolla:[4.2,0,0,0,0,""],stomate:[5,.2,1,.2,0,""],sal:[0,0,0,0,0,""],kefir:[4.5,2.1,.9,.1,.02,"c"],yprot:[3.1,.1,.05,0,0,"c"],
+ qbprot:[4,.1,0,0,0,"c"],bprot:[2.2,.2,.1,0,0,"c"],wrap:[3,2.5,3,1,.05,"lys"],hummus:[.3,2.3,7,6.5,.1,"met"],datiles:[63,0,0,0,0,""],
+ garbote:[.4,.2,.5,1,.03,"met"],lentbote:[.5,.05,.05,.1,.02,"met"],
+ lcteri:[1.7,1.1,2.2,1.5,0.05,"c"],lcyaki:[4.1,1.1,3.6,2.5,0.1,"c"],lcpoke:[5.5,0.6,1.8,1.5,0.3,"c"],lcsalm:[2.4,1.5,7.5,4.3,0.6,"c"],lcenpo:[5,2.8,5,4.2,0.4,"c"],lcenpa:[0.4,1.5,3.5,2.2,0.1,"c"],lcenma:[3,0.6,1.6,1,0.2,"c"],lcensm:[2.7,2.6,5.5,13.5,1,"c"],lcbrio:[2,2.64,3.5,2.4,0.05,"c"],lcsug:[3.9,1.6,1.8,1.2,0.3,"c"],lcsup:[3.3,1.4,1.6,1.1,0.3,"c"],lcsum:[4.4,1.4,3,2.1,0.3,"c"],hummusc:[.1,3.3,14,7.5,.15,"met"],kefir0:[4.8,.3,.1,0,0,"c"]};
 const QSWAP={pan:"pan integral",pasta:"pasta integral",granola:"copos de avena",miel:"fruta entera",tortitas:"pan integral",wrap:"pan integral",datiles:"fruta fresca",bprot:"un yogur +proteínas",choco:"un puñado de frutos secos",platano:"copos de avena",curado:"queso fresco",jamon:"pavo",burgos:"queso fresco batido"};
 /* Alimentos del día: el menú, sustituido por lo apuntado cuando es un plato conocido */
 function dayFoods(k){const mm=(S.menu||{})[k]||{},lg=(S.log||{})[k]||{},out=[];let unk=0;
@@ -4155,14 +4358,19 @@ function qualPop(m){const t=S.lastT,q=t&&macroQuality(t,S.day);if(!q)return"";co
   return ex+`<div class="qp"><div><span>Saludables</span><b>${pct(q.mono+q.poly,fs)}</b></div><div><span>Saturadas</span><b>${pct(q.sat,fs)}</b></div><div><span>Omega‑3</span><b>${q.w3.toFixed(1).replace(".",",")} g</b></div></div><p class="sub">Según tu menú de hoy.</p>${note}`}
 
 const DISHES_BASE=[
-  {id:"m1",n:"Yogur +Proteínas con avena y frutos rojos",merc:true,meals:["breakfast","snack"],ing:[["yprot",240],["avena",40],["rojos",80]]},
-  {id:"m2",n:"Kéfir con plátano y nueces",merc:true,meals:["breakfast","snack"],ing:[["kefir",250],["platano",120],["nueces",15]]},
-  {id:"m3",n:"Wrap de pollo con hummus y ensalada",merc:true,meals:["lunch","dinner"],ing:[["wrap",120],["pollo",150],["hummus",40],["lechuga",60],["tomate",80]]},
-  {id:"m4",n:"Queso batido +Proteínas con miel y fruta",merc:true,meals:["breakfast","snack"],ing:[["qbprot",200],["miel",15],["rojos",100]]},
-  {id:"m5",n:"Batido +Proteínas y plátano",merc:true,meals:["snack"],ing:[["bprot",330],["platano",120]]},
-  {id:"m6",n:"Garbanzos con espinacas y huevo",merc:true,meals:["lunch","dinner"],ing:[["garbanzos",200],["espinacas",100],["huevo",120],["aceite",10]]},
-  {id:"m7",n:"Arroz con atún, aguacate y tomate",merc:true,meals:["lunch"],ing:[["arroz",80],["atun",110],["aguacate",60],["tomate",100],["aceite",5]]},
-  {id:"m8",n:"Dátiles y yogur +Proteínas antes de entrenar",merc:true,meals:["snack"],ing:[["yprot",120],["datiles",40]]},
+  /* sup: platos pensados con los productos de una cadena (datos/supermercados.js); el menú automático los prefiere si compras allí */
+  {id:"m1",n:"Yogur +Proteínas con avena y frutos rojos",sup:"merc",meals:["breakfast","snack"],ing:[["yprot",240],["avena",40],["rojos",80]]},
+  {id:"m2",n:"Kéfir con plátano y nueces",sup:"merc",meals:["breakfast","snack"],ing:[["kefir0",250],["platano",120],["nueces",15]]},
+  {id:"m3",n:"Wrap de pollo con hummus y ensalada",sup:"merc",meals:["lunch","dinner"],ing:[["wrap",120],["pollo",150],["hummusc",40],["lechuga",60],["tomate",80]]},
+  {id:"m4",n:"Queso fresco batido con miel y fruta",sup:"merc",meals:["breakfast","snack"],ing:[["batido0",250],["miel",15],["rojos",100]]},
+  {id:"m5",n:"Batido +Proteínas y plátano",sup:"merc",meals:["snack"],ing:[["bprot",330],["platano",120]]},
+  {id:"m6",n:"Garbanzos con espinacas y huevo",sup:"merc",meals:["lunch","dinner"],ing:[["garbote",250],["espinacas",100],["huevo",120],["aceite",10]]},
+  {id:"m7",n:"Arroz con atún, aguacate y tomate",sup:"merc",meals:["lunch"],ing:[["arroz",80],["atun",110],["aguacate",60],["tomate",100],["aceite",5]]},
+  {id:"m8",n:"Dátiles y yogur +Proteínas antes de entrenar",sup:"merc",meals:["snack"],ing:[["yprot",120],["datiles",40]]},
+  {id:"c1",n:"Queso batido Proteína Plus con avena y frutos rojos",sup:"carr",meals:["breakfast","snack"],ing:[["qbprot",250],["avena",40],["rojos",80]]},
+  {id:"c2",n:"Wrap de pavo con verduras salteadas",sup:"carr",meals:["lunch","dinner"],ing:[["wrap",120],["pavo",90],["verduras",150],["aceite",5]]},
+  {id:"c3",n:"Macarrones integrales con garbanzos y verduras",sup:"carr",meals:["lunch"],ing:[["pastaint",80],["garbote",150],["verduras",150],["aceite",10]]},
+  {id:"c4",n:"Tortitas de arroz con crema de cacahuete y plátano",sup:"carr",meals:["snack"],ing:[["tortitas",30],["cacahuete",20],["platano",120]]},
   {id:"d1",n:"Tostadas con tomate, AOVE y jamón",meals:["breakfast"],ing:[["pan",80],["tomate",50],["aceite",10],["jamon",30]]},
   {id:"d2",n:"Avena con leche, plátano y nueces",meals:["breakfast","snack"],ing:[["avena",60],["leche",250],["platano",100],["nueces",15]]},
   {id:"d3",n:"Skyr con fruta y granola",meals:["breakfast","snack"],ing:[["skyr",200],["rojos",100],["granola",40]]},
@@ -4187,11 +4395,26 @@ const DISHES_BASE=[
   {id:"d22",n:"Revuelto de setas y gambas con pan",meals:["dinner"],ing:[["huevo",120],["setas",150],["gambas",70],["pan",50],["aceite",5]]},
   {id:"d23",n:"Pasta integral con pollo",meals:["dinner","lunch"],ing:[["pastaint",110],["pollo",150],["stomate",80],["aceite",5]]}
 ];
+/* 27-10 · listos para comer (un envase entero; su etiqueta en INGR). Van aparte de DISHES_BASE para que no lleguen a Pro (sitio/comun.js) hasta que Pro decida cómo mostrarlos */
+const DISHES_LISTO=[
+  {id:"lc1",n:"Pollo teriyaki con arroz",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcteri",300]]},
+  {id:"lc2",n:"Noodles yakisoba con cerdo y verduras",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcyaki",300]]},
+  {id:"lc3",n:"Poke de salmón",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcpoke",400]]},
+  {id:"lc4",n:"Salmón con arroz y verduras asadas",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcsalm",400]]},
+  {id:"lc5",n:"Ensalada de pollo, queso y frutos secos",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcenpo",250]]},
+  {id:"lc6",n:"Ensalada de pasta con atún",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcenpa",366]]},
+  {id:"lc7",n:"Ensalada de marisco con pasta",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcenma",300]]},
+  {id:"lc8",n:"Ensaladilla de marisco",sup:"merc",listo:1,meals:["dinner"],ing:[["lcensm",250]]},
+  {id:"lc9",n:"Brioche de jamón cocido y huevo",sup:"merc",listo:1,meals:["snack","breakfast"],ing:[["lcbrio",160]]},
+  {id:"lc10",n:"Sushi variado (bandeja grande)",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcsug",310]]},
+  {id:"lc11",n:"Sushi variado (bandeja pequeña)",sup:"merc",listo:1,meals:["lunch","dinner","snack"],ing:[["lcsup",160]]},
+  {id:"lc12",n:"Sushi con ensalada de wakame",sup:"merc",listo:1,meals:["lunch","dinner"],ing:[["lcsum",350]]}
+];
 function ingNut(ing,serv){const o={};NUTK.forEach(k=>o[k]=0);(ing||[]).forEach(r=>{const f=INGR_BY[r[0]];const g=+r[1]||0;if(!f)return;NUTK.forEach(k=>o[k]+=f[k]*g/100)});const s=Math.max(1,+serv||1);NUTK.forEach(k=>o[k]/=s);return o}
 function withNut(d){const n=d.ing?ingNut(d.ing,d.serv):{P:d.P||0,C:d.C||0,F:d.F||0};const ov=d.ov||{};return Object.assign({},d,n,{P:ov.P!=null?ov.P:n.P,C:ov.C!=null?ov.C:n.C,F:ov.F!=null?ov.F:n.F,base:!d.custom})}
 const MEAL_N={breakfast:"Desayuno",lunch:"Comida",snack:"Merienda",dinner:"Cena"};
 let _dishCache=null,_dishSig="";
-function allDishes(){const sig=JSON.stringify(S.dishes||[]);if(_dishCache&&sig===_dishSig)return _dishCache;_dishSig=sig;_dishCache=DISHES_BASE.concat((S.dishes||[]).map(d=>Object.assign({custom:true},d))).map(withNut);return _dishCache}
+function allDishes(){const sig=JSON.stringify(S.dishes||[]);if(_dishCache&&sig===_dishSig)return _dishCache;_dishSig=sig;_dishCache=DISHES_BASE.concat(DISHES_LISTO,(S.dishes||[]).map(d=>Object.assign({custom:true},d))).map(withNut);return _dishCache}
 function dishById(id){return allDishes().find(d=>d.id===id)||prEmb(id)}
 /* v345 · platos que tu profesional ajusta a tus objetivos de un día (menús tipo): van dentro del propio menú (campo x), no en tus platos */
 const _embC={};function prEmb(id){if(!id||!String(id).startsWith("xp"))return null;if(_embC[id])return _embC[id];
@@ -4200,7 +4423,7 @@ const _embC={};function prEmb(id){if(!id||!String(id).startsWith("xp"))return nu
 const SCALES=[.5,.75,1,1.25,1.5,1.75,2,2.5];
 function fitErr(d,s,m){const e=(a,b,w)=>w*Math.pow((a-b)/Math.max(b,8),2);return e(d.P*s,m.P,1.2)+e(d.C*s,m.C,1)+e(d.F*s,m.F,.8)}
 function bestScale(d,m){let best=1,be=1e9;SCALES.forEach(s=>{const x=fitErr(d,s,m);if(x<be){be=x;best=s}});return{s:best,err:be}}
-function pickDish(m,avoid){let best=null;let pool=allDishes().filter(d=>d.meals.includes(m.id)&&dishAllowed(d));if(!pool.length)pool=allDishes().filter(d=>d.meals.includes(m.id));const merc=(S.profile||{}).store==="merc";pool.forEach(d=>{const b=bestScale(d,m);const err=b.err+(avoid.includes(d.id)?.35:0)-(merc&&d.merc?.06:0);if(!best||err<best.err)best={d:d.id,s:b.s,err}});return best}
+function pickDish(m,avoid){let best=null;let pool=allDishes().filter(d=>!d.listo&&d.meals.includes(m.id)&&dishAllowed(d));if(!pool.length)pool=allDishes().filter(d=>!d.listo&&d.meals.includes(m.id));const sup=supId();if(sup){const q=pool.filter(d=>(!d.sup||d.sup===sup)&&(d.ing||[]).every(r=>supTiene(r[0],sup)));if(q.length)pool=q}pool.forEach(d=>{const b=bestScale(d,m);const err=b.err+(avoid.includes(d.id)?.35:0)-(sup&&d.sup===sup?.06:0);if(!best||err<best.err)best={d:d.id,s:b.s,err}});return best}
 /* alt (v309): «Proponer otros platos» evita también el plato automático que ya había */
 function autoAssignDay(k,force,alt){
   const t=dayTargets(k);if(!t)return false;const mp=mealPlan(t,k);
@@ -4264,9 +4487,9 @@ const TA_T=[
  ["otro","Otros",'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/>']];
 const TA_BY={};TA_T.forEach(t=>TA_BY[t[0]]=t);
 /* los ingredientes de la app (datos/platos-y-menus.js), cada uno en su tipo */
-const TA_ING={};Object.entries({carne:"pollo pavo ternera cerdo jamon",pescado:"atun merluza salmon sardinas",marisco:"gambas mejillones",huevo:"huevo claras",
-  lacteo:"leche yogur skyr batido0 kefir yprot qbprot",queso:"burgos curado",batido:"whey bprot",pan:"pan panint wrap tortitas",
-  cereal:"arroz pasta pastaint avena quinoa granola",tuberculo:"patata boniato",legumbre:"lentejas garbanzos tofu hummus",
+const TA_ING={};Object.entries({carne:"pollo pavo ternera cerdo jamon lcteri lcyaki lcenpo",pescado:"atun merluza salmon sardinas lcpoke lcsalm lcenpa lcsug lcsup lcsum",marisco:"gambas mejillones lcenma lcensm",huevo:"huevo claras",
+  lacteo:"leche yogur skyr batido0 kefir kefir0 yprot qbprot",queso:"burgos curado",batido:"whey bprot",pan:"pan panint wrap tortitas lcbrio",
+  cereal:"arroz pasta pastaint avena quinoa granola",tuberculo:"patata boniato",legumbre:"lentejas lentbote garbanzos garbote tofu hummus hummusc",
   fruta:"platano manzana rojos naranja datiles",verdura:"tomate verduras espinacas lechuga setas cebolla",grasa:"aceite aguacate",
   fseco:"nueces almendras cacahuete",dulce:"choco miel",condimento:"stomate sal"}).forEach(([t,s])=>s.split(" ").forEach(id=>TA_ING[id]=t));
 /* uno propio: lo que marcó en «Contiene» (carne, pescado…) y, si no, su nombre */
@@ -4584,9 +4807,9 @@ function stRow(x,path,inner){const z=[1,2,3,4,5].map(n=>`<button type="button" c
 /* Intensidad: deslizador de tres posiciones que toma el color de la zona; también se toca el nombre */
 const INT_K=["s","m","i"],INT_C={s:Z_C[2],m:Z_C[3],i:Z_C[5]},INT_D={s:"Puedes hablar sin esfuerzo · Z1–Z2",m:"Frases cortas, respiración marcada · Z3",i:"Apenas puedes hablar · Z4–Z5"};
 function intSlider(k){const i=INT_K.indexOf(k);return`<div class="pa-f isl-f" id="isl" style="--c:${INT_C[k]};--c-v:${vivo(INT_C[k])};--p:${i*50}%"><div class="pa-lr"><span class="pa-l">Intensidad</span></div>
-  <div class="isl" data-isl="1" role="slider" tabindex="0" aria-label="Intensidad" aria-valuemin="0" aria-valuemax="2" aria-valuenow="${i}" aria-valuetext="${INT_L[k]}"><i class="isl-f2"></i>${[0,1,2].map(x=>`<span class="isl-st" style="left:${(x+.5)/3*100}%"></span>`).join("")}<span class="isl-th"></span></div>
+  <div class="pa-g"><div class="isl" data-isl="1" role="slider" tabindex="0" aria-label="Intensidad" aria-valuemin="0" aria-valuemax="2" aria-valuenow="${i}" aria-valuetext="${INT_L[k]}"><i class="isl-f2"></i>${[0,1,2].map(x=>`<span class="isl-st" style="left:${(x+.5)/3*100}%"></span>`).join("")}<span class="isl-th"></span></div>
   <div class="isl-lb">${INT_K.map(x=>`<button type="button" data-pa="int:${x}" aria-pressed="${x===k}">${INT_L[x]}</button>`).join("")}</div>
-  <div class="isl-d"><i></i><span>${INT_D[k]}</span></div></div>`}
+  <div class="isl-d"><i></i><span>${INT_D[k]}</span></div></div></div>`}
 function islSet(k){if(!S.pa||S.pa.int===k)return;S.pa.int=k;const r=$("#isl");if(!r)return;const i=INT_K.indexOf(k);r.style.setProperty("--c",INT_C[k]);r.style.setProperty("--p",i*50+"%");
   const sl=r.querySelector(".isl");sl.setAttribute("aria-valuenow",i);sl.setAttribute("aria-valuetext",INT_L[k]);
   r.querySelectorAll(".isl-lb button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pa==="int:"+k));r.querySelector(".isl-d span").textContent=INT_D[k];pdLive();buzz(8)}
@@ -4637,6 +4860,7 @@ function paWheelSync(o){o=o||PA_WO;const w=document.querySelector(".pa-wheel");i
   if(go){w._prog=true;w._cur=sel&&sel.dataset.sp;w.scrollTo({left:to,behavior:"smooth"})}else w.scrollLeft=to;paWheelFx(w,go);let tm=null;
   w.addEventListener("scroll",()=>{{const st=o.st();if(st)st._wl=w.scrollLeft}requestAnimationFrame(()=>paWheelFx(w,w._prog));clearTimeout(tm);tm=setTimeout(()=>{const st=o.st();if(!st||!w.isConnected)return;w._prog=false;const best=paWheelFx(w),v=best&&best.dataset.sp;
     if(v&&v!==st.sport)o.set(v)},140)},{passive:true})}
+/* v372 (decisión de Javier, 27-10): cada sección es su título y un grupo (.pa-g) con todo lo suyo dentro, como las listas agrupadas de iOS; «Tiempo / Distancia» va con la duración. La excepción es Deporte: la rueda va sin fondo, a todo el ancho de la hoja, porque sus deportes se desvanecen hacia los bordes; debajo, su nombre y «Sencilla / Estructurada» */
 function paHtml(){const p=S.pa,tk=today();
   const D=paDates(p);
   const sp=PA_SPS.map(x=>`<button type="button" class="pa-wi" data-pa="sport:${x}" data-sp="${x}" aria-pressed="${p.sport===x}" aria-label="${SPORT_L[x]}">${spSvg(x)}</button>`).join("");setTimeout(paWheelSync,0);
@@ -4646,12 +4870,12 @@ function paHtml(){const p=S.pa,tk=today();
     <div class="row"><h3 style="margin:0">Planificar entreno</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="pa-f"><span class="pa-l">${p.editIdx!=null?"Día":"Días"}</span>${paCal(p)}
       <p class="pa-note">${p.editIdx!=null?"":D.length>1?esc(paDaysTxt(D)):"Toca varios días para repetir el entreno, seguidos o sueltos. "}${ex.length?`Ese día ya tienes: ${esc(ex.map(sessName).join(", "))}`:""}</p></div>
-    <div class="pa-f"><span class="pa-l">Deporte</span><div class="pa-wh"><div class="pa-wheel" role="radiogroup" aria-label="Deporte">${sp}</div><b class="pa-wn" aria-hidden="true">${SPORT_L[p.sport]||""}</b></div></div>
+    <div class="pa-f pa-dep"><span class="pa-l">Deporte</span><div class="pa-wh"><div class="pa-wheel" role="radiogroup" aria-label="Deporte">${sp}</div><b class="pa-wn" aria-hidden="true">${SPORT_L[p.sport]||""}</b></div>
+    ${p.sport!=="str"?`<div class="seg pa-mode" role="tablist" aria-label="Tipo de sesión"><button role="tab" type="button" data-pa="mode:simple" aria-selected="${p.mode!=="struct"}" aria-pressed="${p.mode!=="struct"}">Sencilla</button><button role="tab" type="button" data-pa="mode:struct" aria-selected="${p.mode==="struct"}" aria-pressed="${p.mode==="struct"}">Estructurada</button></div>`:""}</div>
     ${rts}
-    ${p.sport!=="str"?`<div class="seg pa-mode" role="tablist" aria-label="Tipo de sesión"><button role="tab" type="button" data-pa="mode:simple" aria-selected="${p.mode!=="struct"}" aria-pressed="${p.mode!=="struct"}">Sencilla</button><button role="tab" type="button" data-pa="mode:struct" aria-selected="${p.mode==="struct"}" aria-pressed="${p.mode==="struct"}">Estructurada</button></div>`:""}
-    ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`${p.sport!=="str"?pdBlock(p):`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>`}
+    ${p.mode==="struct"&&p.sport!=="str"?stBuilder(p):`${p.sport!=="str"?pdBlock(p):`<div class="pa-f"><span class="pa-l">Duración</span><div class="pa-g">${durPick("pa",+p.dur||45)}</div></div>`}
     ${intSlider(p.int||"s")}`}
-    <div class="pa-f pa-time"><span class="pa-l">Hora</span>${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div>
+    <div class="pa-f pa-time"><span class="pa-l">Hora</span><div class="pa-g">${fdField("pa_time","time",p.time,"Hora")}${fdChips("pa_time",fdHabitHours().map(h=>[h,h]),p.time)}</div></div>
     <div class="pa-race${p.race?" on":""}"><span class="pa-rc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4h11l-2 4 2 4H6"/></svg></span><div class="tg-r"><span class="tg-t"><b>Es una carrera</b><small>${p.race?"Tendrás un plan de carrera en Hoy: la carga de hidratos, el día y la recuperación":"Activa un plan de carrera con la comida de los días previos, el día y después"}</small></span><button type="button" class="tg-sw" role="switch" data-pa="race:${p.race?"":"1"}" aria-checked="${!!p.race}" aria-label="Es una carrera"></button></div></div>
     ${p.race?`<div class="pa-f pa-nm"><label class="pa-l" for="pa_nm">Nombre de la carrera</label><input id="pa_nm" maxlength="60" autocomplete="off" placeholder="Por ejemplo, Trail de la Sierra" value="${esc(p.nm||"")}"></div>`:""}
     <button class="btn primary pa-go" data-paok="1">${p.editIdx!=null?"Guardar cambios":(D.length>1?"Añadir en "+D.length+" días":"Añadir el "+esc(dateLabel(D[0])))}</button>
@@ -5133,7 +5357,7 @@ function recovCard(){if(S.day!==today())return"";const now=Date.now(),kg=num((S.
   const hard=a.mov>=4500||a.kcal>=800,str=a.sport==="str",C=Math.round((str?.6:hard?1.1:.8)*kg/5)*5,P=Math.round(Math.min(40,Math.max(20,.3*kg))/5)*5;
   const fl=a.sport==="str"?0:Math.round(sweatRate(a.sport)*a.mov/3600*.75*1.25*10)/10;
   const left=Math.max(0,Math.round(60-a.ago));
-  const ds=allDishes().filter(d=>dishAllowed(d)&&!((S.profile||{}).dislike||[]).includes(d.id)).map(d=>({d,sc:Math.abs(d.C-C)/C+Math.abs(d.P-P)/P})).sort((x,y)=>x.sc-y.sc).slice(0,2);
+  const ds=allDishes().filter(d=>!d.listo&&dishAllowed(d)&&!((S.profile||{}).dislike||[]).includes(d.id)).map(d=>({d,sc:Math.abs(d.C-C)/C+Math.abs(d.P-P)/P})).sort((x,y)=>x.sc-y.sc).slice(0,2);
   return`<section class="glass pad fade rc-card"><div class="rc-h"><span class="rc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></svg></span><div><h2>Recupera ahora</h2><p>${esc(sessName({sport:a.sport}))} · ${fmtDur(a.mov)}${left?` · quedan ${left} min de la ventana ideal`:" · cuanto antes, mejor"}</p></div></div>
     <div class="rc-k"><div><i style="background:var(--carb)"></i><b>${C} g</b><span>hidratos</span></div><div><i style="background:var(--prot)"></i><b>${P} g</b><span>proteína</span></div>${fl?`<div><i style="background:var(--cian)"></i><b>${String(fl).replace(".",",")} L</b><span>líquido</span></div>`:""}</div>
     ${ds.length?`<div class="rc-s"><span>Encaja con lo que tienes (tócalo si es lo que tomas):</span>${ds.map(x=>`<button type="button" class="rc-d" data-recovd="${esc(a.id)}|${esc(x.d.id)}"><b>${esc(x.d.n)}</b><small>P ${fmtInt(x.d.P)} · H ${fmtInt(x.d.C)} · ${fmtInt(4*x.d.P+4*x.d.C+9*x.d.F)} kcal</small></button>`).join("")}</div>`:""}
@@ -5206,13 +5430,14 @@ function flPut(a,e){S.fuel=(S.fuel||[]).filter(x=>x.id!==a.id);if(e)S.fuel.push(
   if(((S.log||{})[a.day]||{})["fuel_a"+a.id])setLog(a.day,"fuel_a"+a.id,null)}
 function fuelTol(){const L=(S.fuel||[]).filter(x=>x.gi==="good"&&x.cph>0);return L.length?Math.max(...L.map(x=>x.cph)):null}
 function flTotals(items){let c=0,caf=0,na=0;(items||[]).forEach(it=>{const p=ptById(it.pid);if(!p)return;c+=p.c*it.q;caf+=(p.caf||0)*it.q;na+=(p.na||0)*it.q});return{c,caf,na}}
+/* v372: en los totales, sin objetivo, «Hidratos» una sola vez (antes salían «Hidratos» y «Total» con la misma cifra) */
 function flSummary(a,ex){const T=ex.items&&ex.items.length?flTotals(ex.items):{c:ex.carbs||0,caf:ex.caf||0,na:ex.na||0},kg=num((S.profile||{}).weight)||70;
   const its=(ex.items||[]).map(it=>{const p=ptById(it.pid);if(!p)return"";return`<li><i style="background:${(PT_T[p.t]||PT_T.food)[1]}" aria-hidden="true"></i><span>${esc(p.n)}</span><b>× ${it.q}</b></li>`}).join("");
   const gi={good:"Te sentó bien",meh:"Te sentó regular",bad:"Tuviste molestias"}[ex.gi]||"",pl=ex.src==="plan"?"según lo previsto":"";
   return{line:`${ex.cph} g/h${pl?" · "+pl:ex.tg?" · objetivo "+ex.tg+" g/h":""}${gi?" · "+gi:""}`,body:`<div class="fl-sum">
     ${its?`<ul class="fl-list">${its}</ul>`:""}
     <div class="fl-kvs"><div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div>
-    <button type="button" class="ms-link fl-chg" data-fledit="${esc(a.id)}">Cambiar lo que tomaste</button></div>`}}
+    <button type="button" class="btn sm fl-chg" data-fledit="${esc(a.id)}">Cambiar lo que tomaste</button></div>`}} /* v372: un botón de verdad (antes, texto gris que no parecía tocable) */
 function fuelBlock(a){if(!a.mov)return""; /* v334: en cualquier actividad, sin mínimo de tiempo */const ex=flEntry(a);
   if(ex&&S.flEditId!==a.id){const m=flSummary(a,ex);return`<div class="fl-box fl-done" id="flbox">${flRow(a,true,m.line)}${m.body}</div>`}
   /* v326: sin nada apuntado, una fila con conmutador; al encenderlo se despliega lo de abajo (104) */
@@ -5231,8 +5456,8 @@ function fuelBlock(a){if(!a.mov)return""; /* v334: en cualquier actividad, sin m
       <div class="fl-f"><span>Tipo</span><div class="seg sm" role="group" aria-label="Tipo">${Object.entries(PT_T).map(([k,[l]])=>`<button type="button" data-flt="${k}" aria-pressed="${nf.t===k}">${l}</button>`).join("")}</div></div>
       <div class="sw-g">${[["c","Hidratos","g"],["caf","Cafeína","mg"],["na","Sodio","mg"]].map(([k,l,u])=>`<label class="sw-f" for="flp_${k}"><span>${l}</span><span class="sw-in"><input id="flp_${k}" inputmode="numeric" value="${nf[k]!=null?nf[k]:""}" placeholder="0"><i>${u}</i></span></label>`).join("")}</div>
       <div class="sw-a"><button type="button" class="btn sm primary" data-flpsave="1">Guardar en tu despensa</button><button type="button" class="chip sm" data-flnew="0">Cancelar</button></div></div>`:""}
-    ${T.c||T.caf?`<div class="fl-tot">${tg?`<div class="fl-cmp"><div><span>Hidratos</span><b>${cph} g/h</b></div><div class="fl-track"><i style="width:${Math.min(100,cph/100*100).toFixed(0)}%"></i><em style="left:${tg}%" title="Objetivo ${tg} g/h"></em></div><div><span>Objetivo</span><b>${tg} g/h</b></div></div>`:`<div class="fl-kv"><span>Hidratos</span><b>${T.c} g</b></div>`}
-      <div class="fl-kvs"><div class="fl-kv"><span>Total</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div></div>`:""}
+    ${T.c||T.caf?`<div class="fl-tot">${tg?`<div class="fl-cmp"><div><span>Hidratos</span><b>${cph} g/h</b></div><div class="fl-track"><i style="width:${Math.min(100,cph/100*100).toFixed(0)}%"></i><em style="left:${tg}%" title="Objetivo ${tg} g/h"></em></div><div><span>Objetivo</span><b>${tg} g/h</b></div></div>`:""}
+      <div class="fl-kvs"><div class="fl-kv"><span>${tg?"Total":"Hidratos"}</span><b>${T.c} g</b></div><div class="fl-kv"><span>Cafeína</span><b>${T.caf?T.caf+'<small class="u">mg</small>':"—"}</b>${T.caf?`<small>${(T.caf/kg).toFixed(1).replace(".",",")} mg/kg</small>`:""}</div><div class="fl-kv"><span>Sodio</span><b>${T.na?T.na+'<small class="u">mg</small>':"—"}</b></div></div></div>`:""}
     <div class="fl-gi"><span>¿Cómo te sentó?</span><div class="seg sm" role="group" aria-label="Cómo te sentó">${[["good","Bien"],["meh","Regular"],["bad","Molestias"]].map(([k,l])=>`<button type="button" data-flgi="${k}" aria-pressed="${dr.gi===k}">${l}</button>`).join("")}</div></div>
     <div class="sw-a"><button class="btn sm primary" data-flsave="${a.id}">${ex?"Guardar cambios":"Guardar"}</button>${ex?'<button type="button" class="chip sm" data-fledit="">Cancelar</button>':""}</div></div>`}
 function flReadNew(){const nf=S.flNew;if(!nf)return;const g=id=>($("#"+id)||{}).value;const n=g("flp_n");if(n!=null)nf.n=n;["c","caf","na"].forEach(k=>{const v=g("flp_"+k);if(v!=null)nf[k]=v===""?null:num(v)})}
@@ -5363,7 +5588,7 @@ function yoyCard(){
 
 /* ---------- Gráficos de progreso ---------- */
 const SCRUB={};
-const FAMC={foot:"var(--verde)",run:"var(--amarillo)",trail:"var(--naranja)",bike:"var(--azul)",swim:"var(--cian)",str:"var(--rojo)"}; /* v266: color por familia */
+const FAMC={foot:"var(--verde)",run:"var(--amarillo)",trail:"var(--naranja)",bike:"var(--azul)",swim:"var(--cian)",str:"var(--morado)"}; /* v266: color por familia; v372 (Javier, 27-10): la fuerza, en morado, para dejar el rojo a las alertas */
 const SPC={run:FAMC.run,trail:FAMC.trail,road:FAMC.bike,gravel:FAMC.bike,mtb:FAMC.bike,indoor:FAMC.bike,swim:FAMC.swim,str:FAMC.str,walk:FAMC.foot,hike:FAMC.foot};
 function heatCard(){
   const tk=today(),W=26,start=shiftKey(mondayOf(tk),-7*(W-1)),acts=S.acts.filter(a=>a.sport!=="oth"&&a.day>=start);
@@ -5495,7 +5720,7 @@ document.addEventListener("click",e=>{const d=e.target.closest(".hcar-dots i");i
     if(Math.abs(dx)<60||Math.abs(dx)<2*Math.abs(dy)||Date.now()-st>700)return;
     const dir=dx<0?1:-1;
     if(!tgt||!tgt.closest("#view"))return;
-    if(S.tab==="hoy"&&S.period==="day"){const tk=today(),n=shiftKey(S.day,dir);if(n<shiftKey(tk,-6)||n>shiftKey(tk,7))return;S.day=n;render();ensureDaySubs();const v=$("#view");v.classList.remove("sw-l","sw-r");void v.offsetWidth;v.classList.add(dir>0?"sw-l":"sw-r")}
+    if(S.tab==="hoy"&&S.period==="day"){const tk=today(),n=shiftKey(S.day,dir);if(n<shiftKey(tk,-6)||n>shiftKey(tk,7))return;S.day=n;render();ensureDaySubs();const v=$("#view");v.classList.remove("sw-l","sw-r");void v.offsetWidth;v.classList.add(dir>0?"sw-l":"sw-r");v.addEventListener("animationend",()=>v.classList.remove("sw-l","sw-r"),{once:true})} /* v372: la clase se quita al acabar; si se quedaba, su animación fijaba el transform de #view y el gesto de actualizar solo movía el título */
     else if(S.tab==="hoy"){S.anchor=shiftAnchor(S.period,S.anchor||S.day,dir);render()}
     else if(S.tab==="plan"){S.planWeek=shiftKey(S.planWeek||mondayOf(today()),7*dir);render()}
   },{passive:true});
@@ -5522,7 +5747,7 @@ async function callRaw(tool,input,opts){
 /* v234: las actividades se guardan en el dispositivo. Al abrir se enseñan al momento y, en segundo plano, solo se piden las de los
    últimos días; la lista completa de 370 días se repasa una vez al día (o con «Actualizar»), sin bloquear nada. */
 const ACTS_LS="sustrato-acts-v1";
-function mapAct(a){const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
+function mapAct(a){const s=a.summary||{};return{id:String(a.id),name:niceName(a.name,a.sport_type,a.start_local),type:a.sport_type,sport:SPORT[a.sport_type]||"oth",
   start:a.start_local,day:(a.start_local||"").slice(0,10),dist:s.distance||0,mov:s.moving_time||0,elev:s.elevation_gain||0,
   speed:s.avg_speed||0,kcal:s.total_calories||0,hra:s.avg_heartrate||(a.raw&&a.raw.average_heartrate)||null,cad:s.avg_cadence||(a.raw&&a.raw.average_cadence)||null,hrx:(a.raw&&a.raw.max_heartrate)||s.max_heartrate||null,
   poly:a.polyline||(a.map&&(a.map.summary_polyline||a.map.polyline))||a.summary_polyline||null,sid:a.sid||null}}
@@ -5980,14 +6205,18 @@ window.addEventListener("scroll",()=>{const h=document.querySelector("header.top
 
 /* ---------- Preferencias, compra y exportación ---------- */
 const TAGS={meat:["pollo","pavo","ternera","cerdo","jamon"],fish:["atun","merluza","salmon","sardinas"],shell:["gambas","mejillones"],
-  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey","kefir","yprot","qbprot","bprot"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola","wrap"],nuts:["nueces","almendras","cacahuete"],soy:["tofu"],sesame:["hummus"]};
+  dairy:["leche","yogur","skyr","batido0","burgos","curado","whey","kefir","kefir0","yprot","qbprot","bprot"],egg:["huevo","claras"],gluten:["pasta","pastaint","pan","panint","avena","granola","wrap"],nuts:["nueces","almendras","cacahuete"],soy:["tofu"],sesame:["hummus","hummusc"]};
+/* 27-10 · platos listos para comer (de etiqueta): en sus alérgenos, pero en la compra van aparte (LISTO) */
+const LISTO=["lcteri","lcyaki","lcpoke","lcsalm","lcenpo","lcenpa","lcenma","lcensm","lcbrio","lcsug","lcsup","lcsum"];
+TAGS.meat.push("lcteri","lcyaki","lcenpo","lcbrio");TAGS.fish.push("lcpoke","lcsalm","lcenpa","lcensm","lcsug","lcsup","lcsum");TAGS.shell.push("lcenma","lcensm");TAGS.dairy.push("lcenpo","lcenpa","lcsup");TAGS.egg.push("lcyaki","lcenpa","lcensm","lcbrio");TAGS.gluten.push("lcteri","lcyaki","lcenpa","lcenma","lcbrio","lcsug","lcsup","lcsum");TAGS.nuts.push("lcsalm","lcenpo");TAGS.soy.push("lcteri","lcyaki","lcpoke","lcsug","lcsup","lcsum");TAGS.sesame.push("lcteri","lcpoke","lcsug","lcsup","lcsum");
 /* v342 · Exclusiones (alergias e intolerancias): una sola lista para Perfil, el menú automático, la IA y el panel del profesional */
 const EXCL=[["noLactose","Lactosa","dairy"],["noGluten","Gluten","gluten"],["noNuts","Frutos secos","nuts"],["noShell","Marisco","shell"],["noEgg","Huevo","egg"],["noFish","Pescado","fish"],["noSoy","Soja","soy"],["noSesame","Sésamo","sesame"]];
-const SHOP_CAT=[["Carne y pescado",TAGS.meat.concat(TAGS.fish,TAGS.shell,["tofu"])],["Lácteos y huevos",TAGS.dairy.filter(x=>x!=="whey").concat(TAGS.egg)],
-  ["Pan, cereales y pasta",["arroz","pasta","pastaint","pan","panint","wrap","avena","quinoa","granola","tortitas"]],["Legumbres",["lentejas","garbanzos","hummus"]],
+const SHOP_CAT=[["Listo para comer",LISTO],["Carne y pescado",TAGS.meat.concat(TAGS.fish,TAGS.shell,["tofu"]).filter(x=>!LISTO.includes(x))],["Lácteos y huevos",TAGS.dairy.filter(x=>x!=="whey"&&!LISTO.includes(x)).concat(TAGS.egg.filter(x=>!LISTO.includes(x)))],
+  ["Pan, cereales y pasta",["arroz","pasta","pastaint","pan","panint","wrap","avena","quinoa","granola","tortitas"]],["Legumbres",["lentejas","lentbote","garbanzos","garbote","hummus","hummusc"]],
   ["Fruta",["platano","manzana","rojos","naranja","aguacate","datiles"]],["Verdura",["patata","boniato","tomate","verduras","espinacas","lechuga","setas","cebolla"]],
   ["Despensa",["aceite","nueces","almendras","cacahuete","choco","miel","stomate","sal","whey"]]];
-const UNIT={huevo:[60,"ud."],platano:[120,"ud."],manzana:[150,"ud."],naranja:[180,"ud."],aguacate:[150,"ud."],bprot:[330,"botellas"],yprot:[120,"yogures"],wrap:[60,"tortillas"]};
+const UNIT={huevo:[60,"ud."],platano:[120,"ud."],manzana:[150,"ud."],naranja:[180,"ud."],aguacate:[150,"ud."],bprot:[330,"botella","botellas"],yprot:[120,"unidad","unidades"],wrap:[60,"tortilla","tortillas"],
+  lcteri:[300,"bol","boles"],lcyaki:[300,"bol","boles"],lcpoke:[400,"bol","boles"],lcsalm:[400,"bol","boles"],lcenpo:[250,"bol","boles"],lcenpa:[366,"bol","boles"],lcenma:[300,"bol","boles"],lcensm:[250,"bol","boles"],lcbrio:[160,"ud."],lcsug:[310,"bandeja","bandejas"],lcsup:[160,"bandeja","bandejas"],lcsum:[350,"bandeja","bandejas"]}; /* [g por unidad, singular, plural]; «ud.» vale para todas */
 function dishAllowed(d){
   const p=S.profile||{};if((p.dislike||[]).includes(d.id))return false;
   const ids=(d.ing||[]).map(r=>r[0]),has=t=>ids.some(i=>TAGS[t].includes(i));
@@ -6004,14 +6233,9 @@ function weekShopping(wk){
     Object.values(mm).forEach(a=>{const d=dishById(a.d);if(!d||!d.ing)return;n++;const f=a.s/(d.serv||1);d.ing.forEach(([id,g])=>{tot[id]=(tot[id]||0)+g*f})})}
   return{tot,n};
 }
-const MERC_N={pollo:"Pechuga de pollo fileteada",pavo:"Pechuga de pavo en lonchas",ternera:"Filete de ternera",cerdo:"Lomo de cerdo en cinta",huevo:"Huevos L",claras:"Claras de huevo pasteurizadas",atun:"Atún claro al natural (latas)",sardinas:"Sardinas en aceite (latas)",gambas:"Gambas peladas congeladas",
-  leche:"Leche semidesnatada",yogur:"Yogur natural",skyr:"Skyr natural",burgos:"Queso fresco de Burgos 0 %",kefir:"Kéfir natural",yprot:"Yogur +Proteínas natural",qbprot:"Queso fresco batido +Proteínas",bprot:"Batido +Proteínas sabor cacao",
-  arroz:"Arroz largo",pasta:"Pasta seca",pastaint:"Pasta integral",pan:"Pan de barra",panint:"Pan integral de molde",wrap:"Tortillas de trigo",avena:"Copos de avena",tortitas:"Tortitas de arroz",
-  lentejas:"Lentejas cocidas (bote)",garbanzos:"Garbanzos cocidos (bote)",hummus:"Hummus",rojos:"Frutos rojos congelados",datiles:"Dátiles",verduras:"Verduras para wok (congeladas)",espinacas:"Espinacas frescas",lechuga:"Mezcla de ensalada",setas:"Champiñones laminados",
-  aceite:"Aceite de oliva virgen extra",cacahuete:"Crema de cacahuete 100 %",choco:"Chocolate negro 85 %",almendras:"Almendras naturales"};
-const shopName=id=>(S.profile||{}).store==="merc"&&MERC_N[id]?MERC_N[id]:INGR_BY[id].n;
+const shopName=supName; /* nombre del producto en tu súper (datos/supermercados.js) */
 function shopQty(id,g){
-  if(UNIT[id]){const u=Math.max(1,Math.round(g/UNIT[id][0]));return u+" "+UNIT[id][1]+" ("+fmtInt(g)+" g)"}
+  if(UNIT[id]){const u=Math.max(1,Math.round(g/UNIT[id][0]));return u+" "+(u>1&&UNIT[id][2]||UNIT[id][1])+" ("+fmtInt(g)+" g)"}
   if(id==="leche")return(g/1000).toFixed(1).replace(".",",")+" L";
   if(id==="aceite")return fmtInt(g)+" ml";
   return(g>=1000?(g/1000).toFixed(2).replace(".",",")+" kg":Math.ceil(g/10)*10+" g");
@@ -6023,7 +6247,7 @@ function shopHtml(){
   const body=n?SHOP_CAT.map(([c,ids])=>{const xs=ids.filter(i=>tot[i]);if(!xs.length)return"";
     return`<h2 style="margin-top:14px">${c}</h2>${xs.map(i=>`<label class="shop"><input type="checkbox" id="sh_${i}" ${(S.shopDone||{})[i]?"checked":""}><span>${esc(shopName(i))}</span><b>${shopQty(i,tot[i])}</b></label>`).join("")}`}).join(""):'<p class="empty">No hay platos asignados esta semana. Asigna el menú en Plan y vuelve aquí.</p>';
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="Lista de la compra">
-    <div class="row"><div><h3>Lista de la compra</h3><span class="note">${esc(periodLabel("week",wk))} · ${n} platos${(S.profile||{}).store==="merc"?" · productos de Mercadona":""}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="row"><div><h3>Lista de la compra</h3><span class="note">${esc(periodLabel("week",wk))} · ${n} platos${supId()?" · productos de "+SUPERS[supId()].n:""}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${body}
     ${n?`<div class="row" style="margin-top:16px"><span class="note" style="margin:0">Cantidades en crudo para todo el menú de la semana.</span><span class="chips"><button class="chip" data-act="shopcopy">Copiar</button>${S.dl?'<button class="chip" data-act="shopsave">Descargar</button>':""}</span></div>`:""}
   </div></div>`;
@@ -6668,7 +6892,7 @@ const MS_RAT=[[.5,"½"],[.75,"¾"],[1,"1"],[1.25,"1¼"],[1.5,"1½"]];
 const kcOf=x=>4*(x.P||0)+4*(x.C||0)+9*(x.F||0)+alKcal(x); /* v319: con el alcohol apuntado */
 const normQ=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 function dpkHtml(){const p=S.dpk,t=dayTargets(p.k),m=t&&mealPlan(t,p.k).meals.find(x=>x.id===p.mid);if(!m)return"";const a=(S.menu[p.k]||{})[p.mid],q=normQ(p.q).trim();
-  let xs=allDishes().filter(x=>x.meals.includes(m.id)||(a&&x.id===a.d));if(q)xs=allDishes().filter(x=>normQ(x.n).includes(q));
+  let xs=allDishes().filter(x=>(x.meals.includes(m.id)&&supVer(x))||(a&&x.id===a.d));if(q)xs=allDishes().filter(x=>supVer(x)&&normQ(x.n).includes(q));
   const L=xs.map(x=>({x,b:bestScale(x,m)})).sort((u,v)=>Math.abs(kcOf(u.x)*u.b.s-m.kcal)-Math.abs(kcOf(v.x)*v.b.s-m.kcal)).slice(0,q?12:30);
   return`<div class="overlay" data-close="1"><div class="sheet glass pad fade ms-sheet" role="dialog" aria-modal="true" aria-label="Plato para ${esc(m.n)}">
     <div class="row"><h3>${esc(m.n)} · ${esc(dateLabel(p.k))}</h3><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -6676,7 +6900,7 @@ function dpkHtml(){const p=S.dpk,t=dayTargets(p.k),m=t&&mealPlan(t,p.k).meals.fi
     <div class="dpk-a"><button type="button" class="btn sm" data-dpka="auto">Elegir por mí</button>${a?'<button type="button" class="btn sm" data-dpka="none">Quitar plato</button><button type="button" class="btn sm" data-dpka="copy">Copiar a otros días</button>':""}<button type="button" class="btn sm" data-dpka="new">＋ Plato nuevo</button></div>
     <label class="ms-q">${IC_SRCH}<input id="dpkq" type="search" placeholder="Buscar plato…" autocomplete="off" value="${esc(p.q||"")}" aria-label="Buscar plato"></label>
     <div class="ms-list" id="dpkl">${dpkList(m,L,a)}</div></div></div>`}
-function dpkList(m,L,a){return L.length?`<div class="ms-lbl2">${S.dpk.q?"Resultados":"Los que mejor encajan"}</div>`+L.map(({x,b})=>`<button class="ms-it${a&&a.d===x.id?" on":""}" data-dpkp="${x.id}"><span>${esc(x.n)}${b.s!==1?` <small>${fmtS(b.s)}</small>`:""}</span><small>${fmtInt(kcOf(x)*b.s)} kcal</small></button>`).join(""):`<p class="ms-none">No hay platos con ese nombre.</p>`}
+function dpkList(m,L,a){return L.length?`<div class="ms-lbl2">${S.dpk.q?"Resultados":"Los que mejor encajan"}</div>`+L.map(({x,b})=>`<button class="ms-it${a&&a.d===x.id?" on":""}" data-dpkp="${x.id}"><span class="dpk-n"><span class="dpk-t">${esc(x.n)}</span>${b.s!==1?`<small>${fmtS(b.s)}</small>`:""}</span><small>${fmtInt(kcOf(x)*b.s)} kcal</small></button>`).join(""):`<p class="ms-none">No hay platos con ese nombre.</p>`}
 function dpkAssign(v){const p=S.dpk;if(!p)return;const k=p.k,mid=p.mid;S.menu[k]=Object.assign({},S.menu[k]);
   if(v==="none")delete S.menu[k][mid];
   else if(v==="auto"){delete S.menu[k][mid];const t=dayTargets(k);if(t){const m=mealPlan(t,k).meals.find(x=>x.id===mid);const q=m&&pickDish(m,[]);if(q)S.menu[k][mid]={d:q.d,s:q.s,lock:false}}}
@@ -6696,9 +6920,9 @@ function optList(d,L){return L.map(x=>`<button type="button" class="opt-i${x.v==
 function mealOpen(mid){S.msh={mid,k:S.day,q:""};S.sheet="meal";renderModal()}
 function mshMeal(){const p=S.msh;if(!p)return null;const t=dayTargets(p.k);return t&&mealPlan(t,p.k).meals.find(x=>x.id===p.mid)}
 function mshList(m){const p=S.msh,q=normQ(p.q).trim();let xs,lbl;
-  if(q){lbl="";xs=allDishes().filter(d=>normQ(d.n).includes(q)).slice(0,8).map(d=>({d,s:1}))}
+  if(q){lbl="";xs=allDishes().filter(d=>supVer(d)&&normQ(d.n).includes(q)).slice(0,8).map(d=>({d,s:1}))}
   else{const fq=freqDishes(m.id,p.k);if(fq.length){lbl="Lo que sueles comer";xs=fq.map(o=>({d:dishById(o.id),s:o.s}))}
-    else{lbl="Platos que encajan";const cur=(S.menu[p.k]||{})[m.id];xs=allDishes().filter(d=>!cur||d.id!==cur.d).map(d=>({d,s:1,dx:Math.abs(kcOf(d)-m.kcal)})).sort((a,b)=>a.dx-b.dx).slice(0,4)}}
+    else{lbl="Platos que encajan";const cur=(S.menu[p.k]||{})[m.id];xs=allDishes().filter(d=>supVer(d)&&(!cur||d.id!==cur.d)).map(d=>({d,s:1,dx:Math.abs(kcOf(d)-m.kcal)})).sort((a,b)=>a.dx-b.dx).slice(0,4)}}
   const rows=xs.length?xs.map(o=>`<button class="ms-it" data-mspick="${o.d.id}|${o.s}"><span>${esc(o.d.n)}${o.s!==1?` <small>${fmtS(o.s)}</small>`:""}</span><small>${fmtInt(kcOf(o.d)*o.s)} kcal</small></button>`).join(""):(S.sample?"":`<p class="ms-none">No hay platos con ese nombre. Puedes crearlo en Plan › Platos o hacer una foto.</p>`);
   return(q?msAiBtn(p.q):"")+(lbl?`<div class="ms-lbl2">${lbl}</div>`:"")+rows}
 function mealSheetHtml(){const p=S.msh,m=mshMeal();if(!m)return"";const k=p.k,e=(S.log[k]||{})[m.id],st=e&&e.st;
@@ -7034,7 +7258,7 @@ function wizHtml(){
   return`<div class="overlay"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="Asistente de platos">
     <div class="row"><h3>${w.id?"Editar plato":"Nuevo plato"}</h3><button class="hbtn xclose" data-wz="cancel" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="wtop">
-      <label class="f" for="wz_n">Nombre del plato<input id="wz_n" value="${esc(w.n)}" placeholder="Ej.: Poke de salmón con arroz"></label>
+      <label class="f" for="wz_n">Nombre del plato<input id="wz_n" maxlength="60" data-maxc="60" value="${esc(w.n)}" placeholder="Ej.: Poke de salmón con arroz"></label>
       <label class="f" for="wz_serv">Raciones que salen<input id="wz_serv" inputmode="numeric" value="${w.serv}"></label>
     </div>
     ${S.sample?`<div class="wauto"><button class="btn primary ia" data-wz="auto" ${w.busy?"disabled":""}>${IC_SPARK}${w.busy?"Pensando…":"Autorrellenar ingredientes"}</button><span class="note" style="margin:0">${w.busy?"Claude está desglosando el plato. Puede tardar unos segundos.":"Claude propone ingredientes y cantidades a partir del nombre. Luego los revisas."}</span></div>`:""}
@@ -7050,37 +7274,37 @@ function wizHtml(){
   </div></div>`;
 }
 /* ---------- Plato rápido: montar un plato por raciones, sin gramos ---------- */
-const RAT={pollo:["1 filete",150],pavo:["4 lonchas",60],ternera:["1 filete",150],cerdo:["2 filetes",150],huevo:["2 huevos",120],claras:["1 vaso",200],atun:["1 lata",56],merluza:["1 lomo",150],salmon:["1 lomo",150],gambas:["1 ración",150],mejillones:["1 lata",70],sardinas:["1 lata",65],tofu:["½ bloque",125],jamon:["4 lonchas",40],burgos:["½ pieza",125],skyr:["1 tarrina",150],yprot:["1 yogur",120],qbprot:["1 tarrina",200],kefir:["1 vaso",200],yogur:["1 yogur",125],whey:["1 cacito",30],bprot:["1 botella",330],
-  arroz:["1 ración",80],pasta:["1 ración",80],pastaint:["1 ración",80],pan:["¼ de barra",60],panint:["2 rebanadas",60],wrap:["1 tortilla",60],avena:["4 cucharadas",50],quinoa:["1 ración",70],patata:["1 mediana",200],boniato:["1 mediano",200],tortitas:["3 tortitas",24],granola:["1 puñado",40],lentejas:["½ bote",200],garbanzos:["½ bote",200],platano:["1 plátano",120],datiles:["4 dátiles",30],
+const RAT={pollo:["1 filete",150],pavo:["4 lonchas",60],ternera:["1 filete",150],cerdo:["2 filetes",150],huevo:["2 huevos",120],claras:["1 vaso",200],atun:["1 lata",56],merluza:["1 lomo",150],salmon:["1 lomo",150],gambas:["1 ración",150],mejillones:["1 lata",70],sardinas:["1 lata",65],tofu:["½ bloque",125],jamon:["4 lonchas",40],burgos:["½ pieza",125],skyr:["1 tarrina",150],yprot:["1 yogur",120],qbprot:["1 tarrina",200],kefir:["1 vaso",200],kefir0:["1 vaso",200],yogur:["1 yogur",125],whey:["1 cacito",30],bprot:["1 botella",330],
+  arroz:["1 ración",80],pasta:["1 ración",80],pastaint:["1 ración",80],pan:["¼ de barra",60],panint:["2 rebanadas",60],wrap:["1 tortilla",60],avena:["4 cucharadas",50],quinoa:["1 ración",70],patata:["1 mediana",200],boniato:["1 mediano",200],tortitas:["3 tortitas",24],granola:["1 puñado",40],lentejas:["½ bote",200],garbanzos:["½ bote",200],lentbote:["½ bote",200],garbote:["½ bote",200],platano:["1 plátano",120],datiles:["4 dátiles",30],
   verduras:["1 ración",200],espinacas:["1 puñado",100],lechuga:["1 bol",60],setas:["1 ración",125],tomate:["1 tomate",150],cebolla:["½ cebolla",80],rojos:["1 puñado",80],manzana:["1 manzana",180],naranja:["1 naranja",200],
-  aceite:["1 cucharada",10],aguacate:["½ aguacate",80],nueces:["1 puñado",20],almendras:["1 puñado",20],cacahuete:["1 cucharada",15],hummus:["2 cucharadas",40],curado:["2 lonchas",20],choco:["2 onzas",20],miel:["1 cucharada",20],stomate:["3 cucharadas",60],leche:["1 vaso",250],sal:["1 pizca",1]};
-const PB_TABS=[["prot","Proteína",["pollo","pavo","ternera","cerdo","huevo","claras","atun","merluza","salmon","gambas","sardinas","mejillones","tofu","jamon","yprot","qbprot","skyr","kefir","burgos","yogur","bprot","whey"]],
-  ["carb","Hidratos",["arroz","pasta","pastaint","patata","boniato","pan","panint","wrap","avena","quinoa","lentejas","garbanzos","tortitas","granola","platano","datiles"]],
+  aceite:["1 cucharada",10],aguacate:["½ aguacate",80],nueces:["1 puñado",20],almendras:["1 puñado",20],cacahuete:["1 cucharada",15],hummus:["2 cucharadas",40],hummusc:["2 cucharadas",40],curado:["2 lonchas",20],choco:["2 onzas",20],miel:["1 cucharada",20],stomate:["3 cucharadas",60],leche:["1 vaso",250],sal:["1 pizca",1]};
+const PB_TABS=[["prot","Proteína",["pollo","pavo","ternera","cerdo","huevo","claras","atun","merluza","salmon","gambas","sardinas","mejillones","tofu","jamon","yprot","qbprot","skyr","kefir","kefir0","burgos","yogur","bprot","whey"]],
+  ["carb","Hidratos",["arroz","pasta","pastaint","patata","boniato","pan","panint","wrap","avena","quinoa","lentejas","lentbote","garbanzos","garbote","tortitas","granola","platano","datiles"]],
   ["veg","Verdura y fruta",["verduras","espinacas","lechuga","tomate","setas","cebolla","rojos","manzana","naranja"]],
-  ["extra","Extras",["aceite","aguacate","hummus","nueces","almendras","cacahuete","curado","stomate","miel","choco","leche"]]];
+  ["extra","Extras",["aceite","aguacate","hummus","hummusc","nueces","almendras","cacahuete","curado","stomate","miel","choco","leche"]]];
 const pbShort=id=>(INGR_BY[id]?INGR_BY[id].n:id).replace(/\s*\(.*?\)/g,"").replace(/^Pechuga de /,"").replace(/^Copos de /,"");
 const pbRat=id=>RAT[id]||["100 g",100];
 const fmtQ=q=>q===.5?"½":q===1.5?"1½":q===2.5?"2½":String(q).replace(".",",");
 function pbAutoName(items){const ids=items.map(x=>x.id),main=ids.find(i=>PB_TABS[0][2].includes(i))||ids[0];if(!main)return"";
   const rest=ids.filter(i=>i!==main&&!["aceite","sal"].includes(i)).slice(0,2).map(i=>pbShort(i).toLowerCase());
   const m=pbShort(main);return m.charAt(0).toUpperCase()+m.slice(1)+(rest.length?" con "+joinY(rest):"")}
-function pbMeals(items){const ids=items.map(x=>x.id),bk=["avena","yogur","yprot","qbprot","skyr","kefir","leche","granola","tortitas","rojos","miel","bprot","whey","platano","datiles","pan","panint"];
+function pbMeals(items){const ids=items.map(x=>x.id),bk=["avena","yogur","yprot","qbprot","skyr","kefir","kefir0","leche","granola","tortitas","rojos","miel","bprot","whey","platano","datiles","pan","panint"];
   return ids.length&&ids.every(i=>bk.includes(i)||["nueces","almendras","cacahuete","choco","manzana","naranja","aguacate","aceite","tomate","jamon","huevo","pavo"].includes(i))?["breakfast","snack"]:["lunch","dinner"]}
 function pbTotals(items){const t={P:0,C:0,F:0};items.forEach(x=>{const f=INGR_BY[x.id];if(!f)return;const g=pbRat(x.id)[1]*x.q/100;t.P+=f.P*g;t.C+=f.C*g;t.F+=f.F*g});t.kcal=4*t.P+4*t.C+9*t.F;return t}
-function pbHtml(){const b=S.pb,tab=PB_TABS.find(x=>x[0]===b.tab)||PB_TABS[0],T=pbTotals(b.items),used=new Set(b.items.map(x=>x.id)),merc=(S.profile||{}).store==="merc";
+function pbHtml(){const b=S.pb,tab=PB_TABS.find(x=>x[0]===b.tab)||PB_TABS[0],T=pbTotals(b.items),used=new Set(b.items.map(x=>x.id)),sup=supId(),SN=sup?SUPERS[sup].N:{};
   const name=b.nAuto?pbAutoName(b.items):b.n,tot=T.P*4+T.C*4+T.F*9||1;
-  const opts=tab[2].filter(id=>INGR_BY[id]).sort((a,c)=>merc?((MERC_N[c]?1:0)-(MERC_N[a]?1:0)):0);
+  const opts=tab[2].filter(id=>INGR_BY[id]).sort((a,c)=>(SN[c]?1:0)-(SN[a]?1:0));
   return`<div class="overlay"><div class="sheet glass pad fade re-sheet pb-sheet" role="dialog" aria-modal="true" aria-label="${b.id?"Editar plato":"Nuevo plato"}">
     <div class="row"><h3 style="margin:0">${b.id?"Editar plato":"Nuevo plato"}</h3><button class="hbtn xclose" data-pb="close" aria-label="Cerrar">${ico(IC_X,20)}</button></div>
-    <input id="pb_name" class="re-name" value="${esc(name)}" placeholder="Nombre (se pone solo)" aria-label="Nombre del plato">
+    <input id="pb_name" class="re-name" maxlength="60" data-maxc="60" value="${esc(name)}" placeholder="Nombre (se pone solo)" aria-label="Nombre del plato">
     <div class="pb-sum"><div class="pb-k"><b>${fmtInt(T.kcal)}</b><span>kcal</span></div>
       <div class="pb-m"><div class="pb-bar" aria-hidden="true"><i style="flex:${T.P*4/tot};background:var(--prot,var(--rojo))"></i><i style="flex:${T.C*4/tot};background:var(--carb,var(--amarillo))"></i><i style="flex:${T.F*9/tot};background:var(--fat,var(--azul))"></i></div>
       <div class="pb-mv"><span><i style="background:var(--prot,var(--rojo))"></i>${fmtInt(T.P)} g prot.</span><span><i style="background:var(--carb,var(--amarillo))"></i>${fmtInt(T.C)} g hidr.</span><span><i style="background:var(--fat,var(--azul))"></i>${fmtInt(T.F)} g grasa</span></div></div></div>
-    ${b.items.length?`<ol class="re-list">${b.items.map((x,i)=>{const r=pbRat(x.id);return`<li class="re-it pb-it"><div class="re-top"><div class="re-n"><b>${esc(merc&&MERC_N[x.id]?MERC_N[x.id]:INGR_BY[x.id].n)}</b><span>${fmtQ(x.q)} × ${esc(r[0])} · ${fmtInt(r[1]*x.q)} g</span></div>
+    ${b.items.length?`<ol class="re-list">${b.items.map((x,i)=>{const r=pbRat(x.id);return`<li class="re-it pb-it"><div class="re-top"><div class="re-n"><b>${esc(SN[x.id]||INGR_BY[x.id].n)}</b><span>${fmtQ(x.q)} × ${esc(r[0])} · ${fmtInt(r[1]*x.q)} g</span></div>
       <div class="pb-st"><button type="button" data-pbq="${i}:-0.5" aria-label="Menos">−</button><b>${fmtQ(x.q)}</b><button type="button" data-pbq="${i}:0.5" aria-label="Más">+</button></div><div class="re-ia"><button type="button" data-pbdel="${i}" aria-label="Quitar">${ico(IC_X)}</button></div></div></li>`}).join("")}</ol>`:`<p class="pb-empty">Toca los ingredientes de abajo. Las cantidades van en raciones: un filete, medio bote, una cucharada…</p>`}
     <div class="re-addh"><h3>Añadir</h3></div>
     <div class="re-tabs" role="tablist" aria-label="Tipo de ingrediente">${PB_TABS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${b.tab===k}" data-pbtab="${k}">${l}</button>`).join("")}</div>
-    <ul class="re-lib">${opts.map(id=>{const f=INGR_BY[id],r=pbRat(id),g=r[1]/100,on=used.has(id);return`<li><div class="re-n"><b>${esc(merc&&MERC_N[id]?MERC_N[id]:f.n)}</b><span>${f.mine?"Tuyo · ":""}${esc(r[0])} · ${fmtInt(f.P*g)} g prot. · ${fmtInt((4*f.P+4*f.C+9*f.F)*g)} kcal</span></div><button type="button" class="re-add${on?" on":""}" data-pbadd="${id}" aria-label="${on?"Quitar":"Añadir"} ${esc(f.n)}">${ico(on?IC_OK:IC_PLUS,20)}</button></li>`}).join("")}</ul>
+    <ul class="re-lib">${opts.map(id=>{const f=INGR_BY[id],r=pbRat(id),g=r[1]/100,on=used.has(id);return`<li><div class="re-n"><b>${esc(SN[id]||f.n)}</b><span>${f.mine?"Tuyo · ":""}${esc(r[0])} · ${fmtInt(f.P*g)} g prot. · ${fmtInt((4*f.P+4*f.C+9*f.F)*g)} kcal</span></div><button type="button" class="re-add${on?" on":""}" data-pbadd="${id}" aria-label="${on?"Quitar":"Añadir"} ${esc(SN[id]||f.n)}">${ico(on?IC_OK:IC_PLUS,20)}</button></li>`}).join("")}</ul>
     <button type="button" class="chip pb-new" data-pbing="${tab[0]}">＋ Ingrediente propio</button>
     <label class="f pb-meals">Encaja en<button type="button" class="pk-f" data-pbml="1" aria-haspopup="dialog"><span>${b.meals.length?Object.keys(MEAL_N).filter(k=>b.meals.includes(k)).map(k=>MEAL_N[k]).join(", "):"Elige en qué comidas"}</span><i aria-hidden="true">›</i></button></label>
     <div class="re-foot"><button type="button" class="chip" data-pb="grams">Ajustar en gramos</button><button type="button" class="btn primary" data-pb="save">Guardar plato</button></div>
@@ -7176,8 +7400,21 @@ function menuMicros(k){
 
 /* Platos: «···» reúne lo que antes eran iconos sueltos (la manita no se entendía). Cada opción reusa su acción de siempre. */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dlmo]");if(!b)return;const id=b.dataset.dlmo,d=dishById(id);if(!d)return;
-  const no=((S.profile||{}).dislike||[]).includes(id),O=d.custom?[["dishedit","Editar"],["dislike",no?"Volver a usar en menús automáticos":"No usar en menús automáticos"],["dishdel","Quitar plato"]]:[["dishdup","Duplicar y editar"],["dislike",no?"Volver a usar en menús automáticos":"No usar en menús automáticos"]];
-  pkSheet(d.n,O,"",a=>{const x=document.createElement("button");x.hidden=true;x.dataset[a]=id;document.body.appendChild(x);x.click();x.remove()},b)});
+  const no=((S.profile||{}).dislike||[]).includes(id),usa=["dislike",no?"Volver a usar en menús automáticos":"No usar en menús automáticos"],
+    O=d.custom?[["dishedit","Editar"],["dlcopy","Duplicar"],["dlmenu","Añadir al menú…"],["dlate","Apuntar como comido hoy"],usa,["dishdel","Quitar plato"]]:[["dishdup","Duplicar y editar"],["dlmenu","Añadir al menú…"],["dlate","Apuntar como comido hoy"],usa]; /* v372 (Javier, 27-10): añadir al menú y apuntar sin ir a la semana; duplicar también los tuyos */
+  pkSheet(d.n,O,"",a=>{if(a==="dlmenu")return dlMenuPick(d,b);if(a==="dlate")return dlAteNow(d,b);if(a==="dlcopy")return dlCopy(d);const x=document.createElement("button");x.hidden=true;x.dataset[a]=id;document.body.appendChild(x);x.click();x.remove()},b)});
+/* v372 · «···» de un plato: copia de uno tuyo; ponerlo en el menú de un día y una comida (con su ración ajustada); apuntarlo como comido hoy. Siempre con «Deshacer» */
+function dlCopy(d){const c=Object.assign({},d,{custom:false});if((d.ing||[]).every(r=>INGR_BY[r[0]])&&!(d.ov&&Object.keys(d.ov).length)){pbOpen(c);S.pb.n=d.n+" (copia)";renderPb()}else{S.wiz=newWiz(c);S.wiz.n=d.n+" (copia)";renderWiz()}}
+function dlScale(d,k,mid){const t=dayTargets(k),m=t&&mealPlan(t,k).meals.find(x=>x.id===mid);return m?bestScale(d,m).s:1}
+function dlMenuPick(d,from){const tk=today(),D=[0,1,2,3,4,5,6].map(i=>shiftKey(tk,i)),M=d.meals&&d.meals.length?MEALS.filter(([m])=>d.meals.includes(m)):MEALS;
+  pkSheet("Añadir «"+d.n+"» al menú",D.map(k=>[k,dateLabel(k)]),"",k=>setTimeout(()=>pkSheet("Comida · "+dateLabel(k),M.map(([m,n])=>[m,n]),"",mid=>{const prev=JSON.parse(JSON.stringify(S.menu||{}));
+    S.menu[k]=Object.assign({},S.menu[k],{[mid]:{d:d.id,s:dlScale(d,k,mid),lock:true}});saveMenu();render();buzz(8);undoToast("En el menú: "+MEAL_N[mid].toLowerCase()+" de "+dateLabel(k),()=>{S.menu=prev;saveMenu();render()})},from),0),from)}
+function dlAteNow(d,from){const k=today(),M=d.meals&&d.meals.length?MEALS.filter(([m])=>d.meals.includes(m)):MEALS;
+  pkSheet("Apuntar «"+d.n+"» hoy",M.map(([m,n])=>[m,n]),"",mid=>{const prev=JSON.parse(JSON.stringify(S.log||{})),sc=dlScale(d,k,mid);
+    setLog(k,mid,{st:"chg",d:d.id,s:sc,n:d.n,P:d.P*sc,C:d.C*sc,F:d.F*sc});render();buzz(8);undoToast("Apuntado: "+d.n,()=>{S.log=prev;saveLog();render()})},from)}
+/* v372 · nombre de plato con tope de 60 (decisión de Javier, 27-10): a partir de 45 se ve cuánto queda, en vez de cortarlo sin avisar */
+document.addEventListener("input",e=>{const i=e.target;if(!i.dataset||!i.dataset.maxc)return;const max=+i.dataset.maxc,n=i.value.length;let c=i.parentNode.querySelector(":scope>.nm-cnt");
+  if(n<max-15){if(c)c.remove();return}if(!c){c=document.createElement("small");c.className="nm-cnt";c.setAttribute("aria-live","polite");i.after(c)}c.textContent=n+" de "+max});
 
 /* ---------- Vistas ---------- */
 function stravaBanner(){return""}
@@ -7208,7 +7445,7 @@ function mealsCard(t){
     ${logSummary(t,S.day)}
     <div class="meals">${rows}</div>
     ${xLine(t)}
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida: cada comida principal, y la de después de entrenar, con al menos ${fmtInt(protThr()||0)} g (0,3 g/kg), lo que activa la síntesis muscular.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></details></section>`;
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">${t.pm?esc(ppLine())+" Las comidas se reparten igual entrenes o no, con la proteína repartida:":"Más hidratos alrededor del entreno, menos grasa justo antes para digerir mejor, y proteína repartida:"} cada comida principal, y la de después de entrenar, con al menos ${fmtInt(protThr()||0)} g (0,3 g/kg), lo que activa la síntesis muscular.${t.bonus?" La cena lleva "+fmtInt(t.bonus)+" g de hidratos extra por lo previsto mañana.":""} Horarios editables en el perfil.${Object.keys(S.menu[S.day]||{}).length?"":" Asigna platos en la pestaña Plan."}</p></details></section>`;
 }
 /* Micros y suplementos: detalle secundario, en una hoja desde el pie de Comidas */
 const IC_DROP='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8c3.7 4.4 6.6 7.9 6.6 11.8a6.6 6.6 0 0 1-13.2 0c0-3.9 2.9-7.4 6.6-11.8z"/></svg>';
@@ -7426,11 +7663,11 @@ function vPlanTrain(wk){
     const d=new Date(k+"T12:00:00"),real=S.acts.filter(a=>a.day===k),pl=plannedFor(k),pm=planMatch(k);
     pm.pl.forEach(x=>{if(x.st!=="pend"){comp.n++;if(x.st==="done"||x.st==="chg")comp.ok++}});
     real.forEach(a=>{tot.n++;tot.min+=a.mov/60;tot.kcal+=a.kcal||0});pendingPlanned(k).forEach(s=>{tot.n++;tot.min+=s.dur||0;tot.kcal+=estSession(s,kg).kcal});
-    const realH=real.length?`<div class="treal af-list">${real.map(afMini).join("")}</div>`:""; /* v305: ficha resumida (el detalle, en Actividad) */
+    const realH=real.length?`<div class="treal ar-plist">${real.map(a=>afRow(a,true)).join("")}</div>`:""; /* v372: la misma fila que en Actividad */ /* v305: ficha resumida (el detalle, en Actividad) */
     let edit="";
     if(k>=tk){
       edit=pl.map((s,i)=>[s,i]).sort((p,q)=>(p[0].time||"99")<(q[0].time||"99")?-1:1).map(([s,i])=>{const x=pm.pl[i];if(x.st!=="pend")return pline(x,k);
-        return`<div class="af pf" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo">${pfBody(s,"pend",kg)}${s.race?`<button type="button" class="chip sm rp-chip" data-rplan="${k}|${i}">Plan de carrera</button>`:""}</div>`}).join(""); /* v303: ficha prevista */
+        return pfRow(s,k,i)+(s.race?`<button type="button" class="chip sm rp-chip" data-rplan="${k}|${i}">Plan de carrera</button>`:"")}).join(""); /* v372: fila prevista (antes, la ficha grande de v303) */
     }else if(pl.length)edit=pm.pl.map(x=>pline(x,k)).join("");
     const empty=!real.length&&!pl.length;
     return`<div class="trow ${k===tk?"today":""} ${k<tk?"past":""}${k===planDayK(mondayOf(k))?" sel":""}" data-trow="${k}"><div class="tday"><b>${DOW[d.getDay()]}</b><span>${d.getDate()}</span>${k===tk?'<small>hoy</small>':""}</div>
@@ -7485,8 +7722,9 @@ function vHoy(){
       <details class="why" ${S.whyOpen?"open":""}><summary><span>De dónde salen <b>${fmtInt(t.kcal)} kcal</b></span><span class="chev" aria-hidden="true">›</span></summary>
         <div class="kv" style="margin-top:10px"><div><span>Basal</span><b>${fmtInt(t.b.bmr)}</b></div><div><span>${t.bySteps?"Pasos":"Día a día"}</span><b>${fmtInt(t.neat)}</b></div><div><span>Ejercicio</span><b>${fmtInt(t.ex)}</b></div></div>
         <p class="note">${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}Gasto total ${fmtInt(t.tdee)} kcal · ${esc(t.g.label.toLowerCase())} ${t.g.adj>0?"+":""}${r0(t.g.adj*100)} %${t.eaFloor?" · +"+fmtInt(t.eaFloor)+" kcal para no bajar de "+eaThr().lo+" de disponibilidad energética":""}${t.bonus?" · carga para mañana +"+fmtInt(4*t.bonus)+" kcal":""}. ${t.adjusted?"Hidratos subidos para reponer el glucógeno gastado.":""}${t.glyAdd?` Incluye +${fmtInt(t.glyAdd)} g de hidratos para rellenar tu depósito de glucógeno.`:""}${t.pBonus?` Proteína +${fmtInt(t.pBonus*kg)} g por la carga de hoy.`:""}${t.choCap?` Hidratos en su máximo (12 g/kg): el resto de la energía, en grasas.`:""}</p>
-        <p class="note">Cómo se reparte. Proteína: parte de tu objetivo (1,6 g/kg en mantenimiento, 1,8 en hipertrofia, 2,2 en pérdida de grasa y recomposición) y sube con la carga del día: +0,15 g/kg por hora de entreno ponderada por la intensidad, hasta +0,4 y como mucho 2,4 g/kg. Hidratos: el resto de la energía, con un mínimo según tu objetivo y lo que gastas entrenando, y como mucho 12 g/kg.</p>
-        <p class="note">De dónde sale. Deportistas: 1,4–2,0 g/kg de proteína, y 2,3–3,1 g/kg en déficit para conservar músculo (ISSN, 2017). Tras 20 km de carrera, 1,65–1,83 g/kg (Kato y col., 2016). Hidratos: 8–12 g/kg en los días de 4–5 h o más (posición conjunta ACSM, AND y DC, 2016). El aumento por horas es una aproximación de Sustrato dentro de esos rangos.</p>
+        <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary>${ppLine()?`<p class="note">${esc(ppLine())}</p>`:""}
+        ${t.pm?"":`<p class="note">Cómo se reparte. Proteína: parte de tu objetivo (1,6 g/kg en mantenimiento, 1,8 en hipertrofia, 2,2 en pérdida de grasa y recomposición) y sube con la carga del día: +0,15 g/kg por hora de entreno ponderada por la intensidad, hasta +0,4 y como mucho 2,4 g/kg. Hidratos: el resto de la energía, con un mínimo según tu objetivo y lo que gastas entrenando, y como mucho 12 g/kg.</p>`}
+        <p class="note">De dónde sale. Deportistas: 1,4–2,0 g/kg de proteína, y 2,3–3,1 g/kg en déficit para conservar músculo (ISSN, 2017). Tras 20 km de carrera, 1,65–1,83 g/kg (Kato y col., 2016). Hidratos: 8–12 g/kg en los días de 4–5 h o más (posición conjunta ACSM, AND y DC, 2016).${t.pm?"":" El aumento por horas es una aproximación de Sustrato dentro de esos rangos."}</p></details>
       </details>
     </div>
   </section>
@@ -7699,8 +7937,8 @@ function vPlan(){
       ${t?microRow(k,t):""}
       ${k>=tk?`<div class="mw-sec"><button class="chip" data-gotoplan="${k}">Editar entrenos</button></div>`:""}</div></section>`;
   }).join("");
-  const dlRow=x=>`<div class="spark dl-r">${taIco(taTipoPlato(x))}<span style="min-width:0">${esc(x.n)}<small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
-  const ds=allDishes(),custom=ds.filter(x=>x.custom).map(dlRow).join(""),baseL=ds.filter(x=>!x.custom).map(dlRow).join("");
+  const dlRow=x=>`<div class="spark dl-r">${taIco(taTipoPlato(x))}<span style="min-width:0"><span class="dl-n">${esc(x.n)}</span><small class="dl-m">${x.meals.map(m=>MEAL_N[m]).join(", ")} · ${fmtInt(4*x.P+4*x.C+9*x.F)} kcal</small>${(()=>{const t=[dishAllowed(x)?"":"No va con tu dieta",((S.profile||{}).dislike||[]).includes(x.id)?"No entra en el menú automático":""].filter(Boolean);return t.length?`<span class="dl-tags">${t.map(v=>`<span class="dl-tag">${v}</span>`).join("")}</span>`:""})()}<span class="dl-bar" aria-label="Proteína ${fmtInt(x.P)} g, hidratos ${fmtInt(x.C)} g, grasas ${fmtInt(x.F)} g"><i style="flex:${4*x.P};background:var(--prot)"></i><i style="flex:${4*x.C};background:var(--carb)"></i><i style="flex:${9*x.F};background:var(--fat)"></i></span></span><span class="dl-act"><button class="dl-ib" data-dlmo="${x.id}" aria-haspopup="dialog" aria-label="Opciones de ${esc(x.n)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="18.5" cy="12" r="1.7"/></svg></button></span></div>`;
+  const ds=allDishes(),custom=ds.filter(x=>x.custom).map(dlRow).join(""),baseL=ds.filter(x=>!x.custom&&supVer(x)).map(dlRow).join("");
   if(!S.planView)S.planView="train";
   const pv=S.planView;
   const pseg="";
@@ -7708,7 +7946,7 @@ function vPlan(){
   if(S.planView==="dishes")return pseg+`
   <section class="glass pad fade dnew"><div class="dnew-in"><div><h3>Crea tus platos</h3><p class="note" style="margin:4px 0 0">Elige proteína, hidratos y verdura por raciones. El nombre y los macros salen solos; lo guardas y queda listo para tu menú. También puedes duplicar uno de la lista base para adaptarlo.</p></div><div class="dnew-a"><button class="btn primary big" data-act="dishnew">Nuevo plato</button>${wzLblBtn("dn_lbl")}</div></div></section>
   ${custom?`<section class="glass pad fade"><h2>Tuyos · ${(S.dishes||[]).length}</h2>${custom}</section>`:""}
-  <section class="glass pad fade"><h2>Base · ${ds.filter(x=>!x.custom).length}</h2>${baseL}</section>`;
+  <section class="glass pad fade"><h2>Base · ${ds.filter(x=>!x.custom&&supVer(x)).length}</h2>${baseL}</section>`;
   return pseg+`${cards}
   <section class="glass pad fade">${(()=>{const F=mdFuture(wk);if(!F.length)return'<p class="note mw-past">Semana pasada: el menú automático rellena de hoy en adelante.</p>';const full=F.every(mdFull);
     return`<button class="btn primary big mw-main" data-act="autoweek">${full?"Proponer otros platos":"Rellenar mi semana"}</button><p class="note mw-sub">${full?"Cambia los platos automáticos de hoy en adelante. Los que elegiste tú se quedan.":"De hoy en adelante, con platos que cuadran con tus macros. Los que elegiste tú se quedan."}</p>`})()}
@@ -7718,7 +7956,13 @@ function vPlan(){
 }
 
 /* Portada de Plan: misma forma que Progreso. Cada loseta lleva su acción más habitual. */
-function niceName(n,t){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad";if(!n||n===t)return base;
+/* Un solo embudo para el nombre de cualquier actividad (Strava, reloj por Health Connect o Apple Salud, archivo FIT): todas pasan por aquí desde mapAct.
+   v372 (Javier, 27-10): el título que ponen solos los relojes («Trail 27/10 08:00», «Carrera 27 oct, 08:00») se queda como los de Strava: deporte y franja
+   del día («Trail por la mañana»); la fecha ya se ve en su sitio. Lo que escribe la persona no se toca */
+const NM_FRANJA=st=>{const h=+String(st||"").slice(11,13);return isNaN(h)||!String(st||"").slice(11,13)?"":h<12?"por la mañana":h<15?"a mediodía":h<21?"por la tarde":"por la noche"};
+const NM_AUTO=/(\b\d{1,2}[\/.\-]\d{1,2}([\/.\-]\d{2,4})?\b|\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}:\d{2}\b|\b\d{1,2}\s+(de\s+)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)[a-z]*\.?\b)/i;
+function niceName(n,t,st){const sp=SPORT[t]||"oth",base=SPORT_L[sp]||"Actividad",fr=NM_FRANJA(st);if(!n||n===t)return base;
+  if(NM_AUTO.test(n)){const rest=n.replace(new RegExp(NM_AUTO.source,"gi"),"").replace(/[,·\-–|]+/g," ").replace(/\s+/g," ").trim();if(rest.split(" ").filter(Boolean).length<=2)return fr?base+" "+fr:base}
   const m=/^(Morning|Lunch|Afternoon|Evening|Night)\s+(.+)$/.exec(n);const T={Morning:"por la mañana",Lunch:"a mediodía",Afternoon:"por la tarde",Evening:"por la tarde",Night:"por la noche"};
   const K={"Run":"Carrera","Trail Run":"Trail","Ride":"Ruta en bici","Mountain Bike Ride":"Ruta en MTB","Gravel Ride":"Ruta gravel","Virtual Ride":"Rodillo","E-Bike Ride":"Ruta en e-bike","Swim":"Natación","Walk":"Caminata","Hike":"Senderismo","Weight Training":"Fuerza","Workout":"Entreno"};
   if(m&&K[m[2]])return K[m[2]]+" "+T[m[1]];if(K[n])return K[n];
@@ -7740,7 +7984,7 @@ function vActs(){
     const tw=mondayOf(tk),pw=shiftKey(tw,-7),sd=k=>{const d=new Date(k+"T12:00:00");return d.getDate()+" "+MON[d.getMonth()].slice(0,3)};
     body=G.map(g=>{const e=shiftKey(g.w,6),lab=g.w===tw?"Esta semana":g.w===pw?"Semana pasada":sd(g.w)+" – "+sd(e)+(g.w.slice(0,4)!==tk.slice(0,4)?" "+g.w.slice(0,4):"");
       const km=g.a.reduce((x,a)=>x+(a.sport==="str"?0:a.dist),0)/1000,tm=g.a.reduce((x,a)=>x+a.mov,0);
-      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts af-list">${g.a.map(x=>afCard(x,false,true)).join("")}</div></div>`}).join("")}
+      return`<div class="wkg"><div class="wkh"><b>${lab}</b><span>${g.a.length} act.${km>=.1?" · "+(km<100?km.toFixed(1).replace(".",","):fmtInt(km))+" km":""} · ${fmtDur(tm)}</span></div><div class="acts ar-list">${g.a.map(afRow).join("")}</div></div>`}).join("")}
   const sum=list.reduce((s,a)=>({d:s.d+a.dist,t:s.t+a.mov,k:s.k+a.kcal}),{d:0,t:0,k:0});
   return `<section class="glass pad fade">
     <div class="row"><h2>Historial</h2></div>
@@ -7815,6 +8059,8 @@ document.addEventListener("pointerup",e=>{document.querySelectorAll(".re-plot[da
 function routeBlock(a){if(a.sport==="str")return"";const m=routeMap(a),p=elevProfile(a);if(!m&&!p)return"";
   const sid=a.sid?String(a.sid).replace(/^s/,""):null;
   return`<div class="rblock">${m?`<div class="rsec"><h4>Recorrido</h4>${sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>${m}`:""}${p}${!m&&sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>`}
+/* v372 (maqueta aprobada por Javier, 27-10): la hoja de una actividad, por secciones: el nombre con «deporte · día · hora»; arriba, sin fondo,
+   «¿Cómo fue?» y las cifras (el dato protagonista); «Energía por sustrato» en su grupo; Avituallamiento y Tasa de sudor con su título */
 function vDetail(){
   const a=S.acts.find(x=>x.id===S.detail);if(!a)return"";
   const s=S.subs[a.id],pf=S.perf[a.id];
@@ -7827,12 +8073,12 @@ function vDetail(){
   let subHtml;
   if(!hp)subHtml='<p class="note">Indica tu FC máxima y en reposo (o tu edad) en el perfil para calcular el sustrato.</p>';
   else if(!s)subHtml='<p class="empty sk-chart" aria-label="Calculando sustrato"><i class="sk" style="height:120px;width:100%;border-radius:14px"></i><span class="vh">Calculando sustrato…</span></p>';
-  else subHtml=`<div class="kv" style="margin:0 0 12px"><div><span><i class="kd" style="background:var(--carb)"></i>Hidratos</span><b><em class="mg-ap">≈</em>${reInt(s.cho/4)} <small>g</small></b></div><div><span><i class="kd" style="background:var(--fat)"></i>Grasas</span><b><em class="mg-ap">≈</em>${reInt(s.fat/9)} <small>g</small></b></div><div><span>% hidratos</span><b><em class="mg-ap">≈</em>${r0(s.cho/(s.cho+s.fat)*100)} <small>%</small></b></div></div>
+  else subHtml=`<div class="dt-grp"><div class="kv"><div><span><i class="kd" style="background:var(--carb)"></i>Hidratos</span><b><em class="mg-ap">≈</em>${reInt(s.cho/4)} <small>g</small></b></div><div><span><i class="kd" style="background:var(--fat)"></i>Grasas</span><b><em class="mg-ap">≈</em>${reInt(s.fat/9)} <small>g</small></b></div><div><span>% hidratos</span><b><em class="mg-ap">≈</em>${r0(s.cho/(s.cho+s.fat)*100)} <small>%</small></b></div></div>
     ${s.series?areaChart(s.series,a.mov):""}
-    <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos</span><span><i style="background:var(--fat)"></i>Grasas</span></div>
+    <div class="legend"><span><i style="background:var(--carb)"></i>Hidratos</span><span><i style="background:var(--fat)"></i>Grasas</span></div></div>
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="vplan-t" style="margin:6px 0">Tiempo por banda de sustrato</p>${bandBar(s.bands)}<p class="note">Qué parte de la energía de la salida sale de hidratos y de grasas según tu pulso. Es orientativo: en un momento concreto puede desviarse unos 17 puntos de lo que mediría un laboratorio; sumado a lo largo de la salida, el error se compensa en parte. Calibrado con 390 pruebas de laboratorio.${subAnchor(a,hp)}</p></details>`;
-  return `<div class="overlay" data-close="1"><div class="sheet glass pad fade" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
-    <div class="row"><div><span class="sp-lab">${spIcon(a.sport,"xs")}${SPORT_L[a.sport]||""}</span><h3 style="margin-top:8px" class="dt-name">${esc(a.name)}</h3><span class="note dt-when">${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}${(()=>{const v=rpeOf(a.id);return v&&a.sport!=="oth"?`<button type="button" class="ss-st" data-fe="1" aria-expanded="${!!S.feOpen}" aria-label="Fue ${RPE_L[v-1].toLowerCase()}. Tocar para cambiar"><i class="ss-dot" style="--c:var(--rpe${v})"></i>${RPE_L[v-1]}</button>`:""})()}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  return `<div class="overlay" data-close="1"><div class="sheet glass pad fade dt-sheet" role="dialog" aria-modal="true" aria-label="${esc(a.name)}">
+    <div class="row"><div><h3 class="dt-name">${esc(a.name)}</h3><span class="note dt-when">${SPORT_L[a.sport]?esc(SPORT_L[a.sport])+" · ":""}${esc(dateLabel(a.day))} · ${esc((a.start||"").slice(11,16))}${(()=>{const v=rpeOf(a.id);return v&&a.sport!=="oth"?`<button type="button" class="ss-st" data-fe="1" aria-expanded="${!!S.feOpen}" aria-label="Fue ${RPE_L[v-1].toLowerCase()}. Tocar para cambiar"><i class="ss-dot" style="--c:var(--rpe${v})"></i>${RPE_L[v-1]}</button>`:""})()}</span></div><button class="hbtn xclose" data-close="1" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     ${(()=>{/* v328: en bici de exterior, trail y senderismo, el desnivel sube a las cifras grandes (el ritmo o la velocidad, debajo) */
       const pk=a.sport==="indoor"?["Duración","Energía"]:(isBike(a.sport)||a.sport==="trail"||a.sport==="hike")&&a.elev>=30?["Distancia","Desnivel"]:isBike(a.sport)?["Distancia","Velocidad"]:["run","trail","walk","hike","swim"].includes(a.sport)?["Distancia","Ritmo"]:["Duración","Energía"];
       const pri=pk.map(k=>st.find(x=>x[0]===k)).filter(Boolean),sec=st.filter(x=>!pri.includes(x));const u=v=>{const m=/^([\d.,:]+)\s(\S+(?: \S+)?)$/.exec(v);return m?`${m[1]}<small> ${m[2]}</small>`:v};
@@ -7843,13 +8089,13 @@ function vDetail(){
       const fe=a.sport!=="oth";it=it.slice(0,it.length>=6?6:3);
       const rv=rpeOf(a.id);
       const faces=fe&&(!rv||S.feOpen)?ssHtml("act|"+a.id+"|"+a.day,rv,{label:rv?"¿Cambiar cómo fue?":"¿Cómo fue?",cls:"ss-dt"}):"";
-      return`${faces}<div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div>`})()}
+      return`${faces}<div class="dt-sum"><div class="dt-hero">${pri.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div><div class="dt-g" style="grid-template-columns:repeat(${Math.min(3,Math.max(1,it.length))},minmax(0,1fr))">${it.map(([k,v])=>`<div><span>${k}</span><b>${u(v)}</b></div>`).join("")}</div></div>`})()}
     ${routeBlock(a)}
-    <div class="row"><h2>Energía por sustrato</h2><span class="dt-hb">${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}${S.subs[a.id]&&S.subs[a.id].series?`<button class="hbtn dt-full" data-subfull="${a.id}" aria-label="Ver el sustrato en pantalla completa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></button>`:""}</span></div><div style="height:8px"></div>${subHtml}
+    <div class="row"><h2>Energía por sustrato</h2><span class="dt-hb">${hp&&a.kcal?`<button class="chip" data-fast="${a.id}" aria-pressed="${!!S.fasted[a.id]}">En ayunas</button>`:""}${S.subs[a.id]&&S.subs[a.id].series?`<button class="hbtn dt-full" data-subfull="${a.id}" aria-label="Ver el sustrato en pantalla completa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></button>`:""}</span></div>${subHtml}
     ${(()=>{const su=hrSuspect(a.id);return su?`<p class="note hr-sus"><b>Pulso dudoso.</b> Para tu ${isBike(a.sport)?"potencia o velocidad":"ritmo"} te correspondían unas ${r0(su.exp)} ppm y el sensor marcó ${r0(su.exp*su.ratio)}: el reparto se ha calculado con el pulso esperado, y esta sesión no cuenta para tu umbral, tu VO2máx ni la deriva.</p>`:""})()}
     ${drBlock(a)}
-    ${fuelBlock(a)}
-    ${sweatBlock(a)}
+    ${(h=>h?`<span class="dt-l">Avituallamiento</span>${h}`:"")(fuelBlock(a))}
+    ${(h=>h?`<span class="dt-l">Tasa de sudor</span>${h}`:"")(sweatBlock(a))}
   </div></div>`;
 }
 /* v265: de qué parte el modelo en esta salida; antes era una nota suelta bajo «Cómo se calcula» */
@@ -7940,7 +8186,7 @@ function vPerfil(){
       ${pkField("level","Nivel de entrenamiento",Object.entries(LEVELS).map(([k,v])=>[k,v.l]),p.level||"mid")}
     </div><p class="note">Con el umbral de lactato, las bandas de sustrato se calculan a partir de él, que es más preciso que la FC máxima.${!p.hrmax?(()=>{const d=autoHrmax(),e=num(p.age)?Math.round(208-0.7*num(p.age)):null;return d&&(!e||d.v>e)?` Si dejas vacía la FC máxima, uso la que has alcanzado en tus actividades: <b>${d.v} ppm</b> (${esc(dateLabel(d.d))}), más alta que la estimada por tu edad.`:e?` Si dejas vacía la FC máxima, uso la estimada por tu edad: <b>${e} ppm, ±6</b>${d?` (lo más alto en tus actividades es ${d.v}, y entrenando casi nunca se llega al máximo)`:""}.`:""})():""}${!p.lthr&&autoLthr()?` Si dejas vacío el umbral, uso el estimado con tus esfuerzos sostenidos de los últimos 4 meses: <b>${autoLthr()} ppm, ±8</b>.`:""}${(!p.hrmax||!p.lthr)?" Si conoces tus valores reales, escríbelos: afinan el VO2max, las zonas y los sustratos.":""}</p></fieldset></details>
     <details class="psec" data-ps="ali" ${psOpen("ali")}><summary><span class="ps-t"><b>Alimentación</b><small>${psSum.ali}</small></span><span class="xb-ch" aria-hidden="true"></span></summary><fieldset class="ps-b"><legend class="vh">Alimentación</legend><div class="fields">
-      ${pkField("store","Dónde haces la compra",[["","En cualquier súper"],["merc","Mercadona"]],p.store||"")}
+      ${pkField("store","Dónde haces la compra",[["","En cualquier súper"]].concat(Object.entries(SUPERS).map(([k,v])=>[k,v.n])),p.store||"")}
       ${pkField("diet","Tipo de dieta",[["omni","Omnívora"],["pesce","Pescetariana"],["veggie","Vegetariana"],["vegan","Vegana"]],p.diet||"omni")}
       <div class="f pfx-g" role="group" aria-labelledby="pfx-l"><span id="pfx-l">Excluir</span><div class="chips">${EXCL.map(([k,l])=>`<button type="button" class="chip" data-pfx="${k}" aria-pressed="${!!p[k]}">${l}</button>`).join("")}</div></div>
     </div><p class="note">La asignación automática solo usa platos compatibles. En Plan › Platos, con «···», puedes dejar fuera los que no te gustan.</p></fieldset></details>
@@ -8455,8 +8701,9 @@ function macroRows(L,btn){return`<div class="mrs">${L.map(x=>{const eaten=x.g>0,
   return btn?`<button type="button" class="mr-r" data-macro="${x.m}" aria-label="${x.n}: ver alimentos">${inner}</button>`:`<div class="mr-r">${inner}</div>`}).join("")}</div>`}
 
 /* v218: con una hoja abierta, el fondo no se mueve (ni con el dedo fuera de la hoja) */
-function scrollLock(){const o=[...document.querySelectorAll(".overlay")].some(e=>e.offsetParent!==null||getComputedStyle(e).position==="fixed"&&e.getClientRects().length);document.documentElement.classList.toggle("modal-open",o)}
-document.addEventListener("touchmove",e=>{if(!document.documentElement.classList.contains("modal-open"))return;const sh=e.target.closest&&e.target.closest(".sheet,.full,.pop");if(!sh&&e.cancelable)e.preventDefault()},{passive:false});
+/* v372: también el menú de acciones rápidas (.qa-ov), que no es una .overlay: con él abierto, el fondo no se desplaza */
+function scrollLock(){const o=[...document.querySelectorAll(".overlay,.qa-ov")].some(e=>e.offsetParent!==null||getComputedStyle(e).position==="fixed"&&e.getClientRects().length);document.documentElement.classList.toggle("modal-open",o)}
+document.addEventListener("touchmove",e=>{if(!document.documentElement.classList.contains("modal-open"))return;const sh=e.target.closest&&e.target.closest(".sheet,.full,.pop,.qa");if(!sh&&e.cancelable)e.preventDefault()},{passive:false});
 
 /* Volver a hoy (v222): píldora flotante sobre la barra de pestañas cuando Hoy muestra otro día */
 function dayBackPos(){const want=S.tab==="hoy"&&S.period==="day"&&S.day&&S.day!==today()&&!document.documentElement.classList.contains("modal-open");let b=document.querySelector("body>.dayback");
@@ -8692,7 +8939,7 @@ function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+tod
   autoHrmax.k=k;autoHrmax.v=L.length>=6?{v:L[1].v,d:L[1].d,n:L[1].n,top:L[0].v}:null;return autoHrmax.v}
 /* ---------- Arrastrar para actualizar (v236) ----------
    En lo alto de cualquier pestaña: tirar hacia abajo y soltar pone al día actividades, reloj y tiempo.
-   No actúa con hojas abiertas, en la bienvenida ni si el gesto empieza sobre algo que se desliza en horizontal. */
+   No actúa con hojas a la vista (v372: antes bastaba con que existiera una .overlay; y se da por arriba hasta 1 px), en la bienvenida ni si el gesto empieza sobre algo que se desliza en horizontal. */
 (function(){const TH=70,MAX=110;let y0=null,x0=0,d=0,on=false,busy=false,el=null;
   const ind=()=>{if(el&&el.isConnected)return el;el=document.createElement("div");el.className="ptr-i";el.setAttribute("aria-hidden","true");
     el.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></svg>';document.body.appendChild(el);return el};
@@ -8700,10 +8947,10 @@ function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+tod
   const set=(v,anim)=>{d=v;const i=ind(),k=Math.min(1,v/TH),h=document.querySelector("header.top"),top=h?h.getBoundingClientRect().bottom:56,tr=anim?"transform .25s ease, opacity .25s ease":"none";
     i.style.transition=tr;i.style.transform=`translate(-50%,${top-44+v*.8}px) rotate(${k*300}deg)`;i.style.opacity=String(k);
     movers().forEach(m=>{m.style.transition=tr;m.style.transform=v?`translateY(${v}px)`:""})};
-  const blocked=t=>document.querySelector(".overlay")||document.body.classList.contains("onb-on")||(t.closest&&t.closest(".hcar-track,.scroll-x,.dsec,.tt,.chips,input,textarea,.overlay,#drawer"));
-  document.addEventListener("touchstart",e=>{if(busy||window.scrollY>0||blocked(e.target)){y0=null;return}const t=e.touches[0];y0=t.clientY;x0=t.clientX;on=false},{passive:true});
+  const blocked=t=>document.documentElement.classList.contains("modal-open")||document.body.classList.contains("onb-on")||(t.closest&&t.closest(".hcar-track,.scroll-x,.dsec,.tt,.chips,input,textarea,.overlay,#drawer"));
+  document.addEventListener("touchstart",e=>{if(busy||window.scrollY>1||blocked(e.target)){y0=null;return}const t=e.touches[0];y0=t.clientY;x0=t.clientX;on=false},{passive:true});
   document.addEventListener("touchmove",e=>{if(y0==null)return;const t=e.touches[0],dy=t.clientY-y0,dx=Math.abs(t.clientX-x0);
-    if(!on){if(dy>8&&dy>dx*1.5&&window.scrollY<=0)on=true;else if(dx>10||dy<0){y0=null;return}else return}
+    if(!on){if(dy>8&&dy>dx*1.5&&window.scrollY<=1)on=true;else if(dx>10||dy<0){y0=null;return}else return}
     if(e.cancelable)e.preventDefault();set(Math.min(MAX,dy*.5),false)},{passive:false});
   const end=async()=>{if(y0==null)return;y0=null;if(!on){return}on=false;
     if(d<TH){set(0,true);return}
@@ -9110,17 +9357,17 @@ function pdSync(p){if(p.by!=="d"||p.sport==="str")return;const ch=PD_CH[p.sport]
   const key=p.sport+"|"+(p.int||"s");if(p.spdKey&&p.spdKey!==key)p.spd=null;p.spdKey=key
   const v=p.spd||pdSpeed(p.sport,p.int||"s").v;p.dur=Math.max(5,Math.round(p.km*1000/v/60))}
 function pdBlock(p){if(p.sport==="str")return"";pdSync(p);const by=p.by==="d"?"d":"t";
-  const seg=`<div class="pa-f"><span class="pa-l">Plan por</span><div class="seg pd-by" role="group" aria-label="Plan por"><button type="button" data-pa="by:t" aria-pressed="${by==="t"}">Tiempo</button><button type="button" data-pa="by:d" aria-pressed="${by==="d"}">Distancia</button></div></div>`;
-  if(by==="t")return seg+`<div class="pa-f"><span class="pa-l">Duración</span>${durPick("pa",+p.dur||45)}</div>`;
+  const seg=`<div class="seg pd-by" role="group" aria-label="Plan por"><button type="button" data-pa="by:t" aria-pressed="${by==="t"}">Tiempo</button><button type="button" data-pa="by:d" aria-pressed="${by==="d"}">Distancia</button></div>`,grp=h=>`<div class="pa-f"><span class="pa-l">Duración</span><div class="pa-g">${seg}${h}</div></div>`; /* v372: «Tiempo / Distancia» dentro del grupo de la duración */
+  if(by==="t")return grp(durPick("pa",+p.dur||45));
   const sp=p.sport,ch=PD_CH[sp]||PD_CH.run,sd=pdSpeed(sp,p.int||"s"),v=p.spd||sd.v,k=pdKind(sp);
   const lab=k==="bike"?"Velocidad":"Ritmo",chl=x=>sp==="swim"?fmtInt(x*1000)+" m":String(x).replace(".",",")+" km";
-  return seg+`<div class="pa-f"><span class="pa-l">Distancia</span><div class="dp"><div class="dp-row"><button type="button" class="dp-b" data-pd="km|-1" aria-label="Menos distancia">−</button><b class="dp-v">${pdFmtD(sp,p.km)}</b><button type="button" class="dp-b" data-pd="km|1" aria-label="Más distancia">+</button></div>
+  return grp(`<div class="pa-f"><span class="pa-l">Distancia</span><div class="dp"><div class="dp-row"><button type="button" class="dp-b" data-pd="km|-1" aria-label="Menos distancia">−</button><b class="dp-v">${pdFmtD(sp,p.km)}</b><button type="button" class="dp-b" data-pd="km|1" aria-label="Más distancia">+</button></div>
     <div class="dp-ch pd-ch" role="group" aria-label="Distancias habituales">${ch.map(x=>`<button type="button" class="dp-c" data-pd="set|${x}" aria-pressed="${p.km===x}">${chl(x)}</button>`).join("")}</div></div></div>
   ${k==="bike"?`<div class="pa-f"><span class="pa-l">Duración</span><div class="pd-g pd-g1"><div class="pd-t pd-c"><span>Estimada</span><b id="pd_t">≈ ${fmtMin(p.dur)}</b></div></div>
     <p class="pa-note">A ${pdFmtV(sp,v)}, ${sd.own?"tu velocidad habitual":"una velocidad orientativa"} en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}. En bici la velocidad depende del terreno y del viento: no hace falta fijarla. La duración y el gasto salen de aquí.</p></div>`:`<div class="pa-f"><span class="pa-l">${lab} y duración</span><div class="pd-g">
     <div class="pd-t pd-r"><span>${lab}</span><div class="pd-rs"><button type="button" data-pd="v|-1" aria-label="${k==="bike"?"Más despacio":"Ritmo más lento"}">−</button><b id="pd_v">${pdFmtV(sp,v)}</b><button type="button" data-pd="v|1" aria-label="${k==="bike"?"Más rápido":"Ritmo más rápido"}">+</button></div></div>
     <div class="pd-t pd-c"><span>Duración</span><b id="pd_t">≈ ${fmtMin(p.dur)}</b></div></div>
-    <p class="pa-note">${p.spd?"Ritmo ajustado a mano.":sd.own?`${k==="bike"?"Tu velocidad":"Tu ritmo"} habitual en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}.`:`Orientativo hasta que tengas salidas de ${esc(SPORT_L[sp].toLowerCase())}.`} La duración y el gasto salen de aquí.</p></div>`}`}
+    <p class="pa-note">${p.spd?"Ritmo ajustado a mano.":sd.own?`${k==="bike"?"Tu velocidad":"Tu ritmo"} habitual en ${esc(SPORT_L[sp].toLowerCase())} para una sesión ${INT_L[p.int||"s"].toLowerCase()}.`:`Orientativo hasta que tengas salidas de ${esc(SPORT_L[sp].toLowerCase())}.`} La duración y el gasto salen de aquí.</p></div>`}`)}
 /* la intensidad se mueve sin repintar la hoja (deslizador): se actualizan ritmo y duración en su sitio */
 function pdLive(){const p=S.pa;if(!p||p.by!=="d"||p.sport==="str"||p.mode==="struct")return;pdSync(p);const v=p.spd||pdSpeed(p.sport,p.int||"s").v,a=$("#pd_v"),b=$("#pd_t");if(a)a.textContent=pdFmtV(p.sport,v);if(b)b.textContent="≈ "+fmtMin(p.dur)}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pd]");if(!b||!S.pa)return;e.stopPropagation();const p=S.pa,[a,x]=b.dataset.pd.split("|"),sp=p.sport;
@@ -9777,6 +10024,14 @@ function afCard(a,ask,day){const hh=(day?afDay(a.day)+(a.start?", ":""):"")+(a.s
   return`<button type="button" class="af" data-open="${a.id}" aria-label="${esc(a.name||SPORT_L[a.sport])}"><span class="af-top"><span class="af-sp">${spSvg(a.sport)}${SPORT_L[a.sport]||""}${hh?" · "+hh:""}</span>${sens}</span>
     <span class="af-name">${esc(a.name||SPORT_L[a.sport])}</span>
     <span class="af-st af-c3">${st.map(([l,v,u])=>l?`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`:'<span class="af-s" aria-hidden="true"></span>').join("")}</span>${afZones(a)}</button>`}
+/* v372 · Fila del historial de Actividad (maqueta aprobada por Javier, 27-10): una línea por actividad para recorrer el histórico. Icono en el color
+   de su familia (es el dato del deporte), nombre y, debajo, día, hora y la sensación si la hay (en texto, sin color); a la derecha, la distancia con el tiempo debajo (fuerza: la duración) y la
+   flecha. El detalle, al tocarla, como siempre. Clase ar- */
+function afRow(a,inPlan){const st=afStats(a).filter(x=>x[0]&&x[0]!=="Energía"),dist=st.find(x=>x[0]==="Distancia"),main=dist||st[0],rv=rpeOf(a.id),nm=esc(a.name||SPORT_L[a.sport]);
+  /* v372: en Plan (inPlan) el día ya está a la izquierda: la línea gris es la hora y el tiempo, y a la derecha solo la cifra (la columna es estrecha) */
+  const hh=inPlan?[(a.start||"").slice(11,16),dist?fmtDur(a.mov):"",rv?RPE_L[rv-1]:""].filter(Boolean).join(" · "):afDay(a.day)+(a.start?" · "+a.start.slice(11,16):"")+(rv?" · "+RPE_L[rv-1]:"");
+  const col=(typeof SPC!=="undefined"&&SPC[a.sport])||"var(--icon)",val=main?main[0]==="Tiempo"?fmtDur(a.mov):main[1]+(main[2]?`<i>${main[2]}</i>`:""):"";
+  return`<button type="button" class="ar${inPlan?" ar-done":""}" data-open="${a.id}" aria-label="${nm}, ${esc(hh)}"><span class="ar-i" style="color:${col}">${spSvg(a.sport)}</span><span class="ar-t"><b>${nm}</b><small>${esc(hh)}</small></span><span class="ar-v"><b>${val}</b>${dist&&!inPlan?`<small>${fmtDur(a.mov)}</small>`:""}</span><span class="ar-ch" aria-hidden="true">${HZ_CH}</span></button>`}
 /* v305 · Ficha resumida para los entrenos hechos en Plan (vista previa B aprobada el 16-10): dos líneas, icono y nombre con la sensación
    como punto; debajo distancia y tiempo; barra de sustrato fina. El detalle completo sigue en Actividad. Clase am- */
 function afMini(a){const st=afStats(a).filter(x=>x[0]&&x[0]!=="Hidratos"&&x[0]!=="Energía").slice(0,2),v=rpeOf(a.id),nm=esc(a.name||SPORT_L[a.sport]);
@@ -9794,6 +10049,11 @@ function pfBody(s,st,kg){const es=estSession(s,kg),L=[],ft=s.sport==="str"?0:fue
     <span class="af-name">${esc(sessName(s))}</span>${stc?stProfile(s.steps):""}
     <span class="af-st af-c${st4.length}">${st4.map(([l,v,u])=>`<span class="af-s"><small>${l}</small><b>${v}${u?`<i>${u}</i>`:""}</b></span>`).join("")}</span>
     ${pc!=null?`<span class="af-zbar pf-est" role="img" aria-label="Estimado: ${pc} % hidratos, ${100-pc} % grasas"><i style="flex:${pc};background:var(--carb)"></i><i style="flex:${100-pc};background:var(--fat)"></i></span><span class="af-zlab">~${pc} % hidratos · ${100-pc} % grasas · estimado</span>`:""}`}
+/* v372 · entreno previsto en Plan como fila (maqueta aprobada por Javier, 27-10): la misma fila que uno hecho, con contorno en vez de fondo
+   («todavía no ha pasado»); nombre, «Previsto · hora · intensidad» y, a la derecha, la duración. La estimación de hidratos sigue en el
+   planificador y en Hoy. Clase ar-prev */
+function pfRow(s,k,i){const col=(typeof SPC!=="undefined"&&SPC[s.sport])||"var(--icon)",nm=esc(sessName(s)),sub=["Previsto",s.time||"",s.sport!=="str"&&s.int?INT_L[s.int]:""].filter(Boolean).join(" · ");
+  return`<div class="ar ar-prev" data-pmove="${k}|${i}" data-paedit="${k}|${i}" role="button" tabindex="0" title="Toca para editar · mantén pulsado para moverlo" aria-label="${nm}, ${esc(sub)}"><span class="ar-i" style="color:${col}">${spSvg(s.sport)}</span><span class="ar-t"><b>${nm}</b><small>${esc(sub)}</small></span><span class="ar-v"><b>${fmtDur((s.dur||0)*60)}</b></span><span class="ar-ch" aria-hidden="true">${HZ_CH}</span></div>`}
 
 /* ---------- Entrenar el intestino (v319) ----------
    Con una carrera de 90 min o más en el calendario, cada sesión larga (75 min o más) hasta dos días antes
@@ -10217,7 +10477,7 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
 const PP_ROLE={diet:"Dietista-nutricionista",coach:"Entrenador/a",med:"Médico/a deportivo",otro:"Profesional"};
 /* v336 · Pauta completa (v:2). Además de lo anterior: cd hidratos g/kg por tipo de día {rest,easy,mod,hard,pre}; fh g/h durante
    el entreno por duración {s:<60 min, m:60–150, l:>150}; fl líquido ml/h; na sodio mg/h; pt tomas de proteína; caf cafeína mg/kg;
-   cre creatina g/día; col colegiado; e fin de la vigencia. La v:1 se sigue leyendo. */
+   cre creatina g/día; col colegiado; e fin de la vigencia; ent 1 si deja que la app ajuste el día al entreno (27-10). La v:1 se sigue leyendo. */
 const PP_DAY=[["rest","Descanso"],["easy","Día suave"],["mod","Día moderado"],["hard","Día intenso"],["pre","Víspera de carrera"]],PP_FH=[["s","Hasta 1 h"],["m","1 h a 2 h 30"],["l","Más de 2 h 30"]];
 function ppParse(s){try{s=String(s||"").trim();const m=s.match(/[#&]p=([A-Za-z0-9_-]+)/)||s.match(/^([A-Za-z0-9_-]{20,})$/);if(!m)return null;
   const b=m[1].replace(/-/g,"+").replace(/_/g,"/"),bin=atob(b+"===".slice((b.length+3)%4));return ppNorm(JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0)))))}catch(e){return null}}
@@ -10226,10 +10486,18 @@ function ppNorm(o){try{
   if(!o||(o.v!==1&&o.v!==2)||!o.n)return null;const nm=(v,lo,hi)=>v==null||v===""||isNaN(+v)?null:Math.max(lo,Math.min(hi,+v)),day=d=>/^\d{4}-\d{2}-\d{2}$/.test(d||"")?d:"";
   const obj=(x,keys,lo,hi)=>{if(!x||typeof x!=="object")return null;const r={};let n=0;keys.forEach(([k])=>{const v=nm(x[k],lo,hi);if(v!=null){r[k]=v;n++}});return n?r:null};
   return{v:2,n:String(o.n).slice(0,60),r:PP_ROLE[o.r]?o.r:"otro",col:o.col?String(o.col).slice(0,30):"",a:o.a?String(o.a).slice(0,60):"",g:GOALS[o.g]?o.g:null,adj:nm(o.adj,-25,15),p:nm(o.p,1.2,2.6),f:nm(o.f,.6,1.5),c:nm(o.c,2,6),
-    cd:obj(o.cd,PP_DAY,2,12),fh:obj(o.fh,PP_FH,0,120),fl:nm(o.fl,0,1500),na:nm(o.na,0,1500),pt:nm(o.pt,2,6),caf:nm(o.caf,1,6),cre:nm(o.cre,2,10),x:o.x?String(o.x).slice(0,400):"",doc:/^https:\/\/[^\s"<>]{4,300}$/.test(o.doc||"")?o.doc:"",t:day(o.t),e:day(o.e),
+    cd:obj(o.cd,PP_DAY,2,12),fh:obj(o.fh,PP_FH,0,120),fl:nm(o.fl,0,1500),na:nm(o.na,0,1500),pt:nm(o.pt,2,6),caf:nm(o.caf,1,6),cre:nm(o.cre,2,10),ent:o.ent?1:0,x:o.x?String(o.x).slice(0,400):"",doc:/^https:\/\/[^\s"<>]{4,300}$/.test(o.doc||"")?o.doc:"",t:day(o.t),e:day(o.e),
     att:Array.isArray(o.att)?o.att.slice(0,5).filter(a=>a&&/^[\w-]{8,40}$/.test(a.fid)&&/^[\w-]{16}$/.test(a.iv)).map(a=>({fid:a.fid,iv:a.iv,name:String(a.name||"Documento").slice(0,80),type:String(a.type||""),size:+a.size||0})):[]}}catch(e){return null}}
 /* la pauta aceptada y en vigor (si tiene fecha de fin y ya pasó, deja de aplicarse) */
 function ppActive(){const q=(S.profile||{}).pro;return q&&(!q.e||q.e>=today())?q:null}
+/* 27-10 · Regla de Javier: con pauta en vigor, LA PAUTA MANDA. El entreno y lo tomado en ruta no cambian los objetivos del día ni el
+   reparto de comidas (ni recargas por la carga del día, ni carga de carrera o de mañana, ni reponer glucógeno): solo lo que la pauta
+   dice por tipo de día. Lo tomado en ruta se apunta igual como comido y se coteja con lo pautado (compartir.js). Si el profesional
+   enciende «Dejar que la app ajuste el día al entreno» (ent:1), la app vuelve a ajustar encima de la pauta, como sin pauta.
+   Un solo punto: dayTargets y mealPlan preguntan aquí. */
+function ppManda(){const q=ppActive();return!!(q&&!q.ent)}
+/* la línea que explica qué manda (en la hoja de la pauta y en «De dónde salen» de Qué comer) */
+function ppLine(){const q=ppActive();return!q?"":q.ent?"Tu profesional deja que el día se ajuste a tu entreno.":"Tu pauta manda: el entreno y lo que tomas en ruta no cambian tus objetivos."}
 /* objetivo con la pauta encima (lo que no pauta, queda como lo calcula la app) */
 function ppGoal(p){const q=ppActive(),g0=GOALS[(q&&q.g)||p.goal]||GOALS.recomp;if(!q)return g0;
   return Object.assign({},g0,q.adj!=null?{adj:q.adj/100}:{},q.p!=null?{p:q.p}:{},q.f!=null?{f:q.f}:{},q.c!=null?{cmin:q.c}:{})}
@@ -10247,6 +10515,7 @@ function ppRows(q,cur){const f1=v=>(+v).toFixed(1).replace(".",","),pc=v=>(v>0?"
   const dur=[];if(q.fh)PP_FH.filter(([k])=>q.fh[k]!=null).forEach(([k,l])=>dur.push([l,q.fh[k]?Math.round(q.fh[k])+" g/h":"Sin hidratos",null]));
   if(q.fl!=null)dur.push(["Líquido",Math.round(q.fl)+" ml/h",null]);if(q.na!=null)dur.push(["Sodio",Math.round(q.na)+" mg/h",null]);if(dur.length)G.push(["Durante el entreno",dur]);
   const ind=[];if(q.pt!=null)ind.push(["Proteína repartida en",Math.round(q.pt)+" tomas",null]);if(q.caf!=null)ind.push(["Cafeína antes de entrenar",f1(q.caf)+" mg/kg",null]);if(q.cre!=null)ind.push(["Creatina",f1(q.cre)+" g al día",null]);
+  if(q.ent)ind.push(["Tus objetivos","Se ajustan a tu entreno",null]);
   if(ind.length)G.push(["Indicaciones",ind]);return G}
 function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.col?" · n.º "+esc(x.col):""}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
   const rows=(x,cur,label)=>ppRows(x,cur).map(([h,L])=>`${h?`<span class="pa-l pp-h">${h}</span>`:""}<div class="pp-rows">${L.map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`).join("")+(x.e?`<p class="pa-note">${x.e<today()?"Caducó el ":"En vigor hasta el "}${esc(dateLabel(x.e))}.</p>`:"");
@@ -10256,7 +10525,7 @@ function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||G
   if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${rows(q,base,true)}${note(q)}
     <button type="button" class="btn primary pa-go" data-act="ppok">Aceptar pauta</button><div class="pa-ex"><button type="button" class="ms-link" data-act="ppno">Ahora no</button></div>`;
   /* v359: sin «pegar el enlace»: la pauta llega por el vínculo; la que está en vigor va dentro de la página, debajo de lo pendiente */
-  const actB=act?`<span class="pa-l">Pauta en vigor</span><p class="pa-note">${ppActive()?"Tus objetivos de cada día se calculan con ella.":"Ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}<div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`:"";
+  const actB=act?`<span class="pa-l">Pauta en vigor</span><p class="pa-note">${ppActive()?(ppManda()?"Tus objetivos de cada día se calculan con ella. Tu pauta manda: el entreno y lo que tomas en ruta no los cambian.":"Tus objetivos de cada día se calculan con ella."):"Ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}<div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`:"";
   const hasLk=((S.lk||{}).links||[]).some(l=>l.state==="active");if(!q)body=hasLk?"":actB;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
     <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml(actB)}${body}</div></div>`}
@@ -10392,11 +10661,15 @@ const lkun64=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"==="
 const lkStrava=a=>!/^(hc|ah|fit|apple|man)[-_]/i.test(String(a.id||""));
 function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
   if(P.train){const A=S.acts.filter(a=>a.day===k&&a.sport!=="oth").map(a=>{const u=(S.subs||{})[a.id],f=flEntry(a),x={s:a.sport,h:(a.start||"").slice(11,16),m:Math.round((a.mov||0)/60),kcal:Math.round(a.kcal||0),i:actInt(a)};
-      if(u)x.cho=Math.round(u.cho/4);if(f&&f.cph)x.gh=f.cph;if(!lkStrava(a)){x.km=r1((a.dist||0)/1000);x.up=Math.round(a.elev||0)}return x});
+      if(u)x.cho=Math.round(u.cho/4);if(f&&f.cph)x.gh=f.cph;
+      /* 27-10 · lo tomado en ruta también en sodio por hora, para cotejarlo con la pauta («en ruta» de la pauta: fh, na) */
+      if(f&&a.mov){const na=f.items&&f.items.length?flTotals(f.items).na:f.na||0;if(na)x.nah=Math.round(na/(a.mov/3600))}if(!lkStrava(a)){x.km=r1((a.dist||0)/1000);x.up=Math.round(a.elev||0)}return x});
     const pl=plannedFor(k).filter(x=>!x.skip).map(x=>({s:x.sport,m:x.dur||0,i:x.int||"m",race:!!x.race}));if(A.length)o.a=A;if(pl.length&&k>=today())o.pl=pl}
   if(P.food){const t=dayTargets(k),e=k<=today()?dayEaten(k):null; /* v345: también los objetivos de los próximos días (menús tipo del profesional) */if(t)o.t={kcal:Math.round(t.kcal),P:Math.round(t.P),C:Math.round(t.C),F:Math.round(t.F),dt:typeof ppDayType==="function"?ppDayType(k,t.acts,t.plan):null};if(e)o.e={kcal:Math.round(e.kcal),P:Math.round(e.P),C:Math.round(e.C),F:Math.round(e.F)}
     /* v341 · cotejo: si ese día regía una pauta, lo que pauta (hidratos según el tipo de día, proteína y sus tomas) */
-    const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)}}}
+    const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)};
+      /* 27-10 · lo pautado en ruta (g/h por duración, líquido y sodio por hora) y si la pauta deja que la app ajuste el día al entreno */
+      if(q.fh)o.pp.fh=q.fh;if(q.na!=null)o.pp.na=q.na;if(q.fl!=null)o.pp.fl=q.fl;if(q.ent)o.pp.ent=1}}
   if(P.meals&&k<=today()){const ml=lkMeals(k);if(ml)o.ml=ml}
   if(typeof prHabDay==="function"){const hb=prHabDay(k);if(hb)o.hb=hb} /* v342: los hábitos que te propuso, marcados ese día */
   if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct;
@@ -10751,8 +11024,9 @@ var HZ_CH='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="c
 function hzTit(id){return{gly:/<span class="pkk">[^<]*<\/span>/,qc:/<h2>[^<]*<\/h2>/,tr:/<h2>Entreno[^<]*<\/h2>/}[id]}
 function hz(id,title,val,html,num){if(!html)return"";if(simpleOn()&&num)return"";const HZ=hzS();
   if(/class="(wc-h|gly-q)[" ]/.test(html))return html; /* con una pregunta pendiente, el bloque va abierto y sin plegar */
-  const open=!!HZ[id],head=`<button type="button" class="hz-row" data-hzt="${id}" aria-expanded="${open}"><span class="hz-t">${title}</span><span class="hz-v">${open?"":val}</span><span class="hz-ch">${HZ_CH}</span></button>`;
-  return open?`<div class="hz-g open">${head}<div class="hz-b">${hzTit(id)?html.replace(hzTit(id),""):html}</div></div>`:`<div class="hz-g glass fade">${head}</div>`}
+  const open=!!HZ[id],head=`<button type="button" class="hz-row" data-hzt="${id}" aria-expanded="${open}"><span class="hz-t">${title}</span><span class="hz-v">${val}</span><span class="hz-ch">${HZ_CH}</span></button>`;
+  /* v372: abierto y cerrado comparten clases (glass fade): al plegar ya no cambia de clase y no se repite la entrada (el «parpadeo»); el dato de la fila siempre está y se desvanece al abrir */
+  return`<div class="hz-g glass fade${open?" open":""}">${head}${open?`<div class="hz-b">${hzTit(id)?html.replace(hzTit(id),""):html}</div>`:""}</div>`}
 /* «Tu día» */
 function tuDia(t){if(S.day!==today()||!t)return"";const sp=simpleOn(),rd=(()=>{try{return readiness(S.day)}catch(e){return null}})();
   const e=eatenToday(),ek=4*e.P+4*e.C+9*e.F+alKcal(alOf(S.day)),lf=Math.round(t.kcal-ek),pc=Math.max(0,Math.min(1,ek/t.kcal));
@@ -10797,7 +11071,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
 function hzSave(){try{localStorage.setItem("sustrato-hz",JSON.stringify(hzS()))}catch(x){}}
 function hzToggle(t){const id=t.dataset.hzt,HZ=hzS(),g=t.closest(".hz-g"),h0=g?g.getBoundingClientRect().height:0,row=t.getBoundingClientRect().height,ch=t.querySelector(".hz-ch");
   if(HZ[id]){if(!g||MU.reduce()){HZ[id]=false;hzSave();render();return}
-    const from=g._mu?MU.stop(g):h0;g.style.height=from+"px";g.style.overflow="hidden";t.setAttribute("aria-expanded","false");
+    const from=g._mu?MU.stop(g):h0;g.style.height=from+"px";g.style.overflow="hidden";t.setAttribute("aria-expanded","false");g.classList.remove("open"); /* v372: al empezar a plegar ya es una fila cerrada: el dato vuelve con su transición, sin saltos al final */
     MU.spring(g,from,row,0,x=>{g.style.height=x+"px";if(ch)ch.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-row)/Math.max(1,h0-row)))).toFixed(1)}deg)`},{resp:.35,done:()=>{HZ[id]=false;hzSave();render()}});return}
   HZ[id]=true;hzSave();render();const b=document.querySelector(`#view [data-hzt="${id}"]`),n=b&&b.closest(".hz-g");if(!n||MU.reduce())return;
   const h1=n.getBoundingClientRect().height,c2=b.querySelector(".hz-ch");n.style.height=h0+"px";n.style.overflow="hidden";
