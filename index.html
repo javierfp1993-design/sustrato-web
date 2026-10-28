@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-28T08:09:03.205Z">
+<meta name="sustrato-version" content="2026-10-28T09:18:23.222Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -3489,7 +3489,9 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
 .hz-todo>section+section{border-top:.5px solid var(--sep)}
 .hz-set{padding:0;overflow:hidden}
 .hz-set>.hz-g{background:none!important;box-shadow:none!important;border-radius:0!important;margin:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-.hz-set>.hz-g+.hz-g{border-top:.5px solid var(--sep)}
+/* Cómo llegas o Glucógeno con una pregunta pendiente: la tarjeta abierta, plana, como una fila más del grupo */
+html .hz-set>section.glass{background:none;box-shadow:none;border-radius:0;margin:0;padding:18px}
+.hz-set>*+*{border-top:.5px solid var(--sep)}
 .hz-set>.hz-g .hz-row{padding-left:18px;padding-right:18px}
 /* v372 · el acordeón sin saltos: el dato de la fila se desvanece al abrir y vuelve al plegar (0,2 s, la transición corta de la guía); lo de dentro no repite su animación de entrada, porque el movimiento es la altura del grupo */
 .hz-v{transition:opacity .2s ease}.hz-g.open .hz-v{opacity:0}
@@ -3757,7 +3759,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="376";
+const APP_VER="377";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -11055,9 +11057,11 @@ function hzNext(mp,lg){const d=new Date(),nm=d.getHours()*60+d.getMinutes(),open
   return open.find(m=>{const n2=mp[mp.indexOf(m)+1];return!n2||nm<n2.min-60})||open[open.length-1]}
 /* v361 · menos losetas: lo que pide una respuesta (preguntas, avisos, lo que te manda tu profesional) va junto en «Para hoy»;
    las filas plegables (Cómo llegas, Glucógeno, Qué comer, Entreno) van juntas en una sola superficie, como en Ajustes de iOS.
-   hzTodo aparta las filas plegables (que esperan en HZ_LATER a hzSet) y agrupa el resto. */
+   hzTodo aparta las filas plegables (que esperan en HZ_LATER a hzSet) y agrupa el resto.
+   Cómo llegas y Glucógeno van siempre en su fila, bajo la tira de días, también con una pregunta pendiente (abiertos en su sitio):
+   así nada salta de un lado a otro del calendario según lo que contestes. */
 var HZ_LATER={};
-function hzTodo(L){HZ_LATER={};const out=[];L.forEach((h,i)=>{if(!h)return;if(/^<div class="hz-g/.test(h)){HZ_LATER[i===1?"rd":i===2?"gly":"x"+i]=h;return}out.push(h)});
+function hzTodo(L){HZ_LATER={};const out=[];L.forEach((h,i)=>{if(!h)return;if(i===1||i===2){HZ_LATER[i===1?"rd":"gly"]=h;return}if(/^<div class="hz-g/.test(h)){HZ_LATER["x"+i]=h;return}out.push(h)});
   return out.length?`<div class="glass fade hz-todo"><span class="pkk hz-todo-h">Para hoy</span>${out.join("")}</div>`:""}
 function hzSet(L){const r=L.filter(Boolean);return r.length?`<div class="glass fade hz-set" role="group" aria-label="Tu día en cifras">${r.join("")}</div>`:""}
 /* cifras de cada fila */
