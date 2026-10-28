@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-28T09:18:23.222Z">
+<meta name="sustrato-version" content="2026-10-28T15:22:12.949Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -16,7 +16,7 @@ if(mq&&mq.addEventListener)mq.addEventListener("change",function(){if(m==="auto"
 <style>
 /* Layout: una columna de paneles de vidrio sobre negro, con navegación segmentada flotante; dos columnas en escritorio */
 :root{
-  --tz:var(--tzs,1);   /* escala de letra del sistema (000-inicio.js); una zona que no deba crecer pone --tz:1 */
+  --tz:var(--tzs,1);   /* escala de letra del sistema (base/apertura.js); una zona que no deba crecer pone --tz:1 */
   color-scheme:dark;
   --bg:#000000;
   --fg:#f4f5f7;
@@ -2601,7 +2601,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .mr-q::before{margin-right:0}
 .en-q:not(.ok):not(.lo)::before{display:none}
 
-/* v254 · Comidas con gestos (070-deslizar-comidas.js). Clases mw-. */
+/* v254 · Comidas con gestos (pantallas/hoy/deslizar-comidas.js). Clases mw-. */
 .mw-in{position:relative;overflow:hidden;margin:0 -18px}
 .mw-fg{position:relative;background:var(--card);padding:0 18px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .mw-l,.mw-r{position:absolute;inset:0;display:none;align-items:center;font-weight:600;font-size:calc(15px*var(--tz,1));color:#fff}
@@ -2630,7 +2630,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .mw-in:has(.mw-r button:focus-visible) .mw-r{display:flex}
 .mw-in:has(.mw-r button:focus-visible) .mw-fg{transform:translateX(-112px)}
 
-/* v257 · Conmutador (guía: «Conmutador»): 51 × 31 como en iOS; encendido en verde vivo, nunca en rojo. Clases tg- (071-conmutador.js) */
+/* v257 · Conmutador (guía: «Conmutador»): 51 × 31 como en iOS; encendido en verde vivo, nunca en rojo. Clases tg- (piezas/conmutador.js) */
 .tg-r{display:flex;align-items:center;gap:12px;min-height:44px;padding:10px 0;cursor:pointer}
 .tg-t{flex:1;min-width:0}.tg-t b{display:block;font-size:calc(17px*var(--tz,1));font-weight:500}.tg-t small{display:block;font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
 .tg-sw{appearance:none;flex:0 0 auto;position:relative;width:51px;height:31px;border:0;border-radius:999px;background:var(--fill);cursor:pointer;padding:0;transition:background .2s}
@@ -2641,7 +2641,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .tg-sw:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.tg-sw,.tg-sw::after{transition:none}}
 
-/* v257 · Perfil › Conexiones: una retícula. Icono a 18 px del borde, texto a 70 px; separadores desde el texto. Clases cn- (058-perfil.js) */
+/* v257 · Perfil › Conexiones: una retícula. Icono a 18 px del borde, texto a 70 px; separadores desde el texto. Clases cn- (pantallas/perfil/perfil.js) */
 .cn-g{margin:0 -18px}
 .cn-g+.cn-g{border-top:.5px solid var(--sep);margin-top:6px;padding-top:6px}
 .cn-h{display:flex;align-items:center;gap:12px;padding:10px 18px;min-height:64px}
@@ -2661,7 +2661,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 .cn-del button{appearance:none;border:0;background:none;color:var(--rojo);font:500 calc(15px*var(--tz,1)) var(--font);padding:12px;min-height:44px;cursor:pointer}
 .cn-del p{margin:0;font-size:calc(12px*var(--tz,1));color:var(--muted)}
 
-/* v258 · Ciclo menstrual (072-ciclo-menstrual.js). Contexto, no factor: sin punto de estado en Así amaneces. Morado = Cuerpo. Clases cy- */
+/* v258 · Ciclo menstrual (pantallas/perfil/ciclo-menstrual.js). Contexto, no factor: sin punto de estado en Así amaneces. Morado = Cuerpo. Clases cy- */
 .cy-row{cursor:default}
 .cy-strip{display:flex;gap:2px;margin:7px 0 2px}
 .cy-strip i{flex:1;height:5px;border-radius:3px;background:var(--fill)}
@@ -2689,7 +2689,7 @@ html[data-theme="light"]{--ac:#2f6fed;--ac-soft:color-mix(in srgb,#2f6fed 13%,tr
 
 
 
-/* v261 · Campo de fecha y hora (073-campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
+/* v261 · Campo de fecha y hora (piezas/campo-fecha-hora.js). Mismo aspecto que .pk-f; el input del sistema, invisible encima. Clases fd- */
 .fd-f{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;min-height:44px;padding:10px 14px;border-radius:14px;background:var(--card2);color:var(--fg);font:400 calc(17px*var(--tz,1)) var(--font);cursor:pointer;font-variant-numeric:tabular-nums}
 .fd-f b{font-weight:400;white-space:nowrap}
 .fd-f i{font-style:normal;font-size:calc(20px*var(--tz,1));line-height:1;color:var(--faint)}
@@ -2842,7 +2842,7 @@ span.ia-ic{flex:none;width:24px;height:24px;display:grid;place-items:center;colo
 .ss-st{appearance:none;border:0;display:inline-flex;align-items:center;background:var(--fill2);color:var(--fg);font:600 calc(13px*var(--tz,1)) var(--font);border-radius:999px;padding:4px 10px;margin-left:8px;cursor:pointer;vertical-align:1px}
 .ss-st .ss-dot{margin-right:6px}
 
-/* v272 · Incidencias y sugerencias (083-incidencias.js). Clases fb- */
+/* v272 · Incidencias y sugerencias (pantallas/perfil/ayuda.js). Clases fb- */
 .fb-sub{margin:4px 0 6px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .fb-row{appearance:none;border:0;background:none;color:var(--fg);font:inherit;width:100%;display:grid;grid-template-columns:24px 1fr 16px;gap:12px;align-items:center;text-align:left;padding:12px 0;min-height:64px;border-top:.5px solid var(--sep);cursor:pointer}
 .fb-sub+.fb-row{border-top:0}
@@ -2975,7 +2975,7 @@ a.fb-row{text-decoration:none}
 html[data-theme="dark"] .ap-btn{background:#fff;color:#000}
 .cx-ap svg{width:17px;height:20px;fill:currentColor} /* cuenta de Apple en Perfil › Conexiones */
 
-/* v295 · Ficha de entreno (Hoy y Actividad): ver codigo/…ficha-de-entreno.js. Clases af- */
+/* v295 · Ficha de entreno (Hoy y Actividad): ver pantallas/actividad/ficha.js. Clases af- */
 .af{appearance:none;border:0;font:inherit;color:var(--fg);text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;padding:14px 14px 12px;border-radius:14px;background:var(--card2);cursor:pointer;transition:transform .12s}
 .af:active{transform:scale(.985)}
 .af-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
@@ -3759,7 +3759,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="377";
+const APP_VER="378";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -3792,6 +3792,8 @@ document.addEventListener("click",e=>{const i=e.target.closest("[data-info]");if
 document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".mi[data-info]")){e.preventDefault();openInfo(e.target.dataset.info,e.target.dataset.iv||"",e.target.dataset.in)}});
 document.addEventListener("click",e=>{if(e.target.closest("#undoBtn")){const f=toast.undo;toast.undo=null;clearTimeout(toast.t);$("#toast").hidden=true;if(f){f();toast("Deshecho")}}});
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {LEVELS,bandOf,basal,bfEst,bfScale,bodyFat,choFrac,computeSub,flatSub,hrForFrac,hrParams}=(()=>{
 /* ---------- Cálculos ---------- */
 function bodyFat(p){
   const h=num(p.height),w=num(p.waist),n=num(p.neck),hip=num(p.hip);
@@ -3875,7 +3877,11 @@ function computeSub(hr,time,kcal,hp,fasted){
   return{cho:+cho.toFixed(1),fat:+fat.toFixed(1),bands,zt,series,dur:total,hasHr:true};
 }
 function flatSub(kcal,frac){return{cho:+(kcal*frac).toFixed(1),fat:+(kcal*(1-frac)).toFixed(1),bands:null,series:null,hasHr:false}}
+return {LEVELS,bandOf,basal,bfEst,bfScale,bodyFat,choFrac,computeSub,flatSub,hrForFrac,hrParams};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {CHOF,INT_L,MET,ST_L,ST_TPL,Z_C,Z_F,Z_L,stFlat,stInt,stProfile,stShort,stTotal}=(()=>{
 /* ---------- Entrenos previstos ---------- */
 const INT_L={s:"Suave",m:"Moderado",i:"Intenso"};
 const MET={walk:{s:3.3,m:4.3,i:5.5},hike:{s:5,m:6.5,i:8},run:{s:8.5,m:10.5,i:12.5},trail:{s:9.5,m:11.5,i:13.5},road:{s:6.8,m:8.5,i:11},gravel:{s:7,m:9,i:11.5},mtb:{s:6.5,m:8.5,i:11},indoor:{s:5.5,m:7,i:9.5},swim:{s:6,m:8,i:10},str:{s:4.5,m:5.5,i:6.5}};
@@ -3891,6 +3897,11 @@ function stInt(st){const f=stFlat(st),T=stTotal(st)||1,z=f.reduce((a,x)=>a+x.z*x
 function stShort(st){const b=(st||[]).find(x=>x.rep);if(b){const w=b.s.find(y=>y.t==="work")||b.s[0];return b.rep+" × "+(w.d>=1?w.d+"′":w.d*60+"″")+" "+Z_L[w.z].toLowerCase()}const w=(st||[]).filter(x=>x.t==="work"||x.t==="run").sort((a,b)=>b.d-a.d)[0];return w?w.d+"′ "+Z_L[w.z].toLowerCase():"Estructurado"}
 function stProfile(st){/* guía 4.0: bloques en fila (HTML, no SVG estirado): no se deforman a ningún ancho; alto según la zona, 2 px de aire, extremo de arriba redondeado y base recta. El alto total lo pone el CSS de cada sitio */
   const f=stFlat(st),T=stTotal(st)||1;return`<div class="stprof" aria-hidden="true">${f.map(y=>`<i style="flex:${(y.d/T*100).toFixed(2)} 1 0;height:${(20+80*y.z/5).toFixed(0)}%;background:${Z_C[y.z]}"></i>`).join("")}</div>`}
+return {CHOF,INT_L,MET,ST_L,ST_TPL,Z_C,Z_F,Z_L,stFlat,stInt,stProfile,stShort,stTotal};
+})();
+
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {PST,dayTargets,estSession,med,nextKey,pendingPlanned,planMatch,plannedFor,pline,pst,sessName}=(()=>{
 /* ---------- Calibración personal ----------
    Con tus actividades de los últimos 4 meses: gasto real por minuto y reparto hidratos/grasas por deporte e intensidad.
    Se mezcla con las tablas generales según cuántas sesiones haya (con pocas, pesa lo general; con muchas, lo tuyo). */
@@ -3989,7 +4000,11 @@ function dayTargets(k,raw){
   let choCap=0;if(C>12*w){choCap=C-12*w;F+=choCap*4/9;C=12*w}
   return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug,load,pm,raceDay:!!raceDay,recDay:recDay?{d:shiftKey(k,-1)}:null};
 }
+return {PST,dayTargets,estSession,med,nextKey,pendingPlanned,planMatch,plannedFor,pline,pst,sessName};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {MEALS,fromMin,mealPlan,protMain,protThr,toMin}=(()=>{
 /* ---------- Reparto por comidas ---------- */
 const MEALS=[["breakfast","Desayuno","08:00"],["lunch","Comida","14:00"],["snack","Merienda","17:30"],["dinner","Cena","21:30"]];
 const toMin=s=>{const m=/^(\d{1,2}):(\d{2})/.exec(s||"");return m?(+m[1])*60+(+m[2]):null};
@@ -4019,7 +4034,11 @@ function mealPlan(t,k){
 
 function protThr(){const w=num((S.profile||{}).weight);return w?.3*w:null}
 function protMain(m){return m.id!=="snack"||!!m.post}
+return {MEALS,fromMin,mealPlan,protMain,protThr,toMin};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {IC,elTile,icon}=(()=>{
 /* ---------- Iconos ---------- */
 const IC={
   drop:'<path d="M12 3.5c3 4 5.5 7 5.5 10.2a5.5 5.5 0 0 1-11 0C6.5 10.5 9 7.5 12 3.5z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.5"/>',
@@ -4042,7 +4061,11 @@ const IC={
 };
 function icon(name,col){return`<span class="ico" style="color:${col||"var(--fg)"}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]||""}</svg></span>`}
 function elTile(sym,col){return`<span class="eltile" style="--c:${col};--c-v:${vivo(col)}" aria-hidden="true">${sym}</span>`}
+return {IC,elTile,icon};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {SWEAT,daySessions,micros}=(()=>{
 /* ---------- Micronutrientes ---------- */
 const SWEAT={walk:0.4,hike:0.7,run:1.0,trail:1.0,road:0.8,gravel:0.8,mtb:0.8,indoor:1.1,swim:0.4,str:0.5,oth:0.6}; /* litros de sudor por hora, estimación media */
 function daySessions(t){
@@ -4066,6 +4089,11 @@ function micros(t){
     {ic:icon("vit","var(--verde)"),n:"Vitaminas B (B1, B2, B6)",v:"",u:"",x:(d=>d>2?"Un "+d+" % más por el gasto de hoy":d<-2?"Un "+(-d)+" % menos por el gasto de hoy":"Lo habitual para tu gasto")(r0(kcalF*100)-100),src:"Cereales integrales, carne, huevos, legumbres. Si cubres tus hidratos con alimentos integrales, llegas."}
   ];
 }
+return {SWEAT,daySessions,micros};
+})();
+
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {supplements}=(()=>{
 /* ---------- Suplementos (evidencia: AIS grupo A y posturas ISSN) ---------- */
 function supplements(t){
   const p=S.profile||{},w=num(p.weight)||70,ses=daySessions(t),goal=p.goal||"recomp";
@@ -4083,6 +4111,8 @@ function supplements(t){
   out.push({ic:elTile("Fe","var(--verde)"),n:"Hierro",ev:"Solo con análisis",why:"Corredores y mujeres tienen más riesgo de ferritina baja.",dose:"Solo si una analítica confirma ferritina baja, con pauta médica.",note:"Tomarlo sin déficit no mejora el rendimiento y puede ser perjudicial."});
   return out;
 }
+return {supplements};
+})();
 
 /* ---------- Periodos ---------- */
 function shiftKey(k,n){const d=new Date(k+"T12:00:00");d.setDate(d.getDate()+n);return keyOf(d)}
@@ -4108,6 +4138,8 @@ function periodLabel(p,a){
 function fmtH(h){const t=Math.round(h*60),H=Math.floor(t/60),M=t%60;return H?H+"\u00a0h\u00a0"+pad(M):M+"\u00a0min"}
 function subOf(a){return S.subs[a.id]||flatSub(a.kcal||0,a.sport==="str"?.7:.6)}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {INGR,INGR_BY,NUTK}=(()=>{
 /* ---------- Platos y menús ---------- */
 /* Tabla de composición por 100 g (aprox., BEDCA/USDA): P,C,F,fibra g; Na,K,Mg,Fe,Ca mg; vit D µg */
 const INGR=[
@@ -4157,7 +4189,11 @@ const NUTK=["P","C","F","fib","na","k","mg","fe","ca","vd"];
 /* 27-10-2026 · platos listos para comer, por 100 g de su etiqueta (fuentes en datos/supermercados.js); minerales sin dato salvo el sodio.
    Aparte de INGR para que no lleguen a Pro (sitio/comun.js) hasta que Pro decida cómo mostrarlos. */
 [["lcteri","Pollo teriyaki con arroz (bol)",9.7,21,4.8,0,560,0,0,0,0,0],["lcyaki","Noodles yakisoba con cerdo (bol)",5.7,26,7.2,0,880,0,0,0,0,0],["lcpoke","Poke de salmón (bol)",3.5,27,3.9,0,760,0,0,0,0,0],["lcsalm","Salmón con arroz y verduras (bol)",9.2,11.7,13.3,0,400,0,0,0,0,0],["lcenpo","Ensalada de pollo, queso y frutos secos (bol)",7.9,6.3,12,1.2,340,0,0,0,0,0],["lcenpa","Ensalada de pasta con atún (bol)",6.3,15.6,7.2,0,202,0,0,0,0,0],["lcenma","Ensalada de marisco con pasta (bol)",9.2,9.6,3.2,0,460,0,0,0,0,0],["lcensm","Ensaladilla de marisco",7.4,7.3,22,0,720,0,0,0,0,0],["lcbrio","Brioche de jamón cocido y huevo",10,20.9,8.55,0,427,0,0,0,0,0],["lcsug","Sushi variado (bandeja grande)",6.8,21,4.6,0,640,0,0,0,0,0],["lcsup","Sushi variado (bandeja pequeña)",7,23,4.1,0,720,0,0,0,0,0],["lcsum","Sushi con wakame (bandeja)",4.9,24,6.5,0,760,0,0,0,0,0]].forEach(r=>{const o={id:r[0],n:r[1],P:r[2],C:r[3],F:r[4],fib:r[5],na:r[6],k:r[7],mg:r[8],fe:r[9],ca:r[10],vd:r[11]};INGR.push(o);INGR_BY[o.id]=o});
+return {INGR,INGR_BY,NUTK};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {SUPERS,supId,supName,supTiene,supVer}=(()=>{
 /* ---------- Supermercados: los productos de cada cadena (revisado el 26-10-2026) ----------
    Las cadenas se nombran solo como texto: sin logotipos ni nada que dé a entender un acuerdo.
    N: el nombre del producto en la cadena para cada ingrediente de INGR (es lo que sale en la lista de la compra).
@@ -4283,6 +4319,8 @@ const supId=()=>{const s=(S.profile||{}).store;return SUPERS[s]?s:""};
 /* Los listos para comer solo se ven si compras en su cadena, y el menú automático no los propone (son para el día que no apetece cocinar) */
 const supVer=d=>!d.listo||d.sup===supId();
 const supName=id=>{const C=SUPERS[supId()];return C&&C.N[id]||INGR_BY[id].n};
+return {SUPERS,supId,supName,supTiene,supVer};
+})();
 
 /* ---------- Calidad de los macros (añadido; no cambia ningún cálculo existente) ----------
    Por 100 g, aprox. BEDCA/USDA: azúcares, saturadas, mono, poli, omega-3 (g) y calidad proteica:
@@ -4467,6 +4505,8 @@ function planAction(act,idx,k){
 
 
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {TA_BY,taIco,taTipoPlato}=(()=>{
 /* ---------- Tipo de cada alimento y su icono (23-10, aprobado por Javier) ----------
    Un icono de línea por tipo: rejilla de 24, trazo 1,8 (2,2 junto a texto de 600), gris, sin recuadro (guía 4.0, cap. 9). Un tipo de
    alimento no tiene color propio, así que no se tiñe. Los 60 ingredientes de la app tienen su tipo fijo; uno propio lo saca de lo que
@@ -4514,6 +4554,8 @@ function taTipoPlato(d){if(!d)return"otro";if(TA_BY[d.ico])return d.ico;let best
 /* el icono, en su columna de 24, con su nombre para el lector de pantalla */
 const taSvg=(t,w)=>`<svg viewBox="0 0 24 24" width="${w||20}" height="${w||20}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(TA_BY[t]||TA_BY.otro)[2]}</svg>`;
 const taIco=t=>`<span class="ta-ico" role="img" aria-label="${(TA_BY[t]||TA_BY.otro)[1]}">${taSvg(t)}</span>`;
+return {TA_BY,taIco,taTipoPlato};
+})();
 
 /* ---------- Sustrato a pantalla completa ---------- */
 const FULL={};
@@ -4594,6 +4636,8 @@ function setFull(p){
 
 
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {heatF,loadWeather,tempAt,wloc,wlocOk,wxAdvice,wxPill,wxStrip}=(()=>{
 /* ---------- Previsión del tiempo ---------- */
 /* v370: sin ciudad por defecto (antes, Consuegra sin haberla elegido, R11): hasta que la elige, no hay previsión y se le pide al ver el tiempo */
 const wlocOk=()=>{const w=(S.profile||{}).wloc;return!!(w&&w.lat!=null)};
@@ -4657,6 +4701,8 @@ function wlocSheet(from){const ov=document.createElement("div");ov.className="ov
       if(window.__native&&window.__native.locPerm)window.__native.locPerm().then(ok=>{if(ok)go();else{b.disabled=false;b.textContent="Usar mi ubicación";toast("Sin permiso de ubicación: busca tu ciudad")}},go);else go()}});
   ov.addEventListener("keydown",e=>{if(e.key==="Escape")close()});document.body.appendChild(ov);inp.focus()}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wlocpick]");if(b){e.preventDefault();e.stopPropagation();wlocSheet(b)}},true);
+return {heatF,loadWeather,tempAt,wloc,wlocOk,wxAdvice,wxPill,wxStrip};
+})();
 
 /* ---------- Tarjeta de entreno del día ---------- */
 /* v260 · iconos de deporte más suaves, basados en Tabler (MIT): trazo redondeado de 1,9. Sin color: el deporte lo dice el icono. */
@@ -4933,10 +4979,16 @@ const XBR={what:["Para qué sirve",'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12
   warn:["Ten en cuenta",'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/>']};
 function xbRow(k,t){const v=XBR[k];return`<div class="xbr xbr-${k}"><span class="xbr-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${v[1]}</svg></span><div><span class="xbr-l">${v[0]}</span><p>${esc(t)}</p></div></div>`}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {stravaRefresh}=(()=>{
 async function stravaRefresh(){if(!window.__native||!window.__native.strava)return;try{S.stravaSt=await window.__native.strava()}catch(e){S.stravaSt=null}if(S.tab==="perfil")render()}
 window.__stravaDone=ok=>{S.svBusy=false;if(!S.onb)toast(ok?"Strava conectado":"No se ha podido conectar con Strava");else if(!ok)toast("No se ha podido conectar con Strava");
   stravaRefresh();if(S.onb)obConnRefresh();if(ok){S.imp=null;impRun();syncActs()}}; /* v237: ya no se recarga la página al volver de Strava */
+return {stravaRefresh};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {dataCard,resetDo}=(()=>{
 /* ---------- Copia de seguridad ---------- */
 function dataCard(){let last=null;try{last=localStorage.getItem("sustrato-backup")}catch(e){}
   const can=S.db&&S.uid,rs=S.restore;
@@ -4966,6 +5018,9 @@ async function resetDo(){const c=userCol(),m=S.reset;if(!c||!m||S.resetBusy)retu
     S.resetBusy=false;S.reset=null;window.scrollTo(0,0);render();
     if(m==="all")obStart();else toast("Registros borrados")}
   catch(e){S.resetBusy=false;S.reset=null;toast("No se ha podido borrar");render()}}
+return {dataCard,resetDo};
+})();
+
 /* ---------- Copia en la nube, cifrada en el móvil ----------
    Un código de 24 caracteres genera dos cosas: el identificador de la copia en el servidor y la clave de cifrado.
    El servidor solo recibe datos ya cifrados: sin el código nadie (tampoco nosotros) puede leerlos. */
@@ -5293,6 +5348,8 @@ function rhrCard(){const M=S.rhr||{},tk=today(),keys=Object.keys(M).sort(),rg=+(
     <div class="rh-scale"><div class="rh-bar">${scale.map(([a,b,l],j)=>`<span class="${(aw>=a||j===0)&&(aw<b||j===scale.length-1)?"on":""}" style="flex:1"><em>${l}</em><u>${j===0?"≤"+(b-1):j===scale.length-1?a+"+":a+"–"+(b-1)}</u></span>`).join("")}<i style="left:${sp.toFixed(1)}%"></i></div><p class="note" style="margin:6px 0 0">Para ${fem?"mujeres":"hombres"} de tu edad, medido despierto${night?`: tu reloj da el mínimo de la noche, así que se compara como ${r0(aw)} ppm`:""}. Lo que importa es tu propia tendencia.</p></div>
     ${input}</section>`}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {readiness,readinessTrend,weightVerdict}=(()=>{
 /* ---------- Cómo llegas hoy ---------- */
 function readiness(tk,FSc){tk=tk||today();const M=cyMap("rhr"),f=[];let sc=70,n=0;
   const tv=M[tk],base=rhrAvg(shiftKey(tk,-1),7,M);
@@ -5322,6 +5379,8 @@ function weightVerdict(){const W=(S.weights||[]).filter(x=>x.d>=shiftKey(today()
   if(g==="loss")return wk<=-1.2?["mid",t+" · rápido"]:wk<=-0.2?["ok",t+" · bien"]:wk<0.2?["mid",t+" · estable"]:["mid",t+" · sube"];
   if(g==="hyper")return wk>=0.6?["mid",t+" · rápido"]:wk>=0.1?["ok",t+" · bien"]:["mid",t+(wk>-0.1?" · estable":" · baja")];
   return Math.abs(wk)<=0.3?["ok",t+" · estable"]:["mid",t+(wk>0?" · sube":" · baja")]}
+return {readiness,readinessTrend,weightVerdict};
+})();
 
 /* ---------- Tasa de sudor ---------- */
 /* v335 · Fila con interruptor siempre visible y sin mínimo de tiempo; apagarlo con datos los borra y ofrece deshacer (104) */
@@ -5734,6 +5793,8 @@ document.addEventListener("click",e=>{const d=e.target.closest(".hcar-dots i");i
     else if(S.tab==="plan"){S.planWeek=shiftKey(S.planWeek||mondayOf(today()),7*dir);render()}
   },{passive:true});
 })();
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {ACTS_LS,call,ensureDaySubs,ensureSub,loadActs,loadStore,mcpMsg,prefillFromStrava,subNeeds,syncActs,toggleFasted,userCol}=(()=>{
 /* ---------- Datos ---------- */
 function mcpMsg(e){switch(e&&e.code){
   case"server_not_connected":return"Strava no está conectado. Añádelo en claude.ai, en Ajustes › Conectores, y recarga.";
@@ -5909,6 +5970,8 @@ async function prefillFromStrava(){
     render();
   }catch(e){}
 }
+return {ACTS_LS,call,ensureDaySubs,ensureSub,loadActs,loadStore,mcpMsg,prefillFromStrava,subNeeds,syncActs,toggleFasted,userCol};
+})();
 
 /* Qué comer: la gota de Sustrato. Capas = macros del objetivo (grasas abajo, proteína, hidratos arriba, como el logo);
    cada capa se rellena con lo que realmente llevas comido de ese macro. Sin borde. */
@@ -6155,6 +6218,8 @@ const ZONE={lats:"espalda",traps:"espalda",lower_back:"espalda",delt_p:"hombros"
 function zonesOf(id,cm){const mm=cm||MUSC[id];if(!mm)return[];return[...new Set(mm[0].map(k=>ZONE[k]).filter(Boolean))]}
 function joinY(a){a=a.slice();if(a.length<2)return a.join("");const l=a.pop();return a.join(", ")+" y "+l}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {hidePop,qty}=(()=>{
 /* ---------- Alimentos ---------- */
 /* d = gramos del macro por 100 g de alimento (en crudo salvo indicación); u = gramos por unidad */
 const FOODS={
@@ -6211,6 +6276,8 @@ document.addEventListener("focusin",e=>{const el=e.target.closest&&e.target.clos
 document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop()});
 window.addEventListener("scroll",hidePop,{passive:true});
 window.addEventListener("scroll",()=>{const h=document.querySelector("header.top");if(h)h.classList.toggle("scrolled",scrollY>4)},{passive:true});
+return {hidePop,qty};
+})();
 
 /* ---------- Preferencias, compra y exportación ---------- */
 const TAGS={meat:["pollo","pavo","ternera","cerdo","jamon"],fish:["atun","merluza","salmon","sardinas"],shell:["gambas","mejillones"],
@@ -6672,6 +6739,8 @@ function weightHistory(){
     return`<div class="wh"><span>${esc(dateLabel(x.d))}</span><b>${String(x.kg).replace(".",",")} kg</b><span class="whd ${df==null?"":df>0?"up":df<0?"down":""}">${df==null?"":(df>0?"+":"")+df.toFixed(1).replace(".",",")}</span><button class="tskip" data-wtdel="${x.d}" aria-label="Borrar el pesaje del ${esc(dateLabel(x.d))}" title="Borrar">✕</button></div>`}).join("");
   return`<section class="glass pad fade"><div class="row"><h2>Pesajes</h2><button class="btn sm" data-act="wtedit">＋ Pesarme</button></div><div class="whl">${rows}</div>${W.length>6?`<button class="chip sm" data-act="wtall" style="margin-top:10px">${S.wtAll?"Ver menos":"Ver los "+W.length}</button>`:""}</section>`;
 }
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {PW_PCT,VO2L,VO2N,drBlock,drEnsure,driftCard,ensurePerf,paceAt,perfAgg,perfFtp,pwZone,savePerf,vo2Cost,vo2Norm}=(()=>{
 /* ---------- Rendimiento: VO2máx, umbral, FTP y cadencia con tus propios entrenos ----------
    Carrera: en tramos estables, el coste de oxígeno del ritmo (ACSM desde v231; corregido a ritmo lento desde v233) dividido por el % de pulso de reserva (Swain).
    Bici sin potenciómetro: física de tus subidas (peso, bici, pendiente, velocidad); con potenciómetro, tu mejor 20′.
@@ -6818,6 +6887,9 @@ const VO2L=["Bajo","Regular","Bueno","Excelente","Superior"];
 const PW_PCT={1:.5,2:.65,3:.83,4:.98,5:1.12};
 function pwZone(w,ftp){const f=w/ftp;return f<.56?1:f<.76?2:f<.91?3:f<1.06?4:5}
 function perfFtp(){const a=perfAgg();return a.ftp?Math.round(a.ftp):null}
+return {PW_PCT,VO2L,VO2N,drBlock,drEnsure,driftCard,ensurePerf,paceAt,perfAgg,perfFtp,pwZone,savePerf,vo2Cost,vo2Norm};
+})();
+
 /* Rendimiento (v200): la referencia de forma de quien entrena en serio. Cifra protagonista, su nivel, su evolución
    y lo que de verdad se usa al entrenar: tus ritmos o tus vatios por zonas. */
 function perfCard(){if(!S.acts.length)return"";setTimeout(ensurePerf,500);const a=perfAgg(),kg=num((S.profile||{}).weight)||null;
@@ -7440,7 +7512,7 @@ function mealsCard(t){
   const mwFirst=(mp.meals.find(m=>!((S.log[S.day]||{})[m.id]))||{}).id;
   const rows=mp.meals.map(m=>{
     const lg=(S.log[S.day]||{})[m.id],st=lg&&lg.st,canL=S.day<=today();
-    /* v254: sin casilla ni flecha; la fila se desliza (070-deslizar-comidas.js) y al tocarla abre la hoja */
+    /* v254: sin casilla ni flecha; la fila se desliza (pantallas/hoy/deslizar-comidas.js) y al tocarla abre la hoja */
     /* Para qué es esta comida: una frase, sin etiquetas */
     const why=[m.pre?["var(--faint)",`Combustible para ${esc(m.pre)}`]:null,m.post?["var(--faint)",`Recuperación tras ${esc(m.post)}`]:null,m.id==="dinner"&&t.bonus?["var(--faint)",m.post?"carga para mañana":"Carga para mañana"]:null].filter(Boolean);
     const tagRow=why.length?`<span class="mwhy"><i style="background:${why[0][0]}"></i><span>${why.map(w=>w[1]).join(" y ")}</span></span>`:"";
@@ -8072,6 +8144,8 @@ document.addEventListener("pointerup",e=>{document.querySelectorAll(".re-plot[da
 function routeBlock(a){if(a.sport==="str")return"";const m=routeMap(a),p=elevProfile(a);if(!m&&!p)return"";
   const sid=a.sid?String(a.sid).replace(/^s/,""):null;
   return`<div class="rblock">${m?`<div class="rsec"><h4>Recorrido</h4>${sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>${m}`:""}${p}${!m&&sid?`<a class="rm-strava" href="https://www.strava.com/activities/${sid}">Ver en Strava</a>`:""}</div>`}
+
+/* Hoja de una actividad (vDetail, al tocar una salida en Actividad o en Hoy) y cómo se abre (openDetail); el mapa y la altitud, en recorrido.js. */
 /* v372 (maqueta aprobada por Javier, 27-10): la hoja de una actividad, por secciones: el nombre con «deporte · día · hora»; arriba, sin fondo,
    «¿Cómo fue?» y las cifras (el dato protagonista); «Energía por sustrato» en su grupo; Avituallamiento y Tasa de sudor con su título */
 function vDetail(){
@@ -8123,6 +8197,8 @@ async function openDetail(id,focusFuel){
       :call("get_activity_streams",{activity_id:sid,streams:["distance","altitude","latlng"],resolution:300},{cache:{staleTime:300000,gcTime:86400000}})).then(r=>{if(r&&r.altitude){S.alt[id]=r;renderModal()}}).catch(()=>{})}
   if(!S.perf[id])call("get_activity_performance",{activity_id:id},{cache:{staleTime:300000,gcTime:86400000}}).then(p=>{S.perf[id]=p;renderModal()}).catch(()=>{});
 }
+
+/* Pantalla Fuerza: la rutina elegida, sus ejercicios y la sesión del día (vFuerza). */
 function vFuerza(){if(!allRoutines().length)return`<section class="glass pad fade fz-none"><h2>Sin rutinas</h2><p class="fdesc">Crea una a tu medida o recupera las de ejemplo.</p><div class="fz-none-a"><button class="btn primary" data-act="rnew">Crear rutina</button><button class="chip" data-act="rtrestore">Recuperar las de ejemplo</button></div></section>`;
   if((S.fzSec||"ent")==="pro")return fzProgHtml();
 setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),sc=sel&&sel.parentElement;if(sc){const l=sel.offsetLeft-sc.offsetLeft,r=l+sel.offsetWidth;if(l<sc.scrollLeft+18||r>sc.scrollLeft+sc.clientWidth-24)sc.scrollLeft=Math.max(0,l-18)}},0);
@@ -8163,6 +8239,8 @@ setTimeout(()=>{const sel=document.querySelector(".fz-rt [aria-selected=true]"),
   </section>
 `;
 }
+
+/* Pantalla Perfil: tus datos, apariencia, composición y conexiones (vPerfil); sus tarjetas, en perfil.js y perfil-agrupado.js. */
 function vPerfil(){
   const p=S.profile||{};const b=basal(p);const hp=hrParams(p);
   const f=(id,l,ph,unit)=>`<label class="f" for="p_${id}">${l}${unit?" ("+unit+")":""}<input id="p_${id}" inputmode="decimal" placeholder="${ph}" value="${p[id]!=null?esc(p[id]):""}"></label>`;
@@ -8219,6 +8297,8 @@ function vPerfil(){
     </section>`;
   return pgPerfil({form,appear,comp,col,bandas,cy:cyCard(),per:psSum.per,bmr:b?reInt(b.bmr)+" kcal":""});
 }
+
+/* Pintar: render (con la espera mientras el dedo está en el calendario), render0 (la pestaña elegida, su título y su subtítulo) y renderModal (las hojas, en la tabla hojas()). */
 /* v278b: mientras el dedo está en el calendario del Resumen (S._hold), los repintados esperan: si la página se rehiciera
    bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
 function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{if(typeof ingxSync==="function")ingxSync();VZ.fit();render0()}finally{unitize();hdrAv();document.body.classList.toggle("simple",typeof simpleOn==="function"&&simpleOn())}}
@@ -8250,9 +8330,42 @@ function render0(){
   S.pop=null;
   $("#sdot").className="sdot"+(S.actsState==="ok"?" ok":S.actsState==="err"?" err":"");
 }
-function renderModal(){const m=$("#modal");if(S.sheet==="msnew"){m.innerHTML=msHtml();m.hidden=false;return} /* v363: anotar medidas */if(S.sheet&&String(S.sheet).startsWith("pfa:")){m.innerHTML=pgSheet();m.hidden=false;return} /* Perfil agrupado: sus hojas */if(S.sheet==="intake"){m.innerHTML=ikHtml();m.hidden=!m.innerHTML;return} /* v354 */if(S.sheet==="salud"){m.innerHTML=hsHtml();m.hidden=false;return} /* v348 */if(S.sheet==="prdos"){m.innerHTML=prDosHtml();m.hidden=false;return} /* v371: dossier de competición */if(S.sheet==="prmenu"){m.innerHTML=prMenuHtml();m.hidden=!m.innerHTML;return} /* v346 */if(S.sheet==="prchk"){m.innerHTML=prChkHtml();m.hidden=false;return} /* v342 */if(S.sheet==="pauta"){m.innerHTML=ppHtml();m.hidden=false;return} /* v333 */if(S.sheet==="alc"){m.innerHTML=alHtml();m.hidden=false;return}if(S.sheet==="ical"){m.innerHTML=icHtml();m.hidden=false;return} /* v319 */if(S.sheet==="rplan"&&S.rplan){m.innerHTML=rplanHtml();m.hidden=false;return}if(S.sheet==="vzl"&&S.vzl){m.innerHTML=vzlHtml();m.hidden=false;return}if(S.sheet==="info"&&S.info){m.innerHTML=infoHtml();m.hidden=false;return}if(S.sheet==="routine"&&S.rEd){renderRoutineEd();return}if(S.sheet==="rtm"){m.innerHTML=rtmHtml();m.hidden=false;return}if(S.sheet==="fb"&&S.fb){m.innerHTML=fbHtml();m.hidden=false;return}if(S.sheet==="rwiz"&&S.rw){renderRw();return}if(S.sheet==="pb"&&S.pb){renderPb();return}if(S.sheet==="shop"){m.innerHTML=shopHtml();m.hidden=false;return}if(S.sheet==="opt"&&S.opt){m.innerHTML=optHtml();m.hidden=false;return}if(S.sheet==="dpk"&&S.dpk){m.innerHTML=dpkHtml();m.hidden=false;return}if(S.sheet==="meal"&&S.msh){m.innerHTML=mealSheetHtml();m.hidden=false;return}if(S.sheet==="qn"&&S.qn){m.innerHTML=qnHtml();m.hidden=false;return}if(S.sheet==="xs"){const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}return}if(S.sheet==="planadd"&&S.pa){const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
+/* Hojas: cada valor de S.sheet con lo que pinta. html devuelve su marcado (vacia: sin marcado, la hoja no se abre); pinta lo hace todo por su cuenta; si es la condición para abrirla.
+   Una hoja nueva se añade aquí y no en renderModal. La tabla se crea al primer uso (renderModal puede llamarse antes de que cargue este módulo). */
+function hojas(){return hojas.t||(hojas.t={
+  msnew:{html:msHtml}, /* anotar medidas */
+  intake:{html:ikHtml,vacia:true},
+  salud:{html:hsHtml},
+  prdos:{html:prDosHtml}, /* dossier de competición */
+  prmenu:{html:prMenuHtml,vacia:true},
+  prchk:{html:prChkHtml},
+  pauta:{html:ppHtml},
+  alc:{html:alHtml},
+  ical:{html:icHtml},
+  rplan:{si:()=>S.rplan,html:rplanHtml},
+  vzl:{si:()=>S.vzl,html:vzlHtml},
+  info:{si:()=>S.info,html:infoHtml},
+  routine:{si:()=>S.rEd,pinta:renderRoutineEd},
+  rtm:{html:rtmHtml},
+  fb:{si:()=>S.fb,html:fbHtml},
+  rwiz:{si:()=>S.rw,pinta:renderRw},
+  pb:{si:()=>S.pb,pinta:renderPb},
+  shop:{html:shopHtml},
+  opt:{si:()=>S.opt,html:optHtml},
+  dpk:{si:()=>S.dpk,html:dpkHtml},
+  meal:{si:()=>S.msh,html:mealSheetHtml},
+  qn:{si:()=>S.qn,html:qnHtml},
+  xs:{pinta:m=>{const sh=m.querySelector(".xs-sheet"),y=sh?sh.scrollTop:0;m.innerHTML=xSheetHtml();m.hidden=false;const n=m.querySelector(".xs-sheet");if(n&&y){n.classList.remove("fade");n.scrollTop=y}}},
+  planadd:{si:()=>S.pa,pinta:m=>{const sh=m.querySelector(".pa-sheet"),sy=sh?sh.scrollTop:0,ae=document.activeElement,ak=ae&&m.contains(ae)?["data-sx","data-pa","id"].map(a=>ae.getAttribute(a)?a+"="+ae.getAttribute(a):null).find(Boolean):null;
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
-    if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}return}if(!S.detail){m.hidden=true;m.innerHTML="";return}{const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
+    if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}}}
+})}
+/* las hojas de Perfil agrupado comparten una sola entrada: «pfa:…» */
+function hojaDe(s){return s&&String(s).startsWith("pfa:")?{html:pgSheet}:hojas()[s]}
+function renderModal(){const m=$("#modal"),h=hojaDe(S.sheet);
+  if(h&&(!h.si||h.si())){if(h.pinta)h.pinta(m);else{m.innerHTML=h.html();m.hidden=h.vacia?!m.innerHTML:false}return}
+  if(!S.detail){m.hidden=true;m.innerHTML="";return}
+  {const sh=m.querySelector(".sheet"),y=sh?sh.scrollTop:0,same=sh&&m.dataset.did===S.detail;m.innerHTML=vDetail();m.dataset.did=S.detail;m.hidden=false;const n=m.querySelector(".sheet");if(n&&same){n.classList.remove("fade");n.scrollTop=y}}}
 
 /* ---------- Eventos ---------- */
 document.addEventListener("click",e=>{
@@ -8506,7 +8619,7 @@ async function saveStr(){
   if(Date.now()-enHoja<400&&!document.querySelector(".overlay,.pk-ov")){e.stopPropagation();e.preventDefault();enHoja=0}},true)}
 
 /* ---------- Arranque ---------- */
-S.day=today();render();
+S.day=today(); /* el primer pintado, al final de la carga (base/cierre.js): así no depende del orden de los módulos */
 var T0=Date.now();function hideSplash(){const sp=document.getElementById("splash");if(!sp||sp.dataset.out)return;sp.dataset.out=1;setTimeout(()=>{sp.classList.add("out");setTimeout(()=>sp.remove(),450)},Math.max(0,1300-(Date.now()-T0)))}
 setTimeout(hideSplash,4000);
 (async function boot(){
@@ -8651,7 +8764,7 @@ function connCard(){const G=[],st=S.stravaSt,nat=window.__native&&window.__nativ
   /* v286: archivos FIT, sin cuenta; completan lo que ya hay o añaden lo que falte */
   {const n=Object.keys(S.fit||{}).length;G.push(hd(`<span class="cx-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 18v-6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/></svg></span>`,"Archivos FIT",`<span>${S.fitLast?esc(S.fitLast):"De tu reloj o de Garmin Connect, COROS, Suunto… Completan los entrenos que ya tienes o añaden los que falten."}</span>`,n?`<span class="cn-st">${n} importado${n>1?"s":""}</span>`:"")
     +`<label class="cn-a${S.fitBusy?" fit-busy":""}" for="fitin">${S.fitBusy?"Importando…":"Importar archivos"}</label><input type="file" id="fitin" accept=".fit,application/octet-stream" multiple hidden${S.fitBusy?" disabled":""}>`)}
-  /* v346: tu profesional ya no va aquí: tiene su tarjeta propia en el Perfil (112) */
+  /* v346: tu profesional ya no va aquí: va en su hoja (profesional/pauta.js) */
   return`<section class="glass pad fade cx-card"><span class="pkk">Conexiones</span>${G.map(g=>`<div class="cn-g">${g}</div>`).join("")}</section>`
     +(a&&!S.acDel?`<div class="cn-del"><button type="button" data-act="acdel">Borrar mi cuenta y mis datos</button><p>Borra del servidor todo lo sincronizado. Pide confirmación.</p></div>`:"")}
 function knowCard(){return`<section class="glass pad fade kn-card"><span class="pkk">Conoce Sustrato</span><div class="kn">
@@ -8863,6 +8976,8 @@ const MU={
   addEventListener("resize",()=>document.querySelectorAll(SEL).forEach(mark))})();
 addEventListener("pointerdown",()=>{MU.userAt=performance.now()},true);addEventListener("keydown",()=>{MU.userAt=performance.now()},true);
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+;(()=>{
 /* Selector deslizante (v202): una marca que viaja hasta la opción elegida, con rebote; se puede arrastrar. */
 const SEGPOS={};
 function segKey(g){return(g.getAttribute("aria-label")||"")+"|"+g.className.replace(/\s*th-on/,"")+"|"+((g.querySelector("button")||{}).outerHTML||"").replace(/aria-(pressed|selected|checked)="[^"]*"/g,"").slice(0,80)}
@@ -8888,6 +9003,8 @@ function segThumbs(){document.querySelectorAll(".seg").forEach(g=>{if(g.querySel
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".seg.th-on>button");if(b&&b!==segOn(b.parentNode))buzz(8)},true);
   addEventListener("resize",()=>document.querySelectorAll(".seg.th-on").forEach(x=>segPlace(x,false)))})();
 (function(){let t=0;new MutationObserver(()=>{if(!t)t=requestAnimationFrame(()=>{t=0;unitize();segThumbs();rgAnim();scrollLock();dayBackPos();hcarFit()})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-checked"]});setTimeout(unitize,300)})();
+})();
+
 /* VFC con tu rango normal (v225): línea base de 60 noches ± ½ desviación sobre ln(rMSSD) (Plews, HRV4Training).
    Lo que cuenta es la media de 7 días frente a ese rango; una noche suelta pesa poco. Con menos de 14 noches, el cálculo anterior. */
 function hrvM7(H,d){const a=[];for(let i=0;i<7;i++){const x=H[shiftKey(d,-i)];if(x>0)a.push(Math.log(x))}return a.length>=3?Math.exp(a.reduce((p,q)=>p+q,0)/a.length):null}
@@ -8901,6 +9018,8 @@ function hrvChart(k,s){const H=S.hrv||{},pts=[],line=[];for(let i=29;i>=0;i--){c
   return`<div class="hv-ch">${VZ.line({id:"hv",color:"var(--rojo)",label:"VFC de las últimas 30 noches con tu rango normal",pts,line,band:{lo:s.lo,hi:s.hi,label:"rango"},fmt:v=>fmtInt(v),tip:p=>fmtInt(p.v)+" ms",h:150})}<p class="hv-lg"><span><i class="hv-d"></i>cada noche</span><span><i class="hv-l"></i>media de 7 días</span><span><i class="hv-b"></i>tu rango normal</span></p></div>`}
 function hrvN(k){const H=S.hrv||{};let n=0;for(let i=1;i<=60;i++)if(H[shiftKey(k,-i)]>0)n++;return n}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {autoHrmax,autoLthr,bestAvg,hrQual,hrSuspect,hrSuspects,runSegs,vo2Segs}=(()=>{
 /* Pulso fiable, umbral automático y VO2máx por tramos estables (v229).
    - Pulso dudoso: tu relación personal entre potencia de carrera (o ritmo) y pulso. Si una carrera queda muy por debajo
      de lo que te corresponde (−10 % con potencia, −15 % con ritmo), el sensor falló: no cuenta para umbral, VO2máx ni deriva,
@@ -8950,6 +9069,11 @@ function vo2Segs(sg,hp,trail){if(!sg||!hp)return null;const out=[];
 function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+today()+"|"+(S.pmxRev||0);if(autoHrmax.k===k)return autoHrmax.v;
   const from=shiftKey(today(),-365),sus=hrSuspects(),L=S.acts.filter(a=>a.hrx&&a.day>=from&&a.mov>=900&&a.sport!=="str"&&!sus[a.id]&&a.hrx>=120&&a.hrx<=215).map(a=>({v:a.hrx,d:a.day,n:a.name})).sort((x,y)=>y.v-x.v);
   autoHrmax.k=k;autoHrmax.v=L.length>=6?{v:L[1].v,d:L[1].d,n:L[1].n,top:L[0].v}:null;return autoHrmax.v}
+return {autoHrmax,autoLthr,bestAvg,hrQual,hrSuspect,hrSuspects,runSegs,vo2Segs};
+})();
+
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+;(()=>{
 /* ---------- Arrastrar para actualizar (v236) ----------
    En lo alto de cualquier pestaña: tirar hacia abajo y soltar pone al día actividades, reloj y tiempo.
    No actúa con hojas a la vista (v372: antes bastaba con que existiera una .overlay; y se da por arriba hasta 1 px), en la bienvenida ni si el gesto empieza sobre algo que se desliza en horizontal. */
@@ -8975,6 +9099,7 @@ function autoHrmax(){const k=S.acts.length+"|"+(S.acts[0]&&S.acts[0].id)+"|"+tod
     finally{i.classList.remove("ptr-spin");set(0,true);busy=false}
     if(late)toast("Sin respuesta por ahora: se pondrá al día solo")};
   document.addEventListener("touchend",end,{passive:true});document.addEventListener("touchcancel",end,{passive:true})})();
+})();
 
 /* ---------- Curva de ritmo y de potencia (v240) ----------
    Mejores medias por duración de cada salida (se guardan en su registro de rendimiento, así no hay que volver a pedir datos)
@@ -9044,6 +9169,8 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
   x.setAttribute("x1",b[0]);x.setAttribute("x2",b[0]);x.classList.add("on");c.setAttribute("cx",b[0]);c.setAttribute("cy",b[1]);c.classList.add("on");if(rd)rd.innerHTML=`<b>${b[2]}</b> · ${b[3]}`};
   document.addEventListener("mousemove",mv);document.addEventListener("touchstart",mv,{passive:true});document.addEventListener("touchmove",mv,{passive:true})})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {PK,pkField,pkSheet}=(()=>{
 // Selector que abre una hoja (guía, pág. 12: «Listas: un selector compacto que abre una hoja, nunca el selector nativo»). v243.
 // pkField(id, rótulo, opciones [[valor, nombre, explicación?]], valor) -> campo con <input type="hidden" id="p_<id>"> que lee el formulario.
 // La hoja se monta aparte del render para no perder lo que haya sin guardar en el formulario.
@@ -9072,6 +9199,8 @@ function pkOpen(id,from){const d=PK&&PK[id],inp=document.getElementById("p_"+id)
     i2.value=v;if(b2&&op)b2.querySelector("span").textContent=op[1];i2.dispatchEvent(new Event("change",{bubbles:true}))},from)}
 // en captura y sin propagar: el manejador general de botones repintaría la pantalla y se perdería lo no guardado
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".pk-f[data-pk]");if(b){e.preventDefault();e.stopPropagation();pkOpen(b.dataset.pk,b)}},true);
+return {PK,pkField,pkSheet};
+})();
 
 /* ---------- Comidas con gestos (v254) ----------
    Hoy · Reparto por comidas. Sin casilla ni flecha: la fila entera se toca para abrir su hoja.
@@ -9134,6 +9263,8 @@ addEventListener("scroll",()=>{if(!S._mwSeen&&!S._mwHinted){clearTimeout(mwHint.
     if(openRow===f.parentNode){e.preventDefault();e.stopPropagation();close(openRow);openRow=null}},true);
 })();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+;(()=>{
 /* ---------- Conmutador (v257, guía: «Conmutador») ----------
    Para un sí o no que se queda guardado. <div class="tg-r"><span class="tg-t"><b>…</b><small>…</small></span><button class="tg-sw" role="switch" aria-checked data-…></button></div>
    Toda la fila se puede tocar. El interruptor se mueve primero y después actúa su data-… (el manejador de siempre), para que se vea deslizarse antes de repintar. */
@@ -9141,6 +9272,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   const sw=t.classList.contains("tg-sw")?t:t.querySelector(".tg-sw");if(!sw||sw.disabled||sw.dataset.tgGo)return;
   e.preventDefault();e.stopPropagation();sw.setAttribute("aria-checked",sw.getAttribute("aria-checked")!=="true");buzz(8);
   setTimeout(()=>{if(!sw.isConnected)return;sw.dataset.tgGo="1";sw.click();delete sw.dataset.tgGo},220)},true);
+})();
 
 /* ---------- Ciclo menstrual (v258) ----------
    Solo con sexo «Mujer» y si ella lo activa. Documento «cycle» del almacén: viaja a la cuenta y a la copia cifrada como el resto de
@@ -9220,6 +9352,8 @@ document.addEventListener("change",e=>{if(e.target.id!=="cy_last"||!e.target.val
   if(v>today())return;if(last&&daysBetween(last,v)<15&&daysBetween(last,v)>-15)c.starts=c.starts.filter(x=>x!==last); /* corrige la última si está cerca */
   if(!c.starts.includes(v))c.starts.push(v);cySave();toast("Regla apuntada");render()});
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {fdChips,fdField,fdFmt,fdHabitHours}=(()=>{
 /* ---------- Campo de fecha y hora (v261, guía: «Campo de fecha y hora») ----------
    El campo lo dibujamos (mismo aspecto que el selector en hoja); encima, invisible, el <input> del sistema, que es el que recibe
    el toque y abre su calendario o reloj (accesible y en el idioma del teléfono). Nunca el campo nativo a la vista.
@@ -9239,6 +9373,8 @@ document.addEventListener("change",e=>{if(e.target.closest&&e.target.closest(".f
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fdset]");if(!b)return;e.preventDefault();e.stopPropagation();
   const[id,v]=b.dataset.fdset.split("|"),inp=document.getElementById(id);if(!inp)return;inp.value=v;buzz(6);
   inp.dispatchEvent(new Event("input",{bubbles:true}));inp.dispatchEvent(new Event("change",{bubbles:true}))},true);
+return {fdChips,fdField,fdFmt,fdHabitHours};
+})();
 
 /* ---------- IA · Apuntar comida escribiendo (v263) ----------
    En la hoja de una comida, lo escrito en «Buscar plato…» se puede apuntar con IA aunque no esté entre tus platos.
@@ -9400,6 +9536,8 @@ function stSync(p){if(!p||p.sby!=="d"||p.sport==="str")return;const seen=new Set
   stFlat(p.steps).forEach(x=>{if(seen.has(x))return;seen.add(x);const v=stVz(p,x.z);if(!(x.km>0)){const s=stKmStep(p.sport,x.d*60*v/1000);x.km=+Math.max(s,Math.round(x.d*60*v/1000/s)*s).toFixed(2)}x.d=Math.max(.5,Math.round(x.km*1000/v/60*10)/10)})}
 function stKmTotal(p){return stFlat(p.steps).reduce((a,x)=>a+(x.km||0),0)}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {actInt,fuelCarbs,fuelTarget,fuelWhy}=(()=>{
 /* ---------- Hidratos durante el entreno: enfoque conservador según objetivo (v267) ----------
    Antes: 40 / 60 / 75 g/h desde 75 min para todo el mundo, cifras de competición. Ahora (ACSM/IOC 2016; Jeukendrup 2014):
    · Entreno: nada por debajo de 90 min. Con pérdida de grasa o recomposición, menos (una salida suave de 2 h se hace sin comer).
@@ -9413,13 +9551,19 @@ const fuelCarbs=(min,cph)=>Math.round(cph*Math.max(0,min/60-.5));
 function actInt(a){const u=S.subs[a.id];if(u&&u.cho+u.fat>0){const f=u.cho/(u.cho+u.fat);return f<.62?"s":f<.8?"m":"i"}return"m"}
 function fuelWhy(){const g=(S.profile||{}).goal,low=g==="loss"||g==="recomp";
   return`<details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Para entrenar no hace falta comer como en una carrera. Por debajo de hora y media, nada: el glucógeno llega de sobra. A partir de ahí, según la intensidad y tu objetivo${low?" (con «"+esc((GOALS[g]||{}).label||"")+"», algo menos: una salida suave de 2 h se hace sin comer)":""}: de 20 a 50 g por hora. Si el entreno está marcado como carrera, 45 g/h hasta 2,5 h y 60–70 g/h en las más largas. Más de eso solo si ya lo toleras: el estómago se entrena poco a poco.</p></details>`}
+return {actInt,fuelCarbs,fuelTarget,fuelWhy};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {hdrAv}=(()=>{
 /* ---------- Avatar en el botón de Perfil de la cabecera (v267) ----------
    La misma cara que en Perfil: tu foto si la has puesto; si no, tus iniciales; sin nombre, el icono de siempre. Clase .hav */
 function havSvg(){return'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M6.2 18.4a7 7 0 0 1 11.6 0"/></svg>'} /* función y no constante: render() puede llegar antes que este trozo */
 function hdrAv(){const b=$("#menuBtn");if(!b)return;const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"",key=(p.avatar||"")+"|"+ini;
   if(b.dataset.av===key)return;b.dataset.av=key;const old=b.querySelector(":scope>svg,:scope>.hav");if(!old)return;
   old.insertAdjacentHTML("beforebegin",p.avatar?`<img class="hav" src="${p.avatar}" alt="">`:ini?`<span class="hav" aria-hidden="true">${esc(ini)}</span>`:havSvg());old.remove()}
+return {hdrAv};
+})();
 
 /* ---------- Fuerza que progresa (v269) ----------
    Doble progresión, conservadora: primero suben las repeticiones dentro del rango; cuando llegas al máximo en todas las series,
@@ -9518,6 +9662,8 @@ function strSumCard(){if(!S.str.length)return"";const tk=today(),n4=S.str.filter
     <button type="button" class="ms-link" data-fzgo="pro">Ver el detalle en Fuerza ›</button></section>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-fzgo]");if(!b)return;S.prevTab=S.tab;S.tab="fuerza";S.fzSec=b.dataset.fzgo;render();window.scrollTo(0,0)});
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {ssHtml}=(()=>{
 /* ---------- Sensación sin caritas (v271) ----------
    «¿Cómo fue?» es un deslizador de cuatro paradas, la misma pieza que la intensidad del planificador: cuatro columnas
    iguales, cada palabra bajo su punto. Sin valorar: pista gris con los puntos de color y sin tirador. Al soltar se guarda.
@@ -9543,6 +9689,8 @@ function ssSave(g,v){const[k,a,b]=g.dataset.ssk.split("|");buzz(10);
   const end=()=>{if(!g)return;const gg=g;g=null;ssSave(gg,last)};document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end);
   document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-ssv]");if(!b)return;const gg=b.closest(".ss");if(!gg)return;const v=+b.dataset.ssv;ssShow(gg,v);ssSave(gg,v)});
   document.addEventListener("keydown",e=>{const t=e.target.closest&&e.target.closest(".ss-t");if(!t||(e.key!=="ArrowRight"&&e.key!=="ArrowLeft"))return;e.preventDefault();const gg=t.parentNode,c=+(t.getAttribute("aria-valuenow")||0),v=Math.max(1,Math.min(4,(c||(e.key==="ArrowRight"?0:5))+(e.key==="ArrowRight"?1:-1)));ssShow(gg,v);ssSave(gg,v)})})();
+return {ssHtml};
+})();
 
 /* ---------- Incidencias y sugerencias (v272) ----------
    Perfil › «Ayuda y sugerencias»: dos filas abren la misma hoja (Incidencia | Sugerencia).
@@ -9772,6 +9920,8 @@ Responde solo JSON: {"P":proteínas_g,"C":hidratos_g,"F":grasas_g,"racion":"raci
   catch(x){er.textContent=x&&x.code==="unknown"?"No lo reconozco. Prueba con un nombre más concreto o copia la etiqueta.":(sampleMsg(x)||"No se ha podido calcular.");er.hidden=false}
   b.disabled=false;b.lastChild.textContent="Calcular"}
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {MI_ASK,logMicros,miParse,miScale}=(()=>{
 /* ---------- Micronutrientes de lo comido (v277) ----------
    Para poder avisar de desajustes que se mantienen, cada comida apuntada guarda sus micros:
    · del menú o de un plato: el plato (d) y cuántas raciones (s); los micros salen de la ficha del plato.
@@ -9791,6 +9941,8 @@ function logMicros(k){const L=S.log[k]||{},o={};MI_K.forEach(x=>o[x]=0);let ok=0
       if(d&&s)mi=miScale(Object.fromEntries(MI_K.map(x=>[x,d[x]||0])),s)}
     if(mi){ok++;MI_K.forEach(x=>o[x]+=mi[x]||0)}});
   return n?{o,ok,n}:null}
+return {MI_ASK,logMicros,miParse,miScale};
+})();
 
 /* ---------- Progreso › Comida (v278) ----------
    Lo que comes de media frente a tu objetivo y los micronutrientes semana a semana, con un aviso cuando uno se queda
@@ -9838,6 +9990,8 @@ function comMicroCard(){const D=comMicros();
     <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Cada barra es una semana, de la más antigua a la actual: gris si está cubierto, naranja si se queda justo (70–90 %) y rojo si está bajo. Cuentan los días en que todo lo que comiste trae sus micros (del menú, de un plato o apuntado con IA) y las semanas con cuatro días así o más. «Según objetivo» y el avituallamiento no los traen. El sodio no incluye la sal que añades al cocinar. Objetivos de referencia (EFSA) ajustados al entreno de cada día.</p></details></section>`}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-comp]");if(!b)return;S.comP=b.dataset.comp;render()});
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {svCacheOk,svDisconnect,svPurge}=(()=>{
 /* v280 · Condiciones de la API de Strava (política de la API, §6.2): lo que la app del móvil recibe de Strava no se guarda más de 7 días,
    ni lo calculado con ello. Cada cálculo hecho con curvas de Strava lleva la hora en que se pidió (t); al abrir y en cada puesta al día
    completa se borra lo que pase de 7 días y se vuelve a pedir en segundo plano, en las mismas tandas de siempre. Lo que viene del reloj
@@ -9860,7 +10014,11 @@ async function svPurge(all){svCloudDrop();if(!svApp())return;const c=userCol();l
 function svCacheOk(v){return!svApp()||!v.list.some(a=>a.sid||svOnly(a.id))||Date.now()-(v.full||0)<=7*864e5}
 async function svDisconnect(){await window.__native.stravaDisconnect();await svPurge(true);
   try{localStorage.removeItem(ACTS_LS)}catch(e){}S.acts=[];toast("Strava desconectado");stravaRefresh();loadActs(true)}
+return {svCacheOk,svDisconnect,svPurge};
+})();
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {fitFor,fitMerge,fitStreamsFor}=(()=>{
 /* ---------- Importar archivos FIT (v286) ----------
    El archivo se lee en el móvil, sin servidor. Si el entreno ya está (mismo deporte, inicio a ±10 min) el FIT lo completa:
    distancia, desnivel, pulso, cadencia, ruta y curvas que falten; si no, entra como actividad nueva.
@@ -9948,6 +10106,8 @@ document.addEventListener("change",async e=>{if(e.target.id!=="fitin"||!e.target
   const L=[...e.target.files];e.target.value="";S.fitBusy=true;render();
   const R=await fitImport(L);S.fitBusy=false;S.fitLast=fitMsg(R);toast(S.fitLast);
   await syncActs();render()});
+return {fitFor,fitMerge,fitStreamsFor};
+})();
 
 /* ---------- Notificaciones (v286) ----------
    Reglas (traspaso, 14-10): como mucho una al día, un dato y una acción, nunca de 22 a 7, cada tipo se activa aparte
@@ -11217,6 +11377,8 @@ document.addEventListener("change",e=>{const t=e.target;if(!t.dataset||!t.files|
   if(t.dataset.lphm){const l=prLinks()[0],[mid,k]=t.dataset.lphm.split("|");if(l)lphSend(l,t.files[0],{d:k,m:mid},"Foto de tu "+((MEALS.find(m=>m[0]===mid)||[])[1]||"comida").toLowerCase());t.value="";return}
   if(t.dataset.lphn){const l=lmLink(t.dataset.lphn),i=$("#lmx-"+t.dataset.lphn),x=String(i&&i.value||"").trim().slice(0,400);if(l){lphSend(l,t.files[0],{d:today(),x});if(i)i.value=""}t.value=""}});
 
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+;(()=>{
 /* ---------- Desplegables con muelle (v359) ----------
    Los grupos plegables del Perfil (<details class="psec">: datos personales, medidas, notificaciones, ayuda…) se abrían de golpe.
    Ahora, como los de Hoy: la altura y el giro de la flecha salen del mismo muelle (guía 2.5: lo que se toca, muelle sin rebote,
@@ -11231,6 +11393,7 @@ function psSpring(d,open){const sm=d.querySelector(":scope>summary"),ch=sm&&sm.q
   MU.spring(d,h0,row,0,x=>{d.style.height=x+"px";rot(x,row,h0)},{resp:.35,done:()=>{d.open=false;end()}})}
 document.addEventListener("click",e=>{const sm=e.target.closest&&e.target.closest("details.psec>summary");if(!sm||MU.reduce())return;const d=sm.parentElement;e.preventDefault();
   const want=d._mu?!d._tgt:!d.open;d._tgt=want;psSpring(d,want)},true);
+})();
 
 /* ---------- Plan sincronizado con TrainingPeaks o intervals.icu (v360) ----------
    Al importar el plan (097) queda activado «Mantener sincronizado»: cada vez que abres la app (como mucho cada 6 h) se vuelve a
@@ -11377,6 +11540,7 @@ function prDosHtml(){const v=S.prds||{},l=lmLink(v.lid),x=l&&((S.lkm[v.lid]||{})
 function prDosOpen(lid,mid){const B=(S.lkm[lid]||{}).m||{};if(!B[mid])return;S.prds={lid,mid};S.sheet="prdos";renderModal();const{ack}=lmList(lmLink(lid)||{id:lid});if(ack[mid]!==true){lmAck(lid,mid,true);setTimeout(()=>{if(S.tab==="hoy")render()},300)}}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-prds]");if(!t)return;const[lid,mid]=t.dataset.prds.split("|");prDosOpen(lid,mid)});
 
+;render(); /* primer pintado, con todos los módulos ya cargados (ver base/arranque.js) */
 })();
 </script>
 
