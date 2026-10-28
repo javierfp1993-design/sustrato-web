@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-27T13:10:56.937Z">
+<meta name="sustrato-version" content="2026-10-28T08:09:03.205Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -63,15 +63,6 @@ h3{margin:0;font-size:calc(17px*var(--tz,1));font-weight:600;letter-spacing:-.01
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 /* guía 4.0: la app es la columna del móvil (≤600), esto se aplica siempre */.grid2{grid-template-columns:minmax(0,1fr)}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.daystrip{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
-.day{flex:0 0 auto;min-width:52px;text-align:center;padding:8px 6px;border-radius:14px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font:inherit}
-.day b{display:block;font-size:calc(17px*var(--tz,1));color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
-.day small{font-size:calc(11px*var(--tz,1))}
-.day[aria-pressed="true"]{background:rgba(255,255,255,.14);border-color:var(--edge)}
-.day .dot{display:block;width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:transparent}
-.day .dot.on{background:var(--carb)}
-.day .dot.pl{background:var(--prot)}
-.day.fut b{color:var(--muted)}
 .meals{display:flex;flex-direction:column;gap:14px;margin-top:12px}
 .mt{color:var(--muted);font-family:var(--font);font-size:calc(12px*var(--tz,1));margin-left:4px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
@@ -364,7 +355,6 @@ header .fab:focus-visible,.hbtn:focus-visible{outline:2px solid var(--ac);outlin
 @media (max-width:480px){.status span{display:none}}
 /* ===== Código de color ===== */
 .hue-musc h2{color:var(--fg)}.hue-gly h2{color:var(--fg)}.hue-aer h2{color:var(--fg)}.hue-h2o h2{color:var(--fg)}.hue-health h2{color:var(--fg)}.hue-body h2{color:var(--fg)}
-.day .dot.on{background:var(--amarillo)}.day .dot.pl{background:transparent;box-shadow:inset 0 0 0 1.5px var(--amarillo)}
 .clegend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
 .clegend span{display:grid;grid-template-columns:14px minmax(0,1fr);column-gap:10px;font-size:calc(12px*var(--tz,1));color:var(--muted)}
 .clegend i{grid-row:span 2;width:14px;height:14px;border-radius:4px;margin-top:2px}
@@ -437,12 +427,6 @@ input.bad{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--rojo) 70%,transpare
 .seg button[aria-pressed="true"],.subtabs button[aria-selected="true"]{background:var(--ac);box-shadow:none;color:var(--ac-on)}
 nav.tabs button{color:var(--muted);font-size:calc(13px*var(--tz,1))}
 nav.tabs button[aria-selected="true"]{background:rgba(255,255,255,.14);color:var(--fg);box-shadow:none}
-/* tira de días tipo calendario */
-.day{background:none;border:0;padding:6px 2px;min-width:44px}
-.day b{width:34px;height:34px;line-height:34px;margin:2px auto 0;border-radius:50%;font-size:calc(17px*var(--tz,1));font-family:var(--round)}
-.day[aria-pressed="true"]{background:none}
-.day[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
-.day small{font-size:calc(11px*var(--tz,1));letter-spacing:0;text-transform:none}
 .tchip{background:var(--card2);border:0;border-radius:10px}
 .dnew{background:var(--card)}
 .ico,.eltile{background:none;border:0;box-shadow:none;border-radius:0}
@@ -501,7 +485,6 @@ header.top .wordmark h1{color:#f4f5f7;background:linear-gradient(100deg,#f4f5f7 
 .tchip.off{opacity:.75}
 .tskip{appearance:none;border:0;background:rgba(255,255,255,.08);color:var(--muted);width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;font-size:calc(11px*var(--tz,1));cursor:pointer;margin-left:2px;padding:0}
 .tskip:hover{background:rgba(255,255,255,.16);color:var(--fg)}
-.day .dot.miss{background:transparent;box-shadow:inset 0 0 0 1.5px var(--rojo)}
 .toast.undo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .toast{max-width:calc(100vw - 32px);box-sizing:border-box} /* D13: un aviso con un nombre largo se corta con «…» y no sale de la pantalla */
 .toast.undo{display:flex;align-items:center;gap:14px;padding:8px 8px 8px 16px}
@@ -800,11 +783,6 @@ html[data-theme="light"] .mp.on{background:var(--rojo)}
 .qa-big:focus-visible,.qa-row:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
 /* guía 4.0: sin variante de escritorio; la app es la columna del móvil */
 @media (prefers-reduced-motion:reduce){.qa,.qa-ov{animation:none}}
-
-/* ===== Tira de días: 7 enteros ===== */
-.daystrip{gap:0!important;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.daystrip::-webkit-scrollbar{display:none}
-.daystrip .day{flex:0 0 calc(100% / 7)!important;min-width:0!important;scroll-snap-align:start;padding:6px 0!important}
 
 
 .ibtn{appearance:none;border:0;background:none;font:600 calc(13px*var(--tz,1)) var(--font);color:var(--fg);padding:8px 0 2px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
@@ -1268,16 +1246,6 @@ input:focus-visible,select:focus-visible{outline-offset:0}
 /* v310 · Calendario de días del planificador (varios a la vez, hasta 2 meses vista) */
 .pa-cal{background:var(--card2);border-radius:14px;padding:10px 10px 8px}
 .pa-ch{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px 6px}.pa-ch b{font-size:calc(17px*var(--tz,1));font-weight:700;text-transform:capitalize}.pa-ch span{display:flex;gap:4px}
-.pa-cw,.pa-cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
-.pa-cw span{text-align:center;font-size:calc(12px*var(--tz,1));color:var(--muted);padding:2px 0 4px}
-/* v318: la celda (44 px de alto como mínimo) lleva el número en un círculo y, debajo, el icono del entreno previsto, como en Hoy */
-.pa-cd{appearance:none;border:0;padding:2px 0 4px;background:none;color:var(--fg);font:500 calc(15px*var(--tz,1)) var(--font);width:100%;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-variant-numeric:tabular-nums}
-.pa-cd b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;font-weight:inherit}
-.pa-cd.tk b{font-weight:700}
-.pa-cd .cal-ic{display:block;width:13px;height:13px;color:var(--icon);opacity:.7}.pa-cd .cal-ic svg{display:block;width:13px;height:13px;stroke-width:2.2}
-.pa-cd[aria-pressed="true"] b{background:var(--ac);color:var(--ac-on)}
-.pa-cd:disabled{color:var(--faint);cursor:default}
-.pa-cd:active:not(:disabled) b{transform:scale(.92)}
 .pa-cal+.pa-note{margin-top:6px}
 /* v310 · Rueda de deportes */
 .pa-wh{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0 -16px}
@@ -1387,7 +1355,7 @@ html[data-theme="light"] .str-step{background:#fff}
 .rh-in div{display:flex;gap:8px}.rh-in input{max-width:110px}
 
 .pa-sheet .seg button[aria-pressed="true"]{font-weight:600}
-@media (prefers-reduced-motion:no-preference){.pa-sheet .chip,.pa-sheet .seg button,.pa-cd,.stz{transition:background .2s,color .2s,border-color .2s,transform .12s}.pa-sheet button:active{transform:scale(.96)}}
+@media (prefers-reduced-motion:no-preference){.pa-sheet .chip,.pa-sheet .seg button,.stz{transition:background .2s,color .2s,border-color .2s,transform .12s}.pa-sheet button:active{transform:scale(.96)}}
 
 /* tarjeta de la mañana */
 .wcard{gap:18px!important;padding:20px!important}
@@ -2948,44 +2916,21 @@ a.fb-row{text-decoration:none}
 .trow.past{opacity:.85}
 .trow.flash{animation:flash 1.4s ease}
 .trow.pm-over{background:var(--ac-soft);box-shadow:inset 3px 0 0 var(--ac)}
-.tday{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
-.tday b{font-size:calc(13px*var(--tz,1));color:var(--muted);font-weight:500}
-.tday span{display:grid;place-items:center;width:36px;height:36px;margin:2px 0 0 -6px;border-radius:50%;font:600 calc(20px*var(--tz,1)) var(--round)} /* v326: el mismo círculo que la tira y el mes */
-.trow.today:not(.sel) .tday span{color:var(--ac)} /* hoy: la cifra en el acento, como el Calendario de Apple */
-.trow.sel .tday span{background:var(--ac);color:var(--ac-on)}
-.tday small{font-size:calc(11px*var(--tz,1));color:var(--fg);font-weight:600;margin-top:2px}
 .trest{font-size:calc(13px*var(--tz,1));color:var(--muted);padding:8px 0}
 .wk-det .mw-sec{margin-top:16px}
 /* v275 · resumen de la semana en dos columnas: con tres casillas, la última ocupa la fila entera (a 360 px no caben tres sin tocar el borde) */
 .pl-kv>div:nth-child(3):last-child{grid-column:1/-1}
 .wk-card .pl-kv,.wk-card .pl-go{margin-top:16px} /* v278: bajo el calendario, el resumen y después Planificar */
-/* v278 · Resumen: calendario del mes (calMonth). Los días son .day, como en la tira; el tramo, una banda del acento */
+/* v278 · Resumen: calendario del mes (calMonth). La celda y sus marcas, en piezas/dia-de-calendario.css */
 .ws-pre{margin:12px 0 16px}
 .ws-cal{margin-bottom:12px}
 .ws-sel{margin:0 0 16px;font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.cm-w,.cm-g{display:grid;grid-template-columns:repeat(7,1fr)}
-.cm-w span{text-align:center;font-size:calc(11px*var(--tz,1));color:var(--muted);padding-bottom:2px}
 .cm-g{touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none} /* deslizar mueve la página; mantener y arrastrar elige */
-.cm-c{min-width:0;padding:2px 0}
-.cm-c.out{opacity:.35;cursor:default}.cm-c.out b,.cm-c.fut b{color:var(--muted);font-weight:500}.cm-c.fut{cursor:default}
-.cm-c.in b{width:auto;border-radius:0;background:var(--ac);color:var(--ac-on)}
-.cm-c.s b{border-top-left-radius:999px;border-bottom-left-radius:999px}.cm-c.e b{border-top-right-radius:999px;border-bottom-right-radius:999px}
 .cm-nav{width:36px;height:36px;margin:0;font-size:calc(20px*var(--tz,1))}.cm-nav:disabled{opacity:.3}
 
-/* v282 · Icono del deporte principal en el calendario (en vez del punto «hecho»). Clase cal- */
-.daystrip{align-items:flex-start} /* con o sin icono, los números a la misma altura */
-.day .cal-ic{display:block;width:16px;height:16px;margin:8px auto 0;color:var(--fg)} /* v314: aire bajo el anillo de hidratos */ /* v295: un solo color para todos los deportes */
-.day .cal-ic svg{display:block;width:16px;height:16px;stroke-width:2.2}
-.cm-c .cal-ic{width:13px;height:13px;margin-top:2px}
-.cm-c .cal-ic svg{width:13px;height:13px}
-/* v314 · Hidratos del día: anillo alrededor del número (también sobre el azul del día elegido) y rótulo del día */
-.day b.cb{position:relative}
-.day b.cb::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 9%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 17px,#000 17.5px);mask:radial-gradient(circle,transparent 17px,#000 17.5px);pointer-events:none}
+/* v314 · Hidratos del día: rótulo bajo la tira (el anillo del número, en piezas/dia-de-calendario.css) */
 .cb-lab{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .cb-r{flex:none;width:14px;height:14px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 12%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 4px,#000 4.5px);mask:radial-gradient(circle,transparent 4px,#000 4.5px)}
-/* v314 · Entreno previsto o saltado: el icono del deporte en gris translúcido (saltado, tachado) */
-.day .cal-ic.pl,.day .cal-ic.miss{color:var(--icon);opacity:.55}
-.day .cal-ic.miss{position:relative}.day .cal-ic.miss::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:1.5px;background:currentColor;transform:rotate(-35deg)}
 /* v318 · Flechas de semana en Plan; la tira deja el gesto horizontal a nuestro deslizamiento */
 .wk .daystrip{touch-action:pan-y;overflow-x:hidden}
 .wk-nav{appearance:none;border:0;background:none;color:var(--fg);font-size:calc(20px*var(--tz,1));line-height:1;width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center;position:relative}
@@ -3252,8 +3197,8 @@ header.top.mv-up .mv-ht{opacity:1;transform:none;transition:opacity .2s .1s,tran
 /* barra de pestañas: como en iOS, tamaño fijo. Gráficas: crecen poco (las etiquetas de los ejes y la gota tienen su sitio medido) */
 .tabbar{--tz:1}
 svg{--tz:min(var(--tzs,1),1.12)}
-/* números dentro de círculos o columnas de ancho fijo: crecen poco */
-.daystrip,.ls-m,.dp-ch{--tz:min(var(--tzs,1),1.12)}
+/* números dentro de círculos o columnas de ancho fijo: crecen poco (los de los calendarios, en piezas/dia-de-calendario.css) */
+.ls-m,.dp-ch{--tz:min(var(--tzs,1),1.12)}
 /* tabla densa de bandas: con letra mayor partía las palabras a trozos */
 table.bands{--tz:1}
 /* etiquetas de fichas: con letra grande pasan a dos líneas en vez de cortarse */
@@ -3299,11 +3244,6 @@ table.bands{--tz:1}
 /* Mes: se desliza con el dedo; la rejilla se recorta dentro de su caja */
 .pa-cal{overflow:hidden}
 .pa-cg{touch-action:pan-y;will-change:transform}
-/* el día, con el mismo círculo que la tira de la semana (34 px, cifra de 17 en la tipografía redonda) */
-.pa-cd b{width:34px;height:34px;font:600 calc(17px*var(--tz,1)) var(--round,var(--font))}
-.pa-cd.tk b{font-weight:600}
-/* Hoy, como el Calendario de Apple: la cifra en el acento si no es el día elegido; si lo es, el círculo y nada más */
-.pa-cd.tk:not([aria-pressed="true"]) b,.day.tk:not([aria-pressed="true"]) b{color:var(--ac)}
 /* Aire entre bloques: la hora, la carrera y el botón ya no van pegados */
 /* v372: el espacio entre secciones lo da la hoja (24) */
 .pa-race{display:flex;align-items:center;gap:12px;padding:6px 14px;border-radius:14px;background:var(--fill2)} /* v372: el gris de los grupos, que se ve en los dos modos (en oscuro la hoja ya es --card2) */
@@ -3674,6 +3614,63 @@ body.simple .wf-wt,body.simple .wc-w,body.simple .phero,body.simple .hue-body,bo
    «Secundario grande»: dos acciones del mismo peso; 10 entre ellos, escala de espacio) */
 .cr-a{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.cr-a .cr-go{margin-top:0;min-width:0}
 
+/* ===== Día de calendario (27-10): una rejilla común y una marca por cada trabajo =====
+   El único sitio de la celda de día y sus marcas, para todos los calendarios de la app:
+   la tira de Hoy y de Plan (Menú y Entrenos, calStrip), el mes de Resumen (calMonth), el planificador (paCal) y la etiqueta de la lista de Entrenos (.tday).
+   Guía 4.0, cap. 10, «Tira de días y calendario»: número 34 × 34, 17 · 600; icono del entreno de 16 a 6 por debajo, en el color de su familia;
+   elegido = círculo de acento; tramo = extremos en círculo y banda gris; hoy = número en acento. */
+
+/* Con letra grande, los números dentro de su círculo crecen poco (ver base/capas/letra-grande.css) */
+.daystrip,.cal-g,.tday{--tz:min(var(--tzs,1),1.12)}
+
+/* Tira: siete días enteros que se deslizan */
+.daystrip{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.daystrip::-webkit-scrollbar{display:none}
+.daystrip .day{flex:0 0 calc(100% / 7);scroll-snap-align:start;padding:6px 0}
+
+/* Mes (Resumen y planificador): siete columnas sin hueco; la celda mide 64 con el hueco del icono reservado */
+.cal-w,.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal-w span{text-align:center;font-size:calc(12px*var(--tz,1));color:var(--muted);padding-bottom:4px}
+.cal-g{align-items:start}
+.cal-g .day{height:64px;padding:4px 0}
+
+/* La celda: nombre corto encima (solo en la tira), el número y la marca del entreno */
+.day{appearance:none;border:0;margin:0;background:none;color:var(--fg);font:inherit;width:100%;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.day small{font-size:calc(12px*var(--tz,1));line-height:1.2;color:var(--muted);margin-bottom:4px}
+.day b,.tday span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font:600 calc(17px*var(--tz,1)) var(--round,var(--font));font-variant-numeric:tabular-nums;color:var(--fg);position:relative}
+.day.fut b,.day.out b{color:var(--muted)}
+.day.out{opacity:.35}
+.day.out,.cal-g .day.fut,.day:disabled{cursor:default}
+.day:disabled b{color:var(--faint)}
+button.day:active:not(:disabled) b{transform:scale(.92)}
+@media (prefers-reduced-motion:no-preference){button.day b{transition:background-color .2s,color .2s,transform .12s}}
+
+/* Icono del entreno: hecho, en el color de su familia (en línea, desde calMark); previsto, gris translúcido; saltado, además tachado */
+.cal-ic{display:block;flex:none;width:16px;height:16px;margin-top:6px;position:relative}
+.cal-ic svg{display:block;width:16px;height:16px;stroke-width:2.2}
+.cal-ic.pl,.cal-ic.miss{color:var(--icon);opacity:.55}
+.cal-ic.miss::after{content:"";position:absolute;left:-1px;right:-1px;top:50%;height:1.5px;background:currentColor;transform:rotate(-35deg)}
+
+/* Elegido (un día en la tira, cada día suelto en el planificador, la fila de la lista): el número en un círculo de acento */
+.day[aria-pressed="true"] b,.trow.sel .tday span{background:var(--ac);color:var(--ac-on)}
+/* Hoy: el número en el acento, sin forma */
+.day.tk:not([aria-pressed="true"]):not(.ra):not(.rb) b,.trow.today:not(.sel) .tday span{color:var(--ac)}
+/* Tramo (mes de Resumen): primer y último día en círculo de acento; los de en medio, una banda gris a la altura del número,
+   del centro del primero al centro del último, cortada en el borde de la fila. Un tramo de un día es solo el círculo */
+.cal-g .day.in{position:relative}
+.cal-g .day.in::before{content:"";position:absolute;top:4px;left:0;right:0;height:34px;background:var(--fill2)}
+.cal-g .day.ra::before{left:50%}.cal-g .day.rb::before{right:50%}.cal-g .day.ra.rb::before{content:none}
+.cal-g .day.ra b,.cal-g .day.rb b{background:var(--ac);color:var(--ac-on)}
+
+/* Hidratos del día (solo en la tira): anillo amarillo alrededor del número de 34, de 3 de grueso; la máscara deja hueco el radio del número (17) */
+.day b.cb::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--carb) calc(var(--cbp)*1turn),color-mix(in srgb,var(--fg) 9%,transparent) 0);-webkit-mask:radial-gradient(circle,transparent 17px,#000 17.5px);mask:radial-gradient(circle,transparent 17px,#000 17.5px);pointer-events:none}
+
+/* Lista de Entrenos: la etiqueta del día de cada fila (nombre corto, el número y «hoy»), alineada a la izquierda */
+.tday{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.tday b{font-size:calc(13px*var(--tz,1));color:var(--muted);font-weight:500}
+.tday span{margin:4px 0 0 -6px}
+.tday small{font-size:calc(11px*var(--tz,1));color:var(--fg);font-weight:600;margin-top:4px}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
@@ -3760,7 +3757,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="374";
+const APP_VER="376";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4115,10 +4112,13 @@ const INGR=[
 ["pollo","Pechuga de pollo",23,0,1.5,0,60,330,28,.4,8,.1],["pavo","Fiambre de pavo",18,2,2,0,900,300,20,1,10,0],
 ["ternera","Ternera magra",21,0,6,0,60,330,22,2.2,6,.1],["cerdo","Lomo de cerdo",22,0,5,0,55,370,25,.8,6,.5],
 ["jamon","Jamón serrano",30,0,12,0,2000,400,25,1.5,10,.5],["huevo","Huevo",12.5,.7,10,0,140,130,12,1.8,55,1.8],
-["claras","Claras de huevo",11,.7,.2,0,165,160,11,.1,7,0],["atun","Atún al natural (escurrido)",25,0,1,0,320,240,30,1.3,12,2],
+/* 27-10-2026 · atún, de etiqueta (Atún claro al natural Hacendado, OFF 8480000180186): 21 P · 0,9 H · 1,2 G · 1,1 sal (antes 25 · 0 · 1 · 320 mg Na) */
+["claras","Claras de huevo",11,.7,.2,0,165,160,11,.1,7,0],["atun","Atún al natural (escurrido)",21,.9,1.2,0,440,240,30,1.3,12,2],
 ["merluza","Merluza",17,0,1.5,0,90,300,25,.3,20,1],["salmon","Salmón",20,0,13,0,50,360,27,.3,10,11],
 ["gambas","Gambas",20,0,1,0,200,200,35,.5,60,.1],["mejillones","Mejillones",24,7,4.5,0,370,270,37,6.7,33,0],
-["sardinas","Sardinas en lata",25,0,11,0,400,400,40,2.9,380,5],["tofu","Tofu",13,2,7,1,10,150,50,2.7,350,0],
+/* 27-10-2026 · sardinas, de etiqueta (ficha de Carrefour, escurridas): 24 P · 15 G (antes 25 · 11). La de Mercadona (OFF 8480000182258: 20 P · 0,7 H · 23 G, 289 kcal)
+   va por peso neto con su aceite (lata de 117 g), no escurrida: no se usa */
+["sardinas","Sardinas en lata",24,0,15,0,400,400,40,2.9,380,5],["tofu","Tofu",13,2,7,1,10,150,50,2.7,350,0],
 ["leche","Leche semidesnatada",3.3,4.8,1.6,0,45,150,11,0,120,.05],["yogur","Yogur natural",3.5,4.5,3,0,50,160,12,.1,140,.05],
 ["skyr","Skyr",11,4,.2,0,45,150,12,0,120,0],["batido0","Queso fresco batido 0 %",8,4,.2,0,40,130,10,0,110,0],
 ["burgos","Queso fresco de Burgos",12,3,10,0,300,100,10,.2,190,.1],["curado","Queso curado",26,0,33,0,700,100,40,.5,850,.3],
@@ -4132,8 +4132,10 @@ const INGR=[
 ["platano","Plátano",1.1,23,.3,2.6,1,360,27,.3,5,0],["manzana","Manzana",.3,12,.2,2.4,1,107,5,.1,6,0],
 ["rojos","Frutos rojos",.8,10,.4,3,1,120,15,.5,20,0],["naranja","Naranja",.9,10,.1,2.2,0,180,10,.1,40,0],
 ["aguacate","Aguacate",2,2,15,6.7,7,485,29,.6,12,0],["aceite","Aceite de oliva virgen extra",0,0,100,0,2,1,0,.6,1,0],
-["nueces","Nueces",15,7,65,6.7,2,440,158,2.9,98,0],["almendras","Almendras",21,8,50,12,1,730,270,3.7,270,0],
-["cacahuete","Crema de cacahuete",25,13,50,6,17,650,170,1.9,45,0],["choco","Chocolate negro 85 %",9,20,46,12,20,700,200,11,70,0],
+/* 27-10-2026 · frutos secos, de etiqueta (foto de Mercadona; Carrefour agotado): nueces 17 P (antes 15), almendras 25,2 P · 54,8 G (antes 21 · 50);
+   crema de cacahuete 28 P, media de Mercadona (30) y Carrefour (26), con 14 H · 49 G de Carrefour, la única que los da (antes 25 · 13 · 50) */
+["nueces","Nueces",17,7,65,6.7,2,440,158,2.9,98,0],["almendras","Almendras",25.2,8,54.8,12,1,730,270,3.7,270,0],
+["cacahuete","Crema de cacahuete",28,14,49,6,17,650,170,1.9,45,0],["choco","Chocolate negro 85 %",9,20,46,12,20,700,200,11,70,0],
 ["miel","Miel",.3,82,0,0,4,52,2,.4,6,0],["tomate","Tomate",.9,3.5,.2,1.2,5,240,11,.3,10,0],
 ["verduras","Verduras variadas",1.5,5,.3,2,15,250,15,.5,25,0],["espinacas","Espinacas",2.9,1.4,.4,2.2,80,560,80,2.7,99,0],
 ["lechuga","Lechuga / ensalada verde",1.3,2.5,.2,1.5,10,200,12,.8,35,0],["setas","Setas",3,3,.3,1.5,5,320,10,.5,3,.2],
@@ -4173,6 +4175,7 @@ const SUPERS={
     cerdo:"Filetes lomo de cerdo extra tiernos",                    // 2849 · fresco, s/e
     huevo:"Huevos grandes L",                                       // 31504 · fresco, s/e
     claras:"Claras de huevo líquidas pasteurizadas",                // 31309 · foto: 11 P · <0,5 H · <0,5 G (100 ml)
+    atun:"Atún claro al natural Hacendado",                         // 18018 · OFF 8480000180186: 21 P · 0,9 H · 1,2 G (cuadra desde el 27-10, INGR corregido)
     leche:"Leche semidesnatada Hacendado",                          // 10382 · foto: 3,1 P · 4,8 H · 1,6 G (100 ml)
     yogur:"Yogur natural Hacendado",                                // 22313 · foto: 3,7 P · 4,1 H · 3,4 G
     burgos:"Queso fresco Burgos natural Hacendado",                 // 52406 · OFF 8480000524089 (13-09-2026): 10,3 P · 3,7 H · 10,4 G
@@ -4197,6 +4200,9 @@ const SUPERS={
     lechuga:"Ensalada mezcla 4 estaciones lavada",                  // 69706 · fresco, s/e
     setas:"Champiñones laminados limpios",                          // 69519 · fresco, s/e
     aceite:"Aceite de oliva virgen extra Hacendado",                // 4740
+    cacahuete:"Crema de cacahuete 100 % Hacendado",                  // 16883 · foto: 30 P (INGR, 28: media con Carrefour, desde el 27-10)
+    almendras:"Almendra natural Hacendado",                         // 34865 · foto: 25,2 P · 54,8 G (INGR corregido el 27-10)
+    nueces:"Nuez natural Hacendado",                                // 34606 · foto: 17 P (INGR corregido el 27-10)
     /* Listo para comer: nombre de la tienda; etiqueta de la foto del envase (27-10-2026), por 100 g, cuadrada con sus kcal */
     lcteri:"Pollo teriyaki",                                        // 13236 · bol 300 g: 9,7 P · 21 H · 4,8 G · 1,4 sal
     lcyaki:"Noodles yakisoba con carne y verduras",                 // 13235 · bol 300 g: 5,7 P · 26 H · 7,2 G · 2,2 sal
@@ -4212,11 +4218,11 @@ const SUPERS={
     lcsum:"Surtido sushi bento mix"                                 // 13234 · 350 g: 4,9 P · 24 H · 6,5 G · 1,9 sal
     /* Sin etiqueta en la foto (no se añaden): Lentejas Listo para Comer (88407), tortillas de patata y ensaladilla rusa (se hacen en la tienda) */
   },T:{},
-  /* Sin nombre porque la etiqueta no cuadra con INGR (por 100 g; para decidir si se corrige INGR):
-     atun 18018 (OFF 8480000180186: 21 P frente a 25) · sardinas 18225 (foto, EAN 8480000182258: 20 P · 23 G frente a 25 · 11) ·
-     gambas 24181 (foto: con agua añadida, 14,7 P frente a 20) · verduras 11617 (foto, wok: 2,5 G frente a 0,3) ·
-     cacahuete 16883 (foto: 30 P frente a 25) · choco 60722 (foto: 12 P frente a 9) · almendras 34865 (foto: 25,2 P · 54,8 G frente a 21 · 50) ·
-     nueces 34606 (foto: 17 P frente a 15).
+  /* Sin nombre porque la etiqueta no cuadra con INGR (por 100 g). Son productos concretos, no el genérico: INGR no se corrige por ellos (Javier, 27-10):
+     gambas 24181 (foto: con agua añadida, 14,7 P frente a 20) · verduras 11617 (foto, wok: 2,5 G frente a 0,3) · choco 60722 (foto: 12 P frente a 9).
+     sardinas 18225 (Sardinas en aceite de oliva, OFF 8480000182258: 20 P · 23 G, 289 kcal): va por peso neto con su aceite (lata de 117 g), no escurrida;
+     INGR (escurridas) toma la ficha de Carrefour, 24 P · 15 G.
+     Recuperan el nombre el 27-10 al corregir INGR con sus etiquetas: atun, cacahuete, almendras y nueces.
      Sin nombre porque no está: qbprot (ya no la vende), skyr, kefir entero. lentejas y garbanzos (cocidos en casa): los de bote son lentbote y garbote. */
   },
   carr:{n:"Carrefour",N:{
@@ -4257,7 +4263,7 @@ const SUPERS={
     almendras:"Almendras crudas sin piel Carrefour",       // R-791843028 · agotado, s/e
     nueces:"Nueces peladas Carrefour"                      // R-VC4AECOMM-539120 · agotado, s/e
   },T:{skyr:1},  // Skyr natural Carrefour Sensation (R-VC4AECOMM-503694): 8 P frente a 11
-  /* Sin nombre: atun (agotado; la de Mercadona no cuadra), sardinas (ficha: 24 P · 15 G frente a 11 G),
+  /* Sin nombre: atun (agotado), sardinas (su ficha, 24 P · 15 G, es la que usa INGR desde el 27-10; falta leer el nombre en la tienda),
      garbanzos (los de bote son garbote), burgos (no hay de la marca). */
   }
 };
@@ -4831,14 +4837,15 @@ function stBuilder(p){stSync(p);const st=p.steps||[],T=stTotal(st),kg=num((S.pro
 const PA_MAX=60;
 function paDates(p){return p.dates&&p.dates.length?p.dates:[p.date]}
 function paDaysTxt(D){const f=k=>{const d=new Date(k+"T12:00:00");return DOW[d.getDay()]+" "+d.getDate()};return D.length+" días: "+(D.length>5?D.slice(0,5).map(f).join(", ")+" y "+(D.length-5)+" más":D.slice(0,-1).map(f).join(", ")+" y "+f(D[D.length-1]))}
-/* v318 · Mismo formato que el calendario de Hoy: mes a la izquierda y flechas a la derecha, «lun mar…» y, bajo el número, el icono del entreno ya previsto */
+/* v318 · Mismo formato que el calendario de Hoy: mes a la izquierda y flechas a la derecha, «lun mar…» y, bajo el número, el icono del entreno ya previsto.
+   27-10: la celda es la del mes de Resumen (.day en .cal-g); cada día elegido, en un círculo de acento */
 function paCal(p){const tk=today(),last=shiftKey(tk,PA_MAX),D=paDates(p),v=new Date((p.vm||paDates(p)[0].slice(0,8)+"01")+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
   const prev=keyOf(new Date(y,mo-1,1,12)),next=keyOf(new Date(y,mo+1,1,12)),canP=prev.slice(0,7)>=tk.slice(0,7),canN=next<=last;let cells="";
   for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const k=keyOf(d),out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;
     if(out){cells+='<span class="pa-cx" aria-hidden="true"></span>';continue}const off=k<tk||k>last,n=plannedFor(k).length;
-    cells+=`<button type="button" class="pa-cd${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}"><b>${d.getDate()}</b>${n?calMark({dot:calDotTrain},k,"span"):""}</button>`}
+    cells+=`<button type="button" class="day${k===tk?" tk":""}" data-pa="day:${k}" aria-pressed="${D.includes(k)}" ${off?"disabled":""} aria-label="${esc(dateLabel(k))}${n?", ya tienes entreno":""}"><b>${d.getDate()}</b>${n?calMark({dot:calDotTrain},k,"span"):'<span class="cal-ic" aria-hidden="true"></span>'}</button>`}
   return`<div class="pa-cal"><div class="pa-ch"><b>${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="vh"><button type="button" class="wk-nav" data-pa="vm:${prev}" ${canP?"":"disabled"} aria-label="Mes anterior">‹</button><button type="button" class="wk-nav" data-pa="vm:${next}" ${canN?"":"disabled"} aria-label="Mes siguiente">›</button></span></div>
-    <div class="pa-cw" aria-hidden="true">${[1,2,3,4,5,6,0].map(i=>`<span>${DOW[i]}</span>`).join("")}</div><div class="pa-cg" role="group" aria-label="Días">${cells}</div></div>`}
+    <div class="cal-w" aria-hidden="true">${[1,2,3,4,5,6,0].map(i=>`<span>${DOW[i]}</span>`).join("")}</div><div class="pa-cg cal-g" role="group" aria-label="Días">${cells}</div></div>`}
 /* v310 · Rueda de deportes: fila de círculos que se desliza; el del centro es el elegido (grande, en acento y con su nombre),
    los demás se encogen y se atenúan según se alejan. Tocar uno lo lleva al centro. Clases pa-w */
 const PA_SPS=["str","swim","hike","walk","run","trail","road","gravel","mtb","indoor"]; /* Running en medio: a pie, agua y fuerza a un lado; bici al otro */
@@ -9612,23 +9619,24 @@ document.addEventListener("change",async e=>{if(e.target.id!=="fbimg"||!e.target
 /* ---------- Calendario (tira de días) y semana de Plan (v274, módulo desde v276) ----------
    La semana en una fila de siete días. En Menú, debajo va solo el día elegido; en Entrenos (v275), la semana en lista,
    y tocar un día de la fila lleva a su fila de la lista.
-   Se pasa de semana deslizando la fila. Clases wk- y las de la tira (.daystrip, .day, .dot). */
+   Se pasa de semana deslizando la fila. Clases wk- y las de la tira (.daystrip, .day, .cal-ic). */
 function planDayK(wk){const tk=today(),e=shiftKey(wk,6),d=S.planDay;return d&&d>=wk&&d<=e?d:tk>=wk&&tk<=e?tk:wk}
 /* ---------- Módulo «Calendario» (v276): la tira de días, una sola pieza para Hoy, Entrenos y Menú ----------
    calStrip({days, sel, attr, dot, right, label, wk}): mes arriba (con «right» a su derecha), «hoy» en vez del día de la semana,
    el elegido en el acento y un punto debajo. Con «wk», la tira es una semana que se cambia deslizando.
-   calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; el tramo elegido va en una banda del acento (cómo se elige, abajo).
-   Punto de entrenos (Hoy y Entrenos): lleno si hubo entreno, aro si hay uno previsto, aro rojo si se saltó.
+   calMonth({view, a, b, dot}) (v278, Resumen): el mes entero; el tramo elegido, sus extremos en círculo y una banda gris (cómo se elige, abajo).
+   La celda es la misma en todos (.day, estilos en piezas/dia-de-calendario.css): el número y, debajo, la marca del entreno.
    (v318: Menú usa también la marca de entrenos; el punto de menú desapareció) */
 function calDotTrain(k){const tk=today();return S.acts.some(a=>a.day===k)?"on":k>=tk&&pendingPlanned(k).length?"pl":k<tk&&planMatch(k).pl.some(x=>x.st==="miss")?"miss":""}
-/* v282 · Día con entreno hecho: en vez del punto, el icono del deporte principal (el más largo) en el color de su familia.
-   v314: previsto, el icono en gris translúcido; saltado, además tachado. Solo en los calendarios de entrenos (calDotTrain). Clase .cal-ic */
-function calMark(o,k,tag){const d=o.dot(k);if(o.dot===calDotTrain&&d){const ic=(sp,c,t)=>`<${tag} class="cal-ic${c}" title="${esc(t)}">${spSvg(sp)}</${tag}>`;
+/* v282 · Día con entreno hecho: el icono del deporte principal (el más largo) en el color de su familia (SPC; 27-10: deja atrás el
+   «un solo color» de v295). v314: previsto, el icono en gris translúcido; saltado, además tachado. Sin entreno, el hueco vacío, para que
+   todos los números queden a la misma altura. Clase .cal-ic */
+function calMark(o,k,tag){const d=o.dot(k);if(o.dot===calDotTrain&&d){const ic=(sp,c,t)=>`<${tag} class="cal-ic${c}" title="${esc(t)}"${c?"":` style="color:${SPC[sp]||"var(--fg)"}"`}>${spSvg(sp)}</${tag}>`;
   if(d==="on"){const L=S.acts.filter(a=>a.day===k);if(L.length){const sp=L.reduce((m,a)=>(a.mov||0)>(m.mov||0)?a:m).sport;return ic(sp,"",SPORT_L[sp]||"")}}
   /* v314: previsto, el mismo icono en gris translúcido; saltado, translúcido y tachado (antes, aros de color que no se entendían) */
   const P=d==="pl"?pendingPlanned(k):d==="miss"?planMatch(k).pl.filter(x=>x.st==="miss").map(x=>x.s):[];
   if(P.length){const s0=P.reduce((m,x)=>(x.dur||0)>(m.dur||0)?x:m);return ic(s0.sport,d==="pl"?" pl":" miss",(d==="pl"?"Previsto: ":"Saltado: ")+(SPORT_L[s0.sport]||""))}}
-  return`<${tag} class="dot ${d}"></${tag}>`}
+  return`<${tag} class="cal-ic" aria-hidden="true"></${tag}>`}
 /* v314 · Hidratos del día: un anillo amarillo alrededor del número que se cierra según el objetivo del día en g/kg
    (bajo < 4: un tercio, medio 4–6: dos tercios, alto ≥ 6: entero) y, bajo la tira, un rótulo con el día elegido.
    Sale del entreno previsto o hecho; en Hoy y en Menú (calStrip con carb). Clases cb- */
@@ -9641,21 +9649,20 @@ function calStrip(o){const tk=today(),ds=new Date(o.sel+"T12:00:00");
   const strip=`<div class="daystrip${o.wk?" wk-s"+(S._wkAnim?" "+S._wkAnim:""):""}" role="group" aria-label="${esc(o.label||"Día")}">${cells}</div>`;
   return`<div class="row strip-h"><b class="strip-m">${MON[ds.getMonth()]}${ds.getFullYear()!==new Date().getFullYear()?" "+ds.getFullYear():""}</b>${o.right?`<span class="strip-r">${o.right}</span>`:""}</div>${o.wk?`<div class="wk" data-wk="${o.wk}">${strip}</div>`:strip}${o.carb?cbLabel(o.sel):""}`}
 /* Mes (v278): seis filas como mucho; los días de otros meses, apagados; sin días futuros.
-   Cada día lleva data-ck; el tramo va en una banda (in, y s/e en sus extremos o al cambiar de fila). cmPaint la repinta mientras se arrastra. */
+   Cada día lleva data-ck; el tramo: in en todos sus días, ra en el primero y rb en el último (los reales, aunque el tramo cambie de fila:
+   la banda se corta en el borde). cmPaint lo repinta mientras se arrastra. */
 function calMonth(o){const tk=today(),v=new Date(o.view+"T12:00:00"),y=v.getFullYear(),mo=v.getMonth(),first=new Date(y,mo,1,12),st=new Date(first);st.setDate(1-(first.getDay()+6)%7);
   const cur=y===new Date().getFullYear()&&mo===new Date().getMonth(),K=[];
   for(let i=0;i<42;i++){const d=new Date(st);d.setDate(st.getDate()+i);const out=d.getMonth()!==mo;if(i%7===0&&i>=28&&out)break;K.push({d,k:keyOf(d),out})}
   const has=i=>{const x=K[i];return!!x&&!x.out&&x.k<=tk&&x.k>=o.a&&x.k<=o.b};
-  const h=K.map(({d,k,out},i)=>{if(out)return`<span class="day cm-c out"><b>${d.getDate()}</b></span>`;if(k>tk)return`<span class="day cm-c fut"><b>${d.getDate()}</b><i class="dot"></i></span>`;
-    const inn=has(i),s_=inn&&(i%7===0||!has(i-1)),e_=inn&&(i%7===6||!has(i+1));
-    return`<span class="day cm-c${inn?" in":""}${s_?" s":""}${e_?" e":""}" data-ck="${k}"><b>${d.getDate()}</b>${calMark(o,k,"i")}</span>`}).join("");
+  const h=K.map(({d,k,out},i)=>{if(out)return`<span class="day cm-c out"><b>${d.getDate()}</b></span>`;if(k>tk)return`<span class="day cm-c fut"><b>${d.getDate()}</b></span>`;
+    const inn=has(i),ra=inn&&!has(i-1),rb=inn&&!has(i+1);
+    return`<span class="day cm-c${k===tk?" tk":""}${inn?" in":""}${ra?" ra":""}${rb?" rb":""}" data-ck="${k}"><b>${d.getDate()}</b>${calMark(o,k,"i")}</span>`}).join("");
   return`<div class="row strip-h"><b class="strip-m">${MON[mo]}${y!==new Date().getFullYear()?" "+y:""}</b><span class="strip-r vh"><button type="button" class="hbtn cm-nav" data-cmnav="-1" aria-label="Mes anterior">‹</button><button type="button" class="hbtn cm-nav" data-cmnav="1" aria-label="Mes siguiente" ${cur?"disabled":""}>›</button></span></div>
-    <div class="cm-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
-    <div class="cm-g" role="group" aria-label="Toca dos días, o mantén pulsado y arrastra, para elegir un tramo">${h}</div>`}
-function cmPaint(g,a,b){if(a>b)[a,b]=[b,a];const C=[...g.querySelectorAll(".cm-c")];
-  C.forEach((c,i)=>{const k=c.dataset.ck,inn=!!k&&k>=a&&k<=b;c.classList.toggle("in",inn);
-    const pin=i%7!==0&&C[i-1]&&C[i-1].dataset.ck>=a&&C[i-1].dataset.ck<=b,nin=i%7!==6&&C[i+1]&&C[i+1].dataset.ck>=a&&C[i+1].dataset.ck<=b;
-    c.classList.toggle("s",inn&&!pin);c.classList.toggle("e",inn&&!nin)})}
+    <div class="cal-w" aria-hidden="true">${["lun","mar","mié","jue","vie","sáb","dom"].map(x=>`<span>${x}</span>`).join("")}</div>
+    <div class="cm-g cal-g" role="group" aria-label="Toca dos días, o mantén pulsado y arrastra, para elegir un tramo">${h}</div>`}
+function cmPaint(g,a,b){if(a>b)[a,b]=[b,a];const C=[...g.querySelectorAll(".cm-c")],on=c=>!!c&&!!c.dataset.ck&&c.dataset.ck>=a&&c.dataset.ck<=b;
+  C.forEach((c,i)=>{const inn=on(c);c.classList.toggle("in",inn);c.classList.toggle("ra",inn&&!on(C[i-1]));c.classList.toggle("rb",inn&&!on(C[i+1]))})}
 /* Elegir el tramo (v278b). Deslizar sobre el mes mueve la página. Un toque elige un día y deja ese día como inicio:
    el siguiente toque cierra el tramo. Mantener pulsado (0,3 s) y arrastrar elige el tramo con el dedo, también entre semanas.
    Con ratón, arrastrar directamente. Mientras se arrastra solo se repintan las clases; al soltar se recalcula el resumen. */
