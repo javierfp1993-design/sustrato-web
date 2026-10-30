@@ -1,5 +1,5 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
-<meta name="sustrato-version" content="2026-10-29T15:57:16.061Z">
+<meta name="sustrato-version" content="2026-10-30T09:15:15.774Z">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px/1.4 -apple-system,system-ui,Roboto,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
@@ -2217,7 +2217,13 @@ div.pg-p{cursor:default}
 
 .ltseg{margin:12px 0 4px}.ltseg[hidden]{display:none}
 .ltseg>.seg{display:flex;width:100%}.ltseg>.seg button{flex:1}
-.ltseg [data-ltc]{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px}.ltseg [data-ltc]::-webkit-scrollbar{display:none}.ltseg [data-ltc] .chip{flex:none}
+/* Progreso (6 secciones): palabras de 20 bajo el título fijo, sin cápsula; todas a 600; la elegida en tinta y un 12 % más grande (zoom suave al elegirla, sin mover las demás), las demás en gris.
+   Cada palabra, 44 de alto para el dedo; la fila se desliza con un fundido en el borde (decisión de Javier, 29-10) */
+.ltseg [data-ltc]{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;margin:-4px -16px 0 0;padding-right:16px}.ltseg [data-ltc]::-webkit-scrollbar{display:none}
+.ltseg [data-ltc] button{appearance:none;border:0;background:none;flex:none;position:relative;min-height:44px;padding:0;font:600 calc(20px*var(--tz,1)) var(--font);letter-spacing:-.01em;color:var(--muted);white-space:nowrap;cursor:pointer;transform-origin:0 60%;scroll-snap-align:start;scroll-margin-left:4px}
+.ltseg [data-ltc] button[aria-pressed="true"]{color:var(--fg);transform:scale(1.12)}
+.ltseg [data-ltc] button:focus-visible{outline-offset:-2px}
+@media (prefers-reduced-motion:no-preference){.ltseg [data-ltc] button{transition:color .2s,transform .2s cubic-bezier(.3,1.2,.5,1)}}
 
 /* Tarjetas internas (v197): una cifra principal por tarjeta a 28 px; variaciones sin caja; color solo en el punto */
 .pwrap .preds b{font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5)}
@@ -3433,8 +3439,9 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .lm-r b{color:var(--ac-l);font-weight:600;flex:none}.lm-r .chip{flex:none}
 .lm-done{flex:none;font-size:calc(13px*var(--tz,1));color:var(--muted)}
 .lm-att{appearance:none;border:0;width:100%;font:calc(15px*var(--tz,1)) var(--font);text-align:left;cursor:pointer}
-.lm-m{background:var(--fill2);border-radius:14px;padding:10px 14px;max-width:88%}
-.lm-m.me{justify-self:end;background:var(--fill)}
+.lm-m{background:var(--fill2);border-radius:16px;padding:10px 14px;max-width:86%}
+.lm-m.me{justify-self:end;background:var(--ac);color:var(--ac-on)} /* cap. 10, «Nota»: las tuyas a la derecha y en tinta, como las notas de Pro; las suyas, a la izquierda en --fill2 */
+.lm-m.me small,.lm-m.me .lm-del{color:inherit;opacity:.75}.lm-m.me .lm-del{opacity:1;text-decoration:underline;text-underline-offset:2px} /* «Borrar» sobre la tinta: el rojo no se leería; subrayado y en el color del texto */
 .lm-m small{font-size:calc(12px*var(--tz,1));color:var(--muted)}.lm-m p{margin:2px 0 0;font-size:calc(15px*var(--tz,1));line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}
 
 /* v342 · Seguimiento con tu profesional (111): hábitos en Hoy, revisión de la semana y punto azul de lo nuevo en el avatar */
@@ -3458,14 +3465,6 @@ html[data-theme="light"]{--fig-sec:color-mix(in srgb,var(--rojo) 38%,#fff)}
 .hbtn.prc-x{flex:none;align-self:flex-start;color:var(--icon);width:30px!important;height:30px!important;border-radius:50%!important;background:var(--fill2)!important;margin:0!important} /* v371 · cap. 10, «Botón de icono»: 30, redondo y gris (antes 40 con radio 10, de .hbtn) */
 .prc-a{margin-top:14px;align-items:center}
 .prc-who{margin:10px 0 4px}
-.prc-l{margin-top:10px}
-.prc-lh{display:block;font-size:calc(13px*var(--tz,1));font-weight:600;color:var(--muted);margin:4px 0 2px}
-.prc-r{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 0;border-top:.5px solid var(--sep)}
-.prc-lh+.prc-r{border-top:0}
-.prc-rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.prc-rt b{font-size:calc(15px*var(--tz,1));font-weight:600}
-.prc-rt small{font-size:calc(13px*var(--tz,1));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.prc-ra{flex:none}
 .prc-ok{margin:10px 0 4px}
 .prc-go{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;margin-top:8px;padding:0;border:0;border-top:.5px solid var(--sep);background:none;color:var(--fg);font:400 calc(17px*var(--tz,1)) var(--font);text-align:left;cursor:pointer}
 .prc-go svg{flex:none;color:var(--faint)}
@@ -3613,24 +3612,10 @@ html .hz-set>section.glass{background:none;box-shadow:none;border-radius:0;margi
 .lph-cam{flex:none;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--fill2);color:var(--fg);cursor:pointer}
 @media (prefers-reduced-motion:reduce){.lph-i,.lph-avi{transition:none}}
 .lm-top{margin:4px 0 8px} /* v358: notas y lo que te manda, justo bajo su nombre */
-/* v359 · página de Tu profesional: fila en Perfil, pendientes y «Lo que compartes» plegado (108, 112) */
+/* Tu profesional: su foto en la fila de Perfil y el contador rojo de lo pendiente (cap. 10, «Contador») */
 .hs-av{width:40px;height:40px;font-size:calc(17px*var(--tz,1))}
 .prc-n{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--rojo);color:#fff;font-size:calc(13px*var(--tz,1));font-weight:600;display:grid;place-items:center;font-variant-numeric:tabular-nums}
-.lk-pend{margin-bottom:8px}
-.dg{margin-top:16px;border-radius:14px;background:var(--fill2)}
-.dg-h{appearance:none;border:0;background:none;width:100%;min-height:56px;display:flex;align-items:center;gap:12px;padding:10px 14px;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
-.dg-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.dg-t b{font-size:calc(17px*var(--tz,1));font-weight:600}.dg-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.dg-ch{flex:none;display:inline-flex;color:var(--icon)}
-.dg.open .dg-ch{transform:rotate(90deg)}
-.dg-b{padding:0 14px 8px}
-.lk-pend{margin-top:0}.lk-pend .prc-r:first-child{border-top:0} /* v359 */
-/* v360 · Tu próxima consulta (120) */
-.ap-c{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--fill2);margin-bottom:8px}
-.ap-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.ap-t b{font-size:calc(17px*var(--tz,1));font-weight:600}.ap-t small{font-size:calc(13px*var(--tz,1));color:var(--muted)}
-.ap-l{font-size:calc(15px*var(--tz,1));color:var(--fg);text-decoration:underline;margin-top:2px}
 .lk-card{grid-template-columns:minmax(0,1fr)} /* v360: nada la ensancha más allá de la hoja */
-.ap-c{flex-direction:column;align-items:stretch;gap:10px}
-.ap-a{display:flex;flex-wrap:wrap;gap:8px}.ap-a .btn{text-decoration:none}
 
 /* Gramática VZ (guía 4.0, capítulo 15): la gráfica ocupa el ancho de su tarjeta a escala 1 (VZ.fit), así que los ejes salen a 11 px.
    Entrada solo con .vz-in (VZ.anim: responde a algo que acabas de hacer; con «reducir movimiento», nada):
@@ -3781,11 +3766,47 @@ button.day:active:not(:disabled) b{transform:scale(.92)}
 .pfa-cm-os{margin-top:0}
 .pfa-cm-fin{text-align:center}
 
+/* Tu profesional, en su página (pagina.js). Lo pendiente, en 17 · 600 como las filas de «Para hoy» (cap. 12, «Lo que pregunta»). Guía 4.0: tarjeta de la persona como la tuya en Perfil (cap. 10, «Tarjeta y casilla»: relleno 18);
+   grupos con título de apartado y superficie de filas (.pfa-h, .pfa-g); «Fila»: 44 mínimo, 17 y 13, relleno 18, separador de 0,5 desde el
+   texto, › gris; «Iconos»: 20 en su columna de 24, alineados con la primera línea; «Contador»: cápsula roja de 22 (.prc-n). */
+.tp-me-h{display:flex;align-items:center;gap:16px}
+.tp-av.pp-av{width:72px;height:72px;font-size:calc(28px + 28px*(var(--tz,1) - 1)*.5);flex:none}
+.tp-me-t{min-width:0;display:flex;flex-direction:column;gap:2px}
+.tp-me-t b{font-size:calc(20px*var(--tz,1));font-weight:700;letter-spacing:-.01em}
+.tp-me-t>span{font-size:calc(13px*var(--tz,1));color:var(--muted)}
+.tp-ver{display:flex;align-items:center;gap:6px;margin-top:2px}.tp-ver svg{flex:none;color:var(--icon)}
+.tp-bio{margin:12px 0 0;font-size:calc(15px*var(--tz,1));line-height:1.4;color:var(--muted)}
+.tp-gh{display:flex;align-items:center;gap:8px}
+.tp-f{appearance:none;border:0;background:none;width:100%;display:flex;align-items:center;gap:12px;min-height:44px;padding:0 18px;color:var(--fg);font:inherit;text-align:left;position:relative}
+.tp-fb{cursor:pointer}
+.tp-f>.tp-ft{padding:12px 0}
+.tp-f+.tp-f::before{content:"";position:absolute;top:0;right:0;left:18px;border-top:.5px solid var(--sep)}
+.tp-f:has(.tp-ic)+.tp-f::before{left:54px}
+.tp-ic{flex:none;align-self:flex-start;width:24px;height:22px;margin-top:12px;display:flex;align-items:center;justify-content:center;color:var(--icon)}
+.tp-ft{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tp-ft b{font-size:calc(17px*var(--tz,1));font-weight:400;line-height:22px}.tp-ft b.tp-b6{font-weight:600}
+.tp-ft small{font-size:calc(13px*var(--tz,1));color:var(--muted);line-height:1.35}
+.tp-v{flex:none;font-size:calc(15px*var(--tz,1));color:var(--muted);font-variant-numeric:tabular-nums}
+.tp-ch{flex:none;display:inline-flex;color:var(--faint)}
+.tp-f .btn.sm,.tp-f .prc-n{flex:none}
+/* estado (cap. 4, «Dónde va el color»): la consulta cercana, con su punto naranja de 8 */
+.tp-pronto{color:var(--fg)}.tp-pronto::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--naranja);margin-right:6px;vertical-align:.1em}
+.tp-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.tp-acc .btn{text-decoration:none}
+.tp-pie{margin:-10px 18px 0;font-size:calc(13px*var(--tz,1));line-height:1.35;color:var(--muted)}
+.tp-err{margin:0 18px}
+.tp-pies{display:flex;flex-direction:column;align-items:flex-start;padding:0 18px}
+.tp-pies .ms-link{padding:10px 0}
+.tp-pies .bk-conf{align-self:stretch}
+/* «Atrás» en el sitio del avatar: botón de icono de 36, gris (cap. 10, «Botón de icono») */
+.tp-atras{flex:none;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:var(--fill2);color:var(--icon);display:grid;place-items:center;cursor:pointer} /* mide y arranca como el avatar: en la línea del contenido */
+.tp-atras[hidden]{display:none}
+
 </style>
 
 <div id="splash" aria-hidden="true"><div class="spl-in"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl2"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl2)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg><span class="wm2">Sustrato</span></div></div>
 <div class="wrap">
   <header class="top">
+    <button type="button" class="tp-atras" id="tpAtras" aria-label="Atrás, a Perfil" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <button class="hbtn avbtn" id="menuBtn" aria-label="Perfil"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M6.2 18.4a7 7 0 0 1 11.6 0"/></svg><i class="sdot" id="sdot"></i><span class="sr" id="status">Conectando…</span></button>
     <div class="brand"><span class="logo" aria-hidden="true"><svg class="dsvg" viewBox="0 0 64 64" aria-hidden="true"><defs><clipPath id="dcl1"><path d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/></clipPath></defs><path class="dout" d="M32 7 Q40 18 46.4 30 A17 17 0 1 1 17.6 30 Q24 18 32 7Z"/><g clip-path="url(#dcl1)"><rect width="64" height="64" fill="#ffd21e"/><path d="M0 38 C10 33 22 43 32 38 S54 33 64 38 V64 H0Z" fill="#3b82f6"/><path class="dgap" d="M0 38 C10 33 22 43 32 38 S54 33 64 38" stroke-width="5" fill="none"/></g><rect class="dcover" x="-2" y="0" width="68" height="66"/></svg></span><div class="wordmark"><h1 aria-label="Sustrato"><span class="wm2" aria-hidden="true">Sustrato</span></h1><span id="hello">Energía, macros y entrenamiento</span></div></div>
     <button class="fab" id="fab" aria-label="Acciones rápidas" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
@@ -3867,7 +3888,7 @@ const ROUTINES={
     {id:"pall",n:"Pallof press",s:3,r:"10 / lado"}]}
 };
 
-const APP_VER="380";
+const APP_VER="381";
 /* iPhone: los datos del reloj llegan por Apple Salud en vez de Health Connect (textos y permisos) */
 const IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),HCN=IOS?"Apple Salud":"Health Connect";
 document.documentElement.classList.toggle("ios",IOS); /* v292: los ajustes de pantalla solo de iPhone cuelgan de html.ios */
@@ -4108,6 +4129,23 @@ function dayTargets(k,raw){
   return{b,neat,ex,tdee,kcal,eaFloor,P,pBonus,F,C,choCap,g,choBurn,fatBurn,pending,adjusted,acts,plan,bonus,tomorrow,adapt,bySteps,glyAdd,glySug,load,pm,raceDay:!!raceDay,recDay:recDay?{d:shiftKey(k,-1)}:null};
 }
 return {PST,dayTargets,estSession,med,nextKey,pendingPlanned,planMatch,plannedFor,pline,pst,sessName};
+})();
+
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {DE,deRacha,deUmbral,deValor}=(()=>{
+/* ---------- Disponibilidad energética: la regla única de la app y de Pro ----------
+   DE = (lo que comes − gasto del ejercicio) ÷ masa libre de grasa, en kcal por kg al día (Loucks; consenso del COI sobre REDs, 2023).
+   Es un continuo, no un corte: por debajo de 30 es baja en mujeres; en hombres no hay umbral fijado y la evidencia apunta a 20–25,
+   así que se usa 25; sin sexo conocido, 30 (lo prudente). 45 o más es óptima. Solo cuentan los días con 2 comidas apuntadas o más
+   (las que falten, con lo previsto), y el aviso de riesgo pide 3 días seguidos por debajo, sin contar hoy: una exposición que dura.
+   Pro la recibe tal cual en sitio/comun.js (taller/vz_sitio.py): cambiarla es tocar solo este archivo. */
+const DE={lo:{f:30,m:25,otro:30},ok:45,racha:3,comidas:2,tramo:{lo:"Baja",mid:"Reducida",ok:"Óptima"}}; /* los nombres de los tramos, iguales en la app y en Pro */
+const deUmbral=sexo=>({lo:sexo==="m"?DE.lo.m:sexo==="f"?DE.lo.f:DE.lo.otro,ok:DE.ok});
+const deValor=(ingesta,gasto,mlg)=>ingesta!=null&&mlg>0?(ingesta-(gasto||0))/mlg:null;
+/* días seguidos por debajo de lo, del más reciente al más antiguo (null corta la racha): {n, v media} si llegan a DE.racha */
+function deRacha(vals,lo){const V=[];for(const v of vals){if(v==null||v>=lo)break;V.push(v)}
+  return V.length>=DE.racha?{n:V.length,v:V.reduce((a,b)=>a+b,0)/V.length}:null}
+return {DE,deRacha,deUmbral,deValor};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
@@ -8630,13 +8668,16 @@ var {hojas,holdEnd,render,renderModal}=(()=>{
    bajo el dedo, el gesto se perdería (los toques siguen yendo al elemento que ya no está). */
 function render(){if(S._hold){S._holdPend=true;return}S._holdPend=false;setTimeout(()=>{dropKick();mwHint()},0);try{if(typeof ingxSync==="function")ingxSync();VZ.fit();render0()}finally{unitize();hdrAv();document.body.classList.toggle("simple",typeof simpleOn==="function"&&simpleOn())}}
 function holdEnd(){S._hold=false;if(S._holdPend)render()}
+/* Secciones en chips (Progreso): al repintarse, la fila conserva su desplazamiento y, si la elegida queda fuera, se mueve lo justo para verla entera */
+function ltVisible(sg,sl){const c=sg.querySelector("[data-ltc]");if(!c)return;c.scrollLeft=sl;const on=c.querySelector('[aria-pressed="true"]');if(!on)return;
+  const r=c.getBoundingClientRect(),b=on.getBoundingClientRect(),d=b.left-r.left;if(d<0)c.scrollLeft+=d-4;else if(d+b.width>r.width)c.scrollLeft+=d+b.width-r.width+16}
 function render0(){
   hidePop();
   document.documentElement.classList.toggle("is-loading",S.actsState==="loading");if(S.actsState!=="loading")hideSplash();
   {const a=computeAdapt();S.adaptF=a.ok?a.f:null}
   renderTabbar();
   $("#banner").innerHTML=stravaBanner();
-  const v=S.tab==="hoy"?vHoy():S.tab==="plan"?vPlan():S.tab==="acts"?vActs():S.tab==="prog"?vProg():(S.lastTab=S.tab,0)||S.tab==="fuerza"?vFuerza():vPerfil();
+  const v=S.tab==="hoy"?vHoy():S.tab==="plan"?vPlan():S.tab==="acts"?vActs():S.tab==="prog"?vProg():(S.lastTab=S.tab,0)||S.tab==="fuerza"?vFuerza():S.tab==="pro"?tpHtml():vPerfil();
   {const keep=[...document.querySelectorAll("#view .hcar-track")].map(e=>e.scrollLeft);
   /* v243: un repintado en segundo plano (p. ej. al acabar el cálculo de rendimiento) no borra lo que se está editando en Perfil sin guardar */
   const pfKeep=S.pfDirty&&$("#pform")?[...$("#pform").querySelectorAll("input[id]")].map(e=>[e.id,e.type==="checkbox"?e.checked:e.value]):null;
@@ -8647,12 +8688,12 @@ function render0(){
   $("#view").style.display="flex";$("#view").style.flexDirection="column";$("#view").style.gap="18px";
   const ds=document.querySelector(".daystrip"),sel=ds&&ds.querySelector('[aria-pressed="true"]');
   if(ds&&sel){const w=sel.offsetWidth||1,i=[...ds.children].indexOf(sel);ds.scrollLeft=Math.max(0,(i-3)*w)}
-  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividad",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]],fuerza:allRoutines().length?[["ent","Entrenar"],["pro","Progreso"]]:null}[S.tab];
-  /* El título grande es siempre el de la pestaña; las secciones, debajo, en un segmentado (2–5) o en una fila de chips (6, Progreso) */
+  const TT={hoy:"Hoy",plan:"Plan",acts:"Actividad",prog:"Progreso",fuerza:"Fuerza",perfil:"Perfil",pro:"Tu profesional"};{const TTB={prog:PROG_SECS,plan:[["train","Entrenos"],["week","Menú"],["dishes","Platos"]],fuerza:allRoutines().length?[["ent","Entrenar"],["pro","Progreso"]]:null}[S.tab];
+  /* El título grande es siempre el de la pestaña; las secciones, debajo, en un segmentado (2–5) o, con 6 (Progreso), en una fila de palabras que se desliza */
   $("#ltitle").textContent=TT[S.tab]||"";const sg=$("#ltseg");
   if(TTB){const cur=S.tab==="prog"?(S.progSec||"res"):S.tab==="fuerza"?(S.fzSec||"ent"):(S.planView||"train");
-    sg.hidden=false;sg.innerHTML=TTB.length<=5?`<div class="seg" role="group" aria-label="Secciones de ${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" data-tt="${k}" aria-pressed="${k===cur}">${l}</button>`).join("")}</div>`
-      :`<div data-ltc role="group" aria-label="Secciones de ${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" class="chip" data-tt="${k}" aria-pressed="${k===cur}">${l}</button>`).join("")}</div>`}
+    const sl=(sg.querySelector("[data-ltc]")||{}).scrollLeft||0;sg.hidden=false;sg.innerHTML=TTB.length<=5?`<div class="seg" role="group" aria-label="Secciones de ${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" data-tt="${k}" aria-pressed="${k===cur}">${l}</button>`).join("")}</div>`
+      :`<div data-ltc role="group" aria-label="Secciones de ${TT[S.tab]}">${TTB.map(([k,l])=>`<button type="button" data-tt="${k}" aria-pressed="${k===cur}">${l}</button>`).join("")}</div>`;ltVisible(sg,sl)}
   else{sg.hidden=true;sg.innerHTML=""}}
   const nm=S.profile&&S.profile.name,dn=new Date();$("#hello").textContent="";{const tw=todayWeight(),wt=weekTrend();$("#lsub").innerHTML=S.tab!=="hoy"?"":esc((nm?"Hola, "+nm+" · ":"")+DOW[dn.getDay()]+" "+dn.getDate()+" de "+MON[dn.getMonth()])+(false?` · <button class="wlink" data-act="wtedit" aria-label="Cambiar el peso de hoy">${String(tw.kg).replace(".",",")} kg</button>${wt!=null&&Math.abs(wt)>=0.05?`<span class="lsub-t">${wt>0?"↑":"↓"} ${Math.abs(wt).toFixed(1).replace(".",",")} kg/sem</span>`:""}`:"")}
   S.pop=null;
@@ -8689,8 +8730,8 @@ function hojas(){return hojas.t||(hojas.t={
     m.innerHTML=paHtml();m.hidden=false;S.pa._sh=true;const n=m.querySelector(".pa-sheet");if(n)n.scrollTop=sy;
     if(ak){const [a,v]=[ak.slice(0,ak.indexOf("=")),ak.slice(ak.indexOf("=")+1)];const el=m.querySelector(a==="id"?"#"+CSS.escape(v):"["+a+'="'+CSS.escape(v)+'"]');if(el)try{el.focus({preventScroll:true})}catch(e){}}}}
 })}
-/* las hojas de Perfil agrupado comparten una sola entrada: «pfa:…» */
-function hojaDe(s){return s&&String(s).startsWith("pfa:")?{html:pgSheet}:hojas()[s]}
+/* las hojas de Perfil agrupado comparten una sola entrada, «pfa:…», y las de la página de Tu profesional otra, «tp:…» */
+function hojaDe(s){return s&&String(s).startsWith("pfa:")?{html:pgSheet}:s&&String(s).startsWith("tp:")?{html:tpHojaHtml,vacia:true}:hojas()[s]}
 function renderModal(){const m=$("#modal"),h=hojaDe(S.sheet);
   if(h&&(!h.si||h.si())){if(h.pinta)h.pinta(m);else{m.innerHTML=h.html();m.hidden=h.vacia?!m.innerHTML:false}return}
   if(!S.detail){m.hidden=true;m.innerHTML="";return}
@@ -8992,9 +9033,9 @@ setTimeout(hideSplash,4000);
   /* v237: si la importación del historial quedó a medias, sigue en segundo plano */
   if(window.__native&&window.__native.stravaImport)setTimeout(async()=>{try{const st=await window.__native.strava();S.stravaSt=st;if(st&&st.connected)impRun()}catch(e){}},6000);
 })();
-/* Botón atrás de Android (lo gestiona la app nativa): cierra la hoja abierta, vuelve a la portada de la sección o a Hoy. */
+/* Botón atrás de Android (lo gestiona la app nativa): cierra la hoja abierta, vuelve de Tu profesional a Perfil o a Hoy. */
 window.__back=function(){const c=document.querySelector('.pk-ov .xclose')||document.querySelector('.overlay .xclose')||document.querySelector('.overlay[data-close]');if(c){c.click();return}
-  if(S.tab!=="hoy"){S.tab="hoy";render();window.scrollTo(0,0)}};
+  if(S.tab!=="hoy"){S.tab=S.tab==="pro"?"perfil":"hoy";render();window.scrollTo(0,0)}};
 (function(){if(!window.ReactNativeWebView)return;let last=null,t=0;const chk=()=>{t=0;const v=!!document.querySelector(".overlay")||S.tab!=="hoy";if(v!==last){last=v;try{window.ReactNativeWebView.postMessage(JSON.stringify({t:"back",v}))}catch(e){}}};
   new MutationObserver(()=>{if(!t)t=setTimeout(chk,120)}).observe(document.body,{childList:true,subtree:true});setTimeout(chk,500)})();
 
@@ -9209,23 +9250,32 @@ return {dayBackPos};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
-var {eaLean,eaThr,energyCard}=(()=>{
-/* Energía (v219): disponibilidad energética = (lo que comes − entreno) ÷ masa magra, con el gasto del día debajo */
-function eaLean(){const p=S.profile||{},w=num(p.weight);if(!w)return null;const b=basal(p);return b&&b.bf!=null?w*(1-b.bf/100):w*.82}
+var {eaKcal,eaLean,eaThr,energyCard}=(()=>{
+/* Energía: disponibilidad energética con la regla común (datos/disponibilidad-energetica.js), con el gasto del día debajo.
+   Masa libre de grasa: la que mide tu profesional (60 días); si no, la de tu % de grasa medido; si solo hay estimación, vale para
+   orientar (aprox) pero nunca enciende el aviso de riesgo. */
+function eaMlg(){const p=S.profile||{},w=num(p.weight),lim=shiftKey(today(),-60);
+  const m=(S.measures||[]).filter(x=>x.src==="pro"&&x.d>=lim&&(x.lean||(x.kg&&x.bf))).pop();if(m)return{L:+m.lean||m.kg*(1-m.bf/100),aprox:false};
+  if(!w)return null;const b=basal(p);return b&&b.bf!=null?{L:w*(1-b.bf/100),aprox:b.bfSrc!=="med"}:{L:w*.82,aprox:true}}
+const eaLean=()=>{const m=eaMlg();return m?m.L:null};
 function eaIntake(k,t){const lg=(S.log||{})[k]||{},ne=Object.keys(lg).filter(isMealKey).length;
-  if(ne>=2){const mp=mealPlan(t,k);let K=0;mp.meals.forEach(m=>{const e=lg[m.id];if(!e)K+=m.kcal;else if(e.st==="skip")K+=0;else if(e.P!=null||e.C!=null||e.F!=null)K+=4*(e.P||0)+4*(e.C||0)+9*(e.F||0);else K+=m.kcal*(e.r||1)});
+  if(ne>=DE.comidas){const mp=mealPlan(t,k);let K=0;mp.meals.forEach(m=>{const e=lg[m.id];if(!e)K+=m.kcal;else if(e.st==="skip")K+=0;else if(e.P!=null||e.C!=null||e.F!=null)K+=4*(e.P||0)+4*(e.C||0)+9*(e.F||0);else K+=m.kcal*(e.r||1)});
     Object.keys(lg).filter(id=>isMealKey(id)&&!mp.meals.some(m=>m.id===id)).forEach(id=>{const e=lg[id];if(e.st!=="skip")K+=4*(e.P||0)+4*(e.C||0)+9*(e.F||0)});return{K:K+4*fuelCho(k),src:"log"}}
   const a=(S.glyAns||{})[k];if(a)return{K:t.kcal*({si:1,menos:.7,mas:1.2}[a]||1),src:"ans"};return{K:t.kcal,src:"est"}}
-function eaDay(k){const L=eaLean();if(!L)return null;const t=dayTargets(k);if(!t)return null;const I=eaIntake(k,t);return{k,v:(I.K-t.ex)/L,src:I.src,t,K:I.K,L}}
-function eaThr(){return{lo:(S.profile||{}).sex==="f"?30:25,ok:45}}
+function eaDay(k){const M=eaMlg();if(!M)return null;const t=dayTargets(k);if(!t)return null;const I=eaIntake(k,t);return{k,v:deValor(I.K,t.ex,M.L),src:I.src,t,K:I.K,L:M.L,aprox:M.aprox}}
+const eaThr=()=>deUmbral((S.profile||{}).sex);
+/* lo que comes y lo que gastas entrenando un día, sin dividir: lo que va a Pro, que lo divide por su masa libre de grasa */
+const eaKcal=k=>{const t=dayTargets(k);if(!t)return null;const I=eaIntake(k,t);return{i:I.K,g:t.ex,src:I.src}};
+/* los días cerrados hacia atrás desde ayer, con su DE si tienen comidas apuntadas (null si no): deRacha para en el primero que no cuenta */
+function* eaAtras(){for(let i=1;i<=60;i++){let y=null;try{y=eaDay(shiftKey(today(),-i))}catch(e){}yield y&&y.src==="log"?y.v:null}}
 const eaSt=v=>{const T=eaThr();return v>=T.ok?"ok":v<T.lo?"lo":""};
-const EA_L={ok:"Óptima","":"Suficiente",lo:"Baja"};
+const EA_L={ok:DE.tramo.ok,"":DE.tramo.mid,lo:DE.tramo.lo};
 function energyCard(k){try{return energyCard0(k)}catch(e){try{console.error("Energía",e)}catch(_){}
   return`<section class="glass pad fade en"><h2>Energía · ${esc(dateLabel(k))}</h2><p class="note" style="margin:10px 0 0">No he podido calcularla ahora mismo.</p><p class="note" style="margin:6px 0 0;font-size:calc(12px*var(--tz,1))">Detalle para Claude: ${esc(String(e&&e.message||e).slice(0,160))} · ${esc(String(e&&e.stack||"").split("\n").slice(1,3).join(" ").replace(/\s+/g," ").slice(0,200))}</p></section>`}}
 function energyCard0(k){
   const d=eaDay(k);if(!d)return"";const t=d.t,v=Math.max(0,d.v),st=eaSt(d.v),open=S.enOpen,isT=k===today();
   const wk=[];for(let i=6;i>=0;i--){let x=d;if(i){try{x=eaDay(shiftKey(k,-i))}catch(e){x=null}}if(x)wk.push(x)}
-  const TH=eaThr(),lg=wk.filter(x=>x.k!==today()&&x.src==="log"),avg=lg.length?lg.reduce((a,x)=>a+x.v,0)/lg.length:null,nLo=lg.filter(x=>x.v<TH.lo).length,nEst=wk.filter(x=>x.k!==today()&&x.src!=="log").length,alert=lg.length>=3&&avg<TH.lo;
+  const TH=eaThr(),lg=wk.filter(x=>x.k!==today()&&x.src==="log"),avg=lg.length?lg.reduce((a,x)=>a+x.v,0)/lg.length:null,nLo=lg.filter(x=>x.v<TH.lo).length,nEst=wk.filter(x=>x.k!==today()&&x.src!=="log").length,racha=d.aprox?null:deRacha(eaAtras(),TH.lo),alert=!!racha;
   const pos=Math.min(60,Math.max(0,d.v))/60*100;
   const bars=wk.map(x=>{const c=eaSt(x.v),h=Math.max(8,Math.min(100,x.v/60*100)),dd=new Date(x.k+"T12:00:00");
     return`<div><i class="${c}${x.k===today()?" t":""}${x.src==="est"&&x.k!==today()?" e":""}" style="height:${h.toFixed(0)}%"></i><span>${x.k===k&&isT?"<b>Hoy</b>":"DLMXJVS"[dd.getDay()]}</span></div>`}).join("");
@@ -9246,10 +9296,10 @@ function energyCard0(k){
     <div class="en-hd"><b>${fmtInt(v)}</b><span>kcal/kg magra</span></div>
     <p class="en-vd"><span class="en-q ${st}">${EA_L[st]}</span> · lo que queda para tu cuerpo tras entrenar</p>
     <div class="en-scw" role="img" aria-label="Disponibilidad energética ${fmtInt(v)}: ${EA_L[st]}"><div class="en-sc"><i class="z1" style="flex:${TH.lo}"></i><i class="z2" style="flex:${TH.ok-TH.lo}"></i><i class="z3" style="flex:${60-TH.ok}"></i></div><span class="en-seed" style="left:${pos.toFixed(1)}%"></span></div>
-    <div class="en-scl"><span style="flex:${TH.lo}">Baja</span><span style="flex:${TH.ok-TH.lo};text-align:center">Suficiente</span><span style="flex:${60-TH.ok};text-align:right">Óptima</span></div>
+    <div class="en-scl"><span style="flex:${TH.lo}">${DE.tramo.lo}</span><span style="flex:${TH.ok-TH.lo};text-align:center">${DE.tramo.mid}</span><span style="flex:${60-TH.ok};text-align:right">${DE.tramo.ok}</span></div>
     <div class="en-wk" aria-label="Últimos 7 días">${bars}</div>
     <p class="en-ctx">${ctx}</p>
-    ${alert?`<p class="en-al">Varios días comiendo por debajo de ${TH.lo}: riesgo de fatiga, lesión y alteraciones hormonales (RED‑S). Sube la comida los días de más carga.</p>`:""}
+    ${alert?`<p class="en-al">${racha?racha.n:DE.racha} días seguidos por debajo de ${TH.lo}: riesgo de fatiga, lesión y alteraciones hormonales (RED‑S). Sube la comida los días de más carga.</p>`:""}
     <div class="en-g"><div class="en-gh"><b>Gasto</b><span><b>${fmtInt(tot)}</b><small class="u">kcal</small></span></div>
       <div class="en-band" aria-hidden="true"><i style="flex:${bas.toFixed(0)};background:var(--vz-n2)"></i>${neatV>0?`<i style="flex:${neatV.toFixed(0)};background:var(--verde)"></i>`:""}${done>0?`<i style="flex:${done.toFixed(0)};background:var(--azul)"></i>`:""}${pend>0?`<i class="pend" style="flex:${pend.toFixed(0)};background:var(--azul)"></i>`:""}</div>
       ${row("b","var(--vz-n2)","Basal","",bas)}
@@ -9258,10 +9308,10 @@ function energyCard0(k){
       ${open==="n"?`<div class="en-x">${hrs}<p>${t.adapt?"Incluye "+(t.adapt>0?"+":"")+fmtInt(t.adapt)+" kcal de ajuste por tu evolución real. ":""}${window.__native?(st2.manual!=null?"Pasos de tu reloj, se actualizan solos.":"Tu reloj aún no ha enviado pasos de este día."):st2.manual!=null?"Pasos apuntados por ti.":"Apunta los pasos de tu móvil para afinar."}</p>${stpCtl}</div>`:""}
       ${row("x","var(--azul)","Entreno",exSub,exV,pend>0&&!done?"Previsto":"")}
     </div>
-    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p class="note">Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p class="note">${TH.ok} o más es óptima. Entre ${TH.lo} y ${TH.ok}, suficiente. Por debajo de ${TH.lo} varios días seguidos aumenta el riesgo de RED‑S.${TH.lo===25?" En hombres el umbral es más bajo que el clásico de 30, que viene de estudios con mujeres.":""} Es una estimación orientativa, no un diagnóstico. Tu objetivo de comida nunca te deja por debajo de ${TH.lo}.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></details>
+    <details class="inote"><summary>${IC_INFO}Cómo se calcula</summary><p class="note">Es la energía que le queda a tu cuerpo para funcionar (hormonas, huesos, recuperación) después de pagar el entreno. Se mide por kilo de masa magra.</p><p class="note">Hoy: (${fmtInt(d.K)} kcal${d.src==="log"?" que comes":" que te tocan"} − ${fmtInt(t.ex)} de entreno) ÷ ${fmtInt(d.L)} kg de masa magra = <b>${fmtInt(v)}</b>.</p><p class="note">${TH.ok} o más es ${DE.tramo.ok.toLowerCase()}. Entre ${TH.lo} y ${TH.ok}, ${DE.tramo.mid.toLowerCase()}. Por debajo de ${TH.lo} varios días seguidos aumenta el riesgo de RED‑S.${TH.lo===25?" En hombres el umbral es más bajo que el clásico de 30, que viene de estudios con mujeres.":""} Es una estimación orientativa, no un diagnóstico. Tu objetivo de comida nunca te deja por debajo de ${TH.lo}.${d.src==="log"?"":" Mientras no apuntes al menos dos comidas, cuenta con lo que te toca comer."}</p></details>
   </section>`;
 }
-return {eaLean,eaThr,energyCard};
+return {eaKcal,eaLean,eaThr,energyCard};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
@@ -9977,7 +10027,7 @@ var {hdrAv}=(()=>{
 /* ---------- Avatar en el botón de Perfil de la cabecera (v267) ----------
    La misma cara que en Perfil: tu foto si la has puesto; si no, tus iniciales; sin nombre, el icono de siempre. Clase .hav */
 function havSvg(){return'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="10" r="3.2"/><path d="M6.2 18.4a7 7 0 0 1 11.6 0"/></svg>'} /* función y no constante: render() puede llegar antes que este trozo */
-function hdrAv(){const b=$("#menuBtn");if(!b)return;const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"",key=(p.avatar||"")+"|"+ini;
+function hdrAv(){const b=$("#menuBtn");if(!b)return;{const ta=$("#tpAtras");b.hidden=S.tab==="pro";if(ta)ta.hidden=S.tab!=="pro"} /* en la página de Tu profesional, «Atrás» en el sitio del avatar */const p=S.profile||{},nm=(p.name||"").trim(),ini=nm?nm.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase():"",key=(p.avatar||"")+"|"+ini;
   if(b.dataset.av===key)return;b.dataset.av=key;const old=b.querySelector(":scope>svg,:scope>.hav");if(!old)return;
   old.insertAdjacentHTML("beforebegin",p.avatar?`<img class="hav" src="${p.avatar}" alt="">`:ini?`<span class="hav" aria-hidden="true">${esc(ini)}</span>`:havSvg());old.remove()}
 return {hdrAv};
@@ -11144,7 +11194,7 @@ return {proHtml};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
-var {PP_ROLE,ppActive,ppCarb,ppDayType,ppGoal,ppHtml,ppLine,ppManda,ppNorm,ppOpen}=(()=>{
+var {PP_ROLE,ppActive,ppCarb,ppDayType,ppGoal,ppHtml,ppLine,ppManda,ppNorm,ppOpen,ppVigorHtml}=(()=>{
 /* ---------- Pauta de tu profesional (v333) ----------
    El sentido inverso del resumen: tu entrenador o nutricionista rellena sustrato.app/pauta y te manda un enlace. La pauta va
    dentro del enlace, tras «#», que el navegador nunca envía a ningún servidor. Tú la ves junto a lo que tienes ahora y la
@@ -11195,32 +11245,36 @@ function ppRows(q,cur){const f1=v=>(+v).toFixed(1).replace(".",","),pc=v=>(v>0?"
   if(q.ent)ind.push(["Tus objetivos","Se ajustan a tu entreno",null]);
   if(q.ml&&q.ml.length)G.push(["Comidas del día",q.ml.map(m=>{const ty=m.r==="pre"?"antes de entrenar":m.r==="post"?"después de entrenar":MEAL_KN[m.k]===m.n?"":MEAL_KN[m.k].toLowerCase();return[m.n,[m.pc?Math.round(m.pc)+" %":"",ty].filter(Boolean).join(" · ")||"—",null]})]);
   if(ind.length)G.push(["Indicaciones",ind]);return G}
-function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.col?" · n.º "+esc(x.col):""}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
-  const rows=(x,cur,label)=>ppRows(x,cur).map(([h,L])=>`${h?`<span class="pa-l pp-h">${h}</span>`:""}<div class="pp-rows">${L.map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`).join("")+(x.e?`<p class="pa-note">${x.e<today()?"Caducó el ":"En vigor hasta el "}${esc(dateLabel(x.e))}.</p>`:"");
-  const note=x=>(x.x?`<blockquote class="pp-note">${esc(x.x)}</blockquote>`:"")+(x.doc?`<a class="pp-doc" href="${esc(x.doc)}" target="_blank" rel="noopener noreferrer"><span>Documento de ${esc(x.n)}</span><b>Abrir ›</b></a>`:"")
+const ppRowsHtml=(x,cur,label)=>ppRows(x,cur).map(([h,L])=>`${h?`<span class="pa-l pp-h">${h}</span>`:""}<div class="pp-rows">${L.map(([l,v,c])=>`<div class="pp-r"><span>${l}</span><span class="pp-v">${label&&c&&c!==v?`<s>${esc(c)}</s>`:""}<b>${esc(v)}</b></span></div>`).join("")}</div>`).join("")+(x.e?`<p class="pa-note">${x.e<today()?"Caducó el ":"En vigor hasta el "}${esc(dateLabel(x.e))}.</p>`:"");
+const ppNoteHtml=x=>(x.x?`<blockquote class="pp-note">${esc(x.x)}</blockquote>`:"")+(x.doc?`<a class="pp-doc" href="${esc(x.doc)}" target="_blank" rel="noopener noreferrer"><span>Documento de ${esc(x.n)}</span><b>Abrir ›</b></a>`:"")
     +(x.lk&&(x.att||[]).length?x.att.map(a=>`<button type="button" class="pp-doc lm-att" data-lmatt="${esc(x.lk)}|${esc(a.fid)}"><span>${esc(a.name)}<small>${a.size?lmSize(a.size):""}</small></span><b>Abrir ›</b></button>`).join(""):"");
+const ppBlock=(x,cur,label)=>ppRowsHtml(x,cur,label)+ppNoteHtml(x);
+function ppVigorHtml(){const p=S.profile||{},act=p.pro;if(!act)return"";const base=GOALS[p.goal]||GOALS.recomp;
+  return`<p class="pa-note">${ppActive()?(ppManda()?"Tus objetivos de cada día se calculan con ella. Tu pauta manda: el entreno y lo que tomas en ruta no los cambian.":"Tus objetivos de cada día se calculan con ella."):"Ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${ppBlock(act,base,false)}<div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar la pauta</button></div>`}
+function ppHtml(){const p=S.profile||{},q=S.ppIn,act=p.pro,base=GOALS[p.goal]||GOALS.recomp,who=x=>`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((x.n||"?").trim().charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(x.n)}</b><small>${esc(PP_ROLE[x.r]||"Profesional")}${x.col?" · n.º "+esc(x.col):""}${x.t?" · "+esc(dateLabel(x.t)):""}</small></span></div>`;
   let body;
-  if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${rows(q,base,true)}${note(q)}
+  if(q)body=`${who(q)}<p class="pa-note">${q.a?"Para "+esc(q.a)+". ":""}Te propone estos cambios. Lo que no aparece sigue como lo calcula Sustrato.</p>${ppBlock(q,base,true)}
     <button type="button" class="btn primary pa-go" data-act="ppok">Aceptar pauta</button><div class="pa-ex"><button type="button" class="ms-link" data-act="ppno">Ahora no</button></div>`;
-  /* v359: sin «pegar el enlace»: la pauta llega por el vínculo; la que está en vigor va dentro de la página, debajo de lo pendiente */
-  const actB=act?`<span class="pa-l">Pauta en vigor</span><p class="pa-note">${ppActive()?(ppManda()?"Tus objetivos de cada día se calculan con ella. Tu pauta manda: el entreno y lo que tomas en ruta no los cambian.":"Tus objetivos de cada día se calculan con ella."):"Ya no está en vigor; tus objetivos vuelven a calcularse como siempre."}</p>${rows(act,base,false)}${note(act)}<div class="pa-ex"><button type="button" class="ms-link red" data-act="ppdel">Quitar pauta</button></div>`:"";
+  /* sin vínculo, la pauta en vigor va en esta hoja; con vínculo, en la página de Tu profesional (su hoja «Tu pauta», ppVigorHtml) */
+  const actB=act?`<span class="pa-l">Pauta en vigor</span>${ppVigorHtml()}`:"";
   const hasLk=((S.lk||{}).links||[]).some(l=>l.state==="active");if(!q)body=hasLk?"":actB;
   return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.ppSh?"":" fade"} pa-sheet pp-sheet" role="dialog" aria-modal="true" aria-label="Tu profesional">
-    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml(actB)}${body}</div></div>`}
-function ppOpen(q){S.ppIn=q||null;if(typeof prSeen==="function")prSeen();if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
+    <div class="row"><h3 style="margin:0">Tu profesional</h3><button class="hbtn xclose" data-act="ppclose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${q?"":lkHtml()}${body}</div></div>`}
+function ppOpen(q){if(!q&&S.acct&&S.lk&&S.lk.links===null){lkLoad().then(()=>ppOpen(null));return} /* antes de elegir hoja o página, los vínculos cargados */
+  if(!q&&typeof prLinks==="function"&&prLinks().length){S.ppIn=null;tpOpen();return} /* con vínculo, su página */S.ppIn=q||null;if(typeof prSeen==="function")prSeen();if(!q&&typeof lkLoad==="function"){S.lk.step=null;S.lk.err="";lkLoad()}S.ppErr=false;S.ppSh=S.sheet==="pauta";S.sheet="pauta";renderModal()}
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-act^='pp']");if(!t)return;const a=t.dataset.act;
   if(a==="ppopen"){ppOpen(null);return}
   if(a==="ppclose"||a==="ppno"){S.ppIn=null;S.sheet=null;renderModal();return}
   if(a==="ppread"){const i=$("#ppurl"),q=ppParse(i&&i.value);S.ppSh=true;if(q){S.ppIn=q;S.ppErr=false}else S.ppErr=true;renderModal();return}
   if(a==="ppok"&&S.ppIn){if(S.ppIn.lk&&typeof lmAck==="function")lmAck(S.ppIn.lk,S.ppIn.mid,true);S.profile=Object.assign({},S.profile,{pro:Object.assign({},S.ppIn,{at:today()})});saveProfile(true);S.ppIn=null;S.sheet=null;renderModal();render();toast("Pauta aceptada · "+S.profile.pro.n);return}
-  if(a==="ppdel"){const p=Object.assign({},S.profile);delete p.pro;S.profile=p;saveProfile(true);S.ppSh=true;renderModal();render();toast("Pauta quitada");return}});
+  if(a==="ppdel"){const p=Object.assign({},S.profile);delete p.pro;S.profile=p;saveProfile(true);if(String(S.sheet).startsWith("tp:"))S.sheet=null;S.ppSh=true;renderModal();render();toast("Pauta quitada");return}});
 /* al abrir la app con el enlace de una pauta (sustrato.app/…#p=…) */
 setTimeout(()=>{try{const q=ppParse(location.hash);if(q){history.replaceState(null,"",location.pathname+location.search);ppOpen(q)}}catch(e){}},1500);
-return {PP_ROLE,ppActive,ppCarb,ppDayType,ppGoal,ppHtml,ppLine,ppManda,ppNorm,ppOpen};
+return {PP_ROLE,ppActive,ppCarb,ppDayType,ppGoal,ppHtml,ppLine,ppManda,ppNorm,ppOpen,ppVigorHtml};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
-var {lkCall,lkClinic,lkHtml,lkKey,lkLiIntro,lkLoad,lkRender}=(()=>{
+var {lkCall,lkClinic,lkCount,lkHtml,lkKey,lkKeyWarn,lkLiIntro,lkLoad,lkPermHtml,lkRender}=(()=>{
 /* ---------- Vínculo con tu profesional (fase B de Sustrato Pro, v339) ----------
    Perfil › Conexiones › Tu profesional › «Vincular con una llave»: metes la llave de 6 caracteres que te da tu entrenador o
    nutricionista, ves quién es y eliges qué compartir (al empezar, nada). Él acepta en su panel. Puedes cambiar lo que compartes o
@@ -11266,37 +11320,27 @@ const LK_CROLE={owner:"Responsable",admin:"Administración",member:"Profesional"
 function lkClinic(l){const c=l.cl;if(!c)return"";const A=c.access||[];
   return`<span class="pa-l">${esc(c.name)}</span><div class="pa-f"><p class="pa-note">Tu profesional trabaja en esta clínica. Pueden ver lo que compartes:</p>${A.map(a=>`<div class="tg-r"><span class="tg-t"><b>${esc(a.name)}</b><small>${esc(LK_CROLE[a.role]||"")}${a.seen?" · lo miró por última vez el "+esc(dateLabel(new Date(a.seen).toISOString().slice(0,10))):" · aún no lo ha mirado"}</small></span></div>`).join("")}</div>`}
 function lkKeyWarn(l){return`<div class="bk-conf lk-key" role="status"><p class="lk-key-h"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 21 19.5H3z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><span><b>Tu profesional ha entrado desde otro dispositivo.</b> Si te lo esperabas, sigue compartiendo; si no, pregúntale antes.</span></p><div class="bk-a"><button type="button" class="btn sm primary" data-act="lkkeyok" data-id="${esc(l.id)}">Seguir compartiendo</button></div></div>`} /* pieza Aviso (guía 4.0, cap. 10): icono de alerta y una frase con qué hacer; hasta confirmarlo no se comparte nada nuevo */
-async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[];await lkPin(S.lk.links)}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){S.ppSh=true;renderModal()}}
+async function lkLoad(){if(!S.acct)return;try{const j=await lkCall("/link/mine");S.lk.links=j.links||[];await lkPin(S.lk.links)}catch(e){S.lk.links=S.lk.links||[]}if(typeof lmLoad==="function")lmLoad();if(S.sheet==="pauta"){if(!S.ppIn&&!S.lk.step&&prLinks().length){tpOpen();return}S.ppSh=true;renderModal()}if(S.tab==="pro")render()}
 function lkPro(p){return`<div class="pp-who"><span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span><span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small>${p.verified?"<small class=\"lk-ver\">Verificado por Sustrato</small>":""}</span></div>`}
 function lkToggles(id,perms){const ask=S.lk.cyAsk===id; /* v369 (guía 4.0, «Conmutador y su fila»): al tocar el ciclo, debajo va la confirmación; v370 (V01 de la revisión): el interruptor sigue apagado hasta «Compartir el ciclo», para que lo que se ve sea lo que se comparte */
   return`<div class="lk-perms">${lkVis().map(([k,l,d])=>{const on=!!(perms&&perms[k]),dd=k==="cycle"&&!(typeof cyOn==="function"&&cyOn())?"Cuando registres tu ciclo en Perfil":d;
     return`<div class="tg-r"><span class="tg-t"><b>${l}</b><small>${dd}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${on}" aria-label="Compartir ${l.toLowerCase()}" data-lkp="${id}|${k}"></button></div>`+(k==="cycle"&&ask?lkCyAsk(id):"")}).join("")}</div>`}
-function lkHtml(pauta){const L=S.lk; /* v359: pauta = el bloque de la pauta en vigor, para ponerlo arriba */
+function lkHtml(){const L=S.lk; /* la hoja: vincular con una llave y las solicitudes pendientes; un vínculo activo tiene su página (profesional/pagina.js) */
   if(!S.acct)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Para vincularte con tu entrenador o nutricionista necesitas tu cuenta de Sustrato: entra con Google o Apple en Perfil › Conexiones.</p></div>`;
   if(L.step==="code")return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span><p class="pa-note">Escribe la llave de 6 caracteres que te ha dado tu profesional.</p><div class="pp-in"><input id="lkcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7P4QX" aria-label="Llave de tu profesional" value="${esc(L.code)}"><button type="button" class="chip" data-act="lknext">Seguir</button></div>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
   if(L.step==="perms"&&L.pro)return`<div class="pa-f"><span class="pa-l">Vincular con una llave</span>${lkPro(L.pro)}<p class="pa-note">Elige qué compartes. Puedes cambiarlo o terminar cuando quieras; lo que compartas viaja cifrado y solo lo lee tu profesional.</p>${lkToggles("new",L.perms)}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}<p class="pa-note" id="lknone" role="status"${LK_PERM.some(([k])=>L.perms&&L.perms[k])?" hidden":""}>Con todo apagado, tu profesional no verá ningún dato tuyo hasta que enciendas algo.</p><button type="button" class="btn primary pa-go" data-act="lksend">Enviar solicitud</button><div class="pa-ex"><button type="button" class="ms-link" data-act="lkcancel">Cancelar</button></div></div>`;
-  const live=(L.links||[]).filter(l=>l.state==="pending"||l.state==="active");
-  return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<div aria-busy="true" aria-label="Cargando tu profesional">${skRows(2)}</div>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.state==="pending"&&l.cf?lkCf(l):""}${l.state==="active"?lkPage(l,pauta):""}<div class="pa-ex">${L.endAsk===l.id?`<div class="bk-conf"><p><b>${l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+esc(l.pro.name)+"?"}</b> ${l.state==="pending"?"Tendrás que pedir otra llave para volver a intentarlo.":"Dejará de ver lo que compartes. Para volver, necesitarás otra llave."}</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">${l.state==="pending"?"Cancelar la solicitud":"Terminar"}</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`:`<button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button>`}</div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
-    ${live.some(l=>l.state==="active")?`<div class="pa-ex"><button type="button" class="ms-link" data-act="lkstart">Vincular con otro profesional</button></div>`:`<button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>`}${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
-/* v359 · la página de Tu profesional: su cabecera con foto y presentación; lo pendiente; la pauta en vigor; lo que te manda; las
-   notas; avisos; lo que compartes, plegado (se configura una vez) y en directo dentro */
+  const live=(L.links||[]).filter(l=>l.state==="pending");
+  return`<div class="pa-f">${live.length?"":`<span class="pa-l">Vinculados</span>`}${L.links===null?`<div aria-busy="true" aria-label="Cargando tu profesional">${skRows(2)}</div>`:live.length?live.map(l=>`<div class="lk-card">${lkHead(l)}${l.cf?lkCf(l):""}<div class="pa-ex">${L.endAsk===l.id?`<div class="bk-conf"><p><b>${l.state==="pending"?"¿Cancelar la solicitud?":"¿Terminar el vínculo con "+esc(l.pro.name)+"?"}</b> ${l.state==="pending"?"Tendrás que pedir otra llave para volver a intentarlo.":"Dejará de ver lo que compartes. Para volver, necesitarás otra llave."}</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">${l.state==="pending"?"Cancelar la solicitud":"Terminar"}</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`:`<button type="button" class="ms-link red" data-lkend="${l.id}">${l.state==="pending"?"Cancelar la solicitud":"Terminar el vínculo"}</button>`}</div></div>`).join(""):`<p class="pa-note">Con una llave de tu entrenador o nutricionista, verá lo que tú elijas y podrá pautarte desde su panel.</p>`}
+    <button type="button" class="btn pa-go lk-new" data-act="lkstart">Vincular con una llave</button>${L.err?`<p class="pp-err" role="alert">${esc(L.err)}</p>`:""}</div>`}
 /* M2 (auditoría de seguridad): el código que el deportista dice a su profesional para que acepte la solicitud; así nadie que haya
    adivinado o visto la llave puede hacerse pasar por él */
 function lkCf(l){return`<div class="lk-cf"><span>Dile este código a ${esc((l.pro&&l.pro.name)||"tu profesional")} para que acepte tu solicitud</span><b aria-label="Código ${esc(l.cf.split("").join(" "))}">${esc(l.cf)}</b></div>`}
 function lkHead(l){const pf=typeof lphProf==="function"&&lphProf(l),p=l.pro||{};
   return`<div class="pp-who">${typeof lphAv==="function"?lphAv(l,p.name):`<span class="pp-av" aria-hidden="true">${esc((p.name||"?").charAt(0).toUpperCase())}</span>`}<span class="pp-wt"><b>${esc(p.name)}</b><small>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</small><small class="lk-st ${l.state}">${LK_ST[l.state]}${l.acc?" desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10))):""}${p.verified?" · verificado por Sustrato":""}</small></span></div>${pf&&pf.bio?`<p class="lph-bio">${esc(pf.bio)}</p>`:""}`}
-function lkPage(l,pauta){const P=typeof prPend==="function"?prPend().filter(x=>x.l&&x.l.id===l.id&&!/^Tienes consulta/.test(x.t)):[],pm=l.perms||{},n=lkVis().filter(([k])=>pm[k]).length,open=!!(S.lkPermOpen);
-  return(l.keyNew?lkKeyWarn(l):"")+lkClinic(l)+(typeof apptHtml==="function"?apptHtml(l):"")+(P.length?`<span class="pa-l">Pendiente</span><div class="prc-l lk-pend">${P.map(p=>`<div class="prc-r"><span class="prc-rt"><b>${esc(p.t)}</b>${p.s?`<small>${esc(p.s)}</small>`:""}</span><span class="prc-ra">${prBtns(p.a.slice(-1))}</span></div>`).join("")}</div>`:"")
-    +(pauta||"")+(typeof lmHtml==="function"?lmHtml(l,"props")+lmHtml(l,"notes"):"")+(typeof prPushRow==="function"?prPushRow():"")
-    +`<div class="dg${open?" open":""}"><button type="button" class="dg-h" data-dg="perm" aria-expanded="${open}"><span class="dg-t"><b>Lo que compartes</b><small>${n} de ${lkVis().length} · ${l.live?"en directo":"al abrir la app"}</small></span><span class="dg-ch" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>${open?`<div class="dg-b"><div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}</div>`:""}</div>`}
-/* desplegable con muelle (como los de Hoy): altura y giro de la flecha del mismo valor */
-function dgToggle(b){const g=b.closest(".dg"),open=!S.lkPermOpen,h0=g.getBoundingClientRect().height,row=b.getBoundingClientRect().height;
-  if(!open){if(MU.reduce()){S.lkPermOpen=false;lkRender();return}const ch=b.querySelector(".dg-ch");g.style.height=h0+"px";g.style.overflow="hidden";b.setAttribute("aria-expanded","false");
-    MU.spring(g,h0,row,0,x=>{g.style.height=x+"px";if(ch)ch.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-row)/Math.max(1,h0-row)))).toFixed(1)}deg)`},{resp:.35,done:()=>{S.lkPermOpen=false;lkRender()}});return}
-  S.lkPermOpen=true;lkRender();const b2=document.querySelector('#modal [data-dg="perm"]'),n=b2&&b2.closest(".dg");if(!n||MU.reduce())return;const h1=n.getBoundingClientRect().height,c2=b2.querySelector(".dg-ch");n.style.height=h0+"px";n.style.overflow="hidden";
-  MU.spring(n,h0,h1,0,x=>{n.style.height=x+"px";if(c2)c2.style.transform=`rotate(${(90*Math.max(0,Math.min(1,(x-h0)/Math.max(1,h1-h0)))).toFixed(1)}deg)`},{resp:.35,done:()=>{n.style.height="";n.style.overflow="";if(c2)c2.style.transform=""}})}
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dg]");if(b)dgToggle(b)});
-function lkRender(){S.ppSh=true;renderModal()}
+/* lo que compartes, en su hoja de la página de Tu profesional: «En directo» y un conmutador por dato (el ciclo, con su consentimiento) */
+function lkPermHtml(l){return`<div class="lk-perms"><div class="tg-r"><span class="tg-t"><b>En directo</b><small>${l.live?"Cada cambio le llega en minutos mientras usas la app":"Le llega cada vez que abres la app"}</small></span><button type="button" class="tg-sw" role="switch" aria-checked="${!!l.live}" aria-label="Compartir en directo" data-lklive="${l.id}"></button></div></div>${lkToggles(l.id,l.perms)}${S.lk.err?`<p class="pp-err" role="alert">${esc(S.lk.err)}</p>`:""}<p class="pa-note">Viaja cifrado y solo lo lee tu profesional. Puedes cambiarlo cuando quieras.</p>`}
+const lkCount=l=>{const pm=l.perms||{};return[lkVis().filter(([k])=>pm[k]).length,lkVis().length]};
+function lkRender(){S.ppSh=true;S.tpSh=true;renderModal();if(S.tab==="pro")render()}
 async function lkSetPerm(id,k){const L=S.lk;
   if(id==="new"){L.perms[k]=!L.perms[k];if(LK_SENS.includes(k)){lkRender();return}const nn=document.getElementById("lknone");if(nn)nn.hidden=LK_PERM.some(([q])=>L.perms[q]);return}
   const l=(L.links||[]).find(x=>x.id===id);if(!l)return;const perms=Object.assign({},l.perms,{[k]:!(l.perms||{})[k]});l.perms=perms;if(LK_SENS.includes(k))lkRender();
@@ -11319,17 +11363,17 @@ document.addEventListener("click",async e=>{const t=e.target.closest&&e.target.c
     if(t.dataset.no){L.endAsk=null;lkRender();return}
     if(!t.dataset.ok){L.endAsk=l.id;lkRender();return}
     L.endAsk=null;
-    try{await lkCall("/link/end",{id:l.id});await lkLoad();toast(l.state==="pending"?"Solicitud cancelada":"Vínculo terminado")}catch(x){L.err="No se ha podido. Prueba en un momento.";lkRender()}return}
+    try{await lkCall("/link/end",{id:l.id});await lkLoad();if(S.tab==="pro"&&!prLinks().length)tpBack();toast(l.state==="pending"?"Solicitud cancelada":"Vínculo terminado")}catch(x){L.err="No se ha podido. Prueba en un momento.";lkRender()}return}
   const a=t.dataset.act;L.err="";
-  if(a==="lkstart"){L.step="code";L.code="";L.pro=null;L.perms={};L.cyAsk=null;lkRender();setTimeout(()=>{const i=$("#lkcode");if(i)i.focus()},50);return}
-  if(a==="lkcancel"){L.step=null;L.cyAsk=null;lkRender();return}
+  if(a==="lkstart"){S.sheet="pauta";S.ppIn=null;S.ppSh=false;L.step="code";L.code="";L.pro=null;L.perms={};L.cyAsk=null;lkRender();setTimeout(()=>{const i=$("#lkcode");if(i)i.focus()},50);return}
+  if(a==="lkcancel"){L.step=null;L.cyAsk=null;if(prLinks().length){S.sheet=null;renderModal();return}lkRender();return}
   if(a==="lknext"){const code=String(($("#lkcode")||{}).value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");L.code=code;
     if(code.length!==6){L.err="La llave tiene 6 caracteres.";lkRender();return}
     t.disabled=true;try{const j=await lkCall("/link/lookup",{code});if(!j.pro){L.err="Esa llave no vale: puede haber caducado o ya se usó. Pide otra a tu profesional.";lkRender();return}L.pro=j.pro;L.step="perms";lkRender()}catch(x){L.err="No se ha podido comprobar. Prueba en un momento.";lkRender()}return}
   if(a==="lksend"){t.disabled=true;try{const k=await lkKey(),me=S.profile||{};const j=await lkCall("/link/request",{code:L.code,perms:L.perms,pub:k.pub,name:(me.name||"").trim(),cf:true});
       if(!j.ok){L.err=j.code==="already"?"Ya estás vinculado o tienes una solicitud con este profesional.":j.code==="self"?"Esa llave es tuya.":"Esa llave ya no vale. Pide otra a tu profesional.";lkRender();return}
       L.step=null;await lkLoad();toast("Solicitud enviada a "+L.pro.name)}catch(x){L.err="No se ha podido enviar. Prueba en un momento.";lkRender()}return}});
-return {lkCall,lkClinic,lkHtml,lkKey,lkLiIntro,lkLoad,lkRender};
+return {lkCall,lkClinic,lkCount,lkHtml,lkKey,lkKeyWarn,lkLiIntro,lkLoad,lkPermHtml,lkRender};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
@@ -11345,6 +11389,9 @@ const LKP_HIST=56;
 const lkb64=u8=>{let s="";new Uint8Array(u8).forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
 const lkun64=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)),c=>c.charCodeAt(0));
 const lkStrava=a=>!/^(hc|ah|fit|apple|man)[-_]/i.test(String(a.id||""));
+/* disponibilidad energética: ingesta y gasto del día con la regla de la app (datos/disponibilidad-energetica.js), solo los días cerrados
+   con comidas apuntadas; Pro la divide por su masa libre de grasa */
+function lkDe(k){if(k>=today())return null;let d=null;try{d=eaKcal(k)}catch(e){}return d&&d.src==="log"?{i:Math.round(d.i),g:Math.round(d.g)}:null}
 function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
   if(P.train){const A=S.acts.filter(a=>a.day===k&&a.sport!=="oth").map(a=>{const u=(S.subs||{})[a.id],f=flEntry(a),x={s:a.sport,h:(a.start||"").slice(11,16),m:Math.round((a.mov||0)/60),kcal:Math.round(a.kcal||0),i:actInt(a)};
       if(u)x.cho=Math.round(u.cho/4);if(f&&f.cph)x.gh=f.cph;
@@ -11356,6 +11403,7 @@ function lkDay(k,P){const o={};const r1=v=>Math.round(v*10)/10;
     const q=(S.profile||{}).pro,w=num((S.profile||{}).weight)||0;if(t&&q&&(!q.at||k>=q.at)&&(!q.e||k<=q.e)){const c=ppCarb(k,w,t.acts,t.plan);o.pp={n:q.n,lk:q.lk||null,C:c?Math.round(c.g):null,P:q.p!=null?Math.round(q.p*w):null,pt:q.pt||null,thr:Math.round(.3*w)};
       /* 27-10 · lo pautado en ruta (g/h por duración, líquido y sodio por hora) y si la pauta deja que la app ajuste el día al entreno */
       if(q.fh)o.pp.fh=q.fh;if(q.na!=null)o.pp.na=q.na;if(q.fl!=null)o.pp.fl=q.fl;if(q.ent)o.pp.ent=1}}
+  if(P.food&&P.train){const de=lkDe(k);if(de)o.de=de}
   if(P.meals&&k<=today()){const ml=lkMeals(k);if(ml)o.ml=ml}
   if(typeof prHabDay==="function"){const hb=prHabDay(k);if(hb)o.hb=hb} /* v342: los hábitos que te propuso, marcados ese día */
   if(P.body){const w=(S.weights||[]).find(x=>x.d===k);if(w)o.kg=w.kg;const l=(S.leanHc||[]).find(x=>x.d===k);if(l)o.lean=l.kg;const f=(S.bodyFatHc||[]).find(x=>x.d===k);if(f)o.bf=f.pct;
@@ -11445,8 +11493,8 @@ async function lmLoad(){if(!S.acct||LM_BUSY||!S.lk||!S.lk.links)return;LM_BUSY=t
         try{const o=await lmOpenAny(aes,l,x);B.m[x.mid]={mid:x.mid,by:x.by,u:x.u,o};if(x.by==="pro"){if(o.t==="clinic")lkLiIntro(l,o);else fresh.push([l,o])}}catch(e){}}}
     LS("sustrato-lkmsg",S.lkm)}catch(e){}finally{LM_BUSY=false}
   fresh=fresh.filter(([,o])=>o.t!=="ack"&&o.t!=="meas"); /* v345: las medidas avisan solas (111) y las respuestas no avisan; varias cosas a la vez, un solo aviso */
-  if(fresh.length>1){const l=fresh[0][0],n=fresh.length;toast((l.pro.name||"Tu profesional")+" te ha enviado "+n+" cosas · míralas en tu perfil");if(S.sheet==="pauta")lkRender()}
-  else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="dossier"?" te ha preparado el dossier de tu carrera":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta")lkRender()}
+  if(fresh.length>1){const l=fresh[0][0],n=fresh.length;toast((l.pro.name||"Tu profesional")+" te ha enviado "+n+" cosas · míralas en tu perfil");if(S.sheet==="pauta"||S.tab==="pro")lkRender()}
+  else if(fresh.length){const[l,o]=fresh[fresh.length-1];toast((l.pro.name||"Tu profesional")+(o.t==="pauta"?" te ha enviado una pauta":o.t==="dish"?" te ha enviado un plato":o.t==="excl"?" ha anotado lo que no tomas":o.t==="menu"?" te propone el menú de la semana":o.t==="dossier"?" te ha preparado el dossier de tu carrera":o.t==="hab"?" te propone hábitos":o.t==="meas"?" ha añadido tus medidas":" te ha escrito"));if(S.sheet==="pauta"||S.tab==="pro")lkRender()}
   if(fresh.length&&S.tab==="hoy"&&!S.sheet)render()} /* v371: lo nuevo (un dossier, un menú) sale en Hoy sin esperar a otro repintado */
 async function lmSend(l,o){const aes=await lkAes(l),x=await lmSeal(aes,l,o),j=await lkCall("/link/send",Object.assign({id:l.id},x));
   if(j&&j.mid){const B=S.lkm[l.id]=S.lkm[l.id]||{since:0,m:{}};B.m[j.mid]={mid:j.mid,by:"ath",u:j.u,o};LS("sustrato-lkmsg",S.lkm)}return j}
@@ -11589,7 +11637,7 @@ return {prChkDue,prChkHtml,prHabCard,prHabDay,prHabits,prLinks,prMeasSync,prMenu
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
-var {prBtns,prHoyCard,prMenuGo,prMenuHtml,prPend,prPushRow}=(()=>{
+var {prBtns,prHoyCard,prMenuGo,prMenuHtml,prPend}=(()=>{
 /* ---------- Tu profesional, en primer plano (v346) ----------
    El vínculo con tu nutricionista o entrenador deja de ser una fila más de Conexiones:
    · Perfil: tarjeta propia justo debajo de ti (quién es, lo pendiente con su acción y el acceso a pauta, notas y lo que compartes).
@@ -11647,9 +11695,7 @@ function prMenuGo(first){S.sheet=null;S.prmv=null;renderModal();S.tab="plan";S.p
 async function prPushReg(ask){const N=window.__native;if(!N||!N.pushToken||!S.acct||!prLinks().length)return;let r;try{r=await N.pushToken(ask)}catch(e){return}if(!r)return;
   const was=S.prPush;S.prPush=r.tok?"on":r.perm?"nocred":"noperm";
   if(r.tok){const old=LS("sustrato-pushtok")||"",done=old===r.tok?(LS("sustrato-pushlk")||{}):{};for(const l of prLinks()){if(done[l.id])continue;try{await lkCall("/link/pushtok",{id:l.id,tok:r.tok,old});done[l.id]=1}catch(e){}}LS("sustrato-pushtok",r.tok);LS("sustrato-pushlk",done)}
-  if(ask)toast(r.tok?"Te avisaremos cuando te mande algo":r.perm?"Los avisos llegarán con la próxima versión de la app":"Actívalos en los ajustes del móvil");if(was!==S.prPush&&S.tab==="perfil")render()}
-function prPushRow(){if(!window.__native||!window.__native.pushToken||!prLinks().length)return"";const st=S.prPush;
-  return`<div class="prc-r prc-push"><span class="prc-rt"><b>Avisos en este móvil</b><small>${st==="on"?"Cuando te mande algo, de 7 a 22":st==="nocred"?"Llegarán con la próxima versión de la app":"Para enterarte cuando te mande algo"}</small></span>${st==="on"?`<span class="cn-st cx-ok">Activados</span>`:st==="nocred"?"":`<button type="button" class="btn sm" data-act="prpush">Activar</button>`}</div>`}
+  if(ask)toast(r.tok?"Te avisaremos cuando te mande algo":r.perm?"Los avisos llegarán con la próxima versión de la app":"Actívalos en los ajustes del móvil");if(was!==S.prPush&&(S.tab==="perfil"||S.tab==="pro"))render()}
 setTimeout(()=>prPushReg(false),14000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")setTimeout(()=>prPushReg(false),2500)});
 /* al tocar el aviso: a Hoy, con lo nuevo ya leído */
 {const g0=window.__ntfGo;window.__ntfGo=function(d){if(g0)g0(d);if(d&&d.go==="pro"&&typeof lmLoad==="function")lmLoad().then(()=>{render();window.scrollTo(0,0)})}}
@@ -11658,7 +11704,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
   if(t.dataset.prmv){const[lid,mid]=t.dataset.prmv.split("|");S.prmv={lid,mid};S.prmvSh=false;S.sheet="prmenu";renderModal();S.prmvSh=true;return}
   if(t.dataset.prhide){const h=LS("sustrato-prhide")||{};h[t.dataset.prhide]=today();LS("sustrato-prhide",h);render();return}
   S.sheet=null;S.prmv=null;renderModal()});
-return {prBtns,prHoyCard,prMenuGo,prMenuHtml,prPend,prPushRow};
+return {prBtns,prHoyCard,prMenuGo,prMenuHtml,prPend};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
@@ -11993,11 +12039,11 @@ return {icAuto,icAutoRow,icAutoSet};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
-var {apptHtml,apptPend}=(()=>{
+var {apGcal,apHow,apLab,apptOf,apptPend}=(()=>{
 /* ---------- Tu próxima consulta (v360) ----------
-   Tu profesional te cita desde su panel ({t:"appt",id,at,dur,how,where}; al anularla, {t:"apptx",id}). La siguiente sale arriba en
-   la página de Tu profesional, con «Añadir a mi calendario» (Google Calendar, sin permisos), y en lo pendiente (Hoy y Perfil)
-   cuando faltan 2 días o menos. Solo con vínculo (la app no depende de Pro). Funciones declaradas (no const). Clases ap- */
+   Tu profesional te cita desde su panel ({t:"appt",id,at,dur,how,where}; al anularla, {t:"apptx",id}). La siguiente sale en
+   la página de Tu profesional (pagina.js), con «Añadir a mi calendario» (Google Calendar, sin permisos), y en lo pendiente (Hoy y Perfil)
+   cuando faltan 2 días o menos. Solo con vínculo (la app no depende de Pro). Funciones declaradas (no const). */
 function apIso(d){const p=n=>String(n).padStart(2,"0");return`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
 function apptOf(l){const M=Object.values((S.lkm[l.id]||{}).m||{}).filter(x=>x.by==="pro"&&(x.o.t==="appt"||x.o.t==="apptx")).sort((a,b)=>a.u-b.u),A={};
   M.forEach(x=>{if(x.o.t==="apptx")delete A[x.o.id];else if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(x.o.at||""))A[x.o.id]=x.o});
@@ -12006,11 +12052,9 @@ function apLab(at){const[k,t]=at.split("T");return(k===today()?"Hoy":k===shiftKe
 function apHow(a){return{pres:"En consulta",video:"Videollamada",tel:"Por teléfono"}[a.how]||"Consulta"}
 function apGcal(l,a){const s=new Date(a.at),e=new Date(s.getTime()+(a.dur||45)*6e4),f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("Consulta con "+(l.pro.name||"tu profesional"))+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent(apHow(a)+(a.where?" · "+a.where:""))+(a.where&&a.how==="pres"?"&location="+encodeURIComponent(a.where):"")}
-function apptHtml(l){const a=apptOf(l);if(!a)return"";const w=String(a.where||""),url=/^https:\/\/\S+$/.test(w);
-  return`<span class="pa-l">Próxima consulta</span><div class="ap-c"><span class="ap-t"><b>${esc(apLab(a.at))}</b><small>${a.dur||45} min · ${esc(apHow(a))}${w&&!url?" · "+esc(w):""}</small></span><div class="ap-a">${url?`<a class="btn sm primary" href="${esc(w)}" target="_blank" rel="noopener">Abrir la videollamada</a>`:""}<a class="btn sm" href="${esc(apGcal(l,a))}" target="_blank" rel="noopener">Añadir a mi calendario</a></div></div>`}
 function apptPend(){const out=[];(typeof prLinks==="function"?prLinks():[]).forEach(l=>{const a=apptOf(l);if(!a)return;const k=a.at.slice(0,10);if(k>shiftKey(today(),2))return;
   out.push({l,w:k===today()?97:85,t:"Tienes consulta "+apLab(a.at).replace(/^Hoy/,"hoy").replace(/^Mañana/,"mañana").replace(/^(\S+ \d+ \S+)/,"el $1"),s:apHow(a)+(a.where&&!/^https:/.test(a.where)?" · "+a.where:""),a:[["Ver",'data-act="ppopen"',1]]})});return out}
-return {apptHtml,apptPend};
+return {apGcal,apHow,apLab,apptOf,apptPend};
 })();
 
 /* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
@@ -12219,6 +12263,91 @@ function apSeg(){const cur=window.__theme&&window.__theme.get();return`<div clas
 /* el clic llega por la escucha de las filas de Perfil (perfil-agrupado.js): devuelve true si era suyo */
 function apClick(e){const th=e.target.closest&&e.target.closest("[data-theme-set]");if(!th||!window.__theme)return false;window.__theme.set(th.dataset.themeSet);buzz(4);render();return true}
 return {apClick,apSeg};
+})();
+
+/* Módulo cerrado: lo de dentro es suyo y ofrece a los demás solo lo que devuelve al final (taller/calidad/modulos.py). */
+var {tpBack,tpHoja,tpHojaHtml,tpHtml,tpOpen}=(()=>{
+/* ---------- Tu profesional, en su página (29-10) ----------
+   Con un vínculo activo, «Tu profesional» deja de ser una hoja y pasa a ser una página propia, como Perfil (guía 4.0, cap. 7: un área
+   con varias funciones). Se llega desde la fila de Perfil y desde la tarjeta de Hoy (data-act="ppopen"); «Atrás» vuelve a Perfil.
+   Orden (cap. 12): quién es → lo pendiente → lo que tienes con él (consulta, pauta, notas) → lo que te ha mandado → el vínculo.
+   La pauta, las notas, lo que compartes y la clínica se abren en su hoja (S.sheet "tp:…"). Color solo de estado (cap. 4): rojo lo que
+   espera algo de ti, naranja la consulta cercana; lo hecho, en gris. Clases tp- */
+const TP_SV=(p,w)=>`<svg viewBox="0 0 24 24" width="${w||20}" height="${w||20}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+/* iconos de la guía (cap. 9): Documento, Nota, Calendario, Comida, Carrera, Vegetal, Validado, Personas y Atrás; Ver y Aviso, de la app */
+const TP_IC={doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',nota:'<path d="M5 4h14v12H9l-4 4z"/>',cal:'<rect x="4" y="5.5" width="16" height="14.5" rx="3.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
+  plato:'<path d="M3.8 11.5h16.4a8.2 8.2 0 0 1-16.4 0z"/><path d="M9 20.4h6"/><path d="M9.8 8.2c0-1.4.9-1.9.9-3.3M13.8 8.2c0-1.4.9-1.9.9-3.3"/>',carrera:'<path d="M6 21V4h11l-2 4 2 4H6"/>',
+  hoja:'<path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/>',val:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 11.5l1.8 1.8 3.4-3.6"/>',
+  ojo:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',campana:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  pers:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.6c2.6.1 4.1 1.6 4.6 4.9"/>',
+  ch:'<path d="M9 6l6 6-6 6"/>',atras:'<path d="M15 5l-7 7 7 7"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>'};
+const tpCuenta=n=>n?`<span class="prc-n" aria-label="${n} pendientes">${n}</span>`:"";
+const tpHecho=t=>`<span class="tp-v">${t}</span>`; /* lo hecho, en gris y sin marca (cap. 14, «Hecho»: lo normal no se celebra) */
+/* una fila (cap. 10): icono en su columna de 24 alineado con la primera línea; título 17 y explicación 13. Si abre algo, toda la fila
+   se toca y lleva su › gris; si se hace de un toque, su botón compacto gris; si solo informa, su estado a la derecha */
+function tpFila(o){const inner=`${o.ic?`<span class="tp-ic">${TP_SV(TP_IC[o.ic])}</span>`:""}<span class="tp-ft"><b${o.fuerte?' class="tp-b6"':""}>${o.t}</b>${o.s?`<small>${o.s}</small>`:""}${o.extra||""}</span>`;
+  if(o.btn)return`<div class="tp-f">${inner}${o.btn}</div>`;
+  if(!o.at)return`<div class="tp-f">${inner}${o.der||""}</div>`;
+  return`<button type="button" class="tp-f tp-fb" ${o.at}>${inner}${tpCuenta(o.n)}${o.der||""}<span class="tp-ch">${TP_SV(TP_IC.ch,17)}</span></button>`}
+const tpGrupo=(h,F,pie,n)=>{F=F.filter(Boolean);return F.length?`<h2 class="pfa-h tp-gh">${h}${tpCuenta(n)}</h2><section class="glass fade pfa-g tp-g">${F.join("")}</section>${pie?`<p class="tp-pie">${pie}</p>`:""}`:""};
+const tpLink=()=>prLinks()[0]||null;
+const tpSinDia=s=>String(s).replace(/^\S+ /,""),tpF1=v=>(+v).toFixed(1).replace(".",",");
+/* notas sin leer: su propia marca, que se pone al abrir las notas (abrir la página no las da por leídas) */
+const tpNotasSeen=()=>LS("sustrato-lknotas")||0;
+function tpPersona(l){const p=l.pro||{},pf=(typeof lphProf==="function"&&lphProf(l))||{};
+  return`<section class="glass pad fade tp-me"><div class="tp-me-h">${lphAv(l,p.name,"tp-av")}<div class="tp-me-t"><b>${esc(p.name||"Tu profesional")}</b><span>${esc(PP_ROLE[p.role]||"Profesional")}${p.col?" · n.º "+esc(p.col):""}</span>
+    <span class="tp-ver">${TP_SV(TP_IC.val,12)}${p.verified?"Verificado por Sustrato":"Sin verificar por Sustrato"}</span></div></div>${pf.bio?`<p class="tp-bio">${esc(pf.bio)}</p>`:""}</section>`}
+function tpPend(l){const IC={menu:"cal",pauta:"doc",dossier:"carrera",excl:"hoja",dish:"plato"};
+  return prPend().filter(p=>p.l&&p.l.id===l.id&&!(p.x&&p.x.o.t==="note")&&!/^Tienes consulta/.test(p.t)).map(p=>{const t=p.x&&p.x.o.t,a=p.a.find(x=>/^(Ver|Rellenar|Empezar)/.test(x[0]))||p.a[p.a.length-1];
+    const r={ic:IC[t]||(/consulta|formulario/.test(p.t)?"doc":"cal"),t:esc(p.t),s:esc(p.s||""),fuerte:1};
+    return tpFila(/^(Añadir|Aplicar)$/.test(a[0])?Object.assign(r,{btn:`<button type="button" class="btn sm" ${a[1]}>${a[0]}</button>`}):Object.assign(r,{at:a[1]}))})}
+function tpCita(l){const c=apptOf(l);if(!c)return"";const k=c.at.slice(0,10),d=Math.round((Date.parse(k)-Date.parse(today()))/864e5),w=String(c.where||""),url=/^https:\/\/\S+$/.test(w);
+  const pronto=d>=0&&d<=2?`<span class="tp-pronto">${["Hoy","Mañana","Pasado mañana"][d]}</span> · `:"";
+  return tpFila({ic:"cal",t:"Consulta el "+esc(apLab(c.at).replace(/^(Hoy|Mañana)/,x=>x.toLowerCase())),s:`${pronto}${c.dur||45} min · ${esc(apHow(c))}${w&&!url?" · "+esc(w):""}`,
+    extra:`<span class="tp-acc">${url?`<a class="btn sm primary" href="${esc(w)}" target="_blank" rel="noopener">Abrir la videollamada</a>`:""}<a class="btn sm" href="${esc(apGcal(l,c))}" target="_blank" rel="noopener">Añadir a mi calendario</a></span>`})}
+function tpPauta(){const q=ppActive();if(!q)return"";const G=q.g?GOALS[q.g]:null,cd=q.cd?Object.values(q.cd):[];
+  return tpFila({ic:"doc",t:"Pauta en vigor",s:esc([G&&G.label,q.adj!=null?"energía "+(q.adj<0?"−":"+")+Math.abs(q.adj)+" %":"",cd.length?"hidratos "+tpF1(Math.min(...cd))+(Math.max(...cd)>Math.min(...cd)?"–"+tpF1(Math.max(...cd)):"")+" g/kg":"",q.e?"hasta el "+tpSinDia(dateLabel(q.e)):""].filter(Boolean).join(" · ")||"Mira lo que te ha pautado"),at:'data-tph="pauta"'})}
+function tpNotas(l){const pro=l.pro.name||"tu profesional",N=lmList(l).M.filter(x=>x.o.t==="note"),u=N[0],seen=tpNotasSeen(),n=N.filter(x=>x.by==="pro"&&x.u>seen).length,x=u?String(u.o.x||(u.o.ph?"Foto":"")):"";
+  return tpFila({ic:"nota",t:"Notas",s:u?esc((u.by==="ath"?"Tú":pro)+": «"+x.slice(0,44)+(x.length>44?"…":"")+"»"):"Escríbele cuando lo necesites",at:'data-tph="notas"',n})}
+/* lo que te ha mandado, sin lo que ya está en Pendiente ni la pauta que sigues (cap. 1, nada repetido) */
+function tpHist(l,P){const{M,ack}=lmList(l),ya=new Set(P.map(p=>p.x&&p.x.mid).filter(Boolean)),cur=((S.profile||{}).pro||{}).mid;
+  return M.filter(x=>x.by==="pro"&&/^(pauta|dish|excl|menu|dossier)$/.test(x.o.t)&&!ya.has(x.mid)&&x.mid!==cur&&!(x.o.t==="dish"&&ack[x.mid]!==true)&&!(x.o.t==="menu"&&ack[x.mid]!==true&&S.prMnPend!==x.mid)).slice(0,6).map(x=>{const o=x.o,a=ack[x.mid],d=esc(dateLabel(keyOf(new Date(x.u))));
+    if(o.t==="pauta")return tpFila({ic:"doc",t:"Pauta",s:d,der:a===true?tpHecho("Aceptada"):a===false?`<span class="tp-v">No aceptada</span>`:"",at:`data-lmpp="${l.id}|${x.mid}"`});
+    if(o.t==="excl")return tpFila({ic:"hoja",t:"Lo que no tomas",s:esc(lmExclTxt(o.v)),der:a===true?tpHecho("Aplicado"):`<span class="tp-v">Sin aplicar</span>`});
+    if(o.t==="menu")return tpFila({ic:"cal",t:"Menú de la semana",s:d,der:tpHecho("Aplicado")});
+    if(o.t==="dossier")return tpFila({ic:"carrera",t:"Dossier de competición",s:esc(prDosName(o)),at:`data-prds="${l.id}|${x.mid}"`});
+    return tpFila({ic:"plato",t:esc(o.d&&o.d.n||"Plato"),s:d,der:tpHecho("Añadido")})})}
+function tpAvisos(){if(!window.__native||!window.__native.pushToken)return"";const st=S.prPush;
+  return tpFila({ic:"campana",t:"Avisos en este móvil",s:st==="on"?"Cuando te mande algo, de 7 a 22":st==="nocred"?"Llegarán con la próxima versión de la app":"Para enterarte cuando te mande algo",
+    der:st==="on"?tpHecho("Activados"):"",btn:st==="on"||st==="nocred"?"":`<button type="button" class="btn sm" data-act="prpush">Activar</button>`})}
+function tpFin(l){const L=S.lk;
+  return`<div class="tp-pies">${L.endAsk===l.id?`<div class="bk-conf"><p><b>¿Terminar el vínculo con ${esc(l.pro.name)}?</b> Dejará de ver lo que compartes. Para volver, necesitarás otra llave.</p><div class="bk-a"><button class="btn sm rs-do" data-lkend="${l.id}" data-ok="1">Terminar</button><button class="chip sm" data-lkend="${l.id}" data-no="1">No</button></div></div>`
+    :`<button type="button" class="ms-link" data-act="lkstart">Vincular con otro profesional</button><button type="button" class="ms-link red" data-lkend="${l.id}">Terminar el vínculo</button>`}</div>`}
+function tpHtml(){const l=tpLink();if(!l){S.tab="perfil";return vPerfil()} /* la página solo existe con un vínculo activo */const pro=esc(l.pro.name||"tu profesional"),P=prPend().filter(p=>p.l&&p.l.id===l.id),pend=tpPend(l),c=lkCount(l);
+  return(l.keyNew?lkKeyWarn(l):"")+tpPersona(l)
+    +tpGrupo("Pendiente",pend,"",pend.length)
+    +tpGrupo("Con "+pro,[tpCita(l),tpPauta(),tpNotas(l)],ppManda()?esc(ppLine()):"")
+    +tpGrupo("Lo que te ha mandado",tpHist(l,P))
+    +tpGrupo("Tu vínculo",[tpFila({ic:"ojo",t:"Lo que compartes",s:l.live?"En directo":"Al abrir la app",der:`<span class="tp-v">${c[0]} de ${c[1]}</span>`,at:'data-tph="perm"'}),
+      l.cl?tpFila({ic:"pers",t:esc(l.cl.name),s:"Quién puede ver lo que compartes",at:'data-tph="clin"'}):"",tpAvisos()],l.acc?"Vinculados desde el "+esc(dateLabel(new Date(l.acc).toISOString().slice(0,10)))+".":"")
+    +(S.lk.err?`<p class="pp-err tp-err" role="alert">${esc(S.lk.err)}</p>`:"")+tpFin(l)}
+/* la página: a ella desde Perfil y desde Hoy; sin vínculo activo vuelve a Perfil */
+function tpOpen(){if(!LS("sustrato-lknotas"))LS("sustrato-lknotas",LS("sustrato-lkseen")||1);prSeen(); /* abrir la página da por visto lo nuevo (el punto del avatar); las notas, solo al abrirlas */
+  if(S.tab!=="pro"&&S.tab!=="perfil")S.prevTab=S.tab;S.tab="pro";S.sheet=null;renderModal();render();window.scrollTo(0,0)}
+function tpBack(){S.tab="perfil";S.lk.endAsk=null;render();window.scrollTo(0,0)}
+/* sus hojas: el marco de siempre (cap. 14) con lo de cada una */
+function tpHojaHtml(){const l=tpLink(),v=String(S.sheet||"").slice(3);if(!l){S.sheet=null;return""}
+  const T={pauta:"Tu pauta",notas:"Notas con "+(l.pro.name||"tu profesional"),perm:"Lo que compartes",clin:l.cl?l.cl.name:""}[v];
+  const body=v==="pauta"?ppVigorHtml():v==="notas"?lmHtml(l,"notes").replace(/^<span class="pa-l">[^<]*<\/span>/,""):v==="perm"?lkPermHtml(l):v==="clin"?lkClinic(l).replace(/^<span class="pa-l">[^<]*<\/span>/,""):"";
+  if(!body){S.sheet=null;return""}
+  return`<div class="overlay" data-close="1"><div class="sheet glass pad${S.tpSh?"":" fade"} pa-sheet pp-sheet tp-sheet" role="dialog" aria-modal="true" aria-label="${esc(T)}">
+    <div class="row"><h3 style="margin:0">${esc(T)}</h3><button class="hbtn xclose" data-act="tpclose" aria-label="Cerrar">${TP_SV(TP_IC.x)}</button></div>${body}</div></div>`}
+function tpHoja(v){S.sheet="tp:"+v;S.tpSh=false;if(v==="notas"){LS("sustrato-lknotas",Date.now());if(S.tab==="pro")render()}renderModal();S.tpSh=true}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-tph],#tpAtras,[data-act='tpclose']");if(!t)return;
+  if(t.id==="tpAtras"){tpBack();return}
+  if(t.dataset.act==="tpclose"){S.sheet=null;renderModal();return}
+  tpHoja(t.dataset.tph)});
+return {tpBack,tpHoja,tpHojaHtml,tpHtml,tpOpen};
 })();
 
 ;render(); /* primer pintado, con todos los módulos ya cargados (ver base/arranque.js) */
